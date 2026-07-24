@@ -1,0 +1,88 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Frame from "../../components/Frame.astro";
+import Icon from "../../components/Icon.astro";
+import { casosMeta, casos } from "../../data/casos";
+---
+
+<Page title={`Casos — ${casosMeta.titulo}`}>
+  <PageHero
+    eyebrow={casosMeta.eyebrow}
+    title={casosMeta.titulo}
+    subtitle={casosMeta.subtitulo}
+    crumbs={[{ label: "Casos" }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        {
+          casos.map((c) => (
+            <a href={`/casos/${c.slug}`} class="card case">
+              <Frame src={c.img} label={c.imgLabel} alt={c.titulo} ratio="16/10" rounded={false} />
+              <div class="case__body">
+                <span class="case__cat">{c.categoria}</span>
+                <h2 class="t-h3">{c.titulo}</h2>
+                <p class="text-muted case__sum">{c.resumen}</p>
+                <p class="t-caption text-muted case__loc">
+                  <Icon name="location" size={14} />
+                  {c.ubicacion}
+                </p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .case {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .case__body {
+    padding: 1.25rem 1.35rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .case__cat {
+    align-self: flex-start;
+    font-size: var(--fs-caption);
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+    background: rgba(0, 191, 114, 0.1);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: 0.6rem;
+  }
+  .case__sum {
+    margin: 0.35rem 0 0.85rem;
+    flex-grow: 1;
+  }
+  .case__loc {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

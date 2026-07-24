@@ -1,0 +1,232 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Frame from "../../components/Frame.astro";
+import Icon from "../../components/Icon.astro";
+import { servicios } from "../../data/servicios";
+
+export function getStaticPaths() {
+  return servicios.map((servicio) => ({
+    params: { slug: servicio.slug },
+    props: { servicio },
+  }));
+}
+
+const { servicio } = Astro.props;
+const otros = servicios.filter((s) => s.slug !== servicio.slug);
+---
+
+<Page title={`${servicio.titulo} — Servicios`} description={servicio.resumen}>
+  <PageHero
+    eyebrow="Servicio"
+    title={servicio.titulo}
+    subtitle={servicio.hero}
+    crumbs={[{ label: "Servicios", href: "/servicios" }, { label: servicio.titulo }]}
+  />
+
+  <section class="section">
+    <div class="container detail">
+      <div class="detail__main">
+        <div class="block">
+          <h2 class="t-h3">¿Para quién es?</h2>
+          <p class="text-muted">{servicio.paraQuien}</p>
+        </div>
+
+        <div class="block">
+          <h2 class="t-h3">El problema</h2>
+          <p class="text-muted">{servicio.problema}</p>
+        </div>
+
+        <div class="block">
+          <h2 class="t-h3">Cómo trabajo</h2>
+          <ol class="steps">
+            {
+              servicio.enfoque.map((e, i) => (
+                <li class="step">
+                  <span class="step__n">{i + 1}</span>
+                  <div>
+                    <h3 class="step__t">{e.titulo}</h3>
+                    <p class="text-muted">{e.texto}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+
+        <div class="block">
+          <h2 class="t-h3">Qué recibís</h2>
+          <ul class="deliverables">
+            {
+              servicio.entregables.map((d) => (
+                <li>
+                  <Icon name="check" size={18} class="deliverables__i" />
+                  {d}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2 class="t-h3">Preguntas frecuentes</h2>
+          <div class="faq">
+            {
+              servicio.faq.map((f) => (
+                <details class="faq__item">
+                  <summary>{f.q}</summary>
+                  <p class="text-muted">{f.a}</p>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <aside class="detail__side">
+        <Frame src={servicio.img} label={servicio.imgLabel} alt={servicio.titulo} ratio="4/5" />
+        <div class="side-cta card">
+          <h3 class="t-h3">¿Hablamos?</h3>
+          <p class="text-muted">Contame tu caso y vemos cómo aplicar este servicio.</p>
+          <a href="/contacto" class="btn btn--primary">Agendar diagnóstico</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <h2 class="t-h3">Otros servicios</h2>
+      <div class="others">
+        {
+          otros.map((o) => (
+            <a href={`/servicios/${o.slug}`} class="card other">
+              <Icon name={o.icon} size={22} class="other__i" />
+              <span>{o.titulo}</span>
+              <Icon name="arrowUpRight" size={16} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .detail {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .block + .block {
+    margin-top: 2.25rem;
+  }
+  .block > p,
+  .block > .steps,
+  .block > .deliverables,
+  .block > .faq {
+    margin-top: 0.85rem;
+  }
+  .steps {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .step__n {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0, 191, 114, 0.12);
+    color: var(--verde-acento-oscuro);
+    font-weight: var(--w-headline);
+    font-size: 0.9rem;
+  }
+  .step__t {
+    font-size: 1.05rem;
+    font-weight: var(--w-headline);
+    margin-bottom: 0.15rem;
+  }
+  .deliverables {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .deliverables li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--azul-pizarra);
+  }
+  .deliverables__i {
+    color: var(--verde-acento-oscuro);
+    flex-shrink: 0;
+  }
+  .faq {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .faq__item {
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 1rem;
+    background: var(--blanco);
+  }
+  .faq__item summary {
+    cursor: pointer;
+    font-weight: var(--w-subheadline);
+    padding: 0.5rem 0;
+    list-style: none;
+  }
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq__item p {
+    padding-bottom: 0.75rem;
+  }
+  .detail__side {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .side-cta {
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .side-cta .btn {
+    margin-top: 0.5rem;
+  }
+  .others {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .other {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+  }
+  .other span {
+    flex-grow: 1;
+    font-weight: var(--w-subheadline);
+  }
+  .other__i {
+    color: var(--verde-azulado);
+  }
+
+  @media (min-width: 900px) {
+    .detail {
+      grid-template-columns: 1.6fr 0.9fr;
+    }
+    .others {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

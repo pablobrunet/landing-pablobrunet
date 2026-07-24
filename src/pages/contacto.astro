@@ -1,0 +1,176 @@
+---
+import Page from "../layouts/Page.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/site";
+---
+
+<Page title={`Contacto — ${site.nombre}`} cta={false}>
+  <PageHero
+    eyebrow="Contacto"
+    title="Hablemos"
+    subtitle="Contame en qué estás y vemos cómo la IA puede ayudarte. Respondo en 24 h."
+    crumbs={[{ label: "Contacto" }]}
+  />
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__info">
+        <h2 class="t-h3">Datos de contacto</h2>
+        <ul class="contact__list">
+          <li>
+            <Icon name="mail" size={18} class="contact__i" />
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </li>
+          <li>
+            <Icon name="location" size={18} class="contact__i" />
+            <span>{site.ubicacion}</span>
+          </li>
+        </ul>
+
+        <h3 class="contact__sub">Redes</h3>
+        <ul class="contact__social">
+          {
+            site.redes.map((r) => (
+              <li>
+                <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
+                  <Icon name={r.icon} size={18} />
+                  <span>{r.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="t-caption text-muted">
+          Reemplazá los links de redes en <code>src/data/site.ts</code>.
+        </p>
+      </div>
+
+      <!--
+        FORM SIN CONECTAR. Opciones para activarlo:
+        - Servicio como Formspree / Basin: poné su URL en `action`.
+        - O manejar el envío por JS a tu backend / Supabase.
+      -->
+      <form class="contact__form card" data-contact onsubmit="return false">
+        <h2 class="t-h3">Escribime</h2>
+        <div class="field">
+          <label for="c-nombre">Nombre</label>
+          <input id="c-nombre" name="nombre" type="text" required />
+        </div>
+        <div class="field">
+          <label for="c-email">Email</label>
+          <input id="c-email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="c-empresa">Empresa (opcional)</label>
+          <input id="c-empresa" name="empresa" type="text" />
+        </div>
+        <div class="field">
+          <label for="c-msg">¿En qué puedo ayudarte?</label>
+          <textarea id="c-msg" name="mensaje" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn--primary">
+          Enviar mensaje
+          <Icon name="arrow" size={18} />
+        </button>
+      </form>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .contact__list {
+    display: grid;
+    gap: 0.85rem;
+    margin: 1rem 0 2rem;
+  }
+  .contact__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--azul-pizarra);
+  }
+  .contact__i {
+    color: var(--verde-acento-oscuro);
+  }
+  .contact__sub {
+    font-weight: var(--w-headline);
+    margin-bottom: 0.85rem;
+  }
+  .contact__social {
+    display: grid;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+  .contact__social a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--azul-pizarra);
+    font-weight: var(--w-subheadline);
+  }
+  .contact__social a:hover {
+    color: var(--verde-acento-oscuro);
+  }
+  .contact__info code {
+    background: rgba(11, 31, 42, 0.06);
+    padding: 0.1rem 0.35rem;
+    border-radius: 5px;
+    font-size: 0.72rem;
+  }
+  .contact__form {
+    padding: 1.75rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-size: 0.9rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-pizarra);
+  }
+  .field input,
+  .field textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--borde);
+    background: var(--blanco);
+    resize: vertical;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--verde-acento);
+  }
+  .contact__form .btn {
+    margin-top: 0.5rem;
+    justify-self: start;
+  }
+
+  @media (min-width: 820px) {
+    .contact {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+</style>
+
+<script>
+  function initContact() {
+    const form = document.querySelector<HTMLFormElement>("[data-contact]");
+    form?.addEventListener("submit", () => {
+      alert("Formulario de ejemplo. Conectá un servicio (Formspree, Basin, tu backend) para recibir los mensajes.");
+    });
+  }
+  initContact();
+  document.addEventListener("astro:page-load", initContact);
+</script>

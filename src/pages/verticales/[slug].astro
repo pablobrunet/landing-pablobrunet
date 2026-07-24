@@ -1,0 +1,138 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Frame from "../../components/Frame.astro";
+import Icon from "../../components/Icon.astro";
+import { verticales } from "../../data/verticales";
+
+export function getStaticPaths() {
+  return verticales.map((vertical) => ({
+    params: { slug: vertical.slug },
+    props: { vertical },
+  }));
+}
+
+const { vertical } = Astro.props;
+const otras = verticales.filter((v) => v.slug !== vertical.slug);
+---
+
+<Page title={`${vertical.nombre} — Verticales`} description={vertical.resumen}>
+  <PageHero
+    eyebrow="Vertical"
+    title={vertical.nombre}
+    crumbs={[{ label: "Verticales", href: "/verticales" }, { label: vertical.nombre }]}
+  />
+
+  <section class="section">
+    <div class="container detail">
+      <div class="detail__main">
+        <p class="text-muted lead">{vertical.descripcion}</p>
+
+        <h2 class="t-h3">Aplicaciones de IA</h2>
+        <ul class="apps">
+          {
+            vertical.aplicaciones.map((a) => (
+              <li>
+                <Icon name="check" size={18} class="apps__i" />
+                {a}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <aside class="detail__side">
+        <Frame src={vertical.img} label={vertical.imgLabel} alt={vertical.nombre} ratio="4/5" />
+        <div class="side-cta card">
+          <h3 class="t-h3">¿Trabajás en este sector?</h3>
+          <p class="text-muted">Veamos cómo aplicar IA en tu caso concreto.</p>
+          <a href="/contacto" class="btn btn--primary">Hablemos</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <h2 class="t-h3">Otras verticales</h2>
+      <div class="others">
+        {
+          otras.map((o) => (
+            <a href={`/verticales/${o.slug}`} class="card other">
+              <Icon name={o.icon} size={22} class="other__i" />
+              <span>{o.nombre}</span>
+              <Icon name="arrowUpRight" size={16} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .detail {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .lead {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .apps {
+    display: grid;
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+  .apps li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--azul-pizarra);
+  }
+  .apps__i {
+    color: var(--verde-acento-oscuro);
+    flex-shrink: 0;
+  }
+  .detail__side {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .side-cta {
+    padding: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .side-cta .btn {
+    margin-top: 0.5rem;
+  }
+  .others {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .other {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+  }
+  .other span {
+    flex-grow: 1;
+    font-weight: var(--w-subheadline);
+  }
+  .other__i {
+    color: var(--verde-azulado);
+  }
+
+  @media (min-width: 900px) {
+    .detail {
+      grid-template-columns: 1.5fr 0.9fr;
+    }
+    .others {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

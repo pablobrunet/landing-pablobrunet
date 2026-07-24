@@ -1,23 +1,24 @@
 ---
-import { site } from "../data/site";
+import { blogMeta, blog } from "../data/blog";
 import Frame from "./Frame.astro";
 import Icon from "./Icon.astro";
 import SectionHeading from "./SectionHeading.astro";
-const { blog } = site;
+
+const items = blog.slice(0, 3);
 ---
 
-<section class="blog section section--tint" id="recursos" aria-label="Blog">
+<section class="blog section section--tint" aria-label="Blog">
   <div class="container">
     <SectionHeading
-      eyebrow={blog.eyebrow}
-      title={blog.titulo}
-      subtitle={blog.subtitulo}
+      eyebrow={blogMeta.eyebrow}
+      title={blogMeta.titulo}
+      subtitle={blogMeta.subtitulo}
     />
 
     <div class="blog__grid">
       {
-        blog.items.map((p) => (
-          <a href={p.href} class="card post">
+        items.map((p) => (
+          <a href={`/blog/${p.slug}`} class="card post">
             <Frame src={p.img} label={p.imgLabel} alt={p.titulo} ratio="16/9" rounded={false} />
             <div class="post__body">
               <span class="post__cat">{p.categoria}</span>
@@ -34,7 +35,7 @@ const { blog } = site;
     </div>
 
     <div class="blog__more">
-      <a href={blog.verMas.href} class="btn btn--outline">{blog.verMas.label}</a>
+      <a href="/blog" class="btn btn--outline">Ver todos los artículos</a>
     </div>
   </div>
 </section>

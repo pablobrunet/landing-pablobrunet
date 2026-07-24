@@ -1,23 +1,25 @@
 ---
-import { site } from "../data/site";
+import { casosMeta, casos } from "../data/casos";
 import Frame from "./Frame.astro";
 import Icon from "./Icon.astro";
 import SectionHeading from "./SectionHeading.astro";
-const { casos } = site;
+
+// En el home mostramos hasta 6 casos
+const items = casos.slice(0, 6);
 ---
 
-<section class="portfolio section section--tint" id="casos" aria-label="Casos">
+<section class="portfolio section" aria-label="Casos">
   <div class="container">
     <SectionHeading
-      eyebrow={casos.eyebrow}
-      title={casos.titulo}
-      subtitle={casos.subtitulo}
+      eyebrow={casosMeta.eyebrow}
+      title={casosMeta.titulo}
+      subtitle={casosMeta.subtitulo}
     />
 
     <div class="portfolio__grid">
       {
-        casos.items.map((c) => (
-          <a href={c.href} class="card case">
+        items.map((c) => (
+          <a href={`/casos/${c.slug}`} class="card case">
             <Frame src={c.img} label={c.imgLabel} alt={c.titulo} ratio="16/10" rounded={false} />
             <div class="case__body">
               <span class="case__cat">{c.categoria}</span>
@@ -33,7 +35,7 @@ const { casos } = site;
     </div>
 
     <div class="portfolio__more">
-      <a href={casos.verMas.href} class="btn btn--outline">{casos.verMas.label}</a>
+      <a href="/casos" class="btn btn--outline">Ver todos los casos</a>
     </div>
   </div>
 </section>

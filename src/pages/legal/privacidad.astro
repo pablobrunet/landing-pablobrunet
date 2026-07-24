@@ -1,0 +1,52 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import { site } from "../../data/site";
+---
+
+<Page title={`Política de privacidad — ${site.nombre}`} cta={false}>
+  <PageHero
+    eyebrow="Legal"
+    title="Política de privacidad"
+    crumbs={[{ label: "Privacidad" }]}
+  />
+  <section class="section">
+    <div class="container legal">
+      <p class="text-muted note">
+        COMPLETAR: reemplazá este texto por tu política de privacidad real
+        (adaptada al RGPD si operás en España/UE). Revisala con un profesional.
+      </p>
+      <h2 class="t-h3">1. Responsable del tratamiento</h2>
+      <p>{site.nombre} — {site.ubicacion} — <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      <h2 class="t-h3">2. Datos que se recogen</h2>
+      <p>COMPLETAR.</p>
+      <h2 class="t-h3">3. Finalidad</h2>
+      <p>COMPLETAR.</p>
+      <h2 class="t-h3">4. Derechos</h2>
+      <p>COMPLETAR (acceso, rectificación, supresión, etc.).</p>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .legal {
+    max-width: 68ch;
+  }
+  .legal h2 {
+    margin-top: 2rem;
+  }
+  .legal p {
+    margin-top: 0.6rem;
+    color: var(--azul-pizarra);
+    line-height: 1.7;
+  }
+  .legal a {
+    color: var(--verde-acento-oscuro);
+  }
+  .note {
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--verde-acento);
+    background: var(--gris-claro);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Frame from "../../components/Frame.astro";
+import Icon from "../../components/Icon.astro";
+import Prose from "../../components/Prose.astro";
+import { blog } from "../../data/blog";
+
+export function getStaticPaths() {
+  return blog.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
+---
+
+<Page title={`${post.titulo} — Blog`} description={post.resumen}>
+  <PageHero
+    eyebrow={post.categoria}
+    title={post.titulo}
+    subtitle={post.resumen}
+    crumbs={[{ label: "Blog", href: "/blog" }, { label: post.titulo }]}
+  >
+    <p class="date t-caption text-muted">{post.fecha}</p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container article">
+      <Frame src={post.img} label={post.imgLabel} alt={post.titulo} ratio="16/9" />
+      <div class="article__body">
+        <Prose blocks={post.cuerpo} />
+      </div>
+    </div>
+  </section>
+
+  {
+    otros.length > 0 && (
+      <section class="section section--tint">
+        <div class="container">
+          <h2 class="t-h3">Seguí leyendo</h2>
+          <div class="more">
+            {otros.map((o) => (
+              <a href={`/blog/${o.slug}`} class="card more__item">
+                <Frame src={o.img} label={o.imgLabel} alt={o.titulo} ratio="16/9" rounded={false} />
+                <div class="more__body">
+                  <span class="more__cat">{o.categoria}</span>
+                  <h3 class="t-h3">{o.titulo}</h3>
+                  <span class="more__cta">
+                    Leer <Icon name="arrowUpRight" size={15} />
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Page>
+
+<style>
+  .date {
+    margin-top: 1rem;
+  }
+  .article__body {
+    margin-top: 2.5rem;
+  }
+  .more {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  .more__item {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .more__body {
+    padding: 1.25rem;
+  }
+  .more__cat {
+    font-size: var(--fs-caption);
+    font-weight: var(--w-subheadline);
+    color: var(--verde-azulado);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .more__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.6rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+  }
+
+  @media (min-width: 720px) {
+    .more {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

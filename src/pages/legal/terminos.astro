@@ -1,0 +1,54 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import { site } from "../../data/site";
+---
+
+<Page title={`Términos y condiciones — ${site.nombre}`} cta={false}>
+  <PageHero
+    eyebrow="Legal"
+    title="Términos y condiciones"
+    crumbs={[{ label: "Términos" }]}
+  />
+  <section class="section">
+    <div class="container legal">
+      <p class="text-muted note">
+        COMPLETAR: reemplazá este texto por tus términos y condiciones reales.
+        Recomendable revisarlo con un profesional legal.
+      </p>
+      <h2 class="t-h3">1. Titular</h2>
+      <p>{site.nombre} — {site.web} — {site.ubicacion}.</p>
+      <h2 class="t-h3">2. Objeto</h2>
+      <p>COMPLETAR.</p>
+      <h2 class="t-h3">3. Uso del sitio</h2>
+      <p>COMPLETAR.</p>
+      <h2 class="t-h3">4. Propiedad intelectual</h2>
+      <p>COMPLETAR.</p>
+      <h2 class="t-h3">5. Contacto</h2>
+      <p>Para consultas: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .legal {
+    max-width: 68ch;
+  }
+  .legal h2 {
+    margin-top: 2rem;
+  }
+  .legal p {
+    margin-top: 0.6rem;
+    color: var(--azul-pizarra);
+    line-height: 1.7;
+  }
+  .legal a {
+    color: var(--verde-acento-oscuro);
+  }
+  .note {
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--verde-acento);
+    background: var(--gris-claro);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+</style>

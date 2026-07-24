@@ -1,0 +1,200 @@
+---
+import Page from "../layouts/Page.astro";
+import PageHero from "../components/PageHero.astro";
+import Frame from "../components/Frame.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/site";
+import { sobreMi } from "../data/sobreMi";
+const p = sobreMi.pagina;
+---
+
+<Page title={`Sobre mí — ${site.nombre}`}>
+  <PageHero
+    eyebrow="Sobre mí"
+    title={site.nombre}
+    subtitle={p.hero}
+    crumbs={[{ label: "Sobre mí" }]}
+  />
+
+  <section class="section">
+    <div class="container intro">
+      <div class="intro__media">
+        <Frame src={sobreMi.img} label={sobreMi.imgLabel} alt={`Foto de ${site.nombre}`} ratio="4/5" />
+      </div>
+      <div class="intro__copy">
+        {p.bio.map((par) => <p class="text-muted intro__p">{par}</p>)}
+
+        <div class="creds">
+          {
+            p.credenciales.map((c) => (
+              <div class="cred">
+                <Icon name="shield" size={20} class="cred__i" />
+                <div>
+                  <strong>{c.titulo}</strong>
+                  <span class="text-muted">{c.detalle}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <span class="eyebrow">Cómo trabajo</span>
+      <h2 class="t-h2">Mis valores</h2>
+      <div class="values">
+        {
+          p.valores.map((v) => (
+            <div class="card value">
+              <h3 class="t-h3">{v.titulo}</h3>
+              <p class="text-muted">{v.texto}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Recorrido</span>
+      <h2 class="t-h2">Mi experiencia</h2>
+      <p class="t-caption text-muted timeline__note">
+        Completá tu recorrido real en <code>src/data/sobreMi.ts</code>.
+      </p>
+      <ol class="timeline">
+        {
+          p.recorrido.map((r) => (
+            <li class="tl">
+              <span class="tl__period">{r.periodo}</span>
+              <div class="tl__content">
+                <h3 class="t-h3">{r.titulo}</h3>
+                <p class="text-muted">{r.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="gallery">
+        {
+          p.galeria.map((g) => (
+            <Frame src={g.img} label={g.imgLabel} alt="Foto" ratio="4/3" />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .intro {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .intro__media {
+    max-width: 400px;
+    width: 100%;
+  }
+  .intro__p + .intro__p {
+    margin-top: 1rem;
+  }
+  .creds {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+  .cred {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-sm);
+    background: var(--blanco);
+  }
+  .cred__i {
+    color: var(--verde-acento-oscuro);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .cred strong {
+    display: block;
+    font-weight: var(--w-headline);
+  }
+  .cred span {
+    font-size: 0.9rem;
+  }
+  .values {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+  .value {
+    padding: 1.75rem;
+  }
+  .value p {
+    margin-top: 0.4rem;
+  }
+  .timeline__note {
+    margin: 0.5rem 0 1.5rem;
+  }
+  .timeline__note code {
+    background: rgba(11, 31, 42, 0.06);
+    padding: 0.1rem 0.35rem;
+    border-radius: 5px;
+    font-size: 0.72rem;
+  }
+  .timeline {
+    display: grid;
+    gap: 1.5rem;
+    border-left: 2px solid var(--borde);
+    padding-left: 1.5rem;
+  }
+  .tl {
+    position: relative;
+  }
+  .tl::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.5rem - 6px);
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--verde-acento);
+  }
+  .tl__period {
+    font-size: var(--fs-caption);
+    font-weight: var(--w-subheadline);
+    color: var(--verde-azulado);
+  }
+  .tl__content h3 {
+    margin: 0.15rem 0;
+  }
+  .gallery {
+    display: grid;
+    gap: 1rem;
+    margin-top: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 720px) {
+    .values {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 900px) {
+    .intro {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+</style>

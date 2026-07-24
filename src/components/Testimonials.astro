@@ -1,22 +1,21 @@
 ---
-import { site } from "../data/site";
+import { testimoniosMeta, testimonios } from "../data/testimonios";
 import Frame from "./Frame.astro";
 import SectionHeading from "./SectionHeading.astro";
-const { testimonios } = site;
 ---
 
 <section class="testimonials section" aria-label="Testimonios">
   <div class="container">
     <SectionHeading
-      eyebrow={testimonios.eyebrow}
-      title={testimonios.titulo}
-      subtitle={testimonios.subtitulo}
+      eyebrow={testimoniosMeta.eyebrow}
+      title={testimoniosMeta.titulo}
+      subtitle={testimoniosMeta.subtitulo}
       center
     />
 
     <div class="testimonials__track">
       {
-        testimonios.items.map((t) => (
+        testimonios.map((t) => (
           <figure class="card testimonial">
             <blockquote class="testimonial__quote">{t.texto}</blockquote>
             <figcaption class="testimonial__author">

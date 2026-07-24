@@ -1,0 +1,162 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Frame from "../../components/Frame.astro";
+import Icon from "../../components/Icon.astro";
+import { casos } from "../../data/casos";
+
+export function getStaticPaths() {
+  return casos.map((caso) => ({
+    params: { slug: caso.slug },
+    props: { caso },
+  }));
+}
+
+const { caso } = Astro.props;
+---
+
+<Page title={`${caso.titulo} — Casos`} description={caso.resumen}>
+  <PageHero
+    eyebrow={caso.categoria}
+    title={caso.titulo}
+    subtitle={caso.resumen}
+    crumbs={[{ label: "Casos", href: "/casos" }, { label: caso.titulo }]}
+  >
+    <ul class="meta">
+      <li><Icon name="chip" size={16} /> {caso.sector}</li>
+      <li><Icon name="location" size={16} /> {caso.ubicacion}</li>
+      <li><Icon name="target" size={16} /> {caso.categoria}</li>
+    </ul>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <Frame src={caso.img} label={caso.imgLabel} alt={caso.titulo} ratio="16/9" />
+
+      <div class="cols">
+        <div class="block">
+          <h2 class="t-h3">El desafío</h2>
+          <p class="text-muted">{caso.desafio}</p>
+        </div>
+        <div class="block">
+          <h2 class="t-h3">La solución</h2>
+          <p class="text-muted">{caso.solucion}</p>
+        </div>
+      </div>
+
+      <div class="results">
+        <h2 class="t-h3">Resultados</h2>
+        <p class="t-caption text-muted results__note">
+          Completá con métricas reales en <code>src/data/casos.ts</code>.
+        </p>
+        <div class="results__grid">
+          {
+            caso.resultados.map((r) => (
+              <div class="metric">
+                <span class="metric__v">{r.valor}</span>
+                <span class="metric__l">{r.label}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="gallery">
+        {
+          caso.galeria.map((g) => (
+            <Frame src={g.img} label={g.imgLabel} alt={`${caso.titulo} — foto`} ratio="4/3" />
+          ))
+        }
+      </div>
+
+      <a href="/casos" class="btn btn--outline back">
+        <Icon name="arrow" size={16} class="back__i" />
+        Ver todos los casos
+      </a>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .meta li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--fs-caption);
+    font-weight: var(--w-subheadline);
+    color: var(--azul-pizarra);
+  }
+  .cols {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2.5rem;
+  }
+  .block > p {
+    margin-top: 0.85rem;
+  }
+  .results {
+    margin-top: 3rem;
+  }
+  .results__note {
+    margin-top: 0.35rem;
+  }
+  .results__note code {
+    background: rgba(11, 31, 42, 0.06);
+    padding: 0.1rem 0.35rem;
+    border-radius: 5px;
+    font-size: 0.72rem;
+  }
+  .results__grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .metric {
+    text-align: center;
+    padding: 1.75rem 1rem;
+    border-radius: var(--radius);
+    background: var(--azul-petroleo);
+    color: var(--blanco);
+  }
+  .metric__v {
+    display: block;
+    font-size: clamp(1.8rem, 1rem + 3vw, 2.75rem);
+    font-weight: var(--w-display);
+    color: var(--verde-acento);
+    line-height: 1;
+  }
+  .metric__l {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: var(--fs-caption);
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .gallery {
+    display: grid;
+    gap: 1rem;
+    margin-top: 3rem;
+    grid-template-columns: 1fr;
+  }
+  .back {
+    margin-top: 2.5rem;
+  }
+  .back__i {
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 720px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+    }
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

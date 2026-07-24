@@ -1,0 +1,82 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import { serviciosMeta, servicios } from "../../data/servicios";
+---
+
+<Page title={`Servicios — ${serviciosMeta.titulo}`}>
+  <PageHero
+    eyebrow={serviciosMeta.eyebrow}
+    title={serviciosMeta.titulo}
+    subtitle={serviciosMeta.subtitulo}
+    crumbs={[{ label: "Servicios" }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        {
+          servicios.map((s) => (
+            <a href={`/servicios/${s.slug}`} class="card srv">
+              <span class="srv__icon">
+                <Icon name={s.icon} size={26} />
+              </span>
+              <h2 class="t-h3">{s.titulo}</h2>
+              <p class="text-muted srv__text">{s.resumen}</p>
+              <span class="srv__cta">
+                Ver servicio
+                <Icon name="arrowUpRight" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .srv {
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .srv__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: var(--azul-petroleo);
+    color: var(--verde-acento);
+    margin-bottom: 1.25rem;
+  }
+  .srv__text {
+    margin: 0.5rem 0 1.5rem;
+    flex-grow: 1;
+  }
+  .srv__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+    transition: gap var(--transition);
+  }
+  .srv:hover .srv__cta {
+    gap: 0.7rem;
+  }
+
+  @media (min-width: 720px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

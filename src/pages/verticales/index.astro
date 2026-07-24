@@ -1,0 +1,87 @@
+---
+import Page from "../../layouts/Page.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import { verticalesMeta, verticales } from "../../data/verticales";
+---
+
+<Page title={`Verticales — ${verticalesMeta.titulo}`}>
+  <PageHero
+    eyebrow={verticalesMeta.eyebrow}
+    title={verticalesMeta.titulo}
+    subtitle={verticalesMeta.subtitulo}
+    crumbs={[{ label: "Verticales" }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid">
+        {
+          verticales.map((v) => (
+            <a href={`/verticales/${v.slug}`} class="card vert">
+              <span class="vert__icon">
+                <Icon name={v.icon} size={24} />
+              </span>
+              <h2 class="t-h3">{v.nombre}</h2>
+              <p class="text-muted vert__sum">{v.resumen}</p>
+              <span class="vert__cta">
+                Ver aplicaciones
+                <Icon name="arrowUpRight" size={16} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .vert {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .vert__icon {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+    background: rgba(59, 163, 154, 0.12);
+    color: var(--verde-azulado);
+    margin-bottom: 1rem;
+  }
+  .vert__sum {
+    margin: 0.4rem 0 1.25rem;
+    flex-grow: 1;
+  }
+  .vert__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+    transition: gap var(--transition);
+  }
+  .vert:hover .vert__cta {
+    gap: 0.7rem;
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

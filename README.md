@@ -1,10 +1,35 @@
-# Landing — Pablo Brunet · IA aplicada a negocios
+# Sitio — Pablo Brunet · IA aplicada a negocios
 
-Sitio personal construido con [Astro](https://astro.build). Estático, rápido y
-fácil de editar. Esta es una **versión preliminar (v1)**: las secciones que
-todavía no tienen datos reales (casos, testimonios, blog) están como estructura
+**Sitio multipágina (MPA)** construido con [Astro](https://astro.build):
+estático, muy rápido y con **navegación instantánea** (precarga las páginas al
+pasar el mouse + transiciones sin recargar). Es una **versión preliminar**: las
+secciones sin datos reales (casos, testimonios, blog) están como estructura
 lista para completar, y los espacios de foto se muestran como **marcos vacíos**
 hasta que subas tus imágenes.
+
+## Mapa del sitio (rutas)
+
+```
+/                         Home
+/sobre-mi                 Quién soy (bio, valores, recorrido, credenciales)
+/servicios                Índice de servicios
+/servicios/[slug]         Página de cada servicio
+/casos                    Índice de casos de éxito
+/casos/[slug]             Página de cada caso
+/verticales               IA aplicada por sector
+/verticales/[slug]        Página de cada vertical
+/blog                     Índice del blog
+/blog/[slug]              Cada artículo
+/recursos                 Hub de recursos (blog, newsletter, materiales)
+/newsletter               Suscripción
+/contacto                 Formulario + datos de contacto
+/legal/terminos · /legal/privacidad · /legal/cookies
+404                       Página de error
+```
+
+Los menús **Servicios, Casos, Verticales y Recursos** se despliegan en la barra
+de navegación y se arman solos a partir de los datos: si agregás un servicio o
+caso, aparece en el menú y como página nueva automáticamente.
 
 ## Requisitos
 
@@ -21,14 +46,22 @@ npm run preview  # previsualiza el build de producción
 
 ## Editar el contenido
 
-**Todo el texto, links e imágenes se editan en un solo archivo:**
+El contenido está en `src/data/`, un archivo por dominio. No hace falta tocar
+los componentes ni las páginas:
 
-```
-src/data/site.ts
-```
+| Archivo               | Qué controla                                            |
+|-----------------------|---------------------------------------------------------|
+| `site.ts`             | Datos globales, navegación, redes, hero y secciones del home |
+| `sobreMi.ts`          | Página "Sobre mí" (bio, valores, recorrido, credenciales) |
+| `servicios.ts`        | Servicios (cada uno genera su subpágina)                |
+| `casos.ts`            | Casos de éxito (cada uno genera su subpágina)           |
+| `verticales.ts`       | Sectores / verticales                                   |
+| `blog.ts`             | Artículos del blog                                      |
+| `testimonios.ts`      | Testimonios del home                                    |
+| `recursos.ts`         | Hub de recursos                                         |
 
-Ahí cambiás títulos, servicios, redes sociales, casos, etc. No hace falta tocar
-los componentes.
+**Agregar una página nueva** (ej. un servicio o caso) = duplicar un item en su
+array y cambiarle el `slug`. La ruta, el menú y los enlaces se generan solos.
 
 ## Subir fotos
 
