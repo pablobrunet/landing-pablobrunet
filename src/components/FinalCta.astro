@@ -1,0 +1,75 @@
+---
+import { site } from "../data/site";
+import Icon from "./Icon.astro";
+const { finalCta } = site;
+---
+
+<section class="finalcta section section--dark" id="contacto" aria-label="Contacto">
+  <svg class="finalcta__lines" viewBox="0 0 800 300" fill="none" aria-hidden="true">
+    <path d="M-20 200 C 200 200 240 90 460 90 S 760 40 840 40" />
+    <circle cx="460" cy="90" r="5" />
+  </svg>
+
+  <div class="container finalcta__inner">
+    <h2 class="t-h2 finalcta__title">{finalCta.titulo}</h2>
+    <p class="t-subhead finalcta__sub">{finalCta.subtitulo}</p>
+    <div class="finalcta__actions">
+      <a href={`mailto:${site.email}`} class="btn btn--primary">
+        {finalCta.cta.label}
+        <Icon name="arrow" size={18} />
+      </a>
+      <span class="finalcta__note">
+        <Icon name="clock" size={16} />
+        {finalCta.nota}
+      </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .finalcta {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .finalcta__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    stroke: var(--verde-azulado);
+    stroke-width: 1.5;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+  .finalcta__lines circle {
+    fill: var(--verde-acento);
+  }
+  .finalcta__inner {
+    position: relative;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .finalcta__title {
+    color: var(--blanco);
+  }
+  .finalcta__sub {
+    margin: 1rem auto 2rem;
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 56ch;
+  }
+  .finalcta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .finalcta__note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--fs-caption);
+    color: rgba(255, 255, 255, 0.7);
+  }
+</style>

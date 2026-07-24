@@ -1,0 +1,47 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.nombre} — ${site.tagline}`,
+  description = site.seoDescription,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <!-- Subí una imagen a /public/images/og/og.jpg para las previsualizaciones -->
+    <meta property="og:image" content="/images/og/og.jpg" />
+
+    <!-- Favicon: reemplazá por el definitivo en /public/images/brand/ -->
+    <link rel="icon" type="image/svg+xml" href="/images/brand/favicon.svg" />
+
+    <!-- Tipografía de marca: Google Sans Flex (variable) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

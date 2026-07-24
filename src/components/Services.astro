@@ -1,0 +1,80 @@
+---
+import { site } from "../data/site";
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+const { servicios } = site;
+---
+
+<section class="services section section--tint" id="servicios" aria-label="Servicios">
+  <div class="container">
+    <SectionHeading
+      eyebrow={servicios.eyebrow}
+      title={servicios.titulo}
+      subtitle={servicios.subtitulo}
+      center
+    />
+
+    <div class="services__grid">
+      {
+        servicios.items.map((s) => (
+          <article class="card service">
+            <span class="service__icon">
+              <Icon name={s.icon} size={26} />
+            </span>
+            <h3 class="t-h3">{s.titulo}</h3>
+            <p class="text-muted service__text">{s.texto}</p>
+            <a href="#contacto" class="service__cta">
+              {s.cta}
+              <Icon name="arrowUpRight" size={16} />
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .services__grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .service {
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .service__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: var(--azul-petroleo);
+    color: var(--verde-acento);
+    margin-bottom: 1.25rem;
+  }
+  .service__text {
+    margin: 0.5rem 0 1.5rem;
+    flex-grow: 1;
+  }
+  .service__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+    transition: gap var(--transition);
+  }
+  .service__cta:hover {
+    gap: 0.7rem;
+  }
+
+  @media (min-width: 720px) {
+    .services__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

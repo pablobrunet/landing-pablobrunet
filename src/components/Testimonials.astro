@@ -1,0 +1,76 @@
+---
+import { site } from "../data/site";
+import Frame from "./Frame.astro";
+import SectionHeading from "./SectionHeading.astro";
+const { testimonios } = site;
+---
+
+<section class="testimonials section" aria-label="Testimonios">
+  <div class="container">
+    <SectionHeading
+      eyebrow={testimonios.eyebrow}
+      title={testimonios.titulo}
+      subtitle={testimonios.subtitulo}
+      center
+    />
+
+    <div class="testimonials__track">
+      {
+        testimonios.items.map((t) => (
+          <figure class="card testimonial">
+            <blockquote class="testimonial__quote">{t.texto}</blockquote>
+            <figcaption class="testimonial__author">
+              <span class="testimonial__avatar">
+                <Frame src={t.img} label={t.imgLabel} alt={t.nombre} ratio="1/1" />
+              </span>
+              <span>
+                <strong>{t.nombre}</strong>
+                <span class="t-caption text-muted">{t.cargo}</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials__track {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .testimonial {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .testimonial__quote {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--azul-petroleo);
+    flex-grow: 1;
+  }
+  .testimonial__author {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .testimonial__avatar {
+    display: block;
+    width: 48px;
+    flex-shrink: 0;
+  }
+  .testimonial__author strong {
+    display: block;
+    font-weight: var(--w-headline);
+  }
+
+  @media (min-width: 720px) {
+    .testimonials__track {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

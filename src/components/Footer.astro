@@ -1,0 +1,159 @@
+---
+import { site } from "../data/site";
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+const { footer } = site;
+const year = 2026; // actualizá si corresponde
+---
+
+<footer class="footer" aria-label="Pie de página">
+  <div class="container footer__top">
+    <div class="footer__brand">
+      <Logo light />
+      <p class="footer__mission text-muted">{footer.mision}</p>
+      <ul class="footer__contact">
+        <li>
+          <Icon name="mail" size={16} />
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </li>
+        <li>
+          <Icon name="location" size={16} />
+          <span>{site.ubicacion}</span>
+        </li>
+      </ul>
+      <ul class="footer__social">
+        {
+          site.redes.map((r) => (
+            <li>
+              <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
+                <Icon name={r.icon} size={18} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="footer__cols">
+      {
+        footer.columnas.map((col) => (
+          <nav class="footer__col" aria-label={col.titulo}>
+            <h3 class="footer__col-title">{col.titulo}</h3>
+            <ul>
+              {col.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <p class="t-caption">© {year} {site.nombre}. Todos los derechos reservados.</p>
+    <ul class="footer__legal">
+      {footer.legales.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--azul-petroleo);
+    color: rgba(255, 255, 255, 0.85);
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+  .footer__top {
+    display: grid;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .footer__mission {
+    margin: 1.25rem 0;
+    max-width: 42ch;
+  }
+  .footer__contact {
+    display: grid;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .footer__contact li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .footer__contact a:hover {
+    color: var(--verde-acento);
+  }
+  .footer__social {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .footer__social a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--blanco);
+    transition: background var(--transition), color var(--transition);
+  }
+  .footer__social a:hover {
+    background: var(--verde-acento);
+    color: var(--azul-petroleo);
+  }
+  .footer__cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .footer__col-title {
+    font-weight: var(--w-headline);
+    color: var(--blanco);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  .footer__col ul {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .footer__col a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: color var(--transition);
+  }
+  .footer__col a:hover {
+    color: var(--verde-acento);
+  }
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  .footer__legal a:hover {
+    color: var(--verde-acento);
+  }
+
+  @media (min-width: 720px) {
+    .footer__top {
+      grid-template-columns: 1.4fr 1fr;
+    }
+    .footer__bottom {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+</style>

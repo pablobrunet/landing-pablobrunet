@@ -1,0 +1,29 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  center?: boolean;
+}
+const { eyebrow, title, subtitle, center = false } = Astro.props;
+---
+
+<header class:list={["sec-head", { "sec-head--center": center }]}>
+  {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+  <h2 class="t-h2">{title}</h2>
+  {subtitle && <p class="t-subhead text-muted sec-head__sub">{subtitle}</p>}
+</header>
+
+<style>
+  .sec-head {
+    max-width: 720px;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .sec-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .sec-head__sub {
+    margin-top: 0.75rem;
+  }
+</style>

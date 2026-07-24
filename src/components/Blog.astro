@@ -1,0 +1,88 @@
+---
+import { site } from "../data/site";
+import Frame from "./Frame.astro";
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+const { blog } = site;
+---
+
+<section class="blog section section--tint" id="recursos" aria-label="Blog">
+  <div class="container">
+    <SectionHeading
+      eyebrow={blog.eyebrow}
+      title={blog.titulo}
+      subtitle={blog.subtitulo}
+    />
+
+    <div class="blog__grid">
+      {
+        blog.items.map((p) => (
+          <a href={p.href} class="card post">
+            <Frame src={p.img} label={p.imgLabel} alt={p.titulo} ratio="16/9" rounded={false} />
+            <div class="post__body">
+              <span class="post__cat">{p.categoria}</span>
+              <h3 class="t-h3">{p.titulo}</h3>
+              <p class="text-muted post__excerpt">{p.resumen}</p>
+              <span class="post__cta">
+                Leer artículo
+                <Icon name="arrowUpRight" size={15} />
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="blog__more">
+      <a href={blog.verMas.href} class="btn btn--outline">{blog.verMas.label}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .blog__grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .post {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .post__body {
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .post__cat {
+    font-size: var(--fs-caption);
+    font-weight: var(--w-subheadline);
+    color: var(--verde-azulado);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .post__excerpt {
+    margin: 0.4rem 0 1rem;
+    flex-grow: 1;
+  }
+  .post__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+  }
+  .blog__more {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  @media (min-width: 720px) {
+    .blog__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

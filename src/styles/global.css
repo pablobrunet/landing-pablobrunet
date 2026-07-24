@@ -1,0 +1,231 @@
+/* =====================================================================
+   Estilos globales — Pablo Brunet
+   Tipografía base: Google Sans Flex (cargada en Base.astro vía Google Fonts).
+   ===================================================================== */
+
+@import "./tokens.css";
+
+/* ---- Reset ligero ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-base);
+  font-weight: var(--w-body);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--texto);
+  background: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+/* ---- Jerarquías tipográficas (brand board) ---- */
+.t-display {
+  font-size: var(--fs-display);
+  font-weight: var(--w-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.t-h1 {
+  font-size: var(--fs-h1);
+  font-weight: var(--w-display);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+.t-h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--w-headline);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.t-h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--w-headline);
+  line-height: 1.25;
+}
+.t-subhead {
+  font-size: var(--fs-subhead);
+  font-weight: var(--w-subheadline);
+  line-height: 1.4;
+}
+.t-body {
+  font-size: var(--fs-body);
+  font-weight: var(--w-body);
+}
+.t-caption {
+  font-size: var(--fs-caption);
+  font-weight: var(--w-caption);
+  letter-spacing: 0.02em;
+}
+
+.accent {
+  color: var(--verde-acento);
+}
+
+/* ---- Layout ---- */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+.section--tint {
+  background: var(--gris-claro);
+}
+.section--dark {
+  background: var(--azul-petroleo);
+  color: var(--blanco);
+}
+
+/* Etiqueta pequeña sobre los títulos de sección ("Portfolio · Casos") */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--fs-caption);
+  font-weight: var(--w-subheadline);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--verde-azulado);
+  margin-bottom: 0.75rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: var(--verde-acento);
+  border-radius: 2px;
+}
+
+/* ---- Botones ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: var(--w-subheadline);
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition), background var(--transition),
+    box-shadow var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn--primary {
+  background: var(--verde-acento);
+  color: var(--azul-petroleo);
+  box-shadow: 0 8px 20px rgba(0, 191, 114, 0.28);
+}
+.btn--primary:hover {
+  background: var(--verde-acento-oscuro);
+}
+.btn--outline {
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--blanco);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ---- Badge / píldora ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--fs-caption);
+  font-weight: var(--w-subheadline);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 191, 114, 0.12);
+  color: var(--verde-acento-oscuro);
+  border: 1px solid rgba(0, 191, 114, 0.3);
+}
+.section--dark .badge {
+  background: rgba(0, 191, 114, 0.16);
+  color: #4fe0a4;
+}
+
+/* ---- Tarjetas ---- */
+.card {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+/* ---- Utilidades ---- */
+.text-muted {
+  color: var(--texto-suave);
+}
+.section--dark .text-muted {
+  color: rgba(255, 255, 255, 0.7);
+}
+.center {
+  text-align: center;
+}
+.stack > * + * {
+  margin-top: 1rem;
+}
+
+/* Foco accesible */
+:focus-visible {
+  outline: 3px solid var(--verde-acento);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
