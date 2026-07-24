@@ -1,0 +1,161 @@
+---
+import Frame from "./Frame.astro";
+import type { Comentario } from "../data/testimonios";
+
+interface Props {
+  comentarios: Comentario[];
+  imagenes: string[]; // rutas esperadas para las fotos intercaladas
+}
+const { comentarios, imagenes } = Astro.props;
+
+type Item =
+  | { tipo: "cita"; data: Comentario }
+  | { tipo: "imagen"; label: string };
+
+// Intercala una foto cada 3 comentarios
+const mixed: Item[] = [];
+let imgIdx = 0;
+comentarios.forEach((c, i) => {
+  mixed.push({ tipo: "cita", data: c });
+  if ((i + 1) % 3 === 0 && imgIdx < imagenes.length) {
+    mixed.push({ tipo: "imagen", label: imagenes[imgIdx++] });
+  }
+});
+while (imgIdx < imagenes.length) mixed.push({ tipo: "imagen", label: imagenes[imgIdx++] });
+
+const half = Math.ceil(mixed.length / 2);
+const filaSuperior = mixed.slice(0, half);
+const filaInferior = mixed.slice(half);
+
+const filas = [
+  { items: filaSuperior, reverse: false },
+  { items: filaInferior, reverse: true },
+];
+---
+
+<div class="wall" aria-label="Testimonios">
+  {
+    filas.map((fila) => (
+      <div class:list={["wall__row", { "wall__row--rev": fila.reverse }]}>
+        <div class="wall__track">
+          {/* Se duplica la secuencia para lograr el loop infinito */}
+          {[...fila.items, ...fila.items].map((item, idx) => (
+            <div class="wall__cell" aria-hidden={idx >= fila.items.length ? "true" : undefined}>
+              {item.tipo === "imagen" ? (
+                <div class="wall__img">
+                  <Frame src="" label={item.label} alt="Foto" ratio="4/3" />
+                </div>
+              ) : (
+                <figure class="wall__card">
+                  <div class="wall__stars" aria-hidden="true">
+                    {[0, 1, 2, 3, 4].map(() => (
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                        <path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.6L12 17.9 5.9 20.8l1.3-6.6L2.3 9.6 8.9 8.8z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <blockquote class="wall__quote">“{item.data.texto}”</blockquote>
+                  <figcaption class="wall__author">
+                    <strong>{item.data.nombre}</strong>
+                    <span class="wall__role">{item.data.rol}</span>
+                  </figcaption>
+                </figure>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .wall {
+    display: grid;
+    gap: 1.25rem;
+    /* difumina los bordes para el efecto "sale/entra" */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .wall__row {
+    overflow: hidden;
+  }
+  .wall__track {
+    display: flex;
+    gap: 1.25rem;
+    width: max-content;
+    animation: wall-scroll 55s linear infinite;
+  }
+  .wall__row--rev .wall__track {
+    animation-direction: reverse;
+  }
+  .wall:hover .wall__track {
+    animation-play-state: paused;
+  }
+  @keyframes wall-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* -50% porque el contenido está duplicado → loop sin costura */
+      transform: translateX(-50%);
+    }
+  }
+
+  .wall__cell {
+    flex: 0 0 auto;
+  }
+  .wall__card {
+    width: 330px;
+    max-width: 78vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem 1.6rem;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+  .wall__stars {
+    color: var(--verde-acento);
+    display: inline-flex;
+    gap: 2px;
+  }
+  .wall__quote {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--azul-petroleo);
+    flex-grow: 1;
+  }
+  .wall__author {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+  }
+  .wall__author strong {
+    font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
+  }
+  .wall__role {
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+  }
+  .wall__img {
+    width: 300px;
+    max-width: 72vw;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wall__track {
+      animation: none;
+      /* permite ver/scrollear los testimonios sin movimiento */
+      overflow-x: auto;
+    }
+    .wall {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+</style>

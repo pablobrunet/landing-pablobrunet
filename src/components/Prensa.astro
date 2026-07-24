@@ -1,0 +1,115 @@
+---
+import Icon from "./Icon.astro";
+import { prensaMeta, notas } from "../data/prensa";
+---
+
+<div class="prensa">
+  <header class="prensa__head">
+    <span class="eyebrow">{prensaMeta.eyebrow}</span>
+    <h2 class="t-h2">{prensaMeta.titulo}</h2>
+    <p class="t-subhead text-muted">{prensaMeta.subtitulo}</p>
+  </header>
+
+  <div class="prensa__grid">
+    {
+      notas.map((n) => (
+        <a href={n.url} class="prensa__card" target="_blank" rel="noopener">
+          <div class="prensa__logo">
+            {n.logo ? (
+              <img src={n.logo} alt={n.medio} loading="lazy" />
+            ) : (
+              <span class="prensa__medio">{n.medio}</span>
+            )}
+          </div>
+          <blockquote class="prensa__cita">“{n.cita}”</blockquote>
+          <h3 class="prensa__titulo">{n.titulo}</h3>
+          <footer class="prensa__foot">
+            <span class="t-caption text-muted">{n.fecha}</span>
+            <span class="prensa__leer">
+              Leer nota
+              <Icon name="arrowUpRight" size={14} />
+            </span>
+          </footer>
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .prensa__head {
+    max-width: 620px;
+    margin-bottom: 2rem;
+  }
+  .prensa__head .t-subhead {
+    margin-top: 0.75rem;
+  }
+  .prensa__grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .prensa__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.6rem;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .prensa__card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+  }
+  .prensa__logo {
+    height: 34px;
+    display: flex;
+    align-items: center;
+  }
+  .prensa__logo img {
+    max-height: 34px;
+    width: auto;
+  }
+  .prensa__medio {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    color: var(--azul-pizarra);
+    font-size: 1.05rem;
+  }
+  .prensa__cita {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--azul-petroleo);
+    flex-grow: 1;
+  }
+  .prensa__titulo {
+    font-family: var(--font-title);
+    font-size: 0.95rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-pizarra);
+  }
+  .prensa__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--borde);
+  }
+  .prensa__leer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-acento-oscuro);
+  }
+
+  @media (min-width: 720px) {
+    .prensa__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
