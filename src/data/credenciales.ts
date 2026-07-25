@@ -35,9 +35,9 @@ export const credencialesMeta = {
 // COMPLETAR: reemplazá estas entidades y tarjetas por las reales.
 export const credenciales: EntidadCred[] = [
   {
-    entidad: "Entidad emisora 1",
-    badge: "",
-    badgeLabel: "/images/credenciales/entidad-01.svg",
+    entidad: "OpenAI",
+    badge: "/images/credenciales/openai-partner-network.png",
+    badgeLabel: "/images/credenciales/openai-partner-network.png",
     certificaciones: [
       { titulo: "Título de la certificación", fecha: "COMPLETAR", id: "COMPLETAR", url: "#" },
       { titulo: "Título de la certificación", fecha: "COMPLETAR", id: "COMPLETAR", url: "#" },

@@ -56,10 +56,14 @@ export const comentariosDemo: Comentario[] = [
   { texto: "Nos abrió la cabeza sobre lo que la IA puede hacer hoy por un negocio como el nuestro.", nombre: "Ramiro Castro", rol: "Dueño de pyme" },
 ];
 
-// Espacios para fotos intercaladas en el muro. Subí las imágenes a estas rutas.
-export const imagenesMuro: string[] = [
-  "/images/testimonials/muro-01.jpg",
-  "/images/testimonials/muro-02.jpg",
-  "/images/testimonials/muro-03.jpg",
-  "/images/testimonials/muro-04.jpg",
+// Fotos intercaladas en el muro. Si `img` está vacío se muestra el marco.
+export interface ImagenMuro {
+  img: string;
+  imgLabel: string;
+}
+export const imagenesMuro: ImagenMuro[] = [
+  { img: "/images/testimonials/muro-01.jpg", imgLabel: "/images/testimonials/muro-01.jpg" },
+  { img: "/images/testimonials/muro-02.jpg", imgLabel: "/images/testimonials/muro-02.jpg" },
+  { img: "/images/testimonials/muro-03.jpg", imgLabel: "/images/testimonials/muro-03.jpg" },
+  { img: "/images/testimonials/muro-04.jpg", imgLabel: "/images/testimonials/muro-04.jpg" },
 ];

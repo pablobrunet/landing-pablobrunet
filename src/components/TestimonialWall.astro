@@ -2,15 +2,19 @@
 import Frame from "./Frame.astro";
 import type { Comentario } from "../data/testimonios";
 
+interface ImagenMuro {
+  img: string;
+  imgLabel: string;
+}
 interface Props {
   comentarios: Comentario[];
-  imagenes: string[]; // rutas esperadas para las fotos intercaladas
+  imagenes: ImagenMuro[]; // fotos intercaladas
 }
 const { comentarios, imagenes } = Astro.props;
 
 type Item =
   | { tipo: "cita"; data: Comentario }
-  | { tipo: "imagen"; label: string };
+  | { tipo: "imagen"; img: string; label: string };
 
 // Intercala una foto cada 3 comentarios
 const mixed: Item[] = [];
@@ -18,10 +22,14 @@ let imgIdx = 0;
 comentarios.forEach((c, i) => {
   mixed.push({ tipo: "cita", data: c });
   if ((i + 1) % 3 === 0 && imgIdx < imagenes.length) {
-    mixed.push({ tipo: "imagen", label: imagenes[imgIdx++] });
+    mixed.push({ tipo: "imagen", img: imagenes[imgIdx].img, label: imagenes[imgIdx].imgLabel });
+    imgIdx++;
   }
 });
-while (imgIdx < imagenes.length) mixed.push({ tipo: "imagen", label: imagenes[imgIdx++] });
+while (imgIdx < imagenes.length) {
+  mixed.push({ tipo: "imagen", img: imagenes[imgIdx].img, label: imagenes[imgIdx].imgLabel });
+  imgIdx++;
+}
 
 const half = Math.ceil(mixed.length / 2);
 const filaSuperior = mixed.slice(0, half);
@@ -43,7 +51,7 @@ const filas = [
             <div class="wall__cell" aria-hidden={idx >= fila.items.length ? "true" : undefined}>
               {item.tipo === "imagen" ? (
                 <div class="wall__img">
-                  <Frame src="" label={item.label} alt="Foto" ratio="4/3" />
+                  <Frame src={item.img} label={item.label} alt="Foto de evento" ratio="4/3" />
                 </div>
               ) : (
                 <figure class="wall__card">

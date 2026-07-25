@@ -27,8 +27,8 @@ const { blocks } = Astro.props;
 <style>
   .prose {
     max-width: 68ch;
-    font-size: 1.05rem;
-    line-height: 1.7;
+    font-size: var(--fs-body); /* 16px */
+    line-height: var(--lh-body); /* 26px */
     color: var(--azul-pizarra);
   }
   .prose > * + * {

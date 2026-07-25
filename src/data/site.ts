@@ -51,7 +51,7 @@ export const site = {
       { label: "Agendar diagnóstico", href: "/contacto", primary: true },
       { label: "Sobre mí", href: "/sobre-mi", primary: false },
     ],
-    img: "",
+    img: "/images/hero/retrato.png",
     imgLabel: "/images/hero/retrato.jpg",
   },
 
@@ -80,11 +80,11 @@ export const site = {
       "COMPLETAR: contá acá tu experiencia dando charlas, talleres y formaciones. Este texto es un placeholder.",
     cta: { label: "Quiero una charla", href: "/contacto" },
     fotos: [
-      { img: "", imgLabel: "/images/speaker/evento-01.jpg" },
-      { img: "", imgLabel: "/images/speaker/evento-02.jpg" },
-      { img: "", imgLabel: "/images/speaker/evento-03.jpg" },
-      { img: "", imgLabel: "/images/speaker/evento-04.jpg" },
-      { img: "", imgLabel: "/images/speaker/evento-05.jpg" },
+      { img: "/images/speaker/evento-01.jpg", imgLabel: "/images/speaker/evento-01.jpg" },
+      { img: "/images/speaker/evento-02.jpg", imgLabel: "/images/speaker/evento-02.jpg" },
+      { img: "/images/speaker/evento-03.jpg", imgLabel: "/images/speaker/evento-03.jpg" },
+      { img: "/images/speaker/evento-04.jpg", imgLabel: "/images/speaker/evento-04.jpg" },
+      { img: "/images/speaker/evento-05.jpg", imgLabel: "/images/speaker/evento-05.jpg" },
     ],
   },
 

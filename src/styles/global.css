@@ -23,7 +23,7 @@ body {
   font-family: var(--font-base);
   font-weight: var(--w-body);
   font-size: var(--fs-body);
-  line-height: 1.6;
+  line-height: var(--lh-body);
   color: var(--texto);
   background: var(--blanco);
   -webkit-font-smoothing: antialiased;
@@ -77,8 +77,8 @@ ul {
 }
 .t-subhead {
   font-size: var(--fs-subhead);
-  font-weight: var(--w-subheadline);
-  line-height: 1.4;
+  font-weight: var(--w-body); /* 400 regular — texto no jerarquizado */
+  line-height: var(--lh-body); /* 26px sobre 16px */
 }
 .t-body {
   font-size: var(--fs-body);

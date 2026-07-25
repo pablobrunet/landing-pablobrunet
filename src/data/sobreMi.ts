@@ -8,7 +8,7 @@ export const sobreMi = {
   titulo: "Una identidad que transmite confianza, claridad y visión en movimiento.",
   parrafo:
     "La IA no es solo tecnología: es una herramienta estratégica para transformar y hacer crecer negocios. Trabajo cerca del equipo, con foco en datos y orientado a resultados medibles.",
-  img: "",
+  img: "/images/hero/retrato.png",
   imgLabel: "/images/about/retrato.jpg",
 
   // Pilares del brand board (verificable)
@@ -42,8 +42,8 @@ export const sobreMi = {
       { periodo: "COMPLETAR", titulo: "Hito o rol", texto: "Descripción breve." },
     ],
     galeria: [
-      { img: "", imgLabel: "/images/about/foto-01.jpg" },
-      { img: "", imgLabel: "/images/about/foto-02.jpg" },
+      { img: "/images/about/foto-01.jpg", imgLabel: "/images/about/foto-01.jpg" },
+      { img: "/images/about/foto-02.jpg", imgLabel: "/images/about/foto-02.jpg" },
     ],
   },
 };
