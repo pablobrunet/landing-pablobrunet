@@ -10,8 +10,6 @@ interface ImportMetaEnv {
   readonly PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
   /** Clave anterior (eyJhbGci…). Solo como respaldo; se da de baja en 2026. */
   readonly PUBLIC_SUPABASE_ANON_KEY?: string;
-  /** Tabla donde se guardan los correos. Por defecto, `leads`. */
-  readonly PUBLIC_SUPABASE_TABLA: string;
 }
 
 interface ImportMeta {

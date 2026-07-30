@@ -8,7 +8,8 @@
 
    Cada fila es un PEDIDO, no una persona: la tabla es única por
    (email, origen), así que alguien suscripto al newsletter puede pedir las
-   guías más adelante y queda registrado como un pedido aparte.
+   guías más adelante y queda registrado como un pedido aparte. Y si repite
+   un pedido, se cuenta en lugar de perderse.
 
    Las credenciales salen de variables de entorno, NO del código:
    así no viajan al repositorio y Vercel las inyecta en el build.
@@ -40,11 +41,12 @@ const clave =
   import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
   import.meta.env.PUBLIC_SUPABASE_ANON_KEY ?? // respaldo: clave anterior
   "";
-const tabla = import.meta.env.PUBLIC_SUPABASE_TABLA ?? "leads";
 
 export const leads = {
-  /** URL completa del endpoint REST. Vacía si falta configurar el entorno. */
-  endpoint: url ? `${url}/rest/v1/${tabla}` : "",
+  /* Apunta a la función `registrar_lead`, no a la tabla: la clave pública
+     no tiene permiso de escritura sobre `leads`, solo de ejecutar esa
+     función. Ver supabase/migracion-02-funcion-registrar-lead.sql. */
+  endpoint: url ? `${url}/rest/v1/rpc/registrar_lead` : "",
   /** Publishable key. Viaja en el header `apikey`, nunca en Authorization. */
   clave,
   /** ¿Está listo para recibir correos? */
