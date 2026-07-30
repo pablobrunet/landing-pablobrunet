@@ -44,7 +44,16 @@ export interface Servicio {
     eyebrow: string;
     titulo: string;
     texto?: string;
-    fotos: { img: string; imgLabel: string; alt?: string }[];
+    /* `titulo` (el lugar) y `subtitulo` (el tema) se dibujan sobre la foto,
+       abajo a la izquierda. Sin `titulo` la foto va limpia. */
+    fotos: {
+      img: string;
+      imgLabel: string;
+      alt?: string;
+      titulo?: string;
+      subtitulo?: string;
+      pos?: string; // encuadre, si el recorte centrado no sirve
+    }[];
   };
 }
 
@@ -102,14 +111,81 @@ export const servicios: Servicio[] = [
     mostrarCharlas: true,
     galeria: {
       eyebrow: "Capacitaciones",
-      titulo: "Cómo se ve una capacitación",
+      titulo: "Dónde vengo capacitando",
       texto:
-        "Talleres en los que el equipo trabaja sobre sus propias tareas, no sobre casos de laboratorio.",
-      /* PARA CARGAR LAS FOTOS: copialas en /public/images/capacitaciones/
-         (ver el README de esa carpeta) y sumá una línea por cada una.
-         Mientras esté vacío, la sección no se dibuja. */
+        "Cámaras, parques industriales, municipios y espacios de emprendedores. Talleres en los que el equipo trabaja sobre sus propias tareas, no sobre casos de laboratorio.",
+      /* PARA SUMAR UNA CAPACITACIÓN: copiá la foto en
+         /public/images/capacitaciones/ (ver el README de esa carpeta) y
+         agregá una línea acá. `titulo` es el lugar y `subtitulo` el tema:
+         se dibujan sobre la foto, abajo a la izquierda.
+         Mientras el array esté vacío, la sección no se dibuja. */
       fotos: [
-        // { img: "/images/capacitaciones/capacitacion-01.jpg", imgLabel: "/images/capacitaciones/capacitacion-01.jpg", alt: "Capacitación en IA aplicada" },
+        {
+          img: "/images/capacitaciones/venado-tuerto.jpg",
+          imgLabel: "/images/capacitaciones/venado-tuerto.jpg",
+          titulo: "Venado Tuerto",
+          subtitulo: "Capacitación a empresas, comercios y emprendedores",
+          alt: "Capacitación a empresas, comercios y emprendedores en Venado Tuerto",
+        },
+        {
+          img: "/images/capacitaciones/cefose-galvez.jpg",
+          imgLabel: "/images/capacitaciones/cefose-galvez.jpg",
+          titulo: "CeFoSe Gálvez",
+          subtitulo: "IA y Ventas para empresas",
+          alt: "Capacitación de IA y Ventas en el CeFoSe de Gálvez",
+        },
+        {
+          img: "/images/capacitaciones/parque-industrial-sauce-viejo.jpg",
+          imgLabel: "/images/capacitaciones/parque-industrial-sauce-viejo.jpg",
+          titulo: "Parque Industrial Sauce Viejo",
+          subtitulo: "IA y Ventas para empresas",
+          alt: "Capacitación de IA y Ventas en el Parque Industrial Sauce Viejo",
+          /* Es la única vertical: centrada, el 4:3 se come la pantalla. Al 40%
+             entran la pantalla, el disertante y las primeras filas. */
+          pos: "center 40%",
+        },
+        {
+          img: "/images/capacitaciones/uisf.jpg",
+          imgLabel: "/images/capacitaciones/uisf.jpg",
+          titulo: "UISF",
+          subtitulo: "IA y Ventas para empresas",
+          alt: "Capacitación de IA y Ventas en la Unión Industrial de Santa Fe",
+        },
+        {
+          img: "/images/capacitaciones/camara-estaciones-de-servicio.jpg",
+          imgLabel: "/images/capacitaciones/camara-estaciones-de-servicio.jpg",
+          titulo: "Cámara de Estaciones de Servicio",
+          subtitulo: "Talleres de IA aplicada",
+          alt: "Taller de IA aplicada en la Cámara de Estaciones de Servicio",
+        },
+        {
+          img: "/images/capacitaciones/club-pyxo.jpg",
+          imgLabel: "/images/capacitaciones/club-pyxo.jpg",
+          titulo: "Club Pyxo",
+          subtitulo: "Talleres de IA aplicada",
+          alt: "Taller de IA aplicada en el Club Pyxo",
+        },
+        {
+          img: "/images/capacitaciones/capital-activa.jpg",
+          imgLabel: "/images/capacitaciones/capital-activa.jpg",
+          titulo: "Capital Activa",
+          subtitulo: "Talleres de Automatizaciones Inteligentes",
+          alt: "Taller de Automatizaciones Inteligentes en Capital Activa",
+        },
+        {
+          img: "/images/capacitaciones/ceca.jpg",
+          imgLabel: "/images/capacitaciones/ceca.jpg",
+          titulo: "CECA",
+          subtitulo: "Taller de IA aplicada",
+          alt: "Taller de IA aplicada en CECA",
+        },
+        {
+          img: "/images/capacitaciones/espacio-demos.jpg",
+          imgLabel: "/images/capacitaciones/espacio-demos.jpg",
+          titulo: "Espacio DEMOS",
+          subtitulo: "Taller de Agentes de IA",
+          alt: "Taller de Agentes de IA en Espacio DEMOS",
+        },
       ],
     },
   },
