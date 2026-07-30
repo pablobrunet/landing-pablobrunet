@@ -1,28 +1,30 @@
 ---
 import Breadcrumbs from "./Breadcrumbs.astro";
+import { resaltar, sinMarcas } from "../lib/texto";
 interface Crumb {
   label: string;
   href?: string;
 }
 interface Props {
   eyebrow?: string;
-  title: string;
+  title: string; // admite *fragmento resaltado*
   subtitle?: string;
   crumbs?: Crumb[];
 }
 const { eyebrow, title, subtitle, crumbs = [] } = Astro.props;
+const migas = crumbs.map((c) => ({ ...c, label: sinMarcas(c.label) }));
 ---
 
 <section class="pagehero">
+  <span class="pagehero__trama trama" aria-hidden="true"></span>
   <svg class="pagehero__lines" viewBox="0 0 800 260" fill="none" aria-hidden="true">
-    <path d="M-20 180 C 200 180 240 70 460 70 S 760 30 840 30" />
-    <path d="M-20 230 C 240 230 280 130 500 130 S 780 90 860 90" />
-    <circle cx="460" cy="70" r="5" />
+    <path d="M-20 205 C 220 205 265 105 490 105 S 780 60 860 60" />
+    <circle cx="490" cy="105" r="4" />
   </svg>
   <div class="container pagehero__inner">
-    {crumbs.length > 0 && <Breadcrumbs items={crumbs} />}
+    {migas.length > 0 && <Breadcrumbs items={migas} />}
     {eyebrow && <span class="eyebrow pagehero__eyebrow">{eyebrow}</span>}
-    <h1 class="t-h1">{title}</h1>
+    <h1 class="t-h1" set:html={resaltar(title)} />
     {subtitle && <p class="t-subhead text-muted pagehero__sub">{subtitle}</p>}
     <slot />
   </div>
@@ -38,14 +40,24 @@ const { eyebrow, title, subtitle, crumbs = [] } = Astro.props;
       var(--gris-claro);
     border-bottom: 1px solid var(--borde);
   }
+  .pagehero__trama {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(34%, 380px);
+    height: 100%;
+    opacity: 0.45;
+    -webkit-mask-image: linear-gradient(215deg, #000, transparent 62%);
+    mask-image: linear-gradient(215deg, #000, transparent 62%);
+  }
   .pagehero__lines {
     position: absolute;
     inset: 0 0 0 auto;
     width: min(65%, 760px);
     height: 100%;
     stroke: var(--verde-azulado);
-    stroke-width: 1.5;
-    opacity: 0.35;
+    stroke-width: 1;
+    opacity: 0.3;
     pointer-events: none;
   }
   .pagehero__lines circle {

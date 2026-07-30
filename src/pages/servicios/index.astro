@@ -2,10 +2,12 @@
 import Page from "../../layouts/Page.astro";
 import PageHero from "../../components/PageHero.astro";
 import Icon from "../../components/Icon.astro";
-import { serviciosMeta, servicios } from "../../data/servicios";
+import Frame from "../../components/Frame.astro";
+import { serviciosMeta, servicios, hrefServicio } from "../../data/servicios";
+import { sinMarcas } from "../../lib/texto";
 ---
 
-<Page title={`Servicios — ${serviciosMeta.titulo}`}>
+<Page title={`Servicios — ${sinMarcas(serviciosMeta.titulo)}`}>
   <PageHero
     eyebrow={serviciosMeta.eyebrow}
     title={serviciosMeta.titulo}
@@ -18,16 +20,32 @@ import { serviciosMeta, servicios } from "../../data/servicios";
       <div class="grid">
         {
           servicios.map((s) => (
-            <a href={`/servicios/${s.slug}`} class="card srv">
-              <span class="srv__icon">
-                <Icon name={s.icon} size={26} />
-              </span>
-              <h2 class="t-h3">{s.titulo}</h2>
-              <p class="text-muted srv__text">{s.resumen}</p>
-              <span class="srv__cta">
-                Ver servicio
-                <Icon name="arrowUpRight" size={16} />
-              </span>
+            <a
+              href={hrefServicio(s)}
+              class="card srv"
+              target={s.externo ? "_blank" : undefined}
+              rel={s.externo ? "noopener" : undefined}
+            >
+              {s.imgTarjeta && (
+                <Frame
+                  src={s.imgTarjeta}
+                  alt={s.titulo}
+                  ratio="16/10"
+                  pos={s.imgTarjetaPos}
+                  rounded={false}
+                />
+              )}
+              <div class="srv__body">
+                <span class="srv__icon">
+                  <Icon name={s.icon} size={26} />
+                </span>
+                <h2 class="t-h3">{s.titulo}</h2>
+                <p class="text-muted srv__text">{s.resumen}</p>
+                <span class="srv__cta">
+                  {s.externo ? "Ir a innerflowai.com" : "Ver servicio"}
+                  <Icon name="arrowUpRight" size={16} />
+                </span>
+              </div>
             </a>
           ))
         }
@@ -43,20 +61,26 @@ import { serviciosMeta, servicios } from "../../data/servicios";
     grid-template-columns: 1fr;
   }
   .srv {
-    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .srv__body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 1.75rem;
+    flex-grow: 1;
   }
   .srv__icon {
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     background: var(--azul-petroleo);
     color: var(--verde-acento);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.1rem;
   }
   .srv__text {
     margin: 0.5rem 0 1.5rem;
@@ -67,7 +91,7 @@ import { serviciosMeta, servicios } from "../../data/servicios";
     align-items: center;
     gap: 0.4rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     transition: gap var(--transition);
   }
   .srv:hover .srv__cta {
@@ -77,6 +101,11 @@ import { serviciosMeta, servicios } from "../../data/servicios";
   @media (min-width: 720px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 980px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>

@@ -1,6 +1,7 @@
 ---
 import { site } from "../data/site";
 import Icon from "./Icon.astro";
+import { sinMarcas } from "../lib/texto";
 interface Props {
   title?: string;
   subtitle?: string;
@@ -21,18 +22,22 @@ const {
     <circle cx="460" cy="90" r="5" />
   </svg>
   <div class="container cta__inner">
-    <h2 class="t-h2 cta__title">{title}</h2>
+    <h2 class="t-h2 cta__title">{sinMarcas(title)}</h2>
     <p class="t-subhead cta__sub">{subtitle}</p>
     <div class="cta__actions">
       <a href={ctaHref} class="btn btn--primary">
         {ctaLabel}
         <Icon name="arrow" size={18} />
       </a>
-      <span class="cta__note">
-        <Icon name="clock" size={16} />
-        {site.finalCta.nota}
-      </span>
+      <a href={`mailto:${site.email}`} class="btn btn--ghost">
+        <Icon name="mail" size={18} />
+        {site.email}
+      </a>
     </div>
+    <p class="cta__note">
+      <Icon name="clock" size={16} />
+      {site.finalCta.nota}
+    </p>
   </div>
 </section>
 
@@ -78,7 +83,10 @@ const {
   .cta__note {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.4rem;
+    margin-top: 1.25rem;
+    width: 100%;
     font-size: var(--fs-caption);
     color: rgba(255, 255, 255, 0.7);
   }

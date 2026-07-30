@@ -1,0 +1,162 @@
+---
+/* =====================================================================
+   CARRUSEL DE FOTOS NAVEGABLE
+   ---------------------------------------------------------------------
+   Tres visibles por fila en escritorio; se recorre con las flechas, con
+   el dedo o con la rueda horizontal. Al llegar a un extremo da la vuelta,
+   así nunca queda trabado.
+   Usa scroll nativo con `scroll-snap`, no un carrusel a fuerza de JS:
+   funciona con teclado, con lector de pantalla y sin JavaScript.
+   ===================================================================== */
+import Frame from "./Frame.astro";
+import Icon from "./Icon.astro";
+
+interface Foto {
+  img: string;
+  imgLabel?: string;
+  alt?: string; // no se muestra: solo lectores de pantalla y buscadores
+}
+interface Props {
+  fotos: Foto[];
+  ratio?: string;
+  etiqueta: string; // para el aria-label del carrusel
+}
+const { fotos, ratio = "4/3", etiqueta } = Astro.props;
+---
+
+<div class="car" data-carrusel>
+  <div
+    class="car__pista"
+    data-pista
+    role="group"
+    aria-label={etiqueta}
+    tabindex="0"
+  >
+    {
+      fotos.map((f) => (
+        <div class="car__item">
+          <Frame src={f.img} label={f.imgLabel} alt={f.alt ?? ""} ratio={ratio} />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="car__nav">
+    <button class="car__btn" type="button" data-prev aria-label="Fotos anteriores">
+      <Icon name="chevron" size={20} />
+    </button>
+    <button class="car__btn" type="button" data-next aria-label="Fotos siguientes">
+      <Icon name="chevron" size={20} />
+    </button>
+  </div>
+</div>
+
+<style>
+  .car {
+    position: relative;
+  }
+  .car__pista {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 2 * 1rem) / 1.15);
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    /* espacio para que la sombra de las tarjetas no se corte */
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+  }
+  .car__pista::-webkit-scrollbar {
+    display: none;
+  }
+  .car__item {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  /* ---- Flechas ---- */
+  .car__nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .car__btn {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    color: var(--azul-petroleo);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition),
+      border-color var(--transition);
+  }
+  .car__btn:hover {
+    background: var(--verde-acento);
+    border-color: var(--verde-acento);
+    color: var(--azul-petroleo);
+  }
+  /* El ícono es un chevron hacia abajo: se gira para cada lado. */
+  .car__btn[data-prev] :global(svg) {
+    transform: rotate(90deg);
+  }
+  .car__btn[data-next] :global(svg) {
+    transform: rotate(-90deg);
+  }
+
+  /* Los divisores no son enteros a propósito: dejan asomar un pedazo de la
+     foto siguiente, que es la señal de que el carrusel sigue hacia la
+     derecha. Con 3 justas parece que no hay nada más. */
+  @media (min-width: 640px) {
+    .car__pista {
+      grid-auto-columns: calc((100% - 2rem) / 2.2);
+    }
+  }
+  @media (min-width: 900px) {
+    .car__pista {
+      grid-auto-columns: calc((100% - 3rem) / 3.2);
+    }
+  }
+</style>
+
+<script>
+  function initCarruseles() {
+    document.querySelectorAll<HTMLElement>("[data-carrusel]").forEach((car) => {
+      if (car.dataset.listo) return;
+      car.dataset.listo = "1";
+
+      const pista = car.querySelector<HTMLElement>("[data-pista]");
+      const prev = car.querySelector<HTMLButtonElement>("[data-prev]");
+      const next = car.querySelector<HTMLButtonElement>("[data-next]");
+      if (!pista) return;
+
+      // Ancho de un salto: el de la primera foto más el hueco.
+      const paso = () => {
+        const item = pista.querySelector<HTMLElement>(".car__item");
+        if (!item) return pista.clientWidth;
+        const gap = parseFloat(getComputedStyle(pista).columnGap || "0");
+        return item.getBoundingClientRect().width + gap;
+      };
+
+      const finDeLaPista = () =>
+        Math.abs(pista.scrollLeft + pista.clientWidth - pista.scrollWidth) < 4;
+
+      next?.addEventListener("click", () => {
+        // Al final, vuelve al principio: el recorrido no se corta nunca.
+        if (finDeLaPista()) pista.scrollTo({ left: 0 });
+        else pista.scrollBy({ left: paso() });
+      });
+
+      prev?.addEventListener("click", () => {
+        if (pista.scrollLeft < 4) pista.scrollTo({ left: pista.scrollWidth });
+        else pista.scrollBy({ left: -paso() });
+      });
+    });
+  }
+
+  initCarruseles();
+  document.addEventListener("astro:page-load", initCarruseles);
+</script>

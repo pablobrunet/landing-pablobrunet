@@ -2,30 +2,44 @@
 import Base from "../layouts/Base.astro";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
-import Tools from "../components/Tools.astro";
+import Empresas from "../components/Empresas.astro";
 import Pillars from "../components/Pillars.astro";
 import Services from "../components/Services.astro";
 import Speaker from "../components/Speaker.astro";
-import Portfolio from "../components/Portfolio.astro";
-import Testimonials from "../components/Testimonials.astro";
+import Videos from "../components/Videos.astro";
+import Redes from "../components/Redes.astro";
 import Blog from "../components/Blog.astro";
 import Newsletter from "../components/Newsletter.astro";
-import Verticales from "../components/Verticales.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 import Footer from "../components/Footer.astro";
+import { charlasMeta, charlas } from "../data/videos";
 ---
 
 <Base>
   <Navbar />
   <main>
     <Hero />
-    <Tools />
+    <Empresas />
     <Pillars />
     <Services />
     <Speaker />
-    <Portfolio />
-    <Verticales />
-    <Testimonials />
+    <section class="section section--tint">
+      <div class="container">
+        <Videos
+          eyebrow={charlasMeta.eyebrow}
+          titulo={charlasMeta.titulo}
+          subtitulo={charlasMeta.subtitulo}
+          items={charlas}
+        />
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <Redes />
+      </div>
+    </section>
+
     <Blog />
     <Newsletter />
     <CtaBanner />

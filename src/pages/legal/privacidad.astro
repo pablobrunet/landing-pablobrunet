@@ -2,28 +2,156 @@
 import Page from "../../layouts/Page.astro";
 import PageHero from "../../components/PageHero.astro";
 import { site } from "../../data/site";
+
+/* Redactada sobre lo que el sitio efectivamente hace: formulario de contacto,
+   pedido de materiales (correo), newsletter, calendario de LeadConnector y
+   videos de YouTube embebidos.
+   Es una base sólida, NO asesoramiento legal: hacela revisar. Si cambiás las
+   herramientas, actualizá el punto 6. */
+const actualizado = "Julio de 2026";
 ---
 
 <Page title={`Política de privacidad — ${site.nombre}`} cta={false}>
   <PageHero
     eyebrow="Legal"
-    title="Política de privacidad"
+    title="Política de *privacidad*"
     crumbs={[{ label: "Privacidad" }]}
   />
   <section class="section">
     <div class="container legal">
       <p class="text-muted note">
-        COMPLETAR: reemplazá este texto por tu política de privacidad real
-        (adaptada al RGPD si operás en España/UE). Revisala con un profesional.
+        Última actualización: {actualizado}. Este texto describe cómo tratamos los
+        datos en este sitio. Es una base general: conviene que un profesional
+        legal la revise antes de publicarla.
       </p>
+
       <h2 class="t-h3">1. Responsable del tratamiento</h2>
-      <p>{site.nombre} — {site.ubicacion} — <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
-      <h2 class="t-h3">2. Datos que se recogen</h2>
-      <p>COMPLETAR.</p>
-      <h2 class="t-h3">3. Finalidad</h2>
-      <p>COMPLETAR.</p>
-      <h2 class="t-h3">4. Derechos</h2>
-      <p>COMPLETAR (acceso, rectificación, supresión, etc.).</p>
+      <p>
+        {site.nombre} — {site.ubicacion} — <a href={`mailto:${site.email}`}>{site.email}</a>.
+        Es quien decide qué datos se recogen en este sitio y con qué finalidad.
+      </p>
+
+      <h2 class="t-h3">2. Qué datos recogemos</h2>
+      <p>Solo los que nos das voluntariamente, y únicamente estos:</p>
+      <ul>
+        <li>
+          <strong>Formulario de contacto:</strong> nombre, correo electrónico, empresa
+          (opcional) y el mensaje que escribís.
+        </li>
+        <li><strong>Guías y materiales:</strong> tu correo electrónico. Nada más.</li>
+        <li><strong>Newsletter:</strong> tu correo electrónico.</li>
+        <li>
+          <strong>Reserva de reuniones:</strong> los datos que completás en el
+          calendario (nombre, correo, teléfono si lo indicás y el horario elegido).
+        </li>
+      </ul>
+      <p>
+        No recogemos datos sensibles, no elaboramos perfiles automatizados con
+        efectos jurídicos sobre las personas y no pedimos datos de tarjetas ni
+        credenciales de ningún tipo.
+      </p>
+
+      <h2 class="t-h3">3. Para qué los usamos</h2>
+      <ul>
+        <li>Responder tu consulta o coordinar una reunión.</li>
+        <li>Enviarte los materiales que solicitaste.</li>
+        <li>
+          Mandarte la newsletter, si te suscribiste. Podés darte de baja en cualquier
+          momento desde el enlace de cada envío.
+        </li>
+      </ul>
+      <p>
+        No usamos tus datos para otra cosa, no los vendemos y no los cedemos a
+        terceros con fines comerciales.
+      </p>
+
+      <h2 class="t-h3">4. Base legal</h2>
+      <p>
+        El tratamiento se apoya en tu <strong>consentimiento</strong>, que das al
+        enviar cualquiera de los formularios, y en el <strong>interés legítimo</strong>
+        de atender y dar seguimiento a las consultas que llegan. Podés retirar el
+        consentimiento cuando quieras escribiendo a
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2 class="t-h3">5. Cuánto tiempo los conservamos</h2>
+      <p>
+        Los datos de una consulta se conservan mientras haya un intercambio activo y
+        luego durante el plazo necesario para cumplir obligaciones legales. Los
+        correos de la newsletter, hasta que pidas la baja. Después se eliminan.
+      </p>
+
+      <h2 class="t-h3">6. Con quién los compartimos</h2>
+      <p>
+        Para que el sitio funcione usamos servicios de terceros que, como
+        proveedores, pueden tratar tus datos por cuenta nuestra:
+      </p>
+      <ul>
+        <li>
+          <strong>Supabase</strong> — base de datos donde se guardan los correos que
+          dejás para recibir los materiales.
+        </li>
+        <li>
+          <strong>LeadConnector / GoHighLevel</strong> — gestión de contactos, envío de
+          correos y el calendario de reservas embebido en la página de contacto.
+        </li>
+        <li>
+          <strong>YouTube (Google)</strong> — los videos están embebidos en la modalidad
+          sin cookies y no se cargan hasta que hacés clic en reproducir.
+        </li>
+        <li>
+          <strong>Proveedor de alojamiento</strong> — sirve las páginas y puede registrar
+          datos técnicos de acceso (dirección IP, navegador) en sus registros.
+        </li>
+      </ul>
+      <p>
+        Algunos de estos proveedores están radicados fuera de la Argentina, por lo que
+        puede haber transferencias internacionales de datos amparadas en las garantías
+        que ofrecen sus propias políticas.
+      </p>
+
+      <h2 class="t-h3">7. Tus derechos</h2>
+      <p>
+        Podés pedirnos en cualquier momento <strong>acceder</strong> a tus datos,
+        <strong>rectificarlos</strong> si están mal, <strong>suprimirlos</strong>,
+        <strong>oponerte</strong> a su tratamiento o <strong>limitarlo</strong>. Alcanza
+        con escribir a <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+      <p>
+        En la Argentina, la autoridad de control es la <strong>Agencia de Acceso a la
+        Información Pública</strong>, ante la cual podés reclamar si considerás que no
+        atendimos tu pedido como corresponde. La Ley 25.326 de Protección de los Datos
+        Personales te reconoce el derecho a acceder de forma gratuita a tus datos en
+        intervalos de no menos de seis meses, salvo que acredites un interés legítimo.
+      </p>
+
+      <h2 class="t-h3">8. Seguridad</h2>
+      <p>
+        El sitio se sirve por conexión cifrada (HTTPS) y los datos que dejás se
+        almacenan en servicios con control de acceso. Ningún sistema es infalible: si
+        detectáramos un incidente que afecte tus datos, te lo comunicaríamos y daríamos
+        aviso a la autoridad cuando corresponda.
+      </p>
+
+      <h2 class="t-h3">9. Menores de edad</h2>
+      <p>
+        Este sitio está dirigido a personas mayores de 18 años. No recogemos de forma
+        intencionada datos de menores; si detectamos alguno, lo eliminamos.
+      </p>
+
+      <h2 class="t-h3">10. Cambios en esta política</h2>
+      <p>
+        Si cambian las herramientas o las finalidades, actualizamos este texto y su
+        fecha. La versión vigente es siempre la publicada acá.
+      </p>
+
+      <h2 class="t-h3">11. Contacto</h2>
+      <p>
+        Cualquier duda sobre el tratamiento de tus datos:
+        <a href={`mailto:${site.email}`}>{site.email}</a>. Ver también los
+        <a href="/legal/terminos">Términos y condiciones</a> y la
+        <a href="/legal/cookies">Política de cookies</a>.
+      </p>
     </div>
   </section>
 </Page>
@@ -40,8 +168,23 @@ import { site } from "../../data/site";
     color: var(--azul-pizarra);
     line-height: 1.7;
   }
+  .legal ul {
+    list-style: disc;
+    padding-left: 1.35rem;
+    margin-top: 0.6rem;
+    display: grid;
+    gap: 0.45rem;
+    color: var(--azul-pizarra);
+    line-height: 1.7;
+  }
+  .legal strong {
+    color: var(--azul-petroleo);
+    font-weight: var(--w-headline);
+  }
   .legal a {
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
   .note {
     padding: 1rem 1.25rem;

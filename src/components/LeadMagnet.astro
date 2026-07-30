@@ -1,0 +1,194 @@
+---
+/* =====================================================================
+   LEAD MAGNET — pide solo el correo y lo manda a Supabase (o a un webhook).
+   ---------------------------------------------------------------------
+   No entrega nada en el momento: los materiales salen por mail desde el
+   flujo de n8n que dispara la fila nueva. Ver src/data/recursos.ts.
+   ===================================================================== */
+import Icon from "./Icon.astro";
+import { sinMarcas } from "../lib/texto";
+import { materiales } from "../data/recursos";
+import { leads } from "../lib/leads";
+---
+
+<div class="lm" id="materiales">
+  <div class="lm__copy">
+    <span class="eyebrow">{materiales.eyebrow}</span>
+    <h2 class="t-h2">{sinMarcas(materiales.titulo)}</h2>
+    <p class="t-subhead text-muted lm__sub">{materiales.subtitulo}</p>
+  </div>
+
+  <div class="lm__caja card">
+    <form class="lm__form" data-lead data-url={leads.endpoint}
+      data-key={leads.anonKey}
+      data-origen="guias-y-materiales">
+      <div class="field">
+        <label for="lm-email">Tu correo</label>
+        <input
+          id="lm-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder="tu@email.com"
+        />
+      </div>
+
+      <!-- Trampa para bots: es invisible y quien la completa no es humano.
+           Si viene con algo, el envío se descarta en silencio. -->
+      <div class="lm__trampa" aria-hidden="true">
+        <label for="lm-empresa-url">No completar</label>
+        <input id="lm-empresa-url" name="website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button type="submit" class="btn btn--primary lm__btn">
+        {materiales.boton}
+        <Icon name="arrow" size={18} />
+      </button>
+
+      <p class="lm__error" data-lead-error hidden role="alert">
+        No pudimos registrar tu correo. Probá de nuevo en un momento.
+      </p>
+    </form>
+
+    <div class="lm__listo" data-lead-ok hidden>
+      <span class="lm__ok-i"><Icon name="check" size={22} /></span>
+      <h3 class="t-h3">{materiales.exito.titulo}</h3>
+      <p class="text-muted">{materiales.exito.texto}</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lm {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .lm__sub {
+    margin-top: 0.85rem;
+  }
+
+  .lm__caja {
+    padding: 1.85rem 1.75rem;
+  }
+  .lm__form {
+    display: grid;
+    gap: 1rem;
+  }
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .field label {
+    font-size: 0.9rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-pizarra);
+  }
+  .field input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--borde);
+    background: var(--blanco);
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--verde-acento);
+  }
+  .lm__btn {
+    margin-top: 0.35rem;
+    width: 100%;
+  }
+  /* Fuera de pantalla, no con display:none: algunos bots ignoran lo oculto. */
+  .lm__trampa {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .lm__error {
+    font-size: var(--fs-caption);
+    color: #b3261e;
+  }
+
+  /* ---- Estado "ya está en camino" ---- */
+  .lm__listo {
+    display: grid;
+    justify-items: start;
+    gap: 0.6rem;
+  }
+  .lm__ok-i {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(0, 191, 114, 0.12);
+    color: var(--verde-resalte);
+  }
+
+  @media (min-width: 880px) {
+    .lm {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+</style>
+
+<script>
+  import { enviarLead } from "../scripts/enviarLead";
+
+  function initLeadMagnet() {
+    const form = document.querySelector<HTMLFormElement>("[data-lead]");
+    if (!form || form.dataset.listo) return;
+    form.dataset.listo = "1";
+
+    const ok = document.querySelector<HTMLElement>("[data-lead-ok]");
+    const error = document.querySelector<HTMLElement>("[data-lead-error]");
+    const boton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const etiquetaBoton = boton?.innerHTML ?? "";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const datos = new FormData(form);
+
+      // Bot: mostramos el mensaje de éxito y no mandamos nada.
+      if (String(datos.get("website") ?? "").trim() !== "") {
+        form.hidden = true;
+        if (ok) ok.hidden = false;
+        return;
+      }
+
+      const email = String(datos.get("email") ?? "").trim();
+      if (error) error.hidden = true;
+      if (boton) {
+        boton.disabled = true;
+        boton.textContent = "Enviando…";
+      }
+
+      try {
+        await enviarLead(
+          form.dataset.url ?? "",
+          form.dataset.key ?? "",
+          email,
+          form.dataset.origen ?? "guias-y-materiales"
+        );
+      } catch {
+        if (boton) {
+          boton.disabled = false;
+          boton.innerHTML = etiquetaBoton;
+        }
+        if (error) error.hidden = false;
+        return;
+      }
+
+      form.hidden = true;
+      if (ok) ok.hidden = false;
+    });
+  }
+
+  initLeadMagnet();
+  document.addEventListener("astro:page-load", initLeadMagnet);
+</script>

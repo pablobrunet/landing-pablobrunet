@@ -1,25 +1,145 @@
 ---
 import type { Bloque } from "../data/blog";
+import { enriquecer } from "../lib/texto";
 interface Props {
   blocks: Bloque[];
 }
 const { blocks } = Astro.props;
+
+// Las barras se dibujan proporcionales al valor más alto del gráfico.
+const escala = (valor: number, max: number) => `${Math.max((valor / max) * 100, 2)}%`;
 ---
 
 <div class="prose">
   {
     blocks.map((b) => {
       if (b.tipo === "subtitulo") return <h2 class="t-h3">{b.texto}</h2>;
+
       if (b.tipo === "lista")
         return (
           <ul>
             {b.items.map((it) => (
-              <li>{it}</li>
+              <li set:html={enriquecer(it)} />
             ))}
           </ul>
         );
+
       if (b.tipo === "cita") return <blockquote>{b.texto}</blockquote>;
-      return <p>{b.texto}</p>;
+
+      if (b.tipo === "dato")
+        return (
+          <aside class="dato">
+            <span class="dato__valor">{b.valor}</span>
+            <span class="dato__texto" set:html={enriquecer(b.texto)} />
+          </aside>
+        );
+
+      if (b.tipo === "tabla")
+        return (
+          <figure class="fig">
+            {b.titulo && <figcaption class="fig__title">{b.titulo}</figcaption>}
+            <div class="tabla__scroll">
+              <table class="tabla">
+                <thead>
+                  <tr>
+                    {b.columnas.map((c) => (
+                      <th scope="col">{c}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {b.filas.map((fila) => (
+                    <tr>
+                      {fila.map((celda, i) =>
+                        i === 0 ? <th scope="row">{celda}</th> : <td>{celda}</td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {b.fuente && <p class="fig__fuente">Fuente: {b.fuente}</p>}
+          </figure>
+        );
+
+      if (b.tipo === "grafico") {
+        const max = Math.max(...b.barras.map((x) => x.valor));
+        return (
+          <figure class="fig">
+            <figcaption class="fig__title">{b.titulo}</figcaption>
+            {b.bajada && <p class="fig__sub">{b.bajada}</p>}
+            <ul class="graf">
+              {b.barras.map((barra) => (
+                <li class="graf__fila">
+                  <span class="graf__label">{barra.label}</span>
+                  <span class="graf__pista">
+                    <span class="graf__riel">
+                      <span
+                        class:list={[
+                          "graf__barra",
+                          { "graf__barra--neutro": barra.tono === "neutro" },
+                        ]}
+                        style={`width:${escala(barra.valor, max)}`}
+                      />
+                    </span>
+                    <span class="graf__valor">{barra.texto ?? barra.valor}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {b.nota && <p class="fig__nota">{b.nota}</p>}
+            {b.fuente && <p class="fig__fuente">Fuente: {b.fuente}</p>}
+          </figure>
+        );
+      }
+
+      if (b.tipo === "apilado") {
+        const total = b.partes.reduce((acc, p) => acc + p.valor, 0);
+        return (
+          <figure class="fig">
+            <figcaption class="fig__title">{b.titulo}</figcaption>
+            {b.bajada && <p class="fig__sub">{b.bajada}</p>}
+            <div class="apilado">
+              {b.partes.map((p, i) => (
+                <span
+                  class:list={["apilado__parte", `t${i}`]}
+                  style={`flex:${p.valor} ${p.valor} 0%`}
+                >
+                  <span class="apilado__pct">{Math.round((p.valor / total) * 100)} %</span>
+                </span>
+              ))}
+            </div>
+            <ul class="apilado__leyenda">
+              {b.partes.map((p, i) => (
+                <li>
+                  <span class:list={["apilado__punto", `t${i}`]} />
+                  {p.label}
+                </li>
+              ))}
+            </ul>
+            {b.nota && <p class="fig__nota">{b.nota}</p>}
+            {b.fuente && <p class="fig__fuente">Fuente: {b.fuente}</p>}
+          </figure>
+        );
+      }
+
+      if (b.tipo === "fuentes")
+        return (
+          <aside class="fuentes">
+            <h2 class="fuentes__titulo">Fuentes</h2>
+            <ol>
+              {b.items.map((f) => (
+                <li>
+                  <a href={f.url} target="_blank" rel="noopener">
+                    {f.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        );
+
+      return <p set:html={enriquecer(b.texto)} />;
     })
   }
 </div>
@@ -35,14 +155,14 @@ const { blocks } = Astro.props;
     margin-top: 1.15rem;
   }
   .prose h2 {
-    margin-top: 2.25rem;
+    margin-top: 2.5rem;
     color: var(--azul-petroleo);
   }
   .prose ul {
     list-style: disc;
     padding-left: 1.35rem;
     display: grid;
-    gap: 0.5rem;
+    gap: 0.65rem;
   }
   .prose blockquote {
     border-left: 3px solid var(--verde-acento);
@@ -50,5 +170,263 @@ const { blocks } = Astro.props;
     font-size: 1.2rem;
     font-weight: var(--w-subheadline);
     color: var(--azul-petroleo);
+  }
+  .prose :global(a) {
+    color: var(--verde-resalte);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  .prose :global(a:hover) {
+    text-decoration-thickness: 2px;
+  }
+  .prose :global(strong) {
+    font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
+  }
+
+  /* ---- Cifra destacada ---- */
+  .dato {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.5rem 1.6rem;
+    margin-block: 2rem;
+    background: var(--azul-petroleo);
+    border-radius: var(--radius);
+  }
+  .dato__valor {
+    font-family: var(--font-title);
+    font-size: clamp(2.4rem, 1.6rem + 3vw, 3.4rem);
+    font-weight: var(--w-display);
+    line-height: 1;
+    color: var(--verde-resalte-claro);
+    flex-shrink: 0;
+  }
+  .dato__texto {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .dato :global(a) {
+    color: var(--verde-resalte-claro);
+  }
+
+  /* ---- Envoltorio común de tablas y gráficos ---- */
+  .fig {
+    margin-block: 2.5rem;
+    padding: 1.5rem 1.6rem;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+  }
+  .fig__title {
+    font-family: var(--font-title);
+    font-size: 1.05rem;
+    font-weight: var(--w-headline);
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+  }
+  .fig__sub {
+    margin-top: 0.35rem;
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+  }
+  .fig__nota {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--borde);
+    font-size: 0.9rem;
+    color: var(--azul-pizarra);
+  }
+  .fig__fuente {
+    margin-top: 0.6rem;
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+  }
+
+  /* ---- Tablas ---- */
+  .tabla__scroll {
+    margin-top: 1.1rem;
+    overflow-x: auto;
+  }
+  .tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    text-align: left;
+  }
+  .tabla th,
+  .tabla td {
+    padding: 0.7rem 0.9rem 0.7rem 0;
+    vertical-align: top;
+    border-bottom: 1px solid var(--borde);
+  }
+  .tabla thead th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: var(--w-subheadline);
+    color: var(--texto-suave);
+    border-bottom-color: var(--borde-punteado);
+    white-space: nowrap;
+  }
+  .tabla tbody th {
+    font-weight: var(--w-subheadline);
+    color: var(--azul-petroleo);
+  }
+  .tabla tbody tr:last-child th,
+  .tabla tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  /* ---- Gráfico de barras horizontales ----
+     Una sola serie por gráfico; cada barra lleva su valor a la vista, así
+     que el dato nunca depende del color. */
+  .graf {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.35rem;
+    display: grid;
+    gap: 1.05rem;
+  }
+  .graf__fila {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .graf__label {
+    font-size: 0.88rem;
+    color: var(--azul-pizarra);
+    line-height: 1.35;
+  }
+  .graf__pista {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  /* El riel ocupa todo el ancho disponible; la barra es un % de él, así el
+     valor de la punta nunca comprime la barra. */
+  .graf__riel {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .graf__barra {
+    display: block;
+    height: 18px;
+    background: var(--verde-resalte);
+    /* punta redondeada del lado del dato, recta sobre la línea de base */
+    border-radius: 0 4px 4px 0;
+    min-width: 4px;
+  }
+  .graf__barra--neutro {
+    background: var(--azul-pizarra);
+  }
+  .graf__valor {
+    font-size: 0.9rem;
+    font-weight: var(--w-headline);
+    font-variant-numeric: tabular-nums;
+    color: var(--azul-petroleo);
+    white-space: nowrap;
+  }
+
+  /* ---- Barra apilada (parte sobre el todo) ----
+     Tres tonos separados por luminosidad, no solo por matiz: se distinguen
+     también en escala de grises y con daltonismo. Cada tramo lleva su
+     porcentaje impreso adentro y su nombre en la leyenda, en el mismo orden.
+     La separación entre tramos la hace un hueco del color del fondo. */
+  .apilado {
+    display: flex;
+    gap: 2px;
+    margin-top: 1.35rem;
+    height: 44px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .apilado__parte {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+  }
+  .apilado__pct {
+    font-size: 0.85rem;
+    font-weight: var(--w-headline);
+    font-variant-numeric: tabular-nums;
+  }
+  .apilado__leyenda {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--azul-pizarra);
+  }
+  .apilado__leyenda li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .apilado__punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Los tres tonos, en orden */
+  .apilado__parte.t0,
+  .apilado__punto.t0 {
+    background: #3c6b8c;
+  }
+  .apilado__parte.t1,
+  .apilado__punto.t1 {
+    background: #93aec0;
+  }
+  .apilado__parte.t2,
+  .apilado__punto.t2 {
+    background: var(--verde-resalte);
+  }
+  /* El texto de adentro se elige por la luminosidad del relleno. */
+  .apilado__parte.t0 .apilado__pct,
+  .apilado__parte.t2 .apilado__pct {
+    color: var(--blanco);
+  }
+  .apilado__parte.t1 .apilado__pct {
+    color: var(--azul-petroleo);
+  }
+
+  /* ---- Fuentes al pie ---- */
+  .fuentes {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--borde);
+  }
+  .fuentes__titulo {
+    font-family: var(--font-title);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: var(--w-subheadline);
+    color: var(--texto-suave);
+    margin: 0 0 0.85rem;
+  }
+  .fuentes ol {
+    list-style: decimal;
+    padding-left: 1.35rem;
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  @media (min-width: 600px) {
+    .graf__fila {
+      grid-template-columns: minmax(0, 15rem) 1fr;
+      align-items: center;
+      gap: 1rem;
+    }
+    .graf__label {
+      text-align: right;
+    }
   }
 </style>

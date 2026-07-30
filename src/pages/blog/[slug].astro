@@ -24,7 +24,11 @@ const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
     subtitle={post.resumen}
     crumbs={[{ label: "Blog", href: "/blog" }, { label: post.titulo }]}
   >
-    <p class="date t-caption text-muted">{post.fecha}</p>
+    <p class="meta t-caption text-muted">
+      <time datetime={post.fecha}>{post.fechaLabel}</time>
+      <span aria-hidden="true">·</span>
+      <span>{post.lectura}</span>
+    </p>
   </PageHero>
 
   <section class="section">
@@ -62,7 +66,11 @@ const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
 </Page>
 
 <style>
-  .date {
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
     margin-top: 1rem;
   }
   .article__body {
@@ -95,7 +103,7 @@ const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
     gap: 0.3rem;
     margin-top: 0.6rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
   }
 
   @media (min-width: 720px) {

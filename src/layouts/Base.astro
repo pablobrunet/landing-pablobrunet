@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
+import WhatsApp from "../components/WhatsApp.astro";
 import { site } from "../data/site";
 
 interface Props {
@@ -47,5 +48,7 @@ const {
   </head>
   <body>
     <slot />
+    <!-- Botón flotante en todas las páginas -->
+    <WhatsApp />
   </body>
 </html>

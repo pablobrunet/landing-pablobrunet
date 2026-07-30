@@ -1,176 +1,158 @@
 ---
 import Page from "../layouts/Page.astro";
-import PageHero from "../components/PageHero.astro";
 import Icon from "../components/Icon.astro";
+import Agenda from "../components/Agenda.astro";
+import Redes from "../components/Redes.astro";
+import RedLogo from "../components/RedLogo.astro";
 import { site } from "../data/site";
+
+/* Sin formulario: el contacto pasa por el calendario o por WhatsApp.
+   Un formulario más agrega una vía que hay que revisar y responder a mano,
+   y compite con la reserva directa, que es la acción que sí querés. */
+const whatsapp = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(
+  site.whatsapp.mensaje
+)}`;
 ---
 
 <Page title={`Contacto — ${site.nombre}`} cta={false}>
-  <PageHero
-    eyebrow="Contacto"
-    title="Hablemos"
-    subtitle="Contame en qué estás y vemos cómo la IA puede ayudarte. Respondo en 24 h."
-    crumbs={[{ label: "Contacto" }]}
-  />
+  <!-- La agenda encabeza la página: sin cabecera intermedia, el visitante
+       cae directo sobre el calendario. `principal` hace que su título sea
+       el H1 de la página, que si no quedaría sin ninguno. -->
+  <section class="section section--tint">
+    <div class="container">
+      <Agenda principal />
+    </div>
+  </section>
 
   <section class="section">
-    <div class="container contact">
-      <div class="contact__info">
-        <h2 class="t-h3">Datos de contacto</h2>
-        <ul class="contact__list">
-          <li>
-            <Icon name="mail" size={18} class="contact__i" />
-            <a href={`mailto:${site.email}`}>{site.email}</a>
-          </li>
-          <li>
-            <Icon name="location" size={18} class="contact__i" />
-            <span>{site.ubicacion}</span>
-          </li>
-        </ul>
-
-        <h3 class="contact__sub">Redes</h3>
-        <ul class="contact__social">
-          {
-            site.redes.map((r) => (
-              <li>
-                <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
-                  <Icon name={r.icon} size={18} />
-                  <span>{r.label}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <p class="t-caption text-muted">
-          Reemplazá los links de redes en <code>src/data/site.ts</code>.
+    <div class="container">
+      <header class="otras__head">
+        <span class="eyebrow">Otra vía</span>
+        <h2 class="t-h2">¿Preferís escribirme?</h2>
+        <p class="t-subhead text-muted otras__sub">
+          Si todavía no querés reservar una hora, mandame un mensaje y lo
+          seguimos por ahí.
         </p>
+      </header>
+
+      <div class="otras">
+        <a class="via via--wa" href={whatsapp} target="_blank" rel="noopener">
+          <span class="via__i"><RedLogo name="whatsapp" size={24} /></span>
+          <span class="via__txt">
+            <strong>WhatsApp</strong>
+            <span>Respuesta rápida, en el mismo día</span>
+          </span>
+          <Icon name="arrowUpRight" size={17} class="via__flecha" />
+        </a>
+
+        <a class="via" href={`mailto:${site.email}`}>
+          <span class="via__i"><Icon name="mail" size={24} /></span>
+          <span class="via__txt">
+            <strong>{site.email}</strong>
+            <span>Para propuestas más largas o material adjunto</span>
+          </span>
+          <Icon name="arrowUpRight" size={17} class="via__flecha" />
+        </a>
       </div>
 
-      <!--
-        FORM SIN CONECTAR. Opciones para activarlo:
-        - Servicio como Formspree / Basin: poné su URL en `action`.
-        - O manejar el envío por JS a tu backend / Supabase.
-      -->
-      <form class="contact__form card" data-contact onsubmit="return false">
-        <h2 class="t-h3">Escribime</h2>
-        <div class="field">
-          <label for="c-nombre">Nombre</label>
-          <input id="c-nombre" name="nombre" type="text" required />
-        </div>
-        <div class="field">
-          <label for="c-email">Email</label>
-          <input id="c-email" name="email" type="email" required autocomplete="email" />
-        </div>
-        <div class="field">
-          <label for="c-empresa">Empresa (opcional)</label>
-          <input id="c-empresa" name="empresa" type="text" />
-        </div>
-        <div class="field">
-          <label for="c-msg">¿En qué puedo ayudarte?</label>
-          <textarea id="c-msg" name="mensaje" rows="4" required></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary">
-          Enviar mensaje
-          <Icon name="arrow" size={18} />
-        </button>
-      </form>
+      <p class="otras__ubi">
+        <Icon name="location" size={17} />
+        {site.ubicacion}
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <Redes />
     </div>
   </section>
 </Page>
 
 <style>
-  .contact {
-    display: grid;
-    gap: 2.5rem;
-    align-items: start;
+  .otras__head {
+    max-width: 620px;
+    margin-bottom: 2rem;
   }
-  .contact__list {
-    display: grid;
-    gap: 0.85rem;
-    margin: 1rem 0 2rem;
+  .otras__sub {
+    margin-top: 0.75rem;
   }
-  .contact__list li {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: var(--azul-pizarra);
-  }
-  .contact__i {
-    color: var(--verde-acento-oscuro);
-  }
-  .contact__sub {
-    font-weight: var(--w-headline);
-    margin-bottom: 0.85rem;
-  }
-  .contact__social {
-    display: grid;
-    gap: 0.6rem;
-    margin-bottom: 1.25rem;
-  }
-  .contact__social a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--azul-pizarra);
-    font-weight: var(--w-subheadline);
-  }
-  .contact__social a:hover {
-    color: var(--verde-acento-oscuro);
-  }
-  .contact__info code {
-    background: rgba(11, 31, 42, 0.06);
-    padding: 0.1rem 0.35rem;
-    border-radius: 5px;
-    font-size: 0.72rem;
-  }
-  .contact__form {
-    padding: 1.75rem;
+  .otras {
     display: grid;
     gap: 1rem;
+    grid-template-columns: 1fr;
   }
-  .field {
-    display: grid;
-    gap: 0.35rem;
-  }
-  .field label {
-    font-size: 0.9rem;
-    font-weight: var(--w-subheadline);
-    color: var(--azul-pizarra);
-  }
-  .field input,
-  .field textarea {
-    font-family: inherit;
-    font-size: 1rem;
-    padding: 0.75rem 0.9rem;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--borde);
+  .via {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 1.6rem;
     background: var(--blanco);
-    resize: vertical;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    color: var(--azul-petroleo);
+    transition: transform var(--transition), box-shadow var(--transition),
+      border-color var(--transition);
   }
-  .field input:focus,
-  .field textarea:focus {
-    outline: none;
+  .via:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
     border-color: var(--verde-acento);
   }
-  .contact__form .btn {
-    margin-top: 0.5rem;
-    justify-self: start;
+  .via__i {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: rgba(0, 191, 114, 0.1);
+    color: var(--verde-resalte);
+  }
+  /* WhatsApp con su verde propio: se reconoce al instante. */
+  .via--wa .via__i {
+    background: rgba(37, 211, 102, 0.14);
+    color: #128c4a;
+  }
+  .via__txt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+    flex-grow: 1;
+  }
+  .via__txt strong {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.02rem;
+    overflow-wrap: anywhere;
+  }
+  .via__txt span {
+    font-size: 0.88rem;
+    color: var(--texto-suave);
+  }
+  .via__flecha {
+    color: var(--borde-punteado);
+    flex-shrink: 0;
+    transition: color var(--transition), transform var(--transition);
+  }
+  .via:hover .via__flecha {
+    color: var(--verde-resalte);
+    transform: translate(2px, -2px);
+  }
+  .otras__ubi {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 1.5rem;
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
   }
 
-  @media (min-width: 820px) {
-    .contact {
-      grid-template-columns: 0.9fr 1.1fr;
+  @media (min-width: 720px) {
+    .otras {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>
-
-<script>
-  function initContact() {
-    const form = document.querySelector<HTMLFormElement>("[data-contact]");
-    form?.addEventListener("submit", () => {
-      alert("Formulario de ejemplo. Conectá un servicio (Formspree, Basin, tu backend) para recibir los mensajes.");
-    });
-  }
-  initContact();
-  document.addEventListener("astro:page-load", initContact);
-</script>

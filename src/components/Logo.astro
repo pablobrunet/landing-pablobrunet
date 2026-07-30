@@ -1,21 +1,38 @@
 ---
 import { site } from "../data/site";
-/* Logo aproximado en CSS/SVG: monograma "PB" + wordmark.
-   El SVG definitivo del brand board va en /public/images/brand/logo.svg;
-   cuando lo tengas, podés reemplazar este componente por una <img>. */
+/* Logo de marca.
+   Si `site.logo.claro` / `site.logo.oscuro` tienen ruta, se usa la imagen.
+   Si están vacíos, cae al monograma "PB" dibujado en SVG. */
 interface Props {
   light?: boolean; // true = para fondos oscuros
   showTagline?: boolean;
 }
 const { light = false, showTagline = true } = Astro.props;
+
+/* Sobre fondo oscuro se usa la imagen SÓLO si hay una versión pensada para
+   eso: invertir la clara daría colores que no son los de la marca (el
+   wordmark azul petróleo se pierde y el degradado verde vira). Si no está,
+   se cae al monograma dibujado, que sí tiene variante clara. */
+const archivo = light ? site.logo.oscuro : site.logo.claro;
 ---
 
 <a
   href="/"
-  class:list={["logo", { "logo--light": light }]}
+  class:list={["logo", { "logo--light": light, "logo--img": Boolean(archivo) }]}
   aria-label={`${site.nombre} — ${site.tagline}`}
 >
-  <span class="logo__mark" aria-hidden="true">
+  {
+    archivo ? (
+      <img
+        class="logo__img"
+        src={archivo}
+        alt={site.nombre}
+        height={site.logo.alto}
+        style={`height:${site.logo.alto}px`}
+      />
+    ) : (
+      <>
+        <span class="logo__mark" aria-hidden="true">
     <svg viewBox="0 0 40 40" width="40" height="40">
       <rect width="40" height="40" rx="11" fill="var(--mark-bg)" />
       <text
@@ -30,11 +47,14 @@ const { light = false, showTagline = true } = Astro.props;
         fill="var(--mark-fg)">PB</text
       >
     </svg>
-  </span>
-  <span class="logo__text">
-    <span class="logo__name">{site.nombre}</span>
-    {showTagline && <span class="logo__tag">{site.tagline}</span>}
-  </span>
+        </span>
+        <span class="logo__text">
+          <span class="logo__name">{site.nombre}</span>
+          {showTagline && <span class="logo__tag">{site.tagline}</span>}
+        </span>
+      </>
+    )
+  }
 </a>
 
 <style>
@@ -51,6 +71,11 @@ const { light = false, showTagline = true } = Astro.props;
   }
   .logo__mark svg {
     display: block;
+  }
+  .logo__img {
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
   }
   .logo__text {
     display: flex;

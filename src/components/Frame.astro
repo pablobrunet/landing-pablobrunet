@@ -12,6 +12,11 @@ interface Props {
   alt?: string;
   ratio?: string; // ej "4/5", "16/9", "1/1"
   rounded?: boolean;
+  hover?: boolean; // zoom suave al pasar el mouse (se apaga en el hero)
+  /* Punto de interés del recorte (object-position). Útil cuando la foto y el
+     marco tienen proporciones distintas: "center 25%" sube el encuadre para
+     no cortar una cara que está en el tercio superior. */
+  pos?: string;
   class?: string;
 }
 const {
@@ -20,6 +25,8 @@ const {
   alt = "",
   ratio = "4/5",
   rounded = true,
+  hover = true,
+  pos = "center",
   class: className = "",
 } = Astro.props;
 
@@ -27,8 +34,16 @@ const hasImage = src && src.trim() !== "";
 ---
 
 <div
-  class:list={["frame", { "frame--empty": !hasImage, "frame--rounded": rounded }, className]}
-  style={`--ratio:${ratio}`}
+  class:list={[
+    "frame",
+    {
+      "frame--empty": !hasImage,
+      "frame--rounded": rounded,
+      "frame--hover": hover && hasImage,
+    },
+    className,
+  ]}
+  style={`--ratio:${ratio};--pos:${pos}`}
 >
   {
     hasImage ? (
@@ -62,6 +77,17 @@ const hasImage = src && src.trim() !== "";
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: var(--pos, center);
+  }
+  /* Filete interior de 1px: encuadra la foto sin sumar peso visual y evita
+     que las imágenes claras se fundan con el fondo. */
+  .frame:not(.frame--empty)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(11, 31, 42, 0.09);
   }
   .frame--empty {
     display: grid;

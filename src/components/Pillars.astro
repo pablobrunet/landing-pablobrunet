@@ -1,38 +1,53 @@
 ---
-import { site } from "../data/site";
 import { sobreMi } from "../data/sobreMi";
 import Frame from "./Frame.astro";
 import Icon from "./Icon.astro";
+import { sinMarcas } from "../lib/texto";
+
+/* Layout apilado: título → bajada → foto apaisada → tres datos en horizontal.
+   La foto del escenario es widescreen, así que manda a lo ancho y las tres
+   tarjetas de trayectoria se reparten debajo. */
+const { fotoHome } = sobreMi;
 ---
 
 <section class="about section" id="sobre-mi" aria-label="Sobre mí">
-  <div class="container about__inner">
-    <div class="about__media">
-      <Frame src={sobreMi.img} label={sobreMi.imgLabel} alt={`Foto de ${site.nombre}`} ratio="4/5" />
-    </div>
-
-    <div class="about__copy">
+  <div class="container">
+    <header class="about__head">
       <span class="eyebrow">{sobreMi.eyebrow}</span>
-      <h2 class="t-h2">{sobreMi.titulo}</h2>
+      <h2 class="t-h2">{sinMarcas(sobreMi.titulo)}</h2>
       <p class="t-subhead text-muted about__p">{sobreMi.parrafo}</p>
+    </header>
 
-      <ul class="about__pillars">
-        {
-          sobreMi.pilares.map((p) => (
-            <li class="pillar">
-              <span class="pillar__icon">
-                <Icon name={p.icon} size={22} />
-              </span>
-              <div>
-                <h3 class="t-h3">{p.titulo}</h3>
-                <p class="text-muted">{p.texto}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
+    <figure class="about__figura">
+      <Frame
+        src={fotoHome.img}
+        label={fotoHome.imgLabel}
+        alt={fotoHome.epigrafe}
+        ratio="16/9"
+      />
+      <figcaption class="about__epigrafe">
+        <Icon name="location" size={14} />
+        {fotoHome.epigrafe}
+      </figcaption>
+    </figure>
 
-      <a href="/sobre-mi" class="btn btn--outline about__cta">
+    <ul class="about__pillars">
+      {
+        sobreMi.datos.map((d) => (
+          <li class="card pillar">
+            <span class="pillar__icon">
+              <Icon name={d.icon} size={22} />
+            </span>
+            <span class="pillar__valor">{d.valor}</span>
+            <h3 class="t-h3 pillar__t">{d.titulo}</h3>
+            <p class="text-muted">{d.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="about__cta">
+      <a href="/sobre-mi" class="btn btn--outline">
         Conocé mi historia
         <Icon name="arrow" size={18} />
       </a>
@@ -41,52 +56,79 @@ import Icon from "./Icon.astro";
 </section>
 
 <style>
-  .about__inner {
-    display: grid;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
-  .about__media {
-    max-width: 440px;
-    width: 100%;
-    justify-self: center;
+  .about__head {
+    max-width: 760px;
+    margin-inline: auto;
+    text-align: center;
   }
   .about__p {
     margin-top: 1rem;
   }
+
+  /* Foto apaisada a todo el ancho de la columna de contenido. */
+  .about__figura {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .about__epigrafe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+    font-size: var(--fs-caption);
+    letter-spacing: 0.02em;
+    color: var(--texto-suave);
+  }
+
+  /* Pilares en horizontal, cada uno en su tarjeta redondeada. */
   .about__pillars {
     display: grid;
     gap: 1.25rem;
-    margin-top: 2rem;
+    margin-top: clamp(2.25rem, 4vw, 3.25rem);
   }
   .pillar {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
     align-items: flex-start;
+    padding: 1.6rem 1.5rem;
   }
   .pillar__icon {
-    flex-shrink: 0;
     display: grid;
     place-items: center;
     width: 48px;
     height: 48px;
     border-radius: 12px;
     background: rgba(0, 191, 114, 0.1);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
+    margin-bottom: 1rem;
   }
-  .pillar h3 {
-    margin-bottom: 0.15rem;
+  /* La cifra es lo primero que se lee de la tarjeta. */
+  .pillar__valor {
+    font-family: var(--font-title);
+    font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.1rem);
+    font-weight: var(--w-display);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--verde-resalte);
+    margin-bottom: 0.35rem;
+  }
+  .pillar__t {
+    margin-bottom: 0.3rem;
   }
   .about__cta {
-    margin-top: 2rem;
+    margin-top: clamp(2rem, 3.5vw, 2.75rem);
+    text-align: center;
   }
 
-  @media (min-width: 900px) {
-    .about__inner {
-      grid-template-columns: 0.9fr 1.1fr;
+  /* Cuatro tarjetas: 2x2 en tablet y una fila de cuatro en escritorio. */
+  @media (min-width: 620px) {
+    .about__pillars {
+      grid-template-columns: repeat(2, 1fr);
     }
-    .about__media {
-      justify-self: start;
+  }
+  @media (min-width: 1000px) {
+    .about__pillars {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

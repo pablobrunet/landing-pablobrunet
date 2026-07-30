@@ -4,9 +4,10 @@ import PageHero from "../../components/PageHero.astro";
 import Frame from "../../components/Frame.astro";
 import Icon from "../../components/Icon.astro";
 import { blogMeta, blog } from "../../data/blog";
+import { sinMarcas } from "../../lib/texto";
 ---
 
-<Page title={`Blog — ${blogMeta.titulo}`}>
+<Page title={`Blog — ${sinMarcas(blogMeta.titulo)}`}>
   <PageHero
     eyebrow={blogMeta.eyebrow}
     title={blogMeta.titulo}
@@ -25,6 +26,11 @@ import { blogMeta, blog } from "../../data/blog";
                 <span class="post__cat">{p.categoria}</span>
                 <h2 class="t-h3">{p.titulo}</h2>
                 <p class="text-muted post__ex">{p.resumen}</p>
+                <p class="post__meta t-caption text-muted">
+                  <time datetime={p.fecha}>{p.fechaLabel}</time>
+                  <span aria-hidden="true">·</span>
+                  <span>{p.lectura}</span>
+                </p>
                 <span class="post__cta">
                   Leer artículo
                   <Icon name="arrowUpRight" size={15} />
@@ -67,12 +73,18 @@ import { blogMeta, blog } from "../../data/blog";
     margin: 0.4rem 0 1rem;
     flex-grow: 1;
   }
+  .post__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+  }
   .post__cta {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
   }
 
   @media (min-width: 720px) {

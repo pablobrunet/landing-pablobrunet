@@ -2,28 +2,94 @@
 import Page from "../../layouts/Page.astro";
 import PageHero from "../../components/PageHero.astro";
 import { site } from "../../data/site";
+
+/* Redactada sobre lo que el sitio hace hoy: NO instala cookies propias ni de
+   analítica. Las únicas que pueden aparecer vienen del calendario embebido y
+   de YouTube, y solo si la persona interactúa.
+   ⚠️ Si algún día agregás Google Analytics, Meta Pixel o similar, este texto
+   deja de ser cierto y hay que sumar un banner de consentimiento. */
+const actualizado = "Julio de 2026";
 ---
 
 <Page title={`Política de cookies — ${site.nombre}`} cta={false}>
   <PageHero
     eyebrow="Legal"
-    title="Política de cookies"
+    title="Política de *cookies*"
     crumbs={[{ label: "Cookies" }]}
   />
   <section class="section">
     <div class="container legal">
       <p class="text-muted note">
-        COMPLETAR: reemplazá este texto por tu política de cookies real. Si el
-        sitio no usa cookies de terceros todavía, dejalo indicado acá.
+        Última actualización: {actualizado}. Resumen corto: este sitio no te
+        rastrea. No usamos cookies propias ni herramientas de analítica.
       </p>
+
       <h2 class="t-h3">1. Qué son las cookies</h2>
-      <p>COMPLETAR.</p>
+      <p>
+        Son archivos pequeños que un sitio guarda en tu navegador para recordar
+        información entre visitas: desde una preferencia de idioma hasta tu
+        comportamiento de navegación con fines publicitarios.
+      </p>
+
       <h2 class="t-h3">2. Cookies que usa este sitio</h2>
-      <p>COMPLETAR.</p>
-      <h2 class="t-h3">3. Cómo gestionarlas</h2>
-      <p>COMPLETAR.</p>
-      <h2 class="t-h3">4. Contacto</h2>
-      <p>Consultas: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      <p>
+        <strong>Ninguna propia.</strong> No instalamos cookies de sesión, ni de
+        analítica, ni de publicidad. No usamos Google Analytics, ni píxeles de
+        redes sociales, ni herramientas de seguimiento.
+      </p>
+      <p>
+        Hay dos casos en los que pueden aparecer cookies de terceros, y en ambos
+        depende de que vos interactúes:
+      </p>
+      <ul>
+        <li>
+          <strong>Videos de YouTube.</strong> Están embebidos con el dominio
+          <em>youtube-nocookie.com</em> y, además, el reproductor no se carga hasta
+          que hacés clic en el botón de play. Si no reproducís ningún video,
+          YouTube no llega a intervenir. Si lo reproducís, puede guardar cookies
+          técnicas asociadas a la reproducción.
+        </li>
+        <li>
+          <strong>Calendario de reservas.</strong> El widget de LeadConnector que
+          está en la página de contacto puede usar cookies propias del servicio
+          para gestionar la reserva.
+        </li>
+      </ul>
+      <p>
+        Como no instalamos cookies de seguimiento, el sitio no muestra un banner
+        de consentimiento: no habría nada que consentir.
+      </p>
+
+      <h2 class="t-h3">3. Datos técnicos de acceso</h2>
+      <p>
+        Nuestro proveedor de alojamiento puede registrar datos técnicos de cada
+        visita (dirección IP, tipo de navegador, página solicitada) en sus
+        registros de servidor. Es información necesaria para que el sitio
+        funcione y para detectar problemas o abusos; no se usa para perfilarte.
+      </p>
+
+      <h2 class="t-h3">4. Cómo gestionarlas</h2>
+      <p>
+        Podés ver, bloquear y borrar las cookies desde la configuración de tu
+        navegador —en Chrome, Firefox, Safari y Edge está en la sección de
+        privacidad—. Como acá no dependemos de cookies para nada, bloquearlas no
+        afecta la navegación: como máximo puede impedir que se reproduzca un
+        video embebido o que funcione el calendario.
+      </p>
+
+      <h2 class="t-h3">5. Cambios en esta política</h2>
+      <p>
+        Si en el futuro incorporamos herramientas de analítica o publicidad,
+        actualizaremos este texto y sumaremos el mecanismo de consentimiento que
+        corresponda antes de activarlas.
+      </p>
+
+      <h2 class="t-h3">6. Contacto</h2>
+      <p>
+        Consultas: <a href={`mailto:${site.email}`}>{site.email}</a>. Ver también la
+        <a href="/legal/privacidad">Política de privacidad</a> y los
+        <a href="/legal/terminos">Términos y condiciones</a>.
+      </p>
     </div>
   </section>
 </Page>
@@ -40,8 +106,23 @@ import { site } from "../../data/site";
     color: var(--azul-pizarra);
     line-height: 1.7;
   }
+  .legal ul {
+    list-style: disc;
+    padding-left: 1.35rem;
+    margin-top: 0.6rem;
+    display: grid;
+    gap: 0.45rem;
+    color: var(--azul-pizarra);
+    line-height: 1.7;
+  }
+  .legal strong {
+    color: var(--azul-petroleo);
+    font-weight: var(--w-headline);
+  }
   .legal a {
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
   .note {
     padding: 1rem 1.25rem;

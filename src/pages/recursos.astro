@@ -2,10 +2,12 @@
 import Page from "../layouts/Page.astro";
 import PageHero from "../components/PageHero.astro";
 import Icon from "../components/Icon.astro";
+import LeadMagnet from "../components/LeadMagnet.astro";
 import { recursosMeta, recursos } from "../data/recursos";
+import { sinMarcas } from "../lib/texto";
 ---
 
-<Page title={`Recursos — ${recursosMeta.titulo}`}>
+<Page title={`Recursos — ${sinMarcas(recursosMeta.titulo)}`}>
   <PageHero
     eyebrow={recursosMeta.eyebrow}
     title={recursosMeta.titulo}
@@ -32,6 +34,12 @@ import { recursosMeta, recursos } from "../data/recursos";
           ))
         }
       </div>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <LeadMagnet />
     </div>
   </section>
 </Page>
@@ -67,7 +75,7 @@ import { recursosMeta, recursos } from "../data/recursos";
     align-items: center;
     gap: 0.4rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     transition: gap var(--transition);
   }
   .res:hover .res__cta {

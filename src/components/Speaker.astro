@@ -2,6 +2,7 @@
 import { site } from "../data/site";
 import Frame from "./Frame.astro";
 import Icon from "./Icon.astro";
+import { sinMarcas } from "../lib/texto";
 const { speaker } = site;
 ---
 
@@ -10,7 +11,7 @@ const { speaker } = site;
     <div class="speaker__head">
       <div>
         <span class="eyebrow">{speaker.eyebrow}</span>
-        <h2 class="t-h2">{speaker.titulo}</h2>
+        <h2 class="t-h2">{sinMarcas(speaker.titulo)}</h2>
         <p class="t-subhead text-muted speaker__sub">{speaker.subtitulo}</p>
       </div>
       <a href={speaker.cta.href} class="btn btn--primary speaker__cta">

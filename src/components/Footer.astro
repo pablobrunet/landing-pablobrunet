@@ -42,7 +42,14 @@ const year = 2026; // actualizá si corresponde
             <ul>
               {col.links.map((l) => (
                 <li>
-                  <a href={l.href}>{l.label}</a>
+                  <a
+                    href={l.href}
+                    target={l.externo ? "_blank" : undefined}
+                    rel={l.externo ? "noopener" : undefined}
+                  >
+                    {l.label}
+                    {l.externo && <Icon name="arrowUpRight" size={13} class="footer__ext" />}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -123,8 +130,15 @@ const year = 2026; // actualizá si corresponde
     gap: 0.6rem;
   }
   .footer__col a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     color: rgba(255, 255, 255, 0.7);
     transition: color var(--transition);
+  }
+  .footer__ext {
+    opacity: 0.65;
+    flex-shrink: 0;
   }
   .footer__col a:hover {
     color: var(--verde-acento);

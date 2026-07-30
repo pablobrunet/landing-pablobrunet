@@ -15,6 +15,14 @@
 
   /* ---- Derivados útiles ---- */
   --verde-acento-oscuro: #00a562;
+
+  /* Verde para TEXTO resaltado dentro de títulos.
+     Mismo tono que --verde-acento (hue 156°) pero oscurecido hasta alcanzar
+     4.5:1 de contraste sobre blanco y sobre --gris-claro (WCAG AA). */
+  --verde-resalte: #008851;
+  /* Variante clara para usar sobre fondos oscuros (10:1 sobre --azul-petroleo) */
+  --verde-resalte-claro: #4fe0a4;
+
   --texto:        var(--azul-petroleo);
   --texto-suave:  #4a5a67;
   --borde:        #e2e7eb;

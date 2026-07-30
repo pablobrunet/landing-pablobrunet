@@ -2,13 +2,15 @@
 import Page from "../layouts/Page.astro";
 import PageHero from "../components/PageHero.astro";
 import Frame from "../components/Frame.astro";
+import Retrato from "../components/Retrato.astro";
 import Icon from "../components/Icon.astro";
-import TestimonialWall from "../components/TestimonialWall.astro";
-import Credenciales from "../components/Credenciales.astro";
+import CarruselFotos from "../components/CarruselFotos.astro";
 import Prensa from "../components/Prensa.astro";
+import Videos from "../components/Videos.astro";
 import { site } from "../data/site";
 import { sobreMi } from "../data/sobreMi";
-import { comentariosDemo, imagenesMuro } from "../data/testimonios";
+import { televisionMeta, television, reformaVideos } from "../data/videos";
+import { enriquecer, sinMarcas } from "../lib/texto";
 const p = sobreMi.pagina;
 ---
 
@@ -23,20 +25,72 @@ const p = sobreMi.pagina;
   <section class="section">
     <div class="container intro">
       <div class="intro__media">
-        <Frame src={sobreMi.img} label={sobreMi.imgLabel} alt={`Foto de ${site.nombre}`} ratio="4/5" />
+        <Retrato src={sobreMi.img} alt={`Foto de ${site.nombre}`} hover={false} llenarAlto />
       </div>
       <div class="intro__copy">
-        {p.bio.map((par) => <p class="text-muted intro__p">{par}</p>)}
+        <h2 class="t-h2 intro__t">{p.bioTitulo}</h2>
+        {
+          /* set:html porque los párrafos llevan **negrita**. */
+          p.bio.map((par) => <p class="text-muted intro__p" set:html={enriquecer(par)} />)
+        }
+      </div>
+    </div>
+  </section>
 
-        <div class="creds">
+  <!-- OpenAI Partner Network: la insignia en grande y qué significa. -->
+  <section class="section section--tint">
+    <div class="container oai" id="openai">
+      <div class="oai__insignia">
+        <img src={p.openai.badge} alt={p.openai.badgeAlt} loading="lazy" />
+      </div>
+      <div class="oai__copy">
+        <span class="eyebrow">{p.openai.eyebrow}</span>
+        <h2 class="t-h2">{sinMarcas(p.openai.titulo)}</h2>
+        {p.openai.significa.map((par) => <p class="text-muted oai__p">{par}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Formación: el posgrado con foto, el resto al costado. -->
+  <section class="section">
+    <div class="container">
+      <header class="bloque__head">
+        <span class="eyebrow">{p.formacionMeta.eyebrow}</span>
+        <h2 class="t-h2">{sinMarcas(p.formacionMeta.titulo)}</h2>
+        <p class="t-subhead text-muted bloque__sub">{p.formacionMeta.subtitulo}</p>
+      </header>
+
+      <div class="form__grid">
+        <figure class="form__destacada">
+          <Frame
+            src={p.formacionDestacada.img}
+            label={p.formacionDestacada.imgLabel}
+            alt={p.formacionDestacada.titulo}
+            ratio={p.formacionDestacada.ratio}
+          />
+          <figcaption class="form__pie">
+            <span class="form__inst">{p.formacionDestacada.institucion}</span>
+            <strong class="form__t">{p.formacionDestacada.titulo}</strong>
+            <span class="t-caption text-muted">{p.formacionDestacada.detalle}</span>
+          </figcaption>
+        </figure>
+
+        <div class="form__lista">
           {
-            p.credenciales.map((c) => (
-              <div class="cred">
-                <Icon name="shield" size={20} class="cred__i" />
-                <div>
-                  <strong>{c.titulo}</strong>
-                  <span class="text-muted">{c.detalle}</span>
-                </div>
+            p.formacionGrupos.map((g) => (
+              <div class="form__grupo">
+                <h3 class="form__sub">{g.subtitulo}</h3>
+                <ul class="form__otras">
+                  {g.items.map((f) => (
+                    <li>
+                      <Icon name="check" size={17} class="form__check" />
+                      <span>
+                        <strong>{f.titulo}</strong>
+                        <span class="text-muted">{f.institucion}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))
           }
@@ -45,57 +99,51 @@ const p = sobreMi.pagina;
     </div>
   </section>
 
+  <!-- Speaker: reemplazó la línea de tiempo vacía. -->
   <section class="section section--tint">
     <div class="container">
-      <Credenciales />
+      <header class="bloque__head">
+        <span class="eyebrow">{p.speaker.eyebrow}</span>
+        <h2 class="t-h2">{sinMarcas(p.speaker.titulo)}</h2>
+        {p.speaker.texto.map((par) => <p class="t-subhead text-muted bloque__sub">{par}</p>)}
+      </header>
+      <CarruselFotos fotos={p.speaker.fotos} etiqueta="Fotos de charlas y eventos" />
     </div>
   </section>
 
+  <!-- Reforma constitucional de Santa Fe -->
   <section class="section">
     <div class="container">
-      <span class="eyebrow">Cómo trabajo</span>
-      <h2 class="t-h2">Mis valores</h2>
-      <div class="values">
+      <header class="bloque__head">
+        <span class="eyebrow">{p.reforma.eyebrow}</span>
+        <h2 class="t-h2">{sinMarcas(p.reforma.titulo)}</h2>
+      </header>
+      <div class="reforma__copy">
+        {p.reforma.texto.map((par) => <p class="text-muted">{par}</p>)}
+      </div>
+      <div class="reforma__fotos">
         {
-          p.valores.map((v) => (
-            <div class="card value">
-              <h3 class="t-h3">{v.titulo}</h3>
-              <p class="text-muted">{v.texto}</p>
-            </div>
+          p.reforma.fotos.map((f) => (
+            <Frame src={f.img} label={f.imgLabel} alt={f.alt} ratio={p.reforma.fotosRatio} />
           ))
         }
+      </div>
+
+      <div class="reforma__videos">
+        <h3 class="t-h3 reforma__vt">Sesiones Constitucionales</h3>
+        <Videos items={reformaVideos} />
       </div>
     </div>
   </section>
 
   <section class="section section--tint">
     <div class="container">
-      <span class="eyebrow">Recorrido</span>
-      <h2 class="t-h2">Mi experiencia</h2>
-      <p class="t-caption text-muted timeline__note">
-        Completá tu recorrido real en <code>src/data/sobreMi.ts</code>.
-      </p>
-      <ol class="timeline">
-        {
-          p.recorrido.map((r) => (
-            <li class="tl">
-              <span class="tl__period">{r.periodo}</span>
-              <div class="tl__content">
-                <h3 class="t-h3">{r.titulo}</h3>
-                <p class="text-muted">{r.texto}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-
-      <div class="gallery">
-        {
-          p.galeria.map((g) => (
-            <Frame src={g.img} label={g.imgLabel} alt="Foto" ratio="4/3" />
-          ))
-        }
-      </div>
+      <Videos
+        eyebrow={televisionMeta.eyebrow}
+        titulo={televisionMeta.titulo}
+        subtitulo={televisionMeta.subtitulo}
+        items={television}
+      />
     </div>
   </section>
 
@@ -105,19 +153,6 @@ const p = sobreMi.pagina;
     </div>
   </section>
 
-  <section class="section section--tint wall-section">
-    <div class="container">
-      <span class="eyebrow">Testimonios</span>
-      <h2 class="t-h2">Lo que dicen quienes trabajaron conmigo</h2>
-      <p class="t-caption text-muted wall-note">
-        Ejemplos ilustrativos — reemplazá por testimonios reales en
-        <code>src/data/testimonios.ts</code>.
-      </p>
-    </div>
-    <div class="wall-wrap">
-      <TestimonialWall comentarios={comentariosDemo} imagenes={imagenesMuro} />
-    </div>
-  </section>
 </Page>
 
 <style>
@@ -127,110 +162,174 @@ const p = sobreMi.pagina;
     align-items: start;
   }
   .intro__media {
-    max-width: 400px;
+    max-width: 510px;
     width: 100%;
+  }
+  @media (min-width: 900px) {
+    /* `stretch` hace que la columna de la foto tome el alto de la fila, que
+       lo define el texto. Con `llenarAlto`, el retrato lo ocupa entero. */
+    .intro {
+      align-items: stretch;
+    }
+    .intro__media {
+      max-width: none;
+    }
+  }
+  .intro__t {
+    margin-bottom: 1.25rem;
   }
   .intro__p + .intro__p {
     margin-top: 1rem;
   }
-  .creds {
-    display: grid;
-    gap: 0.85rem;
-    margin-top: 2rem;
-  }
-  .cred {
-    display: flex;
-    gap: 0.85rem;
-    align-items: flex-start;
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--borde);
-    border-radius: var(--radius-sm);
-    background: var(--blanco);
-  }
-  .cred__i {
-    color: var(--verde-acento-oscuro);
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .cred strong {
-    display: block;
+  /* La negrita de los párrafos pasa a color de texto principal: sobre el
+     gris del cuerpo, el contraste es lo que la hace destacar. */
+  .intro__copy :global(strong) {
     font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
   }
-  .cred span {
-    font-size: 0.9rem;
-  }
-  .values {
+
+  /* ---- OpenAI: la insignia en grande ---- */
+  .oai {
     display: grid;
-    gap: 1.25rem;
-    margin-top: 1.5rem;
-    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
   }
-  .value {
-    padding: 1.75rem;
-  }
-  .value p {
-    margin-top: 0.4rem;
-  }
-  .timeline__note {
-    margin: 0.5rem 0 1.5rem;
-  }
-  .wall-note {
-    margin-top: 0.6rem;
-  }
-  .wall-wrap {
-    margin-top: 2rem;
-  }
-  .timeline__note code {
-    background: rgba(11, 31, 42, 0.06);
-    padding: 0.1rem 0.35rem;
-    border-radius: 5px;
-    font-size: 0.72rem;
-  }
-  .timeline {
+  .oai__insignia {
     display: grid;
-    gap: 1.5rem;
-    border-left: 2px solid var(--borde);
-    padding-left: 1.5rem;
+    place-items: center;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
   }
-  .tl {
-    position: relative;
+  .oai__insignia img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    object-fit: contain;
   }
-  .tl::before {
-    content: "";
-    position: absolute;
-    left: calc(-1.5rem - 6px);
-    top: 6px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--verde-acento);
+  .oai__p {
+    margin-top: 1rem;
   }
-  .tl__period {
-    font-size: var(--fs-caption);
-    font-weight: var(--w-subheadline);
-    color: var(--verde-azulado);
+
+  /* ---- Encabezado compartido de los bloques ---- */
+  .bloque__head {
+    max-width: 660px;
+    margin-bottom: 2rem;
   }
-  .tl__content h3 {
-    margin: 0.15rem 0;
+  .bloque__sub {
+    margin-top: 0.75rem;
   }
-  .gallery {
+
+  /* ---- Formación ---- */
+  .form__grid {
+    display: grid;
+    gap: clamp(1.75rem, 3.5vw, 3rem);
+    align-items: start;
+  }
+  .form__destacada {
+    max-width: 400px;
+  }
+  .form__pie {
+    display: grid;
+    gap: 0.3rem;
+    margin-top: 1rem;
+  }
+  .form__inst {
+    font-family: var(--font-title);
+    font-size: 0.78rem;
+    font-weight: var(--w-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--verde-resalte);
+  }
+  .form__t {
+    font-family: var(--font-title);
+    font-size: 1.05rem;
+    font-weight: var(--w-headline);
+    line-height: 1.35;
+    color: var(--azul-petroleo);
+  }
+  .form__lista {
+    display: grid;
+    gap: 2rem;
+    align-content: start;
+  }
+  .form__grupo {
     display: grid;
     gap: 1rem;
-    margin-top: 3rem;
+  }
+  /* Rótulo del grupo: chico y en versalitas, no compite con los títulos. */
+  .form__sub {
+    font-family: var(--font-title);
+    font-size: 0.78rem;
+    font-weight: var(--w-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--texto-suave);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--borde);
+  }
+  .form__otras {
+    display: grid;
+    gap: 1rem;
+  }
+  .form__otras li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .form__otras strong {
+    display: block;
+    font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
+  }
+  .form__otras span span {
+    font-size: 0.9rem;
+  }
+  .form__check {
+    color: var(--verde-resalte);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  /* ---- Reforma constitucional ---- */
+  .reforma__copy {
+    max-width: 68ch;
+  }
+  .reforma__copy p + p {
+    margin-top: 1rem;
+  }
+  .reforma__fotos {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2.25rem;
     grid-template-columns: 1fr;
+  }
+  .reforma__videos {
+    margin-top: 2.75rem;
+  }
+  .reforma__vt {
+    margin-bottom: 1.1rem;
   }
 
   @media (min-width: 720px) {
-    .values {
+    .reforma__fotos {
       grid-template-columns: repeat(3, 1fr);
     }
-    .gallery {
-      grid-template-columns: 1fr 1fr;
+  }
+  @media (min-width: 880px) {
+    .oai {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+    .form__grid {
+      grid-template-columns: 0.85fr 1.15fr;
     }
   }
   @media (min-width: 900px) {
+    /* Más proporción para la foto: el max-width solo no la agranda. */
     .intro {
-      grid-template-columns: 0.8fr 1.2fr;
+      grid-template-columns: 0.95fr 1.05fr;
     }
   }
 </style>

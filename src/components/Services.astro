@@ -1,6 +1,7 @@
 ---
-import { serviciosMeta, servicios } from "../data/servicios";
+import { serviciosMeta, servicios, hrefServicio } from "../data/servicios";
 import Icon from "./Icon.astro";
+import Frame from "./Frame.astro";
 import SectionHeading from "./SectionHeading.astro";
 ---
 
@@ -16,16 +17,32 @@ import SectionHeading from "./SectionHeading.astro";
     <div class="services__grid">
       {
         servicios.map((s) => (
-          <a href={`/servicios/${s.slug}`} class="card service">
-            <span class="service__icon">
-              <Icon name={s.icon} size={26} />
-            </span>
-            <h3 class="t-h3">{s.titulo}</h3>
-            <p class="text-muted service__text">{s.resumen}</p>
-            <span class="service__cta">
-              Ver servicio
-              <Icon name="arrowUpRight" size={16} />
-            </span>
+          <a
+            href={hrefServicio(s)}
+            class="card service"
+            target={s.externo ? "_blank" : undefined}
+            rel={s.externo ? "noopener" : undefined}
+          >
+            {s.imgTarjeta && (
+              <Frame
+                  src={s.imgTarjeta}
+                  alt={s.titulo}
+                  ratio="16/10"
+                  pos={s.imgTarjetaPos}
+                  rounded={false}
+                />
+            )}
+            <div class="service__body">
+              <span class="service__icon">
+                <Icon name={s.icon} size={26} />
+              </span>
+              <h3 class="t-h3">{s.titulo}</h3>
+              <p class="text-muted service__text">{s.resumen}</p>
+              <span class="service__cta">
+                {s.externo ? "Ir a innerflowai.com" : "Ver servicio"}
+                <Icon name="arrowUpRight" size={16} />
+              </span>
+            </div>
           </a>
         ))
       }
@@ -44,20 +61,26 @@ import SectionHeading from "./SectionHeading.astro";
     grid-template-columns: 1fr;
   }
   .service {
-    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .service__body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 1.75rem;
+    flex-grow: 1;
   }
   .service__icon {
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 14px;
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     background: var(--azul-petroleo);
     color: var(--verde-acento);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.1rem;
   }
   .service__text {
     margin: 0.5rem 0 1.5rem;
@@ -68,7 +91,7 @@ import SectionHeading from "./SectionHeading.astro";
     align-items: center;
     gap: 0.4rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     transition: gap var(--transition);
   }
   .service:hover .service__cta {
@@ -86,7 +109,7 @@ import SectionHeading from "./SectionHeading.astro";
   }
   @media (min-width: 980px) {
     .services__grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>

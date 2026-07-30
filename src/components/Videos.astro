@@ -1,0 +1,273 @@
+---
+/* =====================================================================
+   GRILLA DE VIDEOS DE YOUTUBE — se usa para charlas y para televisión.
+   ---------------------------------------------------------------------
+   Cada tarjeta muestra la miniatura con un botón de play; el reproductor
+   recién se inserta al hacer clic (patrón "fachada"). Así la página no
+   arranca cargando varios iframes de YouTube, que es lo que más pesa y lo
+   que contacta a Google antes de que el visitante decida ver algo.
+   ===================================================================== */
+import Icon from "./Icon.astro";
+import { sinMarcas } from "../lib/texto";
+import { parseYoutube, type Video } from "../data/videos";
+
+interface Props {
+  eyebrow?: string;
+  titulo?: string; // sin título no se dibuja el encabezado
+  subtitulo?: string;
+  items: Video[];
+}
+const { eyebrow, titulo, subtitulo, items } = Astro.props;
+
+const videos = items.map((v) => ({ ...v, ...parseYoutube(v.youtube) }));
+---
+
+<div class="vid">
+  {
+    titulo && (
+      <header class="vid__head">
+        {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+        <h2 class="t-h2">{sinMarcas(titulo)}</h2>
+        {subtitulo && <p class="t-subhead text-muted vid__sub">{subtitulo}</p>}
+      </header>
+    )
+  }
+
+  <div class="vid__grid">
+    {
+      videos.map((v) => (
+        <article class="card vid__card">
+          {v.id ? (
+            <button
+              class="vid__fachada"
+              type="button"
+              data-yt={v.id}
+              data-inicio={v.inicio || undefined}
+              aria-label={`Reproducir: ${v.titulo}`}
+            >
+              <img
+                src={`https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`}
+                data-alt-thumb={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="vid__play">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                  <path d="M8 5.5v13l11-6.5z" />
+                </svg>
+              </span>
+            </button>
+          ) : (
+            <div class="vid__vacio">
+              <Icon name="youtube" size={30} />
+              <span class="vid__vacio-t">Video pendiente</span>
+              <code class="vid__vacio-c">videos.ts → youtube</code>
+            </div>
+          )}
+
+          <div class="vid__body">
+            <span class="vid__contexto">{v.contexto}</span>
+            <h3 class="vid__titulo">{v.titulo}</h3>
+            {v.fecha && (
+              <footer class="vid__foot">
+                <span class="t-caption text-muted">{v.fecha}</span>
+              </footer>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .vid__head {
+    max-width: 620px;
+    margin-bottom: 2rem;
+  }
+  .vid__sub {
+    margin-top: 0.75rem;
+  }
+  .vid__grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  .vid__card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ---- Fachada: miniatura + botón de play ---- */
+  .vid__fachada {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    padding: 0;
+    border: 0;
+    background: var(--azul-petroleo);
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .vid__fachada img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.3, 1), opacity var(--transition);
+  }
+  .vid__fachada:hover img {
+    transform: scale(1.05);
+    opacity: 0.82;
+  }
+  .vid__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--verde-acento);
+    color: var(--azul-petroleo);
+    box-shadow: 0 8px 22px rgba(11, 31, 42, 0.35);
+    transition: transform var(--transition), background var(--transition);
+  }
+  .vid__play svg {
+    /* corrige el peso óptico del triángulo dentro del círculo */
+    margin-left: 2px;
+  }
+  .vid__fachada:hover .vid__play {
+    transform: scale(1.08);
+    background: var(--blanco);
+  }
+
+  /* El iframe reemplaza a la fachada al hacer clic. */
+  .vid__card :global(iframe) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+  }
+
+  /* ---- Slot sin video ---- */
+  .vid__vacio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    aspect-ratio: 16 / 9;
+    padding: 1rem;
+    text-align: center;
+    color: var(--verde-azulado);
+    background:
+      repeating-linear-gradient(
+        45deg,
+        rgba(59, 163, 154, 0.04),
+        rgba(59, 163, 154, 0.04) 12px,
+        transparent 12px,
+        transparent 24px
+      ),
+      var(--gris-claro);
+    border-bottom: 1.5px dashed var(--borde-punteado);
+  }
+  .vid__vacio-t {
+    font-size: var(--fs-caption);
+    font-weight: var(--w-subheadline);
+    color: var(--azul-pizarra);
+    letter-spacing: 0.02em;
+  }
+  .vid__vacio-c {
+    font-family: ui-monospace, "Cascadia Code", monospace;
+    font-size: 0.7rem;
+    color: var(--texto-suave);
+    background: rgba(11, 31, 42, 0.05);
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+  }
+
+  /* ---- Texto ---- */
+  .vid__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.5rem 1.75rem 1.65rem;
+    flex-grow: 1;
+  }
+  .vid__contexto {
+    font-family: var(--font-title);
+    font-size: 0.78rem;
+    font-weight: var(--w-headline);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--verde-resalte);
+  }
+  .vid__titulo {
+    font-family: var(--font-title);
+    /* Sube con la tarjeta: al haber dos por fila hay lugar para más cuerpo. */
+    font-size: clamp(1rem, 0.94rem + 0.3vw, 1.15rem);
+    font-weight: var(--w-headline);
+    line-height: 1.35;
+    color: var(--azul-petroleo);
+    flex-grow: 1;
+  }
+  .vid__foot {
+    padding-top: 0.85rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--borde);
+  }
+
+  /* Tope de dos por fila: con tres, cada reproductor quedaba chico para
+     ver una charla. A dos, cada uno ocupa la mitad del ancho útil. */
+  @media (min-width: 760px) {
+    .vid__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+    }
+  }
+</style>
+
+<script>
+  function initVideos() {
+    // Miniatura de respaldo: maxresdefault no existe para videos subidos en
+    // baja resolución; en ese caso YouTube devuelve una imagen de 120 px.
+    document.querySelectorAll<HTMLImageElement>(".vid__fachada img").forEach((img) => {
+      const alterna = img.dataset.altThumb;
+      if (!alterna || img.dataset.thumbListo) return;
+      img.dataset.thumbListo = "1";
+      const revisar = () => {
+        if (img.naturalWidth > 0 && img.naturalWidth < 200) img.src = alterna;
+      };
+      img.complete ? revisar() : img.addEventListener("load", revisar, { once: true });
+      img.addEventListener("error", () => (img.src = alterna), { once: true });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>(".vid__fachada").forEach((fachada) => {
+      if (fachada.dataset.listo) return;
+      fachada.dataset.listo = "1";
+
+      fachada.addEventListener("click", () => {
+        const id = fachada.dataset.yt;
+        if (!id) return;
+        // Transmisiones largas: arranca en el minuto de la charla, no en 0.
+        const inicio = Number(fachada.dataset.inicio ?? 0);
+        const desde = inicio > 0 ? `&start=${inicio}` : "";
+        const iframe = document.createElement("iframe");
+        // nocookie + autoplay: recién acá se contacta a YouTube.
+        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0${desde}`;
+        iframe.title = fachada.getAttribute("aria-label") ?? "Video";
+        iframe.allow =
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.allowFullscreen = true;
+        fachada.replaceWith(iframe);
+      });
+    });
+  }
+
+  initVideos();
+  document.addEventListener("astro:page-load", initVideos);
+</script>

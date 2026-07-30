@@ -1,0 +1,109 @@
+---
+/* =====================================================================
+   AGENDA — widget de reserva de LeadConnector embebido.
+   El script `form_embed.js` es el que le ajusta el alto al iframe según
+   su contenido. Se carga una sola vez y se vuelve a disparar en cada
+   navegación con View Transitions (si no, al volver a esta página el
+   iframe queda con el alto por defecto).
+   ===================================================================== */
+import { site } from "../data/site";
+import { resaltar, sinMarcas } from "../lib/texto";
+const { agenda } = site;
+
+interface Props {
+  compact?: boolean; // sin encabezado, para incrustarlo dentro de otra sección
+  /* `principal`: el título se dibuja como H1 en lugar de H2. Se usa en
+     /contacto, donde la agenda encabeza la página y por eso tiene que
+     aportar el único H1. Al ser título principal, admite el resalte verde. */
+  principal?: boolean;
+}
+const { compact = false, principal = false } = Astro.props;
+
+const src = `https://api.leadconnectorhq.com/widget/booking/${agenda.id}`;
+/* El `id` respeta el formato del snippet original de LeadConnector
+   (`<calendarId>_<timestamp>`): su script lo usa para identificar el iframe
+   al ajustarle el alto. Si regenerás el embed, pegá el id nuevo acá. */
+const iframeId = `${agenda.id}_1785066950027`;
+---
+
+<div class="agenda" id="agenda">
+  {
+    !compact && (
+      <header class="agenda__head">
+        <span class="eyebrow">{agenda.eyebrow}</span>
+        {principal ? (
+          <h1 class="t-h1" set:html={resaltar(agenda.titulo)} />
+        ) : (
+          <h2 class="t-h2">{sinMarcas(agenda.titulo)}</h2>
+        )}
+        <p class="t-subhead text-muted agenda__sub">{agenda.subtitulo}</p>
+      </header>
+    )
+  }
+
+  <div class="agenda__marco">
+    <iframe src={src} id={iframeId} title="Calendario de reservas" scrolling="no"></iframe>
+  </div>
+
+  <noscript>
+    <p class="agenda__fallback">
+      Para reservar necesitás tener JavaScript activado, o podés escribirme a
+      <a href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+  </noscript>
+</div>
+
+<style>
+  .agenda__head {
+    max-width: 620px;
+    margin-bottom: 2rem;
+  }
+  .agenda__sub {
+    margin-top: 0.75rem;
+  }
+  .agenda__marco {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .agenda__marco iframe {
+    display: block;
+    width: 100%;
+    /* alto de arranque; form_embed.js lo ajusta al contenido real */
+    min-height: 720px;
+    border: 0;
+    overflow: hidden;
+  }
+  .agenda__fallback {
+    margin-top: 1rem;
+    color: var(--azul-pizarra);
+  }
+  .agenda__fallback a {
+    color: var(--verde-resalte);
+  }
+</style>
+
+<script>
+  const SRC = "https://link.msgsndr.com/js/form_embed.js";
+
+  function cargarWidgetAgenda() {
+    if (!document.getElementById("agenda")) return;
+
+    const existente = document.querySelector<HTMLScriptElement>(
+      `script[src="${SRC}"]`
+    );
+    // Al volver por View Transitions el script ya está en el DOM pero no
+    // se re-ejecuta: lo reinsertamos para que vuelva a medir el iframe.
+    existente?.remove();
+
+    const s = document.createElement("script");
+    s.src = SRC;
+    s.type = "text/javascript";
+    document.body.appendChild(s);
+  }
+
+  cargarWidgetAgenda();
+  document.addEventListener("astro:page-load", cargarWidgetAgenda);
+</script>

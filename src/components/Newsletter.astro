@@ -1,6 +1,8 @@
 ---
 import { site } from "../data/site";
 import Icon from "./Icon.astro";
+import { sinMarcas } from "../lib/texto";
+import { leads } from "../lib/leads";
 const { newsletter } = site;
 ---
 
@@ -9,30 +11,52 @@ const { newsletter } = site;
     <div class="newsletter__card">
       <div class="newsletter__copy">
         <span class="eyebrow">{newsletter.eyebrow}</span>
-        <h2 class="t-h2">{newsletter.titulo}</h2>
-        <p class="newsletter__name">{newsletter.nombreNewsletter}</p>
+        <h2 class="t-h2">{sinMarcas(newsletter.titulo)}</h2>
         <p class="t-subhead text-muted">{newsletter.subtitulo}</p>
       </div>
 
-      <!--
-        FORM SIN CONECTAR. Para activarlo, apuntá el `action` a tu proveedor
-        (Mailchimp / Beehiiv / ConvertKit / etc.) o manejá el submit por JS.
-      -->
-      <form class="newsletter__form" data-newsletter onsubmit="return false">
-        <label class="visually-hidden" for="nl-email">Email</label>
-        <input
-          id="nl-email"
-          type="email"
-          name="email"
-          required
-          placeholder={newsletter.placeholder}
-          autocomplete="email"
-        />
-        <button type="submit" class="btn btn--primary">
-          {newsletter.boton}
-          <Icon name="mail" size={18} />
-        </button>
-      </form>
+      <div class="newsletter__accion">
+        <!-- Mismo destino que el desbloqueo de recursos: cambia el `origen`. -->
+        <form
+          class="newsletter__form"
+          data-newsletter
+          data-url={leads.endpoint}
+          data-key={leads.anonKey}
+          data-origen="newsletter"
+        >
+          <label class="visually-hidden" for="nl-email">Email</label>
+          <input
+            id="nl-email"
+            type="email"
+            name="email"
+            required
+            placeholder={newsletter.placeholder}
+            autocomplete="email"
+          />
+          <!-- Trampa para bots: invisible; si viene con algo, se descarta. -->
+          <input
+            class="visually-hidden"
+            id="nl-website"
+            name="website"
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+          />
+          <button type="submit" class="btn btn--primary">
+            {newsletter.boton}
+            <Icon name="mail" size={18} />
+          </button>
+          <p class="newsletter__error" data-nl-error hidden role="alert">
+            No pudimos registrar tu correo. Probá de nuevo en un momento.
+          </p>
+        </form>
+
+        <p class="newsletter__ok" data-nl-ok hidden>
+          <Icon name="check" size={20} />
+          <span>Listo, quedaste anotado. Nos leemos pronto.</span>
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -51,7 +75,7 @@ const { newsletter } = site;
   }
   .newsletter__name {
     font-weight: var(--w-headline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     margin: 0.5rem 0 0.75rem;
   }
   .newsletter__form {
@@ -72,6 +96,21 @@ const { newsletter } = site;
     outline: none;
     border-color: var(--verde-acento);
   }
+  .newsletter__error {
+    flex-basis: 100%;
+    font-size: var(--fs-caption);
+    color: #b3261e;
+  }
+  .newsletter__ok {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 191, 114, 0.1);
+    color: var(--verde-resalte);
+    font-weight: var(--w-subheadline);
+  }
   .visually-hidden {
     position: absolute;
     width: 1px;
@@ -88,9 +127,55 @@ const { newsletter } = site;
 </style>
 
 <script>
-  // Placeholder: mostrá un aviso hasta conectar el proveedor real.
-  const form = document.querySelector<HTMLFormElement>("[data-newsletter]");
-  form?.addEventListener("submit", () => {
-    alert("Formulario de ejemplo. Conectá tu proveedor de newsletter para activarlo.");
-  });
+  import { enviarLead } from "../scripts/enviarLead";
+
+  function initNewsletter() {
+    const form = document.querySelector<HTMLFormElement>("[data-newsletter]");
+    if (!form || form.dataset.listo) return;
+    form.dataset.listo = "1";
+
+    const ok = document.querySelector<HTMLElement>("[data-nl-ok]");
+    const error = document.querySelector<HTMLElement>("[data-nl-error]");
+    const boton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const etiqueta = boton?.innerHTML ?? "";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const datos = new FormData(form);
+
+      if (String(datos.get("website") ?? "").trim() !== "") {
+        form.hidden = true;
+        if (ok) ok.hidden = false;
+        return;
+      }
+
+      if (error) error.hidden = true;
+      if (boton) {
+        boton.disabled = true;
+        boton.textContent = "Enviando…";
+      }
+
+      try {
+        await enviarLead(
+          form.dataset.url ?? "",
+          form.dataset.key ?? "",
+          String(datos.get("email") ?? "").trim(),
+          form.dataset.origen ?? "newsletter"
+        );
+      } catch {
+        if (boton) {
+          boton.disabled = false;
+          boton.innerHTML = etiqueta;
+        }
+        if (error) error.hidden = false;
+        return;
+      }
+
+      form.hidden = true;
+      if (ok) ok.hidden = false;
+    });
+  }
+
+  initNewsletter();
+  document.addEventListener("astro:page-load", initNewsletter);
 </script>

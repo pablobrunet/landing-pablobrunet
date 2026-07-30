@@ -3,10 +3,15 @@ import Page from "../../layouts/Page.astro";
 import PageHero from "../../components/PageHero.astro";
 import Frame from "../../components/Frame.astro";
 import Icon from "../../components/Icon.astro";
-import { servicios } from "../../data/servicios";
+import Videos from "../../components/Videos.astro";
+import CarruselFotos from "../../components/CarruselFotos.astro";
+import { servicios, serviciosInternos, hrefServicio } from "../../data/servicios";
+import { charlasMeta, charlas } from "../../data/videos";
+import { enriquecer } from "../../lib/texto";
 
+// Los servicios con `externo` no generan página: viven en otro sitio.
 export function getStaticPaths() {
-  return servicios.map((servicio) => ({
+  return serviciosInternos.map((servicio) => ({
     params: { slug: servicio.slug },
     props: { servicio },
   }));
@@ -27,6 +32,13 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
   <section class="section">
     <div class="container detail">
       <div class="detail__main">
+        {
+          /* set:html porque el intro admite **negrita**. */
+          servicio.intro && (
+            <p class="detail__intro" set:html={enriquecer(servicio.intro)} />
+          )
+        }
+
         <div class="block">
           <h2 class="t-h3">¿Para quién es?</h2>
           <p class="text-muted">{servicio.paraQuien}</p>
@@ -68,23 +80,31 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
           </ul>
         </div>
 
-        <div class="block">
-          <h2 class="t-h3">Preguntas frecuentes</h2>
-          <div class="faq">
-            {
-              servicio.faq.map((f) => (
-                <details class="faq__item">
-                  <summary>{f.q}</summary>
-                  <p class="text-muted">{f.a}</p>
-                </details>
-              ))
-            }
-          </div>
-        </div>
+        {
+          servicio.faq.length > 0 && (
+            <div class="block">
+              <h2 class="t-h3">Preguntas frecuentes</h2>
+              <div class="faq">
+                {servicio.faq.map((f) => (
+                  <details class="faq__item">
+                    <summary>{f.q}</summary>
+                    <p class="text-muted">{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )
+        }
       </div>
 
       <aside class="detail__side">
-        <Frame src={servicio.img} label={servicio.imgLabel} alt={servicio.titulo} ratio="4/5" />
+        <Frame
+          src={servicio.img}
+          label={servicio.imgLabel}
+          alt={servicio.titulo}
+          ratio={servicio.imgRatio ?? "4/5"}
+          pos={servicio.imgPos}
+        />
         <div class="side-cta card">
           <h3 class="t-h3">¿Hablamos?</h3>
           <p class="text-muted">Contame tu caso y vemos cómo aplicar este servicio.</p>
@@ -94,13 +114,53 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     </div>
   </section>
 
+  {
+    /* Charlas grabadas: la misma grilla del home, para que se pueda ver
+       material sin salir de la página del servicio. */
+    servicio.mostrarCharlas && (
+      <section class="section section--tint">
+        <div class="container">
+          <Videos
+            eyebrow={charlasMeta.eyebrow}
+            titulo={charlasMeta.titulo}
+            subtitulo={charlasMeta.subtitulo}
+            items={charlas}
+          />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    /* Carrusel de capacitaciones. Sin fotos cargadas no se dibuja. */
+    servicio.galeria && servicio.galeria.fotos.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <header class="galeria__head">
+            <span class="eyebrow">{servicio.galeria.eyebrow}</span>
+            <h2 class="t-h2">{servicio.galeria.titulo}</h2>
+            {servicio.galeria.texto && (
+              <p class="t-subhead text-muted galeria__sub">{servicio.galeria.texto}</p>
+            )}
+          </header>
+          <CarruselFotos fotos={servicio.galeria.fotos} etiqueta={servicio.galeria.titulo} />
+        </div>
+      </section>
+    )
+  }
+
   <section class="section section--tint">
     <div class="container">
       <h2 class="t-h3">Otros servicios</h2>
       <div class="others">
         {
           otros.map((o) => (
-            <a href={`/servicios/${o.slug}`} class="card other">
+            <a
+              href={hrefServicio(o)}
+              class="card other"
+              target={o.externo ? "_blank" : undefined}
+              rel={o.externo ? "noopener" : undefined}
+            >
               <Icon name={o.icon} size={22} class="other__i" />
               <span>{o.titulo}</span>
               <Icon name="arrowUpRight" size={16} />
@@ -117,6 +177,20 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     display: grid;
     gap: 2.5rem;
     align-items: start;
+  }
+  /* Entrada del servicio: un punto más grande que el cuerpo, para que se lea
+     como bajada y no como un párrafo más. */
+  .detail__intro {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--azul-pizarra);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.25rem;
+    border-bottom: 1px solid var(--borde);
+  }
+  .detail__intro :global(strong) {
+    font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
   }
   .block + .block {
     margin-top: 2.25rem;
@@ -144,7 +218,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     height: 34px;
     border-radius: 50%;
     background: rgba(0, 191, 114, 0.12);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     font-weight: var(--w-headline);
     font-size: 0.9rem;
   }
@@ -164,7 +238,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     color: var(--azul-pizarra);
   }
   .deliverables__i {
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     flex-shrink: 0;
   }
   .faq {
@@ -201,6 +275,13 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
   .side-cta .btn {
     margin-top: 0.5rem;
   }
+  .galeria__head {
+    max-width: 660px;
+    margin-bottom: 2rem;
+  }
+  .galeria__sub {
+    margin-top: 0.75rem;
+  }
   .others {
     display: grid;
     gap: 0.85rem;
@@ -212,6 +293,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 1.25rem;
+    color: var(--azul-petroleo);
   }
   .other span {
     flex-grow: 1;

@@ -1,27 +1,23 @@
 ---
 import { site } from "../data/site";
-import { servicios } from "../data/servicios";
-import { casos } from "../data/casos";
-import { verticales } from "../data/verticales";
+import { servicios, hrefServicio } from "../data/servicios";
 import { recursos } from "../data/recursos";
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
 
 // Construye el contenido de cada desplegable a partir de los datos.
-type MenuKey = "servicios" | "casos" | "verticales" | "recursos";
-type MenuItem = { label: string; href: string; desc?: string; icon: string };
+type MenuKey = "servicios" | "recursos";
+type MenuItem = { label: string; href: string; desc?: string; icon: string; externo?: boolean };
 const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
   servicios: {
     verTodos: "/servicios",
-    items: servicios.map((s) => ({ label: s.titulo, href: `/servicios/${s.slug}`, desc: s.resumen, icon: s.icon })),
-  },
-  casos: {
-    verTodos: "/casos",
-    items: casos.map((c) => ({ label: c.titulo, href: `/casos/${c.slug}`, desc: c.categoria, icon: "target" })),
-  },
-  verticales: {
-    verTodos: "/verticales",
-    items: verticales.map((v) => ({ label: v.nombre, href: `/verticales/${v.slug}`, desc: v.resumen, icon: v.icon })),
+    items: servicios.map((s) => ({
+      label: s.titulo,
+      href: hrefServicio(s),
+      desc: s.resumen,
+      icon: s.icon,
+      externo: Boolean(s.externo),
+    })),
   },
   recursos: {
     verTodos: "/recursos",
@@ -46,7 +42,13 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
               <div class="nav__panel" role="menu">
                 <div class="nav__panel-grid">
                   {menus[item.menu as MenuKey].items.map((sub) => (
-                    <a href={sub.href} class="nav__sub" role="menuitem">
+                    <a
+                      href={sub.href}
+                      class="nav__sub"
+                      role="menuitem"
+                      target={sub.externo ? "_blank" : undefined}
+                      rel={sub.externo ? "noopener" : undefined}
+                    >
                       <span class="nav__sub-icon">
                         <Icon name={sub.icon} size={18} />
                       </span>
@@ -107,7 +109,13 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
                   Ver todo {item.label.toLowerCase()}
                 </a>
                 {menus[item.menu as MenuKey].items.map((sub) => (
-                  <a href={sub.href}>{sub.label}</a>
+                  <a
+                    href={sub.href}
+                    target={sub.externo ? "_blank" : undefined}
+                    rel={sub.externo ? "noopener" : undefined}
+                  >
+                    {sub.label}
+                  </a>
                 ))}
               </div>
             </div>
@@ -162,7 +170,7 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
   }
   .nav__link:hover,
   .nav__trigger:hover {
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
     background: var(--gris-claro);
   }
   .nav__chev {
@@ -258,7 +266,7 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
     padding: 0.5rem 0.5rem;
     font-size: 0.85rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-acento-oscuro);
+    color: var(--verde-resalte);
   }
   .nav__vertodos:hover {
     gap: 0.65rem;
@@ -357,7 +365,7 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
     font-size: 0.95rem;
   }
   .m-acc__all {
-    color: var(--verde-acento-oscuro) !important;
+    color: var(--verde-resalte) !important;
     font-weight: var(--w-subheadline);
   }
   .m-acc__head[aria-expanded="true"] :global(svg) {

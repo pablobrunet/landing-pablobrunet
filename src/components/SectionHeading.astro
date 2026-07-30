@@ -1,7 +1,8 @@
 ---
+import { sinMarcas } from "../lib/texto";
 interface Props {
   eyebrow?: string;
-  title: string;
+  title: string; // admite *fragmento resaltado*
   subtitle?: string;
   center?: boolean;
 }
@@ -10,7 +11,7 @@ const { eyebrow, title, subtitle, center = false } = Astro.props;
 
 <header class:list={["sec-head", { "sec-head--center": center }]}>
   {eyebrow && <span class="eyebrow">{eyebrow}</span>}
-  <h2 class="t-h2">{title}</h2>
+  <h2 class="t-h2">{sinMarcas(title)}</h2>
   {subtitle && <p class="t-subhead text-muted sec-head__sub">{subtitle}</p>}
 </header>
 
