@@ -127,9 +127,15 @@ const { redesMeta, redes } = site;
   .red--tiktok:hover {
     color: #010101;
   }
+  /* Al pasar el mouse, el glifo toma el color real de su marca y el
+     recuadro un tinte suave del mismo color.
+     OJO: no poner acá `background: currentColor` junto a un `color`, porque
+     currentColor lee el color YA resuelto de este mismo elemento y el logo
+     terminaba del mismo tono que su fondo, o sea invisible. */
   .red:hover .red__logo {
-    background: currentColor;
-    color: var(--blanco);
+    color: inherit; /* hereda el color de marca que fija .red--<red>:hover */
+    background: var(--gris-claro); /* respaldo si no hay color-mix */
+    background: color-mix(in srgb, currentColor 14%, #fff);
   }
 
   @media (min-width: 560px) {
