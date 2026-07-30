@@ -56,6 +56,9 @@
 
   /* ---- Espaciado / radios / sombras ---- */
   --maxw: 1160px;
+  /* Alto de la barra fija. Lo usa el propio navbar y el desplazamiento a
+     las anclas, para que el título no quede tapado al saltar a una sección. */
+  --nav-alto: 72px;
   --gutter: clamp(1.15rem, 4.5vw, 2.5rem);
   --section-y: clamp(3rem, 6.5vw, 5.5rem);
 

@@ -19,6 +19,16 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Al saltar a un ancla (#materiales, #openai…), el navegador lleva el
+   elemento al borde superior de la ventana — justo donde está la barra fija,
+   que lo tapa. `scroll-margin-top` le reserva ese alto más un respiro, así
+   el título del bloque queda a la vista y no cortado.
+   Se aplica a todo `[id]` porque solo tiene efecto cuando el elemento es
+   destino de un salto; en el resto no cambia nada. */
+[id] {
+  scroll-margin-top: calc(var(--nav-alto) + 1.75rem);
+}
+
 body {
   font-family: var(--font-base);
   font-weight: var(--w-body);
