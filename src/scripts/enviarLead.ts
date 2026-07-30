@@ -51,6 +51,27 @@ export async function enviarLead(
 
   // 409 = choque con el UNIQUE de `email`: ya estaba anotado.
   if (r.status === 409) return { ok: true, repetido: true };
-  if (!r.ok) throw new Error(`Supabase respondió ${r.status}`);
+
+  if (!r.ok) {
+    /* Supabase manda el motivo real en el cuerpo. Sin esto, el error en
+       pantalla es genérico y no hay forma de saber qué falló. Las causas
+       más comunes, por código:
+         404 / PGRST205 → la tabla no existe (falta correr leads.sql)
+         401 / 403      → RLS rechazó el INSERT, o la clave es incorrecta
+         400            → falta una columna, o `origen` no pasa el CHECK */
+    let detalle = "";
+    try {
+      detalle = await r.text();
+    } catch {
+      /* cuerpo ilegible: seguimos con el código de estado */
+    }
+    console.error(
+      `[leads] Supabase rechazó la inserción (HTTP ${r.status}).`,
+      detalle || "(sin cuerpo)",
+      { endpoint, origen }
+    );
+    throw new Error(`Supabase respondió ${r.status}`);
+  }
+
   return { ok: true, repetido: false };
 }

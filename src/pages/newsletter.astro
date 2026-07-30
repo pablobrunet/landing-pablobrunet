@@ -3,6 +3,7 @@ import Page from "../layouts/Page.astro";
 import PageHero from "../components/PageHero.astro";
 import Icon from "../components/Icon.astro";
 import { site } from "../data/site";
+import { leads } from "../lib/leads";
 const { newsletter } = site;
 ---
 
@@ -16,13 +17,15 @@ const { newsletter } = site;
 
   <section class="section">
     <div class="container nl">
-      <p class="nl__name">{newsletter.nombreNewsletter}</p>
-
-      <!--
-        FORM SIN CONECTAR. Apuntá el `action` a tu proveedor (Mailchimp /
-        Beehiiv / ConvertKit) o manejá el submit por JS.
-      -->
-      <form class="nl__form" data-newsletter onsubmit="return false">
+      <!-- Mismo destino que el bloque del home y que los recursos: la tabla
+           `leads` de Supabase. Lo que los separa es el campo `origen`. -->
+      <form
+        class="nl__form"
+        data-newsletter
+        data-url={leads.endpoint}
+        data-key={leads.clave}
+        data-origen="newsletter"
+      >
         <label class="visually-hidden" for="nl-email">Email</label>
         <input
           id="nl-email"
@@ -32,11 +35,28 @@ const { newsletter } = site;
           placeholder={newsletter.placeholder}
           autocomplete="email"
         />
+        <input
+          class="visually-hidden"
+          id="nl-website"
+          name="website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
         <button type="submit" class="btn btn--primary">
           {newsletter.boton}
           <Icon name="mail" size={18} />
         </button>
+        <p class="nl__error" data-nl-error hidden role="alert">
+          No pudimos registrar tu correo. Probá de nuevo en un momento.
+        </p>
       </form>
+
+      <p class="nl__ok" data-nl-ok hidden>
+        <Icon name="check" size={20} />
+        <span>Listo, quedaste anotado. Nos leemos pronto.</span>
+      </p>
 
       <ul class="nl__perks">
         <li><Icon name="check" size={16} /> Novedades reales de IA aplicada</li>
@@ -88,6 +108,21 @@ const { newsletter } = site;
   .nl__perks :global(svg) {
     color: var(--verde-resalte);
   }
+  .nl__error {
+    flex-basis: 100%;
+    font-size: var(--fs-caption);
+    color: #b3261e;
+  }
+  .nl__ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 191, 114, 0.1);
+    color: var(--verde-resalte);
+    font-weight: var(--w-subheadline);
+  }
   .visually-hidden {
     position: absolute;
     width: 1px;
@@ -98,12 +133,55 @@ const { newsletter } = site;
 </style>
 
 <script>
+  import { enviarLead } from "../scripts/enviarLead";
+
   function initNl() {
     const form = document.querySelector<HTMLFormElement>("[data-newsletter]");
-    form?.addEventListener("submit", () => {
-      alert("Formulario de ejemplo. Conectá tu proveedor de newsletter para activarlo.");
+    if (!form || form.dataset.listo) return;
+    form.dataset.listo = "1";
+
+    const ok = document.querySelector<HTMLElement>("[data-nl-ok]");
+    const error = document.querySelector<HTMLElement>("[data-nl-error]");
+    const boton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const etiqueta = boton?.innerHTML ?? "";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const datos = new FormData(form);
+
+      if (String(datos.get("website") ?? "").trim() !== "") {
+        form.hidden = true;
+        if (ok) ok.hidden = false;
+        return;
+      }
+
+      if (error) error.hidden = true;
+      if (boton) {
+        boton.disabled = true;
+        boton.textContent = "Enviando…";
+      }
+
+      try {
+        await enviarLead(
+          form.dataset.url ?? "",
+          form.dataset.key ?? "",
+          String(datos.get("email") ?? "").trim(),
+          form.dataset.origen ?? "newsletter"
+        );
+      } catch {
+        if (boton) {
+          boton.disabled = false;
+          boton.innerHTML = etiqueta;
+        }
+        if (error) error.hidden = false;
+        return;
+      }
+
+      form.hidden = true;
+      if (ok) ok.hidden = false;
     });
   }
+
   initNl();
   document.addEventListener("astro:page-load", initNl);
 </script>
