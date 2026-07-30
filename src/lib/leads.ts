@@ -6,6 +6,10 @@
    es el campo `origen`, que después usás en n8n para decidir qué mandarle
    a cada uno.
 
+   Cada fila es un PEDIDO, no una persona: la tabla es única por
+   (email, origen), así que alguien suscripto al newsletter puede pedir las
+   guías más adelante y queda registrado como un pedido aparte.
+
    Las credenciales salen de variables de entorno, NO del código:
    así no viajan al repositorio y Vercel las inyecta en el build.
 

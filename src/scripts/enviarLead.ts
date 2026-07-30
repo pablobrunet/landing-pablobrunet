@@ -49,7 +49,9 @@ export async function enviarLead(
     body: JSON.stringify({ email, origen }),
   });
 
-  // 409 = choque con el UNIQUE de `email`: ya estaba anotado.
+  /* 409 = choque con el UNIQUE de (email, origen): esta persona YA pidió
+     esto mismo. Ojo: no bloquea el otro formulario — quien está suscripto al
+     newsletter puede pedir las guías igual, porque cambia el `origen`. */
   if (r.status === 409) return { ok: true, repetido: true };
 
   if (!r.ok) {
