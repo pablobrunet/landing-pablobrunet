@@ -14,19 +14,19 @@ export interface ResultadoLead {
 /**
  * Inserta el correo en la tabla de Supabase.
  * @param endpoint URL REST de la tabla
- * @param anonKey  clave anon del proyecto
+ * @param clave    publishable key del proyecto (sb_publishable_…)
  * @param email    correo a guardar
  * @param origen   de qué formulario vino
  */
 export async function enviarLead(
   endpoint: string,
-  anonKey: string,
+  clave: string,
   email: string,
   origen: string
 ): Promise<ResultadoLead> {
-  if (!endpoint || !anonKey) {
+  if (!endpoint || !clave) {
     console.warn(
-      "[leads] Falta configurar PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_ANON_KEY. " +
+      "[leads] Falta configurar PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_PUBLISHABLE_KEY. " +
         "El correo NO se guardó."
     );
     return { ok: false, repetido: false };
@@ -36,8 +36,13 @@ export async function enviarLead(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      apikey: anonKey,
-      Authorization: `Bearer ${anonKey}`,
+      /* SOLO el header `apikey`. Las claves publishable (sb_publishable_…)
+         NO son JWT: si además se mandan en `Authorization: Bearer`, Supabase
+         intenta parsearlas como token y devuelve "Invalid JWT".
+         Sin Authorization, la petición corre como rol `anon`, que es
+         justamente lo que habilita la política RLS. Esto también funciona
+         con la anon key vieja, así que sirve para las dos. */
+      apikey: clave,
       // La tabla no permite SELECT: pedir la fila de vuelta daría error.
       Prefer: "return=minimal",
     },

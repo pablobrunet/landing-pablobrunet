@@ -18,10 +18,13 @@ create index if not exists leads_origen_idx on public.leads (origen);
 
 -- ---------------------------------------------------------------------
 -- SEGURIDAD
--- La web inserta desde el navegador con la anon key, que es pública.
+-- La web inserta desde el navegador con la publishable key, que es pública.
 -- Lo que hace que eso sea seguro es esto: se permite INSERT y NADA MÁS.
 -- Sin política de SELECT, la tabla es invisible desde afuera — nadie
 -- puede leerse tu lista de correos aunque tenga la clave.
+--
+-- La publishable key corre como rol `anon`, igual que la clave anterior,
+-- así que la política de abajo sirve para las dos.
 -- ---------------------------------------------------------------------
 alter table public.leads enable row level security;
 
@@ -42,6 +45,6 @@ create policy "anon puede insertar"
 -- Después de correr todo, esto debería insertar una fila:
 --   insert into public.leads (email, origen)
 --   values ('prueba@ejemplo.com', 'newsletter');
--- Y esto NO debería devolver nada si te conectás con la anon key:
+-- Y esto NO debería devolver nada desde el navegador:
 --   select * from public.leads;
 -- ---------------------------------------------------------------------
