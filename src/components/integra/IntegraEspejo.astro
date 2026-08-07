@@ -12,7 +12,7 @@
    así funciona con teclado y lo anuncia un lector de pantalla.
    ===================================================================== */
 import { integra } from "../../data/integra";
-const { espejo, anclas } = integra;
+const { espejo } = integra;
 const total = espejo.dolores.length;
 ---
 
@@ -69,14 +69,17 @@ const total = espejo.dolores.length;
             }
           </div>
 
-          <p class="marcador__fija">{espejo.fija}</p>
-
-          <a href={`#${anclas.agenda}`} class="btn btn--primary marcador__cta" data-espejo-cta>
-            {espejo.cta}
-          </a>
         </div>
       </aside>
     </div>
+
+    {/* Cierra la sección a todo el ancho, debajo de las dos columnas.
+        Adentro del panel competía con la lectura del conteo; acá es el
+        remate de todo lo anterior y se lee como tal. Va en Azul Denim,
+        que en la paleta es el secundario para información
+        complementaria, y así no se confunde con el azul profundo del
+        panel que puntúa. */}
+    <p class="esp__fija i-reveal">{espejo.fija}</p>
   </div>
 </section>
 
@@ -247,37 +250,20 @@ const total = espejo.dolores.length;
     line-height: 1.6;
     color: rgba(220, 230, 246, 0.85);
   }
-  .marcador__fija {
-    margin-top: 1.35rem;
-    padding: 0.9rem 1rem;
-    border-left: 3px solid var(--i-celeste);
-    border-radius: 0 10px 10px 0;
-    background: rgba(169, 200, 245, 0.08);
-    font-size: 0.9rem;
+  /* Remate de la sección, a todo el ancho y debajo de las dos columnas. */
+  .esp__fija {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(1.25rem, 3vw, 1.85rem) clamp(1.35rem, 4vw, 2.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-denim);
+    color: #fff;
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1rem, 0.92rem + 0.45vw, 1.25rem);
     line-height: 1.55;
-    color: rgba(220, 230, 246, 0.9);
-  }
-  /* El botón reserva su lugar desde el arranque aunque todavía no se
-     muestre: si apareciera de golpe, volvería a mover el alto del panel.
-     Con una sola marcada todavía no hay reconocimiento suficiente como
-     para pedir la reunión, así que recién se enciende en la segunda. */
-  .marcador__cta {
-    width: 100%;
-    margin-top: 1.35rem;
-    white-space: normal;
     text-align: center;
-    line-height: 1.35;
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 240ms ease, visibility 240ms;
+    text-wrap: balance;
   }
-  .marcador:not([data-n="0"]):not([data-n="1"]) .marcador__cta {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
   @media (min-width: 700px) {
     .esp__grid {
       grid-template-columns: 1fr 1fr;
