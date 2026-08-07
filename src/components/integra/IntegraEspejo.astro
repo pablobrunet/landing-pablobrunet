@@ -287,10 +287,25 @@ const total = espejo.dolores.length;
     .esp {
       grid-template-columns: 1.35fr 0.85fr;
       gap: 2rem;
+      /* Las dos columnas arrancan y terminan en la misma línea. Antes
+         iban con `align-items: start`, así que cada una quedaba en su
+         alto natural y el panel azul —más alto— sobraba por abajo.
+         Con `stretch`, la fila mide lo que la más alta y las dos la
+         ocupan entera. */
+      align-items: stretch;
     }
+    /* La columna de tarjetas se estira, y como sus filas son `1fr` el
+       alto sobrante se reparte parejo entre las seis: crecen todas por
+       igual en vez de quedar cortas. */
+    .esp__grid {
+      height: 100%;
+    }
+    /* El panel se estira igual. Sin esto, el <aside> ocupa la fila pero
+       el bloque azul de adentro conserva su alto y no se nota el cambio.
+       Se saca el `sticky`: es incompatible con estirarse, y con las dos
+       columnas del mismo alto ya no tenía nada que hacer. */
     .esp__panel {
-      position: sticky;
-      top: calc(var(--nav-alto) + 1.5rem);
+      display: grid;
     }
   }
 </style>
