@@ -4,6 +4,7 @@ import { servicios, hrefServicio } from "../data/servicios";
 import { recursos } from "../data/recursos";
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
+import RedLogo from "./RedLogo.astro";
 
 // Construye el contenido de cada desplegable a partir de los datos.
 type MenuKey = "servicios" | "recursos";
@@ -80,7 +81,7 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
           site.redes.map((r) => (
             <li>
               <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
-                <Icon name={r.icon} size={18} />
+                <RedLogo name={r.icon} size={18} />
               </a>
             </li>
           ))
@@ -279,14 +280,23 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
   }
   .nav__social {
     display: none;
-    gap: 0.65rem;
+    gap: 0.15rem;
   }
+  /* Área circular en lugar del glifo pelado: da un destino claro al
+     mouse, un blanco de 34px para el dedo y separa las cuatro marcas sin
+     tener que espaciarlas tanto. */
   .nav__social a {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
     color: var(--azul-pizarra);
-    transition: color var(--transition);
+    transition: color var(--transition), background var(--transition);
   }
   .nav__social a:hover {
-    color: var(--verde-acento);
+    color: var(--verde-resalte);
+    background: var(--gris-claro);
   }
   .nav__cta {
     display: none;
@@ -461,6 +471,16 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
           x.setAttribute("aria-expanded", "false");
         });
         trigger.setAttribute("aria-expanded", String(!abierto));
+
+        /* Al hacer click, el botón se queda con el foco — y el CSS abre el
+           panel también con `.nav__item:focus-within`. O sea que bajarle
+           el aria-expanded no alcanzaba: el panel seguía abierto por el
+           foco y se solapaba con el que abría el hover del de al lado.
+           Con el mouse se le saca el foco; con el teclado no, porque ahí
+           `:focus-within` es justamente lo que mantiene el panel abierto
+           mientras se tabula por adentro. `detail` vale 0 cuando el click
+           lo generó el teclado (Enter o Espacio). */
+        if (e.detail > 0) trigger.blur();
         return;
       }
 
@@ -496,7 +516,11 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
       var dentro = t.closest("[data-dropdown]");
 
       fijos.forEach(function (x) {
-        if (!dentro || !dentro.contains(x)) x.setAttribute("aria-expanded", "false");
+        if (dentro && dentro.contains(x)) return;
+        x.setAttribute("aria-expanded", "false");
+        /* Por las dudas quede foco puesto por algo que no sea el click
+           del mouse: sin sacarlo, `:focus-within` reabre el panel. */
+        if (document.activeElement === x) x.blur();
       });
     });
   })();

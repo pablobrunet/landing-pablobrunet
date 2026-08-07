@@ -2,6 +2,7 @@
 import { site } from "../data/site";
 import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
+import RedLogo from "./RedLogo.astro";
 const { footer } = site;
 const year = 2026; // actualizá si corresponde
 ---
@@ -26,7 +27,7 @@ const year = 2026; // actualizá si corresponde
           site.redes.map((r) => (
             <li>
               <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
-                <Icon name={r.icon} size={18} />
+                <RedLogo name={r.icon} size={18} />
               </a>
             </li>
           ))
