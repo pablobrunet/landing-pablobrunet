@@ -2,13 +2,14 @@
 /* =====================================================================
    ESPEJO DEL PROBLEMA (interactivo)
    ---------------------------------------------------------------------
-   Convierte "interesante" en "esto me pasa a mí". Ocho tarjetas
+   Convierte "interesante" en "esto me pasa a mí". Seis tarjetas
    clickeables; el panel de la derecha cuenta y devuelve una lectura
-   distinta según cuántas marcó.
+   distinta por CADA cantidad marcada —no por tramos—, para que el
+   diagnóstico suba de a poco en vez de saltar.
 
-   Los ocho dolores son textuales de la propuesta madre: se editan en
-   data/integra.ts, no acá. Cada tarjeta es un <button aria-pressed>, así
-   funciona con teclado y lo anuncia un lector de pantalla.
+   Los dolores y sus respuestas se editan en data/integra.ts, no acá:
+   van emparejados uno a uno. Cada tarjeta es un <button aria-pressed>,
+   así funciona con teclado y lo anuncia un lector de pantalla.
    ===================================================================== */
 import { integra } from "../../data/integra";
 const { espejo, anclas } = integra;
@@ -255,7 +256,7 @@ const total = espejo.dolores.length;
     raiz.dataset.listo = "1";
 
     const datos = document.querySelector<HTMLScriptElement>("[data-espejo-respuestas]");
-    type Respuesta = { hasta: number; titulo: string; texto: string };
+    type Respuesta = { titulo: string; texto: string };
     let respuestas: Respuesta[] = [];
     try {
       respuestas = JSON.parse(datos?.textContent ?? "[]");
@@ -263,7 +264,7 @@ const total = espejo.dolores.length;
       respuestas = [];
     }
 
-    const total = Number(raiz.dataset.total ?? 8);
+    const total = Number(raiz.dataset.total ?? 6);
     const tarjetas = Array.from(raiz.querySelectorAll<HTMLButtonElement>("[data-dolor]"));
     const contador = raiz.querySelector<HTMLElement>("[data-contador]");
     const barra = raiz.querySelector<HTMLElement>("[data-barra]");
@@ -289,7 +290,9 @@ const total = espejo.dolores.length;
       }
 
       if (pista) pista.hidden = true;
-      const r = respuestas.find((x) => n <= x.hasta) ?? respuestas[respuestas.length - 1];
+      /* Una respuesta por cantidad marcada: `n` de 1 a 6 → índice 0 a 5.
+         El clamp cubre el caso de que las dos listas queden desfasadas. */
+      const r = respuestas[Math.min(n, respuestas.length) - 1];
       if (r && titulo && texto && caja) {
         titulo.textContent = r.titulo;
         texto.textContent = r.texto;

@@ -9,7 +9,7 @@
      Marca      → Pablo Brunet (creador del Método INTEGRA)
      Método     → Método INTEGRA
      Programa   → INTEGRA 60   (con espacio, nunca "INTEGRA-60")
-     Sistema    → Sistema Mínimo INTEGRA
+     Sistema    → Sistema INTEGRA
      Diagnóstico gratuito → Chequeo INTEGRA (nombre todavía provisorio)
 
    PROHIBIDO en toda la página (regla dura del brief): prometer "un caso
@@ -59,7 +59,7 @@ export const integra = {
     firma: "Creador del Método INTEGRA",
     metodo: "Método INTEGRA",
     programa: "INTEGRA 60",
-    sistema: "Sistema Mínimo INTEGRA",
+    sistema: "Sistema INTEGRA",
     chequeo: "Chequeo INTEGRA",
     clinica: "Clínica INTEGRA",
     workbook: "Workbook INTEGRA",
@@ -90,79 +90,84 @@ export const integra = {
          B · "Tu empresa ya paga por IA. Todavía no cobró nada a cambio."
          C · "En 60 días instalamos en tu empresa la capacidad para
               integrar inteligencia artificial con método." */
-    titulo: "La inteligencia artificial ya entró a tu empresa.",
-    tituloResalte: "Entró sin plan — y así no va a dar resultados.",
+    titulo: "El resultado no es usar IA.",
+    tituloResalte: "Es saber qué hacer con ella.",
     subtitulo:
-      "Cada persona usa una herramienta distinta, se pagan suscripciones que nadie controla y las capacitaciones no cambiaron nada. En 60 días instalamos en tu empresa un sistema práctico para integrar IA: gente formada, oportunidades priorizadas, pruebas sobre trabajo real y una forma de decidir — sin armar un área de tecnología y sin quedar colgados de un consultor externo.",
-    ctaPrimario: "Agendar mi diagnóstico gratuito",
+      "Cada persona usa una herramienta distinta, se pagan suscripciones que nadie controla y las capacitaciones no cambiaron nada. En 60 días instalamos en tu empresa un sistema práctico para integrar IA: gente formada, oportunidades priorizadas, pruebas sobre trabajo real y una forma de decidir.",
+    ctaPrimario: "Agendar diagnóstico gratuito",
     ctaPrimarioNota: "30 minutos, por videollamada. Te vas con claridad, lo contrates o no.",
     ctaSecundario: "Hacer el chequeo de 2 minutos",
     /* Franja de confianza, debajo de los botones. */
     confianza: [
       { tipo: "logo", texto: "Miembro del OpenAI Partner Network", img: "/images/credenciales/openai-partner-network.png" },
-      { tipo: "texto", texto: "Método propio: Método INTEGRA" },
-      { tipo: "texto", texto: "100% remoto · reuniones semanales en vivo" },
     ],
   },
 
-  /* ---- VSL ----
-     El video todavía no está grabado (supuesto 1 de la spec). Mientras
-     `url` esté vacío se dibuja la portada con el aviso; en cuanto pegues
-     un enlace de YouTube/Vimeo el reproductor aparece solo.
-     ⚠️ Si el video se grabó con un guion anterior (resultado medido a los
-     30 días, o la marca ADOPTA-60), hay que regrabarlo. */
-  vsl: {
-    url: "",
-    /* Portada mientras no haya video: una foto real dando una charla lee
-       como miniatura de video mucho mejor que un retrato recortado. */
-    poster: "/images/about/tedindx-charla.jpg",
-    duracion: "90 segundos",
-    titulo: "Qué es el Método INTEGRA, en 90 segundos",
-    avisoSinVideo: "Video en grabación. Mientras tanto, el método está contado abajo, paso por paso.",
+  /* ---- Imagen del hero ----
+     Va sin reproductor: todavía no hay video. El archivo vive en
+     src/assets/hero/ y no en public/, para que Astro lo comprima y sirva
+     en webp — el original son 3,2 MB de cámara de celular.
+     Cuando exista el video, esta imagen pasa a ser su portada. */
+  imagen: {
+    alt: "Pablo Brunet trabajando con un equipo durante un encuentro del Método INTEGRA",
   },
 
   /* =====================================================================
      2 · ESPEJO DEL PROBLEMA (interactivo)
-     Los 8 dolores son textuales de la propuesta madre: no se editan.
      ===================================================================== */
   espejo: {
     eyebrow: "El espejo",
     titulo: "¿Cuántas de estas te pasan hoy?",
     subtitulo: "Tocá las que reconozcas en tu empresa. Sin registro, sin trampa.",
     dolores: [
-      "Cada persona usa herramientas de IA diferentes.",
-      "No hay un criterio común dentro de la empresa.",
+      "Cada persona usa herramientas de IA diferentes, sin criterio común.",
       "Se pagan suscripciones sin saber si hacen falta.",
       "El equipo conoce herramientas, pero no sabe aplicarlas al trabajo real.",
       "Las capacitaciones quedaron desconectadas del día a día.",
       "No se sabe qué tarea, área o proceso mejorar primero.",
       "Hay iniciativas aisladas, pero no una estrategia sostenida.",
-      "Nadie mide cuánto tiempo o dinero se está ganando (si se está ganando algo).",
     ],
-    /* Respuesta según cuántas marcó. `hasta` es el tope del tramo. */
+    /* Una respuesta POR CANTIDAD marcada, no por tramos: así el
+       diagnóstico sube de a poco en vez de saltar de golpe.
+       ⚠️ Invariante: una entrada por cada dolor, en orden (la primera es
+       "marcó 1", la última "marcó todas"). Si cambia `dolores`, esta
+       lista tiene que cambiar igual. Con cero marcadas no se usa ninguna:
+       ahí se muestra la pista de "tocá las que reconozcas". */
     respuestas: [
       {
-        hasta: 1,
-        titulo: "Mejor que la mayoría",
+        titulo: "Una sola, y ya se nota",
         texto:
-          "Tu empresa está mejor que la mayoría. La pregunta que ordena todo es la siguiente: si mañana aparece una oportunidad nueva, ¿tienen una forma acordada de decidir si vale la pena? La reunión de diagnóstico sirve para responderla.",
+          "Con una alcanza para que el resto empiece a desordenarse: es la que después explica por qué las demás aparecen. Todavía estás a tiempo de ordenarlo barato.",
       },
       {
-        hasta: 4,
-        titulo: "El punto exacto donde empieza a costar plata",
+        titulo: "Dos frentes abiertos",
         texto:
-          "Tu empresa está en el punto exacto donde la IA dispersa empieza a costar plata. No porque falten herramientas: porque todavía no hay una forma común de decidir dónde aplicarlas. Es el mejor momento para instalarla.",
+          "Dos ya no es casualidad. Son las primeras señales de que el uso de IA está creciendo más rápido que el criterio para dirigirlo.",
       },
       {
-        hasta: 8,
+        titulo: "Acá empieza a costar plata",
+        texto:
+          "Con tres, tu empresa está en el punto exacto donde la IA dispersa empieza a costar plata. No porque falten herramientas: porque todavía no hay una forma común de decidir dónde aplicarlas.",
+      },
+      {
+        titulo: "Ya es el patrón, no la excepción",
+        texto:
+          "Cuatro dejan de ser problemas sueltos y pasan a ser cómo funciona la empresa con la IA. A esta altura cada mes que pasa se paga en horas y en suscripciones.",
+      },
+      {
         titulo: "No es un problema de IA. Es de método.",
         texto:
-          "Tu empresa no tiene un problema de inteligencia artificial. Tiene un problema de método: nadie adentro sabe hoy cómo identificar, priorizar y decidir. Eso es exactamente lo que se instala en 60 días.",
+          "Con cinco, el diagnóstico es bastante claro: nadie adentro tiene hoy la forma de identificar, priorizar y decidir. Eso es exactamente lo que se instala en 60 días.",
+      },
+      {
+        titulo: "Las seis. Y ninguna se arregla comprando software.",
+        texto:
+          "Marcaste todas. La buena noticia es que las seis tienen la misma causa y una sola salida: un método propio, operado por gente de la casa. Es lo que hacemos en 60 días.",
       },
     ],
     fija:
       "Ninguna de estas se arregla comprando otra herramienta ni contratando a alguien que la use por vos. Se arregla cuando tu equipo sabe decidir.",
-    cta: "Quiero que mi empresa sepa resolver esto sola — agendar diagnóstico",
+    cta: "Agendar diagnóstico",
   },
 
   /* =====================================================================
@@ -193,7 +198,7 @@ export const integra = {
     ],
     cierre:
       "Cada mes sin método no es neutro: es tiempo, dinero y oportunidad que la empresa no está capturando — y el mes que viene vuelve a empezar de cero, porque no queda nada aprendido.",
-    cta: "Ver dónde lo estoy perdiendo — diagnóstico gratuito",
+    cta: "Quiero mi diagnóstico",
   },
 
   /* =====================================================================
@@ -205,7 +210,10 @@ export const integra = {
     eyebrow: "El método",
     titulo: "No empezamos por las herramientas. Empezamos por los resultados que tu empresa necesita.",
     subtitulo:
-      "El Método INTEGRA es un método de integración práctica de inteligencia artificial. No es un curso ni un catálogo de herramientas: son siete fases cuyas iniciales forman el nombre del método, recorridas en 60 días con cuatro puntos de control donde dirección revisa que el proceso está realmente avanzando.",
+      "El Método INTEGRA es un método de integración práctica de inteligencia artificial. No es un curso ni un catálogo de herramientas: son siete fases cuyas iniciales forman el nombre del método, recorridas en 60 días.",
+    /* Ayuda de uso del selector de fases: sin esto no es obvio que las
+       letras se tocan. */
+    pista: "Tocá cada letra para ver la fase.",
     fases: [
       {
         letra: "I",
@@ -264,58 +272,16 @@ export const integra = {
           "Lo aprendido se convierte en forma de trabajo: quién carga las oportunidades nuevas, quién prioriza, qué ritual semanal queda corriendo, dónde vive la documentación y qué se hace en los siguientes 90 días. Acelerar no es implementar más soluciones: es que el próximo ciclo te cueste la mitad.",
       },
     ] as FaseIntegra[],
-    /* En documentos internos se llaman «gates». En la landing, siempre
-       «punto de control» (supuesto 11 de la spec). */
-    puntosDeControl: {
-      titulo: "Cuatro puntos de control con dirección",
-      subtitulo:
-        "No es un programa que se evalúa al final. Cada quince días dirección revisa, con una pregunta concreta, si el proceso avanza de verdad.",
-      items: [
-        { dia: 15, pregunta: "¿Tu empresa identificó su punto de partida y están dadas las condiciones para integrar IA con método?" },
-        { dia: 30, pregunta: "¿Tu empresa sabe negociar prioridades y transformar una oportunidad en una Prueba Aplicada?" },
-        { dia: 45, pregunta: "¿Tu empresa sabe ejecutar, leer evidencia y convertir lo que pasó en una decisión?" },
-        { dia: 60, pregunta: "¿Quedó instalado el sistema y tu empresa está lista para acelerar el siguiente ciclo?" },
-      ],
-    },
-    acompanamiento: {
-      titulo: "El acompañamiento no es una fase: es lo que evita que las fases se caigan.",
-      texto:
-        "Todas las semanas hay una clínica privada de 60 minutos con el equipo (la Clínica INTEGRA), y cada quince días una alineación con dirección de 30 minutos donde se toman las decisiones que destraban — cada punto de control coincide con una de esas alineaciones. Más el encuentro grupal de la comunidad.",
-    },
-    remate:
-      "Todo remoto, con encuentros semanales en vivo. Tu empresa pone las personas, el tiempo y las decisiones; nosotros ponemos el método, los materiales, el acompañamiento y el ritmo.",
   },
 
   /* =====================================================================
      5 · QUÉ QUEDA INSTALADO
-     Regla de la sección: artefactos y capacidades SIEMPRE juntos.
      ===================================================================== */
   instalado: {
     eyebrow: "Qué te queda",
     titulo: "Al día 60 tu empresa se queda con esto.",
     subtitulo:
-      "No con una automatización que funciona hasta que se rompe. Con un sistema propio para seguir identificando, decidiendo y probando — lo llamamos el Sistema Mínimo INTEGRA.",
-    artefactos: {
-      titulo: "Lo que se lleva escrito",
-      etiqueta: "3 artefactos",
-      items: [
-        {
-          titulo: "El Workbook INTEGRA",
-          texto:
-            "Un único documento vivo con cinco pestañas: alineación y gobierno · personas y capacidades · el Tablero de Oportunidades y las pruebas · alertas, decisiones y aprendizajes · el plan de los próximos 90 días.",
-        },
-        {
-          titulo: "El Repositorio INTEGRA",
-          texto:
-            "Cinco carpetas ordenadas donde viven el workbook, los sistemas y plantillas que funcionaron, las pruebas y sus resultados, la política de uso y los materiales de formación. Incluye lo que no funcionó y por qué — es lo que evita repetir errores dentro de seis meses.",
-        },
-        {
-          titulo: "El Plan Operativo de 90 días",
-          texto:
-            "Qué sigue después del programa: próximas oportunidades, responsables, cadencia, fechas de revisión y riesgos a vigilar. Con un resumen ejecutivo breve, escrito para dirección y no para técnicos.",
-        },
-      ],
-    },
+      "No con una automatización que funciona hasta que se rompe. Con un sistema propio para seguir identificando, decidiendo y probando.",
     capacidades: {
       titulo: "Lo que se lleva instalado",
       etiqueta: "3 capacidades",
@@ -340,84 +306,40 @@ export const integra = {
     cita:
       "Ahora tenemos responsables, criterios compartidos, una forma de detectar y priorizar oportunidades, un protocolo para probarlas, espacios para decidir, un registro de evidencia y un plan para continuar avanzando.",
     citaPie: "Así suena una empresa con el sistema instalado.",
-    nota:
-      "Puede haber ciclos que dejen tres mejoras adoptadas y ciclos que dejen una. Lo que no puede faltar es la capacidad de producir la siguiente sin nosotros.",
-    cta: "Empezar por el diagnóstico gratuito",
+    cta: "Quiero mi diagnóstico",
   },
 
   /* =====================================================================
      6 · QUIÉN HACE QUÉ
-     Filtra al prospecto que busca un done-for-you: es el punto.
+     Tres columnas parejas y cortas. La versión larga (trece ítems de un
+     lado, nueve del otro) se leía como un contrato y desinflaba la
+     sección justo antes del cierre.
      ===================================================================== */
   reparto: {
     eyebrow: "El reparto",
-    titulo: "Esto no lo hacemos por vos. Lo hacemos con vos — y queda claro desde el primer día.",
+    titulo: "Esto no lo hacemos por vos. Lo hacemos con vos.",
     subtitulo:
-      "La mitad de los programas de IA fracasan por un malentendido de reparto. Preferimos ponerlo por escrito antes de empezar.",
+      "Tu equipo aprende haciendo, sobre el trabajo real de todos los días. Nosotros ponemos el método y el ritmo para que eso pase.",
     columnas: [
       {
-        titulo: "Nosotros ponemos",
+        titulo: "Ponemos nosotros",
         tono: "nosotros",
-        items: [
-          "El método",
-          "La capacitación y los materiales",
-          "La facilitación de todas las reuniones",
-          "Ayuda para identificar y negociar prioridades",
-          "Revisión del diseño de cada prueba",
-          "Recomendación de herramientas y enfoques",
-          "Ayuda para achicar el alcance cuando se agranda solo",
-          "Señalamiento de riesgos",
-          "El ritmo semanal",
-          "Visibilidad sobre avances, bloqueos y decisiones",
-          "Ayuda para interpretar la evidencia",
-          "Toda la documentación del sistema",
-          "La transferencia final",
-        ],
+        icono: "brujula",
+        items: ["El método y los materiales", "La facilitación de cada reunión", "El acompañamiento semanal"],
       },
       {
-        titulo: "Tu empresa pone",
+        titulo: "Pone tu empresa",
         tono: "empresa",
-        items: [
-          "Un sponsor y un referente interno",
-          "Tiempo asignado y explícito",
-          "Accesos e información",
-          "La ejecución de las pruebas",
-          "El uso real de las herramientas",
-          "El registro de resultados",
-          "Las decisiones",
-          "La resolución de los bloqueos internos",
-          "El sostenimiento de los rituales",
-        ],
+        icono: "equipo",
+        items: ["Un referente interno", "Las personas y su tiempo", "Las decisiones"],
       },
       {
         titulo: "Lo hacemos juntos",
         tono: "juntos",
-        items: [
-          "Negociar las prioridades",
-          "Definir los criterios de éxito",
-          "Revisar la evidencia",
-          "Decidir si algo se adopta, se ajusta o se descarta",
-          "Armar el plan de los próximos 90 días",
-        ],
+        icono: "manos",
+        items: ["Priorizar las oportunidades", "Probar sobre trabajo real", "Definir los próximos 90 días"],
       },
     ],
-    frase: [
-      "Somos responsables de que exista y funcione el proceso de integración.",
-      "Tu empresa es responsable de ejecutar su trabajo dentro de ese proceso.",
-    ],
-    fuera: {
-      titulo: "Qué no incluye",
-      texto:
-        "Desarrollo de software, automatizaciones complejas, integraciones, configuración técnica extensa, migraciones de datos y mantenimiento técnico continuo quedan fuera del programa. Cuando una oportunidad pide eso, se registra, se evalúa y se cotiza aparte como proyecto de implementación.",
-    },
-    tiempo: {
-      titulo: "Cuánto tiempo hay que poner",
-      chips: [
-        "Referente interno: 3-4 h por semana",
-        "Cada participante: ~1,5 h por semana",
-        "Dirección: 30 minutos cada quince días",
-      ],
-    },
   },
 
   /* =====================================================================
@@ -427,39 +349,7 @@ export const integra = {
     eyebrow: "Sin riesgo",
     titulo: "Garantía: el sistema queda instalado.",
     texto:
-      "Si tu empresa cumple con las condiciones de participación, dedicación y ejecución acordadas, y al día 60 no queda instalado el Sistema Mínimo INTEGRA definido en el programa, seguimos acompañándola sin costo hasta completarlo.",
-    bloques: [
-      {
-        titulo: "Qué cubre",
-        items: [
-          "La metodología",
-          "El acompañamiento",
-          "La capacitación",
-          "La transferencia",
-          "El sistema de trabajo y los entregables mínimos",
-        ],
-      },
-      {
-        titulo: "Qué no garantizamos",
-        items: [
-          "Ahorros determinados",
-          "Un retorno específico",
-          "Una cantidad de automatizaciones",
-          "Resultados que dependan de la ejecución de tu empresa",
-          "Implementaciones técnicas fuera del alcance",
-        ],
-      },
-      {
-        titulo: "Qué acepta tu empresa",
-        items: [
-          "Designar responsables",
-          "Participar y asignar tiempo",
-          "Dar accesos",
-          "Ejecutar las pruebas y registrar evidencia",
-          "Que dirección participe de los cuatro puntos de control",
-        ],
-      },
-    ],
+      "Si al día 60 no queda instalado el Sistema INTEGRA definido en el programa, seguimos acompañando a tu empresa sin costo hasta completarlo.",
     cierre: "Preferimos una garantía chica que podamos cumplir siempre antes que una grande que no te creerías.",
   },
 
@@ -606,7 +496,7 @@ export const integra = {
         "Usamos tus datos solo para enviarte el resultado y contactarte por el diagnóstico. No compartimos tu información con nadie.",
       error: "No pudimos guardar tus datos, pero tu resultado está abajo igual.",
     },
-    resultadoCta: "Convertir este resultado en un plan — agendar diagnóstico gratuito",
+    resultadoCta: "Quiero mi diagnóstico gratuito",
     reiniciar: "Volver a empezar",
   },
 

@@ -38,9 +38,12 @@ const {
     <!-- Subí una imagen a /public/images/og/og.jpg para las previsualizaciones -->
     <meta property="og:image" content="/images/og/og.jpg" />
 
-    <!-- Identidad del sitio en pestañas, favoritos y accesos directos -->
-    <link rel="icon" type="image/png" href="/images/logos/logo%20v3.png?v=3" />
-    <link rel="apple-touch-icon" href="/images/logos/logo%20v3.png?v=3" />
+    <!-- Identidad del sitio en pestañas, favoritos y accesos directos.
+         El nombre del archivo tiene espacios, así que va codificado (%20).
+         El `?v=` es a propósito: los navegadores cachean el favicon con
+         mucha insistencia y sin cambiarlo seguirían mostrando el viejo. -->
+    <link rel="icon" type="image/png" href="/images/logos/logo%20v3%20-%20transparente.png?v=4" />
+    <link rel="apple-touch-icon" href="/images/logos/logo%20v3%20-%20transparente.png?v=4" />
 
     <!-- Tipografía de marca: Google Sans Flex (variable) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

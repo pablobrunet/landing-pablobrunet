@@ -53,9 +53,20 @@ la identidad, se tocan ahí y se propagan solos.
   Supabase. Antes de usarlo hay que correr una vez `supabase/integra-chequeo.sql`.
   Si no se corre, el quiz funciona igual: muestra el resultado y sólo se pierde
   el registro.
-- El **VSL todavía no está grabado**: mientras `integra.vsl.url` esté vacío se
-  muestra la portada con el aviso. Al pegar un enlace de YouTube/Vimeo aparece
-  el reproductor solo.
+- **Todavía no hay video**: el hero lleva una foto. Cuando exista el VSL, esa
+  misma imagen sirve de portada y se le monta el reproductor encima.
+- La **foto del hero** vive en `src/assets/hero/` y no en `public/`: así pasa
+  por el optimizador de Astro (el original son 3,2 MB de cámara y se sirve en
+  webp de 22 a 60 kB según la pantalla). Si la cambiás, reemplazá el archivo
+  ahí y listo. El resto de las imágenes del sitio siguen en `public/images/`.
+- Los **seis síntomas** del espejo y sus **seis respuestas** van emparejados
+  uno a uno en `integra.ts`: hay una lectura distinta por cada cantidad
+  marcada, para que el diagnóstico suba de a poco. Si agregás un síntoma,
+  agregá su respuesta.
+- Las **siete fases** son un selector sin JavaScript (radios + labels): un
+  solo panel debajo de las letras que cambia de contenido. Los siete paneles
+  se apilan en la misma celda, así que el bloque no cambia de alto ni hace
+  saltar la página al elegir otra letra.
 
 ## Requisitos
 

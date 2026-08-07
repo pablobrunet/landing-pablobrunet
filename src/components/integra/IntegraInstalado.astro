@@ -2,14 +2,16 @@
 /* =====================================================================
    QUÉ QUEDA INSTALADO EN TU EMPRESA
    ---------------------------------------------------------------------
-   Regla dura de la sección: los tres ARTEFACTOS y las tres CAPACIDADES
-   se muestran SIEMPRE JUNTOS y con el mismo peso visual. Mostrar sólo
-   documentos subvende el programa; mostrar sólo capacidades lo vuelve
-   inverificable. En mobile van apilados, primero los artefactos.
+   Las tres capacidades, una tarjeta cada una y las tres con el mismo
+   peso: es lo único que se promete al día 60.
+
+   La columna de artefactos (workbook, repositorio, plan de 90 días) se
+   sacó a propósito: enumerar documentos hacía leer el programa como una
+   entrega de papeles y competía con lo que de verdad se vende, que es la
+   capacidad que queda funcionando.
    ===================================================================== */
 import { integra } from "../../data/integra";
 const { instalado, anclas } = integra;
-const columnas = [instalado.artefactos, instalado.capacidades];
 ---
 
 <section class="section i-claro" id="que-queda" aria-label="Qué queda instalado">
@@ -20,36 +22,26 @@ const columnas = [instalado.artefactos, instalado.capacidades];
       <p class="text-muted">{instalado.subtitulo}</p>
     </header>
 
-    <div class="queda">
+    <ol class="queda">
       {
-        columnas.map((col, ci) => (
-          <div class="queda__col i-reveal">
-            <header class="queda__head">
-              <span class="queda__etiqueta">{col.etiqueta}</span>
-              <h3 class="t-h3">{col.titulo}</h3>
-            </header>
-            <ol class="queda__lista">
-              {col.items.map((it, i) => (
-                <li class="queda__item">
-                  <span class="queda__n" aria-hidden="true">{ci === 0 ? String(i + 1) : "✓"}</span>
-                  <div>
-                    <h4 class="queda__t">{it.titulo}</h4>
-                    <p class="text-muted">{it.texto}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+        instalado.capacidades.items.map((it) => (
+          <li class="queda__card i-reveal">
+            <span class="queda__n" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12l4 4 10-10" />
+              </svg>
+            </span>
+            <h3 class="queda__t">{it.titulo}</h3>
+            <p class="text-muted">{it.texto}</p>
+          </li>
         ))
       }
-    </div>
+    </ol>
 
     <figure class="queda__cita i-reveal">
       <blockquote>{instalado.cita}</blockquote>
       <figcaption>{instalado.citaPie}</figcaption>
     </figure>
-
-    <p class="queda__nota i-reveal">{instalado.nota}</p>
 
     <div class="queda__cta i-reveal">
       <a href={`#${anclas.agenda}`} class="btn btn--primary">{instalado.cta}</a>
@@ -60,61 +52,31 @@ const columnas = [instalado.artefactos, instalado.capacidades];
 <style>
   .queda {
     display: grid;
-    gap: 2rem;
-    position: relative;
+    gap: 1.25rem;
   }
-  .queda__col {
-    padding: clamp(1.35rem, 3vw, 2rem);
+  .queda__card {
+    padding: clamp(1.35rem, 3vw, 1.85rem);
     border-radius: var(--radius-lg);
     border: 1px solid var(--borde);
     background: linear-gradient(180deg, var(--i-hielo-2), #fff 40%);
   }
-  .queda__head {
-    padding-bottom: 1.1rem;
-    margin-bottom: 1.25rem;
-    border-bottom: 1px solid var(--borde);
-  }
-  .queda__etiqueta {
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0.7rem;
-    border-radius: var(--radius-pill);
-    background: rgba(30, 92, 242, 0.1);
-    color: var(--verde-resalte);
-    font-size: 0.72rem;
-    font-weight: var(--w-headline);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .queda__lista {
-    display: grid;
-    gap: 1.35rem;
-  }
-  .queda__item {
-    display: flex;
-    gap: 0.9rem;
-    align-items: flex-start;
-  }
   .queda__n {
-    flex-shrink: 0;
     display: grid;
     place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 9px;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0.9rem;
+    border-radius: 10px;
     background: var(--i-grad);
     color: #fff;
-    font-family: var(--font-title);
-    font-weight: var(--w-headline);
-    font-size: 0.85rem;
   }
   .queda__t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
   }
-  .queda__item p {
+  .queda__card p {
     font-size: 0.925rem;
     line-height: 1.6;
   }
@@ -147,23 +109,14 @@ const columnas = [instalado.artefactos, instalado.capacidades];
     text-transform: uppercase;
     color: rgba(220, 230, 246, 0.55);
   }
-  .queda__nota {
-    margin-top: 1.5rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--texto-suave);
-    max-width: 640px;
-    margin-inline: auto;
-  }
   .queda__cta {
     margin-top: 1.75rem;
     text-align: center;
   }
 
-  @media (min-width: 920px) {
+  @media (min-width: 860px) {
     .queda {
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>

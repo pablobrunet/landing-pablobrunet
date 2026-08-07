@@ -1,17 +1,22 @@
 ---
 /* =====================================================================
-   HERO + VSL — Método INTEGRA
+   HERO — Método INTEGRA
    ---------------------------------------------------------------------
    Está diseñado para TRÁFICO FRÍO: no asume que conocen a Pablo. Abre por
-   el dolor (la IA ya entró sin plan), nunca por "capacidad instalada" —
-   esa idea recién se entiende después del reencuadre.
+   el dolor, nunca por "capacidad instalada" — esa idea recién se entiende
+   después del reencuadre.
 
-   El VSL todavía no está grabado: mientras `integra.vsl.url` esté vacío
-   se dibuja la portada con el aviso. Al pegar un enlace, el botón de play
-   monta el iframe recién al hacer clic (nada de terceros en la carga).
+   Va una foto, no un video: todavía no hay VSL grabado. Cuando lo haya,
+   esta misma imagen sirve de portada y se le monta el reproductor encima.
+
+   La imagen se importa desde src/assets (no desde public/) para que pase
+   por el optimizador de Astro: el original son 3,2 MB de cámara, y así
+   sale en webp y en tres anchos según la pantalla.
    ===================================================================== */
+import { Image } from "astro:assets";
 import { integra } from "../../data/integra";
-const { hero, vsl, anclas } = integra;
+import portada from "../../assets/hero/integra1.jpg";
+const { hero, imagen, anclas } = integra;
 ---
 
 <section class="ih" aria-label="Método INTEGRA">
@@ -56,19 +61,24 @@ const { hero, vsl, anclas } = integra;
       </ul>
     </div>
 
-    <div class="ih__vsl">
-      <div class="vsl" data-vsl data-url={vsl.url}>
-        <img class="vsl__poster" src={vsl.poster} alt="" width="640" height="360" />
-        <span class="vsl__velo" aria-hidden="true"></span>
-        <button class="vsl__play" type="button" aria-label={`Reproducir: ${vsl.titulo}`}>
-          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
-            <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
-          </svg>
-        </button>
-        <span class="vsl__duracion">{vsl.duracion}</span>
-        <p class="vsl__titulo">{vsl.titulo}</p>
-      </div>
-      {!vsl.url && <p class="ih__aviso">{vsl.avisoSinVideo}</p>}
+    <div class="ih__media">
+      <figure class="foto">
+        {/* `width` acota el src de reserva: sin él Astro lo genera al
+            tamaño original (4032px = 405 kB) y esa es la URL que termina
+            en el atributo src. Con 1040 el peor caso son 60 kB. */}
+        <Image
+          src={portada}
+          alt={imagen.alt}
+          width={1040}
+          height={780}
+          widths={[520, 760, 1040]}
+          sizes="(min-width: 980px) 42vw, 92vw"
+          formats={["webp"]}
+          quality={72}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
     </div>
   </div>
 </section>
@@ -210,86 +220,22 @@ const { hero, vsl, anclas } = integra;
     flex-shrink: 0;
   }
 
-  /* ---- Tarjeta del VSL ---- */
-  .vsl {
+  /* ---- Foto ---- */
+  .foto {
     position: relative;
-    aspect-ratio: 16 / 10;
+    margin: 0;
+    aspect-ratio: 4 / 3;
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: linear-gradient(150deg, #17408f, #0a1430 70%);
     box-shadow: 0 30px 70px rgba(6, 12, 30, 0.55);
   }
-  .vsl__poster {
-    position: absolute;
-    inset: 0;
+  .foto :global(img) {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 35%;
-    opacity: 0.92;
-  }
-  .vsl__velo {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(13, 27, 61, 0.15) 0%, rgba(13, 27, 61, 0.85) 100%);
-  }
-  .vsl__play {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: grid;
-    place-items: center;
-    width: 76px;
-    height: 76px;
-    padding-left: 4px;
-    border: 0;
-    border-radius: 50%;
-    cursor: pointer;
-    color: #fff;
-    background: var(--i-grad);
-    box-shadow: 0 0 0 10px rgba(169, 200, 245, 0.16), var(--i-glow);
-    transition: transform var(--transition), box-shadow var(--transition);
-  }
-  .vsl__play:hover {
-    transform: translate(-50%, -50%) scale(1.06);
-    box-shadow: 0 0 0 16px rgba(169, 200, 245, 0.18), var(--i-glow);
-  }
-  .vsl__duracion {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.3rem 0.7rem;
-    border-radius: var(--radius-pill);
-    background: rgba(13, 27, 61, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    font-size: 0.75rem;
-    font-weight: var(--w-subheadline);
-    letter-spacing: 0.02em;
-  }
-  .vsl__titulo {
-    position: absolute;
-    left: 1.35rem;
-    right: 1.35rem;
-    bottom: 1.2rem;
-    font-family: var(--font-title);
-    font-weight: var(--w-headline);
-    font-size: 1.05rem;
-    line-height: 1.25;
-  }
-  .vsl :global(iframe) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-  .ih__aviso {
-    margin-top: 0.9rem;
-    font-size: var(--fs-caption);
-    color: rgba(220, 230, 246, 0.6);
-    text-align: center;
   }
 
   @media (min-width: 980px) {
@@ -299,31 +245,3 @@ const { hero, vsl, anclas } = integra;
     }
   }
 </style>
-
-<script>
-  /* Play del VSL. Con `data-url` vacío el botón no monta ningún video:
-     lleva al método, que es la información que sí está disponible. */
-  function initVsl() {
-    const caja = document.querySelector<HTMLElement>("[data-vsl]");
-    if (!caja || caja.dataset.listo) return;
-    caja.dataset.listo = "1";
-
-    const boton = caja.querySelector<HTMLButtonElement>(".vsl__play");
-    boton?.addEventListener("click", () => {
-      const url = caja.dataset.url ?? "";
-      if (!url) {
-        document.getElementById("metodo")?.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-      const iframe = document.createElement("iframe");
-      iframe.src = url.includes("?") ? `${url}&autoplay=1` : `${url}?autoplay=1`;
-      iframe.title = "Video del Método INTEGRA";
-      iframe.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture";
-      iframe.allowFullscreen = true;
-      caja.replaceChildren(iframe);
-    });
-  }
-
-  initVsl();
-  document.addEventListener("astro:page-load", initVsl);
-</script>

@@ -2,21 +2,32 @@
 /* =====================================================================
    EL MÉTODO — las siete fases INTEGRA
    ---------------------------------------------------------------------
-   Dos piezas que trabajan juntas:
-     1) El CAMINO: las siete iniciales formando I·N·T·E·G·R·A. La G no es
-        un escalón más — se dibuja sobre una banda transversal que corre
-        por debajo de todo el recorrido, porque "Gestionar" va del día 1
-        al 60. Aplanarla a un séptimo paso rompe el sentido del método.
-     2) Las siete tarjetas, cada una con su pregunta central visible sin
-        desplegar. Tocar una inicial abre y enfoca su tarjeta.
+   Selector de fases: las siete iniciales forman I·N·T·E·G·R·A y debajo
+   hay UN solo panel que cambia de contenido según la letra elegida.
 
-   Los cuatro tramos quincenales internos (Preparar · Priorizar ·
-   Experimentar · Institucionalizar) NO aparecen: son gobernanza interna
-   y competirían con el acrónimo. En la landing quedan implícitos en los
-   cuatro puntos de control con sus días.
+   POR QUÉ ASÍ. Antes eran siete acordeones apilados y las letras eran
+   atajos que hacían scroll hasta el que correspondía. Eso obligaba a
+   bajar para leer y volver a subir para elegir otra fase: en mobile la
+   página saltaba y se perdía el hilo. Con un panel único no hay salto —
+   la letra y la explicación quedan siempre juntas en pantalla.
+
+   SIN JAVASCRIPT. Son radios + labels: el estado vive en el :checked y
+   el CSS muestra el panel que corresponde. Funciona apenas se pinta el
+   HTML (misma lección que el menú hamburguesa), anda con teclado por las
+   flechas —comportamiento nativo de un grupo de radios— y no depende de
+   ningún bundle.
+
+   ALTURA FIJA. Los siete paneles se apilan en la misma celda de grid, así
+   que el bloque mide siempre lo mismo que el panel más largo y no cambia
+   de alto al pasar de una letra a otra. Los que no están activos van con
+   `visibility: hidden`, que además los saca del árbol de accesibilidad.
    ===================================================================== */
 import { integra } from "../../data/integra";
 const { metodo, anclas } = integra;
+
+/* La posición de la letra activa mueve la flechita del panel. Se calcula
+   acá para no repetir el número siete en el CSS. */
+const cols = metodo.fases.length;
 ---
 
 <section class="section i-hielo i-claro" id={anclas.metodo} aria-label="El método INTEGRA">
@@ -27,117 +38,98 @@ const { metodo, anclas } = integra;
       <p class="text-muted">{metodo.subtitulo}</p>
     </header>
 
-    <!-- ---- El camino: acrónimo + banda transversal ---- -->
-    <div class="camino i-reveal" data-camino>
-      <ol class="camino__letras">
-        {
-          metodo.fases.map((f) => (
-            <li>
-              <button
-                type="button"
-                class:list={["letra", { "letra--g": f.transversal }]}
-                data-ir={f.letra}
-                aria-label={`Ir a la fase ${f.nombre}`}
-              >
-                <span class="letra__l">{f.letra}</span>
-                <span class="letra__n">{f.nombre}</span>
-              </button>
-            </li>
-          ))
-        }
-      </ol>
-
-      <div class="camino__banda">
-        <span class="camino__banda-flecha" aria-hidden="true"></span>
-        <span class="camino__banda-texto">
-          <strong>Gestionar</strong> corre por debajo de todo el recorrido — del día 1 al 60
-        </span>
-      </div>
-    </div>
-
-    <!-- ---- Las siete fases ---- -->
-    <div class="fases">
+    <div class="ft i-reveal" style={`--cols:${cols}`}>
+      {/* Los radios van sueltos y antes de todo: el CSS necesita que sean
+          hermanos de las letras y del panel para poder alcanzarlos con ~. */}
       {
-        metodo.fases.map((f) => (
-          <details class:list={["fase", { "fase--g": f.transversal }]} data-fase={f.letra} name="fase-integra">
-            <summary class="fase__head">
-              <span class="fase__letra" aria-hidden="true">{f.letra}</span>
-              <span class="fase__titulos">
-                <span class="fase__nombre">
-                  {f.nombre}
-                  {f.transversal && <em class="fase__tag">{f.etiqueta}</em>}
-                </span>
-                <span class="fase__pregunta">{f.pregunta}</span>
-              </span>
-              <span class="fase__mas" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </span>
-            </summary>
-            <div class="fase__cuerpo">
-              <p>{f.texto}</p>
-              {f.regla && <p class="fase__regla">{f.regla}</p>}
-              {f.destacado && <p class="fase__destacado">{f.destacado}</p>}
-            </div>
-          </details>
+        metodo.fases.map((f, i) => (
+          <input
+            class="ft__radio"
+            type="radio"
+            name="fase-integra"
+            id={`fase-${f.letra}`}
+            value={f.letra}
+            checked={i === 0}
+          />
         ))
       }
-    </div>
 
-    <!-- ---- Los cuatro puntos de control ---- -->
-    <div class="pdc i-reveal">
-      <header class="pdc__head">
-        <h3 class="t-h2">{metodo.puntosDeControl.titulo}</h3>
-        <p class="text-muted">{metodo.puntosDeControl.subtitulo}</p>
-      </header>
+      <p class="ft__pista">{metodo.pista}</p>
 
-      <ol class="pdc__linea">
+      <div class="ft__letras" role="radiogroup" aria-label="Las siete fases del Método INTEGRA">
         {
-          metodo.puntosDeControl.items.map((p) => (
-            <li class="pdc__item">
-              <span class="pdc__nodo" aria-hidden="true" />
-              <span class="pdc__dia">Día {p.dia}</span>
-              <p class="pdc__preg">{p.pregunta}</p>
-            </li>
+          metodo.fases.map((f) => (
+            <label class="letra" for={`fase-${f.letra}`}>
+              <span class="letra__l">{f.letra}</span>
+              <span class="letra__n">{f.nombre}</span>
+            </label>
           ))
         }
-      </ol>
-    </div>
+      </div>
 
-    <!-- ---- Acompañamiento + remate ---- -->
-    <div class="acomp i-reveal">
-      <h3 class="t-h3">{metodo.acompanamiento.titulo}</h3>
-      <p>{metodo.acompanamiento.texto}</p>
+      <div class="ft__paneles">
+        <span class="ft__flecha" aria-hidden="true"></span>
+        {
+          metodo.fases.map((f) => (
+            <article class="panel" id={`panel-${f.letra}`}>
+              <p class="panel__nombre">
+                <span class="panel__inicial" aria-hidden="true">
+                  {f.letra}
+                </span>
+                {f.nombre}
+                {f.etiqueta && <em class="panel__tag">{f.etiqueta}</em>}
+              </p>
+              <p class="panel__pregunta">{f.pregunta}</p>
+              <p class="panel__texto">{f.texto}</p>
+              {f.regla && <p class="panel__regla">{f.regla}</p>}
+              {f.destacado && <p class="panel__destacado">{f.destacado}</p>}
+            </article>
+          ))
+        }
+      </div>
     </div>
-    <p class="remate i-reveal">{metodo.remate}</p>
   </div>
 </section>
 
 <style>
-  /* =========================== EL CAMINO =========================== */
-  .camino {
+  .ft {
     position: relative;
-    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
-  .camino__letras {
+
+  /* Los radios no se ven pero SÍ se enfocan: por eso no van con
+     `display:none`, que los sacaría del orden de tabulación. */
+  .ft__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ft__pista {
+    margin-bottom: 0.85rem;
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+    text-align: center;
+  }
+
+  /* ---------------------------- Las letras --------------------------- */
+  .ft__letras {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(var(--cols), 1fr);
     gap: clamp(0.3rem, 1vw, 0.75rem);
   }
   .letra {
-    position: relative;
     display: grid;
     justify-items: center;
     gap: 0.4rem;
-    width: 100%;
     padding: clamp(0.55rem, 1.6vw, 1rem) 0.25rem;
-    font-family: inherit;
     background: #fff;
     border: 1.5px solid var(--borde);
     border-radius: var(--radius);
     cursor: pointer;
-    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    transition: transform var(--transition), border-color var(--transition),
+      box-shadow var(--transition), background var(--transition);
   }
   .letra:hover {
     transform: translateY(-3px);
@@ -160,118 +152,53 @@ const { metodo, anclas } = integra;
     color: var(--texto-suave);
     text-align: center;
     line-height: 1.2;
-    /* En pantallas chicas el nombre completo no entra: manda la inicial. */
+    /* En pantallas chicas el nombre completo no entra: manda la inicial,
+       que además es lo que arma el acrónimo. */
     display: none;
   }
-  /* La G se distingue: es la fase que corre todo el tiempo. */
-  .letra--g {
-    border-style: dashed;
-    border-color: var(--i-azul-500);
-    background: linear-gradient(180deg, #fff, rgba(76, 134, 245, 0.1));
-  }
 
-  .camino__banda {
+  /* ------------------------- El panel único -------------------------- */
+  .ft__paneles {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-top: 1.35rem;
-    padding: 0.7rem 1.1rem;
-    border-radius: var(--radius-pill);
-    background: var(--i-grad);
-    color: #fff;
-    box-shadow: var(--i-glow);
-    text-align: center;
-  }
-  .camino__banda-texto {
-    font-size: clamp(0.8rem, 0.72rem + 0.35vw, 0.95rem);
-    line-height: 1.35;
-  }
-  .camino__banda-texto strong {
-    font-weight: var(--w-headline);
-  }
-  /* Flecha que sube desde la banda hacia la G del camino. */
-  .camino__banda-flecha {
-    position: absolute;
-    top: -9px;
-    left: calc((100% / 7) * 4.5);
-    width: 16px;
-    height: 16px;
-    margin-left: -8px;
-    background: var(--i-azul-600);
-    transform: rotate(45deg);
-    border-radius: 3px;
-  }
-
-  /* =========================== LAS FASES =========================== */
-  .fases {
     display: grid;
-    gap: 0.7rem;
-  }
-  .fase {
+    margin-top: 1.5rem;
+    padding: clamp(1.35rem, 3.5vw, 2.25rem);
     background: #fff;
     border: 1px solid var(--borde);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: border-color var(--transition), box-shadow var(--transition);
-  }
-  .fase[open] {
-    border-color: var(--i-azul-500);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
   }
-  .fase--g {
-    border-left: 4px solid var(--i-azul-600);
-    background: linear-gradient(100deg, rgba(76, 134, 245, 0.07), #fff 55%);
+  /* Los siete en la misma celda: el alto lo fija el más largo y ya no
+     cambia al elegir otra letra. */
+  .panel {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 240ms ease, transform 240ms ease, visibility 240ms;
   }
-  .fase__head {
+  .panel__nombre {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1.1rem 1.25rem;
-    cursor: pointer;
-    list-style: none;
-  }
-  .fase__head::-webkit-details-marker {
-    display: none;
-  }
-  .fase__letra {
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 13px;
-    background: var(--i-hielo);
-    border: 1px solid var(--borde);
-    font-family: var(--font-title);
-    font-weight: var(--w-display);
-    font-size: 1.4rem;
-    color: var(--i-azul-600);
-    transition: background var(--transition), color var(--transition);
-  }
-  .fase[open] .fase__letra {
-    background: var(--i-grad);
-    border-color: transparent;
-    color: #fff;
-  }
-  .fase__titulos {
-    display: grid;
-    gap: 0.2rem;
-    min-width: 0;
-    flex-grow: 1;
-  }
-  .fase__nombre {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
+    gap: 0.7rem;
     flex-wrap: wrap;
     font-family: var(--font-title);
     font-weight: var(--w-headline);
-    font-size: 1.05rem;
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem);
     color: var(--azul-petroleo);
   }
-  .fase__tag {
+  .panel__inicial {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--i-grad);
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: var(--w-display);
+  }
+  .panel__tag {
     font-family: var(--font-base);
     font-style: normal;
     font-size: 0.7rem;
@@ -283,157 +210,113 @@ const { metodo, anclas } = integra;
     background: rgba(30, 92, 242, 0.1);
     color: var(--verde-resalte);
   }
-  .fase__pregunta {
-    font-size: 0.9rem;
-    line-height: 1.45;
-    color: var(--texto-suave);
+  .panel__pregunta {
+    margin-top: 0.9rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
   }
-  .fase__mas {
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--i-hielo);
-    color: var(--i-azul-600);
-    transition: transform var(--transition);
-  }
-  .fase[open] .fase__mas {
-    transform: rotate(180deg);
-  }
-  .fase__cuerpo {
-    padding: 0 1.25rem 1.35rem calc(1.25rem + 46px + 1rem);
-  }
-  .fase__cuerpo p {
+  .panel__texto {
+    margin-top: 0.7rem;
     font-size: 0.975rem;
     line-height: 1.7;
     color: var(--azul-pizarra);
   }
-  .fase__regla {
+  .panel__regla {
     margin-top: 0.85rem;
-    font-size: 0.9rem !important;
+    font-size: 0.9rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-resalte) !important;
+    color: var(--verde-resalte);
   }
-  .fase__destacado {
+  .panel__destacado {
     margin-top: 1rem;
     padding: 0.9rem 1.1rem;
     border-radius: var(--radius-sm);
     border-left: 3px solid var(--i-azul-500);
     background: rgba(76, 134, 245, 0.08);
-    font-size: 0.92rem !important;
-    color: var(--azul-petroleo) !important;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--azul-petroleo);
   }
 
-  /* ====================== PUNTOS DE CONTROL ======================= */
-  .pdc {
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-  .pdc__head {
-    max-width: 700px;
-    margin-bottom: 2rem;
-  }
-  .pdc__head h3 {
-    font-size: clamp(1.3rem, 1.05rem + 1.1vw, 1.8rem);
-    margin-bottom: 0.6rem;
-  }
-  .pdc__linea {
-    display: grid;
-    gap: 1rem;
-    position: relative;
-  }
-  .pdc__item {
-    position: relative;
-    padding: 1.25rem 1.25rem 1.35rem;
-    background: #fff;
-    border: 1px solid var(--borde);
-    border-radius: var(--radius);
-    border-top: 3px solid var(--i-azul-500);
-  }
-  .pdc__nodo {
+  /* La flechita que conecta el panel con la letra elegida: es lo que da
+     la sensación de que la explicación sale de esa letra. */
+  .ft__flecha {
     position: absolute;
     top: -9px;
-    left: 1.25rem;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: var(--i-azul-600);
-    border: 3px solid var(--i-hielo);
-  }
-  .pdc__dia {
-    display: inline-block;
-    margin-top: 0.35rem;
-    font-family: var(--font-title);
-    font-weight: var(--w-display);
-    font-size: 1.1rem;
-    color: var(--i-azul-600);
-  }
-  .pdc__preg {
-    margin-top: 0.4rem;
-    font-size: 0.92rem;
-    line-height: 1.55;
-    color: var(--azul-pizarra);
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    background: #fff;
+    border-left: 1px solid var(--borde);
+    border-top: 1px solid var(--borde);
+    transform: rotate(45deg);
+    border-radius: 3px 0 0 0;
+    /* --col la fija el radio activo; la mitad de columna la centra. */
+    left: calc((var(--col, 0) + 0.5) * (100% / var(--cols)));
+    transition: left 260ms cubic-bezier(0.2, 0.7, 0.3, 1);
   }
 
-  /* ==================== ACOMPAÑAMIENTO + REMATE =================== */
-  .acomp {
-    margin-top: clamp(2rem, 4vw, 3rem);
-    padding: clamp(1.5rem, 3.5vw, 2.25rem);
-    border-radius: var(--radius-lg);
-    background: var(--i-noche);
-    color: #fff;
-  }
-  .acomp h3 {
-    color: var(--i-neblina);
-    margin-bottom: 0.65rem;
-  }
-  .acomp p {
-    font-size: 0.975rem;
-    line-height: 1.7;
-    color: rgba(220, 230, 246, 0.82);
-  }
-  .remate {
-    margin-top: 1.5rem;
-    text-align: center;
-    font-size: 0.975rem;
-    line-height: 1.65;
-    color: var(--texto-suave);
-    max-width: 760px;
-    margin-inline: auto;
+  /* --------------------- Qué prende cada radio ----------------------- */
+  /* Letra activa */
+  #fase-I:checked ~ .ft__letras .letra:nth-child(1),
+  #fase-N:checked ~ .ft__letras .letra:nth-child(2),
+  #fase-T:checked ~ .ft__letras .letra:nth-child(3),
+  #fase-E:checked ~ .ft__letras .letra:nth-child(4),
+  #fase-G:checked ~ .ft__letras .letra:nth-child(5),
+  #fase-R:checked ~ .ft__letras .letra:nth-child(6),
+  #fase-A:checked ~ .ft__letras .letra:nth-child(7) {
+    border-color: var(--i-azul-600);
+    background: linear-gradient(180deg, #fff, rgba(76, 134, 245, 0.12));
+    box-shadow: var(--shadow-sm);
   }
 
-  @media (min-width: 620px) {
+  /* Foco visible por teclado: el radio está oculto, así que el anillo lo
+     tiene que dibujar la letra. */
+  #fase-I:focus-visible ~ .ft__letras .letra:nth-child(1),
+  #fase-N:focus-visible ~ .ft__letras .letra:nth-child(2),
+  #fase-T:focus-visible ~ .ft__letras .letra:nth-child(3),
+  #fase-E:focus-visible ~ .ft__letras .letra:nth-child(4),
+  #fase-G:focus-visible ~ .ft__letras .letra:nth-child(5),
+  #fase-R:focus-visible ~ .ft__letras .letra:nth-child(6),
+  #fase-A:focus-visible ~ .ft__letras .letra:nth-child(7) {
+    outline: 3px solid var(--i-azul-600);
+    outline-offset: 2px;
+  }
+
+  /* Panel activo */
+  #fase-I:checked ~ .ft__paneles #panel-I,
+  #fase-N:checked ~ .ft__paneles #panel-N,
+  #fase-T:checked ~ .ft__paneles #panel-T,
+  #fase-E:checked ~ .ft__paneles #panel-E,
+  #fase-G:checked ~ .ft__paneles #panel-G,
+  #fase-R:checked ~ .ft__paneles #panel-R,
+  #fase-A:checked ~ .ft__paneles #panel-A {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Posición de la flecha, una columna por letra */
+  #fase-I:checked ~ .ft__paneles { --col: 0; }
+  #fase-N:checked ~ .ft__paneles { --col: 1; }
+  #fase-T:checked ~ .ft__paneles { --col: 2; }
+  #fase-E:checked ~ .ft__paneles { --col: 3; }
+  #fase-G:checked ~ .ft__paneles { --col: 4; }
+  #fase-R:checked ~ .ft__paneles { --col: 5; }
+  #fase-A:checked ~ .ft__paneles { --col: 6; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel,
+    .ft__flecha {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 760px) {
     .letra__n {
       display: block;
     }
   }
-  @media (min-width: 860px) {
-    .pdc__linea {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
 </style>
-
-<script>
-  /* Tocar una inicial del camino abre su tarjeta y la trae a la vista. */
-  function initFases() {
-    const camino = document.querySelector<HTMLElement>("[data-camino]");
-    if (!camino || camino.dataset.listo) return;
-    camino.dataset.listo = "1";
-
-    camino.querySelectorAll<HTMLButtonElement>("[data-ir]").forEach((b) => {
-      b.addEventListener("click", () => {
-        const destino = document.querySelector<HTMLDetailsElement>(
-          `[data-fase="${b.dataset.ir}"]`
-        );
-        if (!destino) return;
-        destino.open = true;
-        destino.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
-    });
-  }
-
-  initFases();
-  document.addEventListener("astro:page-load", initFases);
-</script>
