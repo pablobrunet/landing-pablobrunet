@@ -33,11 +33,12 @@ const { autoridad, marca } = integra;
 
       <a class="aut__badge" href={autoridad.credencialDestacada.href}>
         <span class="aut__badge-img">
+          {/* Proporción real del PNG: 1125×531 ≈ 2,12:1. */}
           <img
             src={autoridad.credencialDestacada.img}
             alt="Insignia oficial del OpenAI Partner Network"
-            width="120"
-            height="46"
+            width="212"
+            height="100"
             loading="lazy"
           />
         </span>
@@ -131,12 +132,16 @@ const { autoridad, marca } = integra;
     margin-top: 0.85rem;
   }
 
+  /* La credencial de OpenAI es la prueba más fuerte de la sección: va en
+     un bloque generoso, no en una línea de letra chica. En mobile se
+     apila para que el logo pueda ocupar todo el ancho disponible. */
   .aut__badge {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
+    gap: 1.15rem;
     margin-top: 1.75rem;
-    padding: 0.9rem 1.1rem;
+    padding: 1.15rem 1.35rem;
     border-radius: var(--radius);
     background: rgba(169, 200, 245, 0.08);
     border: 1px solid rgba(169, 200, 245, 0.25);
@@ -150,17 +155,22 @@ const { autoridad, marca } = integra;
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    padding: 0.5rem 0.7rem;
-    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
     background: #fff;
+    box-shadow: 0 8px 24px rgba(6, 12, 30, 0.28);
   }
   .aut__badge-img img {
-    height: 34px;
+    height: clamp(44px, 4vw, 60px);
     width: auto;
   }
   .aut__badge-txt {
     display: grid;
     gap: 0.15rem;
+    /* Con el logo más grande, el texto necesita poder bajar a su propia
+       línea en pantallas chicas en vez de quedar exprimido al costado. */
+    flex: 1;
+    min-width: 12rem;
   }
   .aut__badge-txt strong {
     font-weight: var(--w-headline);
