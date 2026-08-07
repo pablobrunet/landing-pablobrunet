@@ -391,7 +391,7 @@ export const integra = {
      ===================================================================== */
   chequeo: {
     eyebrow: "Chequeo exprés",
-    titulo: "¿Cuánta IA se le está escapando a tu empresa?",
+    titulo: "¿Está su empresa lista para integrar IA?",
     subtitulo: "6 preguntas, 2 minutos. Resultado al instante.",
     empezar: "Empezar el chequeo",
     preguntas: [
