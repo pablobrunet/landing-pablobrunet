@@ -367,7 +367,7 @@ export const integra = {
     cuerpo: [
       "Soy Pablo Brunet. Trabajo en la intersección entre estrategia comercial, inteligencia artificial e integración tecnológica en empresas.",
       "No vengo a venderte herramientas ni cursos, y tampoco a hacerte el trabajo: ayudo a empresas como la tuya a decidir dónde aplicar IA, a desarrollar capacidad real en el equipo y a quedarse con un método propio para seguir sin mí.",
-      "Hablo el idioma de las PyMEs — no el de los departamentos de sistemas.",
+      "Hablo el idioma de las PyMEs — no sólo el de los departamentos de sistemas.",
     ],
     credencialDestacada: {
       img: "/images/credenciales/openai-partner-network.png",
