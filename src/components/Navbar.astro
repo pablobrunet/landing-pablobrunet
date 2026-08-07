@@ -471,5 +471,33 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
         });
       }
     });
+
+    /* Nunca dos paneles abiertos a la vez.
+
+       Los desplegables se abren de dos maneras que no se conocían entre
+       sí: el hover, que lo resuelve el CSS, y el click, que fija el panel
+       con aria-expanded. Al hacer click en "Servicios" quedaba fijo, y al
+       pasar el mouse por "Recursos" el CSS abría el segundo encima del
+       primero.
+
+       Con esto, apenas el puntero sale del desplegable que quedó fijo, se
+       lo cierra: sea porque pasó al otro menú o a cualquier otro lado. El
+       hover sigue siendo cosa del CSS.
+
+       El corte temprano importa: `pointerover` se dispara constantemente
+       al mover el mouse, y sin abrir nada esto no hace absolutamente
+       nada. */
+    document.addEventListener("pointerover", function (e) {
+      var fijos = abiertos();
+      if (!fijos.length) return;
+
+      var t = e.target;
+      if (!t || typeof t.closest !== "function") return;
+      var dentro = t.closest("[data-dropdown]");
+
+      fijos.forEach(function (x) {
+        if (!dentro || !dentro.contains(x)) x.setAttribute("aria-expanded", "false");
+      });
+    });
   })();
 </script>

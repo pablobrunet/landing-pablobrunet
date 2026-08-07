@@ -154,18 +154,21 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     transition: width 320ms cubic-bezier(0.2, 0.7, 0.3, 1);
   }
 
+  /* Gap chico a propósito: las siete iniciales tienen que leerse juntas
+     como la palabra INTEGRA, que es el recurso mnemotécnico del método.
+     Separadas se leían como siete botones sueltos. */
   .ft__riel {
     display: grid;
     grid-template-columns: repeat(var(--cols), 1fr);
-    gap: clamp(0.25rem, 0.8vw, 0.6rem);
+    gap: clamp(0.15rem, 0.5vw, 0.5rem);
   }
   .paso {
     position: relative;
     display: grid;
     justify-items: center;
-    gap: 0.3rem;
-    padding: clamp(0.6rem, 1.4vw, 0.9rem) 0.2rem;
-    border-radius: 12px;
+    gap: 0.45rem;
+    padding: clamp(0.5rem, 1.2vw, 0.85rem) 0.15rem;
+    border-radius: 14px;
     border: 1px solid transparent;
     cursor: pointer;
     transition: background var(--transition), border-color var(--transition);
@@ -173,31 +176,38 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   .paso:hover {
     background: rgba(30, 92, 242, 0.06);
   }
+  .paso:hover .paso__letra {
+    border-color: var(--i-azul-600);
+    color: var(--i-azul-600);
+  }
   .paso__num {
-    font-size: 0.62rem;
+    font-size: 0.65rem;
     font-weight: var(--w-headline);
     letter-spacing: 0.12em;
     color: var(--borde-punteado);
     transition: color var(--transition);
   }
-  /* Sin degradé y con el trazo cerrado: la inicial tiene que leerse como
-     un dato, no como una decoración. */
+  /* Las iniciales son el ancla visual de la sección: van grandes. A 48px
+     de caja se perdían contra el resto de la página y no invitaban a
+     tocarlas. Sin degradé y con el trazo cerrado, para que se lean como
+     un dato y no como una decoración. */
   .paso__letra {
     display: grid;
     place-items: center;
-    width: clamp(2.1rem, 4.4vw, 3rem);
-    height: clamp(2.1rem, 4.4vw, 3rem);
-    border-radius: 10px;
+    width: 100%;
+    max-width: clamp(2.5rem, 9vw, 5.25rem);
+    aspect-ratio: 1;
+    border-radius: 14px;
     border: 1.5px solid var(--borde-punteado);
     background: #fff;
     font-family: var(--font-title);
     font-weight: var(--w-display);
-    font-size: clamp(1.05rem, 0.75rem + 1.3vw, 1.6rem);
+    font-size: clamp(1.35rem, 4.6vw, 2.75rem);
     line-height: 1;
-    letter-spacing: 0;
+    letter-spacing: -0.02em;
     color: var(--azul-pizarra);
     transition: background var(--transition), border-color var(--transition),
-      color var(--transition), transform var(--transition);
+      color var(--transition), transform var(--transition), box-shadow var(--transition);
   }
   .paso__nombre {
     font-size: 0.68rem;
@@ -340,7 +350,8 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     background: var(--i-navy);
     border-color: var(--i-navy);
     color: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(13, 27, 61, 0.28);
   }
   #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__num,
   #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__num,

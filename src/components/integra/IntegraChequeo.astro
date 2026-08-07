@@ -93,7 +93,10 @@ const totalPreguntas = chequeo.preguntas.length;
           ))
         }
 
-        <button type="button" class="chq__volver" data-atras hidden>← Volver</button>
+        {/* Siempre visible. En la primera pregunta vuelve a la portada del
+            chequeo, no se esconde: antes, apenas empezabas quedabas sin
+            salida hasta terminar las seis. */}
+        <button type="button" class="chq__volver" data-atras>← Volver al inicio</button>
       </div>
 
       <!-- ---------- Paso 2: captura ---------- -->
@@ -123,6 +126,10 @@ const totalPreguntas = chequeo.preguntas.length;
           </button>
           <p class="chq__privacidad chq__form-ancho">{chequeo.formulario.privacidad}</p>
         </form>
+
+        {/* Y desde el formulario se vuelve a la última pregunta: llegar
+            acá tampoco puede ser un camino de ida. */}
+        <button type="button" class="chq__volver" data-atras-datos>← Volver a las preguntas</button>
       </div>
 
       <!-- ---------- Paso 3: resultado ---------- -->
@@ -556,7 +563,9 @@ const totalPreguntas = chequeo.preguntas.length;
       });
       tramosWrap?.setAttribute("aria-valuenow", String(n + 1));
       if (actual) actual.textContent = String(n + 1);
-      if (atras) atras.hidden = n === 0;
+      /* El botón no se esconde nunca: en la primera pregunta cambia de
+         destino y vuelve a la portada del chequeo. */
+      if (atras) atras.textContent = n === 0 ? "← Volver al inicio" : "← Volver";
     };
 
     /* Recalcula puntaje y hallazgos desde cero con lo elegido hasta ahora:
@@ -620,6 +629,15 @@ const totalPreguntas = chequeo.preguntas.length;
 
     atras?.addEventListener("click", () => {
       if (i > 0) verPregunta(i - 1);
+      else verPaso("intro");
+    });
+
+    /* Del formulario de vuelta a la última pregunta. Las respuestas ya
+       elegidas quedan marcadas —el puntaje se recalcula desde el DOM—,
+       así que se puede ir y venir sin perder nada. */
+    raiz.querySelector<HTMLButtonElement>("[data-atras-datos]")?.addEventListener("click", () => {
+      verPaso("preguntas");
+      verPregunta(preguntas.length - 1);
     });
 
     preguntas.forEach((p, idx) => {
