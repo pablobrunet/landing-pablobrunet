@@ -15,15 +15,16 @@ const { autoridad, marca } = integra;
   <div class="aut__fondo" aria-hidden="true"><span class="trama"></span></div>
 
   <div class="container aut__inner">
-    <div class="aut__foto i-reveal">
-      <div class="aut__marco">
-        <img src={autoridad.foto} alt={autoridad.fotoAlt} width="520" height="620" loading="lazy" />
-      </div>
-      <p class="aut__firma">
+    {/* La firma va montada sobre la foto y no debajo: así el marco puede
+        ocupar toda la altura de la columna de texto sin que quede un
+        hueco al pie. */}
+    <figure class="aut__foto i-reveal">
+      <img src={autoridad.foto} alt={autoridad.fotoAlt} width="520" height="620" loading="lazy" />
+      <figcaption class="aut__firma">
         <strong>{marca.persona}</strong>
         <span>{marca.firma}</span>
-      </p>
-    </div>
+      </figcaption>
+    </figure>
 
     <div class="aut__copy i-reveal">
       <span class="i-eyebrow">{autoridad.eyebrow}</span>
@@ -88,26 +89,37 @@ const { autoridad, marca } = integra;
     position: relative;
     display: grid;
     gap: 2.5rem;
-    align-items: start;
+    align-items: stretch;
   }
 
-  .aut__marco {
+  .aut__foto {
     position: relative;
+    margin: 0;
     border-radius: var(--radius-lg);
     overflow: hidden;
     background: radial-gradient(90% 70% at 50% 0%, rgba(76, 134, 245, 0.35), rgba(13, 27, 61, 0.9));
     border: 1px solid rgba(255, 255, 255, 0.12);
+    /* En mobile la foto manda su propio alto; en desktop lo toma de la
+       columna de texto (ver el media query del final). */
+    aspect-ratio: 4 / 5;
   }
-  .aut__marco img {
-    width: 100%;
-    height: auto;
+  .aut__foto img {
     display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
   }
+  /* Sobre la foto, con un velo que arranca transparente para no taparla. */
   .aut__firma {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: grid;
     gap: 0.15rem;
-    margin-top: 1rem;
-    text-align: center;
+    padding: 2.75rem 1.25rem 1.15rem;
+    background: linear-gradient(180deg, transparent, rgba(6, 12, 30, 0.88) 55%);
   }
   .aut__firma strong {
     font-family: var(--font-title);
@@ -213,12 +225,17 @@ const { autoridad, marca } = integra;
 
   @media (min-width: 900px) {
     .aut__inner {
-      grid-template-columns: 0.75fr 1.25fr;
+      grid-template-columns: 0.82fr 1.18fr;
       gap: 3rem;
     }
+    /* Sin aspect-ratio la foto se estira a lo que mida la columna de
+       texto: arranca y termina a la misma altura que el bloque de al
+       lado, que es lo que hace que la sección se vea pareja. Se saca el
+       sticky a propósito — es incompatible con estirarse. */
     .aut__foto {
-      position: sticky;
-      top: calc(var(--nav-alto) + 1.5rem);
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 30rem;
     }
   }
 </style>

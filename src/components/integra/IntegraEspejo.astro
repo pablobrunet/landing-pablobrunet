@@ -44,7 +44,11 @@ const total = espejo.dolores.length;
       </ul>
 
       <aside class="esp__panel">
-        <div class="marcador">
+        {/* Las seis lecturas se dibujan todas y se apilan en la misma
+            celda: el panel mide siempre lo que la más larga y no cambia
+            de alto al marcar o desmarcar. Antes el texto se inyectaba por
+            JS y el bloque crecía y se pasaba de la columna de tarjetas. */}
+        <div class="marcador" data-marcador data-n="0">
           <div class="marcador__num">
             <strong data-contador>0</strong>
             <span>de {total}</span>
@@ -52,16 +56,22 @@ const total = espejo.dolores.length;
           <div class="marcador__barra" role="progressbar" aria-valuemin="0" aria-valuemax={total} aria-valuenow="0" aria-label="Síntomas marcados" data-barra-wrap>
             <span data-barra></span>
           </div>
-          <p class="marcador__pista" data-pista>Tocá las tarjetas que reconozcas.</p>
 
-          <div class="marcador__resultado" data-resultado hidden>
-            <h3 class="t-h3" data-resultado-titulo></h3>
-            <p data-resultado-texto></p>
+          <div class="marcador__lectura" aria-live="polite">
+            <p class="marcador__pista" data-estado="0">Tocá las tarjetas que reconozcas.</p>
+            {
+              espejo.respuestas.map((r, i) => (
+                <div class="marcador__r" data-estado={i + 1}>
+                  <h3 class="t-h3">{r.titulo}</h3>
+                  <p>{r.texto}</p>
+                </div>
+              ))
+            }
           </div>
 
           <p class="marcador__fija">{espejo.fija}</p>
 
-          <a href={`#${anclas.agenda}`} class="btn btn--primary marcador__cta" data-espejo-cta hidden>
+          <a href={`#${anclas.agenda}`} class="btn btn--primary marcador__cta" data-espejo-cta>
             {espejo.cta}
           </a>
         </div>
@@ -69,13 +79,6 @@ const total = espejo.dolores.length;
     </div>
   </div>
 </section>
-
-<script
-  is:inline
-  type="application/json"
-  data-espejo-respuestas
-  set:html={JSON.stringify(espejo.respuestas)}
-/>
 
 <style>
   .esp {
@@ -207,21 +210,39 @@ const total = espejo.dolores.length;
     background: var(--i-grad);
     transition: width 380ms cubic-bezier(0.2, 0.7, 0.3, 1);
   }
-  .marcador__pista {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: rgba(220, 230, 246, 0.65);
-  }
-  .marcador__resultado {
+  /* Todas las lecturas en la misma celda de grid: el alto lo fija la más
+     larga y ya no depende de cuántas tarjetas haya marcadas. */
+  .marcador__lectura {
+    display: grid;
     margin-top: 1.25rem;
     padding-top: 1.25rem;
     border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
-  .marcador__resultado h3 {
+  .marcador__lectura > * {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 240ms ease, visibility 240ms;
+  }
+  .marcador[data-n="0"] [data-estado="0"],
+  .marcador[data-n="1"] [data-estado="1"],
+  .marcador[data-n="2"] [data-estado="2"],
+  .marcador[data-n="3"] [data-estado="3"],
+  .marcador[data-n="4"] [data-estado="4"],
+  .marcador[data-n="5"] [data-estado="5"],
+  .marcador[data-n="6"] [data-estado="6"] {
+    visibility: visible;
+    opacity: 1;
+  }
+  .marcador__pista {
+    font-size: 0.9rem;
+    color: rgba(220, 230, 246, 0.65);
+  }
+  .marcador__r h3 {
     color: var(--i-neblina);
     margin-bottom: 0.5rem;
   }
-  .marcador__resultado p {
+  .marcador__r p {
     font-size: 0.95rem;
     line-height: 1.6;
     color: rgba(220, 230, 246, 0.85);
@@ -236,12 +257,25 @@ const total = espejo.dolores.length;
     line-height: 1.55;
     color: rgba(220, 230, 246, 0.9);
   }
+  /* El botón reserva su lugar desde el arranque aunque todavía no se
+     muestre: si apareciera de golpe, volvería a mover el alto del panel.
+     Con una sola marcada todavía no hay reconocimiento suficiente como
+     para pedir la reunión, así que recién se enciende en la segunda. */
   .marcador__cta {
     width: 100%;
     margin-top: 1.35rem;
     white-space: normal;
     text-align: center;
     line-height: 1.35;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms ease, visibility 240ms;
+  }
+  .marcador:not([data-n="0"]):not([data-n="1"]) .marcador__cta {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   @media (min-width: 700px) {
@@ -267,52 +301,23 @@ const total = espejo.dolores.length;
     if (!raiz || raiz.dataset.listo) return;
     raiz.dataset.listo = "1";
 
-    const datos = document.querySelector<HTMLScriptElement>("[data-espejo-respuestas]");
-    type Respuesta = { titulo: string; texto: string };
-    let respuestas: Respuesta[] = [];
-    try {
-      respuestas = JSON.parse(datos?.textContent ?? "[]");
-    } catch {
-      respuestas = [];
-    }
-
     const total = Number(raiz.dataset.total ?? 6);
     const tarjetas = Array.from(raiz.querySelectorAll<HTMLButtonElement>("[data-dolor]"));
+    const marcador = raiz.querySelector<HTMLElement>("[data-marcador]");
     const contador = raiz.querySelector<HTMLElement>("[data-contador]");
     const barra = raiz.querySelector<HTMLElement>("[data-barra]");
     const barraWrap = raiz.querySelector<HTMLElement>("[data-barra-wrap]");
-    const pista = raiz.querySelector<HTMLElement>("[data-pista]");
-    const caja = raiz.querySelector<HTMLElement>("[data-resultado]");
-    const titulo = raiz.querySelector<HTMLElement>("[data-resultado-titulo]");
-    const texto = raiz.querySelector<HTMLElement>("[data-resultado-texto]");
-    const cta = raiz.querySelector<HTMLElement>("[data-espejo-cta]");
 
+    /* El texto de cada lectura ya está en el HTML: acá sólo se anota
+       cuántas hay marcadas y el CSS enciende la que corresponde. Así el
+       panel no cambia de alto y el contenido existe sin JavaScript. */
     function pintar() {
       const n = tarjetas.filter((t) => t.getAttribute("aria-pressed") === "true").length;
 
       if (contador) contador.textContent = String(n);
       if (barra) barra.style.width = `${(n / total) * 100}%`;
       barraWrap?.setAttribute("aria-valuenow", String(n));
-
-      if (n === 0) {
-        if (caja) caja.hidden = true;
-        if (pista) pista.hidden = false;
-        if (cta) cta.hidden = true;
-        return;
-      }
-
-      if (pista) pista.hidden = true;
-      /* Una respuesta por cantidad marcada: `n` de 1 a 6 → índice 0 a 5.
-         El clamp cubre el caso de que las dos listas queden desfasadas. */
-      const r = respuestas[Math.min(n, respuestas.length) - 1];
-      if (r && titulo && texto && caja) {
-        titulo.textContent = r.titulo;
-        texto.textContent = r.texto;
-        caja.hidden = false;
-      }
-      /* El CTA aparece recién con 2 marcadas: con una sola todavía no hay
-         suficiente reconocimiento como para pedir la reunión. */
-      if (cta) cta.hidden = n < 2;
+      if (marcador) marcador.dataset.n = String(Math.min(n, total));
     }
 
     tarjetas.forEach((t) => {

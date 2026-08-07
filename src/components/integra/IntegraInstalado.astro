@@ -22,7 +22,10 @@ const { instalado, anclas } = integra;
       <p class="text-muted">{instalado.subtitulo}</p>
     </header>
 
-    <ol class="queda">
+    {/* <ul> y no <ol>: las tres capacidades no son pasos ordenados, y el
+        reset de global.css sólo saca los marcadores de <ul> — con <ol> el
+        navegador dibujaba "1. 2. 3." delante de cada tarjeta. */}
+    <ul class="queda">
       {
         instalado.capacidades.items.map((it) => (
           <li class="queda__card i-reveal">
@@ -36,7 +39,7 @@ const { instalado, anclas } = integra;
           </li>
         ))
       }
-    </ol>
+    </ul>
 
     <figure class="queda__cita i-reveal">
       <blockquote>{instalado.cita}</blockquote>

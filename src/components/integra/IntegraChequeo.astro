@@ -37,27 +37,36 @@ const totalPreguntas = chequeo.preguntas.length;
     >
       <!-- ---------- Paso 0: intro ---------- -->
       <div class="chq__paso" data-paso="intro">
-        <div class="chq__intro">
-          <span class="chq__intro-num">6</span>
-          <div>
-            <h3 class="t-h3">Seis preguntas, dos minutos</h3>
-            <p class="text-muted">
-              Sin registro para empezar. Al final te pedimos el correo solo para
-              mandarte el resultado.
-            </p>
-          </div>
-        </div>
+        {/* Sin el "6" gigante en una caja con degradé: tres datos secos
+            dicen lo mismo y no parecen relleno. */}
+        <ul class="chq__datos">
+          <li><strong>{totalPreguntas}</strong> preguntas</li>
+          <li><strong>2</strong> minutos</li>
+          <li><strong>0</strong> costo</li>
+        </ul>
+
+        <h3 class="chq__intro-t">Un diagnóstico corto, no un formulario.</h3>
+        <p class="chq__intro-p">
+          Las mismas preguntas con las que empieza cualquier reunión de
+          diagnóstico. Al final te devolvemos en qué punto está tu empresa y qué
+          conviene ordenar primero.
+        </p>
+
         <button type="button" class="btn btn--primary" data-empezar>{chequeo.empezar}</button>
+        <p class="chq__legal-intro">Sin registro para empezar. El correo se pide recién al final, para mandarte el resultado.</p>
       </div>
 
       <!-- ---------- Paso 1: preguntas ---------- -->
       <div class="chq__paso" data-paso="preguntas" hidden>
+        {/* Progreso en tramos y no en una barra continua: se ve de una
+            cuántas preguntas faltan, que es lo que la persona quiere saber
+            antes de empezar a responder. */}
         <div class="chq__progreso">
-          <div class="chq__barra" role="progressbar" aria-valuemin="1" aria-valuemax={totalPreguntas} aria-valuenow="1">
-            <span data-progreso></span>
+          <div class="chq__tramos" role="progressbar" aria-valuemin="1" aria-valuemax={totalPreguntas} aria-valuenow="1">
+            {chequeo.preguntas.map((_, i) => <span class="chq__tramo" data-tramo={i}></span>)}
           </div>
           <span class="chq__cuenta">
-            <strong data-actual>1</strong> / {totalPreguntas}
+            <strong data-actual>1</strong><i>/{totalPreguntas}</i>
           </span>
         </div>
 
@@ -168,29 +177,47 @@ const totalPreguntas = chequeo.preguntas.length;
   }
 
   /* ---------- Intro ---------- */
-  .chq__intro {
+  .chq__datos {
     display: flex;
-    align-items: center;
-    gap: 1.15rem;
-    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.75rem;
+    padding-bottom: 1.15rem;
+    margin-bottom: 1.35rem;
+    border-bottom: 1px solid var(--borde);
   }
-  .chq__intro-num {
-    flex-shrink: 0;
-    display: grid;
-    place-items: center;
-    width: 62px;
-    height: 62px;
-    border-radius: 18px;
-    background: var(--i-grad);
-    color: #fff;
+  .chq__datos li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    color: var(--texto-suave);
+  }
+  .chq__datos strong {
     font-family: var(--font-title);
     font-weight: var(--w-display);
-    font-size: 1.75rem;
-    box-shadow: var(--i-glow);
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--azul-petroleo);
   }
-  .chq__intro p {
-    font-size: 0.925rem;
-    margin-top: 0.25rem;
+  .chq__intro-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.55rem);
+    line-height: 1.25;
+    color: var(--azul-petroleo);
+  }
+  .chq__intro-p {
+    margin: 0.7rem 0 1.5rem;
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+    max-width: 46rem;
+  }
+  .chq__legal-intro {
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
   }
 
   /* ---------- Progreso ---------- */
@@ -200,29 +227,37 @@ const totalPreguntas = chequeo.preguntas.length;
     gap: 1rem;
     margin-bottom: 1.75rem;
   }
-  .chq__barra {
+  .chq__tramos {
+    display: flex;
     flex-grow: 1;
-    height: 6px;
-    border-radius: 99px;
-    background: var(--i-hielo);
-    overflow: hidden;
+    gap: 4px;
   }
-  .chq__barra span {
-    display: block;
-    height: 100%;
-    width: 16.6%;
-    border-radius: 99px;
-    background: var(--i-grad);
-    transition: width 320ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  .chq__tramo {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--borde);
+    transition: background 260ms ease;
+  }
+  /* La marca el JS: los tramos ya recorridos quedan llenos. */
+  .chq__tramo[data-hecho] {
+    background: var(--i-azul-600);
   }
   .chq__cuenta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.1rem;
     font-size: 0.85rem;
     color: var(--texto-suave);
     white-space: nowrap;
   }
   .chq__cuenta strong {
-    color: var(--verde-resalte);
-    font-size: 1rem;
+    font-family: var(--font-title);
+    color: var(--azul-petroleo);
+    font-size: 1.15rem;
+  }
+  .chq__cuenta i {
+    font-style: normal;
   }
 
   /* ---------- Preguntas ---------- */
@@ -492,8 +527,8 @@ const totalPreguntas = chequeo.preguntas.length;
       pasos.set(p.dataset.paso ?? "", p);
     });
     const preguntas = Array.from(raiz.querySelectorAll<HTMLElement>("[data-pregunta]"));
-    const barra = raiz.querySelector<HTMLElement>("[data-progreso]");
-    const barraWrap = raiz.querySelector<HTMLElement>(".chq__barra");
+    const tramos = Array.from(raiz.querySelectorAll<HTMLElement>("[data-tramo]"));
+    const tramosWrap = raiz.querySelector<HTMLElement>(".chq__tramos");
     const actual = raiz.querySelector<HTMLElement>("[data-actual]");
     const atras = raiz.querySelector<HTMLButtonElement>("[data-atras]");
     const form = raiz.querySelector<HTMLFormElement>("[data-form]");
@@ -514,9 +549,12 @@ const totalPreguntas = chequeo.preguntas.length;
       preguntas.forEach((p, idx) => {
         p.hidden = idx !== n;
       });
-      const pct = ((n + 1) / preguntas.length) * 100;
-      if (barra) barra.style.width = `${pct}%`;
-      barraWrap?.setAttribute("aria-valuenow", String(n + 1));
+      /* Se llenan los tramos hasta la pregunta en curso, incluida. */
+      tramos.forEach((t, idx) => {
+        if (idx <= n) t.setAttribute("data-hecho", "");
+        else t.removeAttribute("data-hecho");
+      });
+      tramosWrap?.setAttribute("aria-valuenow", String(n + 1));
       if (actual) actual.textContent = String(n + 1);
       if (atras) atras.hidden = n === 0;
     };

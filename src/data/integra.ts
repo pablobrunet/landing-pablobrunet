@@ -83,7 +83,7 @@ export const integra = {
      1 · HERO + VSL
      ===================================================================== */
   hero: {
-    chip: "Para PyMEs de 10 a 150 personas que ya probaron IA y no vieron resultados",
+    chip: "Para PyMEs que ya usan IA y no ven resultados",
     /* Headline principal. Las alternativas validadas quedan anotadas para
        testear sin volver a buscarlas en la spec:
          A · "Tu PyME no necesita otro curso de inteligencia artificial."
@@ -327,17 +327,20 @@ export const integra = {
         icono: "brujula",
         items: ["El método y los materiales", "La facilitación de cada reunión", "El acompañamiento semanal"],
       },
-      {
-        titulo: "Pone tu empresa",
-        tono: "empresa",
-        icono: "equipo",
-        items: ["Un referente interno", "Las personas y su tiempo", "Las decisiones"],
-      },
+      /* "Juntos" va en el MEDIO a propósito: es la zona donde se cruzan
+         las dos partes, y el diseño la dibuja como tal. Si se reordena
+         esta lista, se rompe esa lectura. */
       {
         titulo: "Lo hacemos juntos",
         tono: "juntos",
         icono: "manos",
         items: ["Priorizar las oportunidades", "Probar sobre trabajo real", "Definir los próximos 90 días"],
+      },
+      {
+        titulo: "Pone tu empresa",
+        tono: "empresa",
+        icono: "equipo",
+        items: ["Un referente interno", "Las personas y su tiempo", "Las decisiones"],
       },
     ],
   },

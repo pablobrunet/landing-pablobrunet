@@ -152,8 +152,10 @@ const { hero, imagen, anclas } = integra;
     font-size: clamp(2.05rem, 1.1rem + 3.6vw, 3.6rem);
     line-height: 1.06;
   }
+  /* Las dos oraciones corren seguidas: el salto forzado las separaba como
+     si fueran dos titulares distintos. Quiebra sola donde no entre. */
   .ih__titulo .i-hl {
-    display: block;
+    display: inline;
   }
   .ih__sub {
     max-width: 40rem;
