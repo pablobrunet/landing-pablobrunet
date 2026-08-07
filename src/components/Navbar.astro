@@ -392,50 +392,84 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
   }
 </style>
 
-<script>
-  function initNav() {
-    // Burger → menú mobile
-    const burger = document.querySelector<HTMLButtonElement>("[data-burger]");
-    const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
-    burger?.addEventListener("click", () => {
-      const open = burger.getAttribute("aria-expanded") === "true";
-      burger.setAttribute("aria-expanded", String(!open));
-      if (menu) menu.hidden = open;
-    });
+<!--
+  Va `is:inline` a propósito, y no como <script> normal de Astro.
 
-    // Acordeones mobile
-    document.querySelectorAll<HTMLElement>("[data-acc]").forEach((acc) => {
-      const head = acc.querySelector<HTMLButtonElement>(".m-acc__head");
-      const body = acc.querySelector<HTMLElement>(".m-acc__body");
-      head?.addEventListener("click", () => {
-        const open = head.getAttribute("aria-expanded") === "true";
-        head.setAttribute("aria-expanded", String(!open));
-        if (body) body.hidden = open;
-      });
-    });
+  POR QUÉ INLINE. Un <script> de Astro se empaqueta junto al resto del JS
+  del sitio (router de View Transitions, formularios, carruseles) y se
+  entrega diferido: en un celular con red lenta pasan segundos entre que
+  se ve la hamburguesa y que responde al toque. Inline se ejecuta durante
+  el parseo, así que el menú funciona apenas aparece.
 
-    // Dropdowns desktop: click (táctil/teclado) además del hover por CSS
-    document.querySelectorAll<HTMLElement>("[data-dropdown]").forEach((dd) => {
-      const trigger = dd.querySelector<HTMLButtonElement>(".nav__trigger");
-      trigger?.addEventListener("click", (e) => {
+  POR QUÉ DELEGACIÓN Y NO UN LISTENER POR BOTÓN. Antes esto era
+  `initNav()` + `addEventListener("astro:page-load", initNav)`, y ese par
+  enganchaba el botón DOS veces en la primera carga: el módulo corre al
+  parsear y `astro:page-load` vuelve a dispararse en el load inicial (no
+  sólo al navegar). Con dos listeners, cada toque alternaba el menú dos
+  veces —abrir y cerrar en el mismo tick—, así que la hamburguesa parecía
+  muerta. Al navegar dentro del sitio el <header> se reemplaza, los dos
+  listeners se van con él y queda uno solo: por eso "se arreglaba" al
+  tocar el logo.
+
+  Delegando en `document` hay un único listener, registrado una sola vez
+  para toda la sesión. Sobrevive a los reemplazos de <body> que hace el
+  router (por eso no necesita `astro:page-load`) y no se acumula al
+  navegar, como sí pasaba con el listener de cierre de los desplegables.
+-->
+<script is:inline>
+  (function () {
+    /* El router re-ejecuta los scripts del <body> al navegar. La bandera
+       evita registrar el listener de nuevo (y volver al bug de arriba). */
+    if (window.__navListo) return;
+    window.__navListo = true;
+
+    var abiertos = function () {
+      return document.querySelectorAll(".nav__trigger[aria-expanded='true']");
+    };
+    var alternar = function (control, panel) {
+      var abierto = control.getAttribute("aria-expanded") === "true";
+      control.setAttribute("aria-expanded", String(!abierto));
+      if (panel) panel.hidden = abierto;
+    };
+
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      if (!t || typeof t.closest !== "function") return;
+
+      /* Hamburguesa → menú mobile */
+      var burger = t.closest("[data-burger]");
+      if (burger) {
+        alternar(burger, document.querySelector("[data-mobile-menu]"));
+        return;
+      }
+
+      /* Acordeones dentro del menú mobile */
+      var head = t.closest(".m-acc__head");
+      if (head) {
+        var acc = head.closest("[data-acc]");
+        alternar(head, acc && acc.querySelector(".m-acc__body"));
+        return;
+      }
+
+      /* Desplegables de escritorio: click para táctil y teclado, además
+         del hover que ya resuelve el CSS. */
+      var trigger = t.closest(".nav__trigger");
+      if (trigger) {
         e.preventDefault();
-        const open = trigger.getAttribute("aria-expanded") === "true";
-        document
-          .querySelectorAll(".nav__trigger[aria-expanded='true']")
-          .forEach((t) => t.setAttribute("aria-expanded", "false"));
-        trigger.setAttribute("aria-expanded", String(!open));
-      });
-    });
-    document.addEventListener("click", (e) => {
-      if (!(e.target as HTMLElement).closest("[data-dropdown]")) {
-        document
-          .querySelectorAll(".nav__trigger[aria-expanded='true']")
-          .forEach((t) => t.setAttribute("aria-expanded", "false"));
+        var abierto = trigger.getAttribute("aria-expanded") === "true";
+        abiertos().forEach(function (x) {
+          x.setAttribute("aria-expanded", "false");
+        });
+        trigger.setAttribute("aria-expanded", String(!abierto));
+        return;
+      }
+
+      /* Click afuera → cierra cualquier desplegable abierto */
+      if (!t.closest("[data-dropdown]")) {
+        abiertos().forEach(function (x) {
+          x.setAttribute("aria-expanded", "false");
+        });
       }
     });
-  }
-
-  initNav();
-  // Re-inicializa tras cada navegación con View Transitions
-  document.addEventListener("astro:page-load", initNav);
+  })();
 </script>
