@@ -1,4 +1,18 @@
 -- =====================================================================
+-- ⚠️  ARCHIVO HISTÓRICO — NO CORRER
+--     Sus pasos están incluidos en `instalar.sql`, que además comprueba
+--     antes de actuar y se puede correr las veces que sea.
+--
+--     Saltearse este archivo es lo que producía el error
+--       42P10 "there is no unique or exclusion constraint matching the
+--              ON CONFLICT specification"
+--     al llamar a registrar_lead: la función existía pero la restricción
+--     única sobre (email, origen) no. `instalar.sql` lo resuelve.
+--
+--     >>> Para poner la base al día: correr `instalar.sql` <<<
+-- =====================================================================
+
+-- =====================================================================
 -- MIGRACIÓN 01 — de "email único" a "(email, origen) único"
 -- ---------------------------------------------------------------------
 -- CUÁNDO CORRERLA: si creaste la tabla `leads` con la primera versión del

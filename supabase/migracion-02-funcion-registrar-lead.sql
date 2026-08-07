@@ -1,7 +1,15 @@
 -- =====================================================================
+-- ⚠️  ARCHIVO HISTÓRICO — NO CORRER
+--     Dependía de que la migración 01 se hubiera corrido antes. Si no,
+--     creaba la función pero fallaba al usarla con 42P10.
+--     `instalar.sql` hace las dos cosas y no depende del orden.
+--
+--     >>> Para poner la base al día: correr `instalar.sql` <<<
+-- =====================================================================
+
+-- =====================================================================
 -- MIGRACIÓN 02 — registrar los pedidos con una función, no con INSERT directo
 -- ---------------------------------------------------------------------
--- CORRERLA DESPUÉS de la migración 01.
 --
 -- QUÉ RESUELVE
 --

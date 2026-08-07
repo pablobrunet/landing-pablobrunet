@@ -60,9 +60,12 @@ export async function enviarLead(
     /* Supabase manda el motivo real en el cuerpo. Sin esto, el error en
        pantalla es genérico y no hay forma de saber qué falló. Las causas
        más comunes, por código:
-         404 / PGRST202 → la función no existe (falta correr la migración 02)
+         404 / PGRST202 → la función no existe (falta correr supabase/instalar.sql)
+         404 / PGRST125 → la URL trae /rest/v1 dos veces (revisar PUBLIC_SUPABASE_URL)
          401 / 403      → la clave no tiene permiso de ejecutarla
-         400            → el correo o el origen no pasaron la validación */
+         400 / 42P10    → la tabla no tiene la restricción única (email, origen)
+                          que necesita el ON CONFLICT: correr supabase/instalar.sql
+         400 / 22023    → el correo o el origen no pasaron la validación */
     let detalle = "";
     try {
       detalle = await r.text();

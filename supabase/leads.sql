@@ -1,9 +1,15 @@
 -- =====================================================================
+-- ⚠️  ARCHIVO HISTÓRICO — NO CORRER
+--     Quedó reemplazado por `instalar.sql`, que hace todo esto y además
+--     la función `registrar_lead`, en un solo paso y sin importar en qué
+--     estado esté la base. Se conserva solo como referencia del diseño.
+--
+--     >>> Para poner la base al día: correr `instalar.sql` <<<
+-- =====================================================================
+
+-- =====================================================================
 -- TABLA DE CORREOS — newsletter + desbloqueo de recursos
 -- ---------------------------------------------------------------------
--- Pegá esto tal cual en Supabase → SQL Editor → Run.
--- (Si la tabla ya existe con `email` único, corré antes el archivo
---  migracion-01-unique-por-origen.sql).
 --
 -- MODELO: cada fila es UN PEDIDO, no una persona.
 -- La misma persona puede suscribirse al newsletter y, más adelante, pedir
