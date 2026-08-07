@@ -1,0 +1,214 @@
+---
+/* =====================================================================
+   QUIÉN SOY — autoridad
+   ---------------------------------------------------------------------
+   Con la marca personal como arquitectura principal, esta sección no es
+   un anexo: es la cara de la marca. En tráfico frío es lo que habilita
+   la confianza para agendar, así que la insignia del OpenAI Partner
+   Network va destacada y con contexto (en el hero aparece chica).
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { autoridad, marca } = integra;
+---
+
+<section class="section i-oscuro aut" id="quien-soy" aria-label="Quién está detrás del método">
+  <div class="aut__fondo" aria-hidden="true"><span class="trama"></span></div>
+
+  <div class="container aut__inner">
+    <div class="aut__foto i-reveal">
+      <div class="aut__marco">
+        <img src={autoridad.foto} alt={autoridad.fotoAlt} width="520" height="620" loading="lazy" />
+      </div>
+      <p class="aut__firma">
+        <strong>{marca.persona}</strong>
+        <span>{marca.firma}</span>
+      </p>
+    </div>
+
+    <div class="aut__copy i-reveal">
+      <span class="i-eyebrow">{autoridad.eyebrow}</span>
+      <h2 class="t-h2 aut__titulo">{autoridad.titulo}</h2>
+
+      {autoridad.cuerpo.map((p) => <p class="aut__p">{p}</p>)}
+
+      <a class="aut__badge" href={autoridad.credencialDestacada.href}>
+        <span class="aut__badge-img">
+          <img
+            src={autoridad.credencialDestacada.img}
+            alt="Insignia oficial del OpenAI Partner Network"
+            width="120"
+            height="46"
+            loading="lazy"
+          />
+        </span>
+        <span class="aut__badge-txt">
+          <strong>{autoridad.credencialDestacada.titulo}</strong>
+          <span>{autoridad.credencialDestacada.texto}</span>
+        </span>
+      </a>
+
+      <ul class="aut__creds">
+        {
+          autoridad.credenciales.map((c) => (
+            <li>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12l4 4 10-10" />
+              </svg>
+              <span>{c}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <blockquote class="aut__cita">{autoridad.cita}</blockquote>
+    </div>
+  </div>
+</section>
+
+<style>
+  .aut {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(200deg, #0d1b3d 0%, #0a1430 60%);
+  }
+  .aut__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .aut__fondo span {
+    position: absolute;
+    inset: 0;
+    opacity: 0.3;
+    -webkit-mask-image: radial-gradient(60% 60% at 15% 100%, #000, transparent 70%);
+    mask-image: radial-gradient(60% 60% at 15% 100%, #000, transparent 70%);
+  }
+  .aut__inner {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .aut__marco {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: radial-gradient(90% 70% at 50% 0%, rgba(76, 134, 245, 0.35), rgba(13, 27, 61, 0.9));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .aut__marco img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .aut__firma {
+    display: grid;
+    gap: 0.15rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .aut__firma strong {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.15rem;
+  }
+  .aut__firma span {
+    font-size: 0.85rem;
+    color: var(--i-neblina);
+  }
+
+  .aut__titulo {
+    margin-top: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .aut__p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(220, 230, 246, 0.8);
+  }
+  .aut__p + .aut__p {
+    margin-top: 0.85rem;
+  }
+
+  .aut__badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius);
+    background: rgba(169, 200, 245, 0.08);
+    border: 1px solid rgba(169, 200, 245, 0.25);
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .aut__badge:hover {
+    background: rgba(169, 200, 245, 0.14);
+    border-color: rgba(169, 200, 245, 0.45);
+  }
+  .aut__badge-img {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    padding: 0.5rem 0.7rem;
+    border-radius: 10px;
+    background: #fff;
+  }
+  .aut__badge-img img {
+    height: 34px;
+    width: auto;
+  }
+  .aut__badge-txt {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .aut__badge-txt strong {
+    font-weight: var(--w-headline);
+    font-size: 0.975rem;
+  }
+  .aut__badge-txt span {
+    font-size: 0.85rem;
+    color: rgba(220, 230, 246, 0.7);
+  }
+
+  .aut__creds {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+  .aut__creds li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.925rem;
+    line-height: 1.5;
+    color: rgba(220, 230, 246, 0.82);
+  }
+  .aut__creds svg {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--i-celeste);
+  }
+
+  .aut__cita {
+    margin-top: 1.75rem;
+    padding-left: 1.15rem;
+    border-left: 3px solid var(--i-celeste);
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1rem, 0.92rem + 0.5vw, 1.2rem);
+    line-height: 1.5;
+    color: #fff;
+  }
+
+  @media (min-width: 900px) {
+    .aut__inner {
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 3rem;
+    }
+    .aut__foto {
+      position: sticky;
+      top: calc(var(--nav-alto) + 1.5rem);
+    }
+  }
+</style>

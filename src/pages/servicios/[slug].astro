@@ -53,7 +53,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
           <h2 class="t-h3">Cómo trabajo</h2>
           <ol class="steps">
             {
-              servicio.enfoque.map((e, i) => (
+              (servicio.enfoque ?? []).map((e, i) => (
                 <li class="step">
                   <span class="step__n">{i + 1}</span>
                   <div>
@@ -70,7 +70,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
           <h2 class="t-h3">Qué recibís</h2>
           <ul class="deliverables">
             {
-              servicio.entregables.map((d) => (
+              (servicio.entregables ?? []).map((d) => (
                 <li>
                   <Icon name="check" size={18} class="deliverables__i" />
                   {d}
@@ -81,7 +81,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
         </div>
 
         {
-          servicio.faq.length > 0 && (
+          servicio.faq && servicio.faq.length > 0 && (
             <div class="block">
               <h2 class="t-h3">Preguntas frecuentes</h2>
               <div class="faq">

@@ -1,0 +1,146 @@
+---
+/* =====================================================================
+   /programa-integra — LANDING DEL MÉTODO INTEGRA
+   ---------------------------------------------------------------------
+   Anexo de pablobrunet.com: comparte navbar, footer, tipografías y
+   componentes con el resto del sitio, pero cambia la paleta a la familia
+   azul del método (styles/integra.css, que se importa solo acá).
+
+   El orden de las secciones NO es decorativo: cada scroll acumula una
+   sola cosa — la sensación de que seguir como están cuesta plata, y que
+   la salida es una reunión gratis sin riesgo.
+
+     1 Hero + VSL          el dolor exacto y el CTA desde el segundo cero
+     2 Espejo              "esto me pasa a mí"
+     3 Costo               el dolor difuso se vuelve urgencia concreta
+     4 Método              las siete fases: el mecanismo creíble
+     5 Qué queda           artefactos + capacidades, siempre juntos
+     6 Quién hace qué      el reparto, que además filtra prospectos
+     7 Garantía            cierra el riesgo, y va DESPUÉS del reparto
+     8 Quién soy           autoridad: en tráfico frío es lo que habilita
+     9 Chequeo exprés      segundo camino de conversión
+    10 Preguntas           los frenos reales, antes del cierre
+    11 Cierre + calendario el CTA final, sin salir de la página
+   ===================================================================== */
+import "../../styles/integra.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import IntegraHero from "../../components/integra/IntegraHero.astro";
+import IntegraEspejo from "../../components/integra/IntegraEspejo.astro";
+import IntegraCosto from "../../components/integra/IntegraCosto.astro";
+import IntegraFases from "../../components/integra/IntegraFases.astro";
+import IntegraInstalado from "../../components/integra/IntegraInstalado.astro";
+import IntegraReparto from "../../components/integra/IntegraReparto.astro";
+import IntegraGarantia from "../../components/integra/IntegraGarantia.astro";
+import IntegraAutoridad from "../../components/integra/IntegraAutoridad.astro";
+import IntegraChequeo from "../../components/integra/IntegraChequeo.astro";
+import IntegraFaq from "../../components/integra/IntegraFaq.astro";
+import IntegraCierre from "../../components/integra/IntegraCierre.astro";
+import { integra } from "../../data/integra";
+---
+
+<Base
+  title={integra.seo.title}
+  description={integra.seo.description}
+  waMensaje={integra.whatsapp.mensaje}
+  waEtiqueta={integra.whatsapp.etiqueta}
+>
+  <Navbar />
+  <main>
+    <IntegraHero />
+    <IntegraEspejo />
+    <IntegraCosto />
+    <IntegraFases />
+    <IntegraInstalado />
+    <IntegraReparto />
+    <IntegraGarantia />
+    <IntegraAutoridad />
+    <IntegraChequeo />
+    <IntegraFaq />
+    <IntegraCierre />
+  </main>
+  <Footer />
+</Base>
+
+<style is:global>
+  /* El botón de WhatsApp se aparta cuando el calendario está en pantalla:
+     ahí el CTA principal es agendar, y no queremos competencia. */
+  .wa {
+    transition: transform var(--transition), box-shadow var(--transition),
+      opacity var(--transition);
+  }
+  body.integra-calendario-visible .wa {
+    opacity: 0;
+    transform: translateY(120%);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  /* ------------------------------------------------------------------
+     Tres cosas, todas livianas y sin dependencias:
+       1. UTMs → sessionStorage, para que viajen con el lead del chequeo.
+       2. Aparición al hacer scroll (se desactiva con motion reducido).
+       3. El botón de WhatsApp se esconde cuando el calendario está a la
+          vista, para no competir con el CTA principal.
+     ------------------------------------------------------------------ */
+  function initLandingIntegra() {
+    if (!document.querySelector("#agenda-integra")) return;
+
+    /* ---- 1. UTMs ---- */
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const claves = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+      const encontradas: Record<string, string> = {};
+      claves.forEach((k) => {
+        const v = p.get(k);
+        if (v) encontradas[k] = v;
+      });
+      // Solo se pisan si esta visita trae UTMs: si no, mandan las primeras.
+      if (Object.keys(encontradas).length > 0) {
+        sessionStorage.setItem("integra_utm", JSON.stringify(encontradas));
+      }
+    } catch {
+      /* sessionStorage bloqueado (modo privado estricto): no es crítico */
+    }
+
+    /* ---- 2. Aparición al hacer scroll ---- */
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
+
+    if (!reducido && "IntersectionObserver" in window) {
+      // La clase `is-listo` es la que aplica el estado inicial oculto: sin
+      // JS nunca se agrega y el contenido se ve normal.
+      bloques.forEach((b) => b.classList.add("is-listo"));
+      const obs = new IntersectionObserver(
+        (entradas) => {
+          entradas.forEach((e) => {
+            if (!e.isIntersecting) return;
+            (e.target as HTMLElement).classList.add("is-visible");
+            obs.unobserve(e.target);
+          });
+        },
+        { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+      );
+      bloques.forEach((b) => obs.observe(b));
+    }
+
+    /* ---- 3. WhatsApp vs. calendario ---- */
+    const calendario = document.getElementById("agenda-integra");
+    if (calendario && "IntersectionObserver" in window) {
+      const obsWa = new IntersectionObserver(
+        (entradas) => {
+          entradas.forEach((e) => {
+            document.body.classList.toggle("integra-calendario-visible", e.isIntersecting);
+          });
+        },
+        { threshold: 0.15 }
+      );
+      obsWa.observe(calendario);
+    }
+  }
+
+  initLandingIntegra();
+  document.addEventListener("astro:page-load", initLandingIntegra);
+</script>

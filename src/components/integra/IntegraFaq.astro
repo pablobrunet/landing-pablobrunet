@@ -1,0 +1,99 @@
+---
+/* =====================================================================
+   OBJECIONES Y PREGUNTAS FRECUENTES
+   ---------------------------------------------------------------------
+   Desactiva los frenos reales del ICP (tiempo, "otro curso", "no somos
+   técnicos", "¿lo hacen ustedes?", precio) justo antes del cierre.
+
+   La respuesta 2 —"¿ustedes nos implementan las automatizaciones?"— es la
+   respuesta estándar del brief: se usa igual en la reunión de diagnóstico
+   y en cualquier canal. No suavizarla acá.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { faq } = integra;
+---
+
+<section class="section i-claro" id="preguntas" aria-label="Preguntas frecuentes">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{faq.eyebrow}</span>
+      <h2 class="t-h2">{faq.titulo}</h2>
+    </header>
+
+    <div class="faq i-reveal">
+      {
+        faq.items.map((f) => (
+          <details class="faq__item" name="faq-integra">
+            <summary>
+              <span>{f.q}</span>
+              <span class="faq__signo" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </span>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    max-width: 840px;
+    margin-inline: auto;
+    display: grid;
+    gap: 0.65rem;
+  }
+  .faq__item {
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .faq__item[open] {
+    border-color: var(--i-azul-500);
+    box-shadow: var(--shadow-sm);
+  }
+  .faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    color: var(--azul-petroleo);
+  }
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq__signo {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--i-hielo);
+    color: var(--i-azul-600);
+    transition: transform var(--transition), background var(--transition), color var(--transition);
+  }
+  .faq__item[open] .faq__signo {
+    transform: rotate(45deg);
+    background: var(--i-grad);
+    color: #fff;
+  }
+  .faq__item p {
+    padding: 0 1.25rem 1.35rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+</style>

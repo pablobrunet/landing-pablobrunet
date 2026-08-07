@@ -1,0 +1,169 @@
+---
+/* =====================================================================
+   QUÉ QUEDA INSTALADO EN TU EMPRESA
+   ---------------------------------------------------------------------
+   Regla dura de la sección: los tres ARTEFACTOS y las tres CAPACIDADES
+   se muestran SIEMPRE JUNTOS y con el mismo peso visual. Mostrar sólo
+   documentos subvende el programa; mostrar sólo capacidades lo vuelve
+   inverificable. En mobile van apilados, primero los artefactos.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { instalado, anclas } = integra;
+const columnas = [instalado.artefactos, instalado.capacidades];
+---
+
+<section class="section i-claro" id="que-queda" aria-label="Qué queda instalado">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{instalado.eyebrow}</span>
+      <h2 class="t-h2">{instalado.titulo}</h2>
+      <p class="text-muted">{instalado.subtitulo}</p>
+    </header>
+
+    <div class="queda">
+      {
+        columnas.map((col, ci) => (
+          <div class="queda__col i-reveal">
+            <header class="queda__head">
+              <span class="queda__etiqueta">{col.etiqueta}</span>
+              <h3 class="t-h3">{col.titulo}</h3>
+            </header>
+            <ol class="queda__lista">
+              {col.items.map((it, i) => (
+                <li class="queda__item">
+                  <span class="queda__n" aria-hidden="true">{ci === 0 ? String(i + 1) : "✓"}</span>
+                  <div>
+                    <h4 class="queda__t">{it.titulo}</h4>
+                    <p class="text-muted">{it.texto}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+    </div>
+
+    <figure class="queda__cita i-reveal">
+      <blockquote>{instalado.cita}</blockquote>
+      <figcaption>{instalado.citaPie}</figcaption>
+    </figure>
+
+    <p class="queda__nota i-reveal">{instalado.nota}</p>
+
+    <div class="queda__cta i-reveal">
+      <a href={`#${anclas.agenda}`} class="btn btn--primary">{instalado.cta}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .queda {
+    display: grid;
+    gap: 2rem;
+    position: relative;
+  }
+  .queda__col {
+    padding: clamp(1.35rem, 3vw, 2rem);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--borde);
+    background: linear-gradient(180deg, var(--i-hielo-2), #fff 40%);
+  }
+  .queda__head {
+    padding-bottom: 1.1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--borde);
+  }
+  .queda__etiqueta {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .queda__lista {
+    display: grid;
+    gap: 1.35rem;
+  }
+  .queda__item {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+  }
+  .queda__n {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--i-grad);
+    color: #fff;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.85rem;
+  }
+  .queda__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .queda__item p {
+    font-size: 0.925rem;
+    line-height: 1.6;
+  }
+
+  .queda__cita {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.6rem, 4vw, 2.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-noche);
+    color: #fff;
+    text-align: center;
+  }
+  .queda__cita blockquote {
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1.05rem, 0.9rem + 0.9vw, 1.45rem);
+    line-height: 1.5;
+    max-width: 52rem;
+    margin-inline: auto;
+  }
+  .queda__cita blockquote::before,
+  .queda__cita blockquote::after {
+    content: '"';
+    color: var(--i-celeste);
+  }
+  .queda__cita figcaption {
+    margin-top: 1rem;
+    font-size: var(--fs-caption);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(220, 230, 246, 0.55);
+  }
+  .queda__nota {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--texto-suave);
+    max-width: 640px;
+    margin-inline: auto;
+  }
+  .queda__cta {
+    margin-top: 1.75rem;
+    text-align: center;
+  }
+
+  @media (min-width: 920px) {
+    .queda {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

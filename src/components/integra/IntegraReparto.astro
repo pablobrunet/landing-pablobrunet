@@ -1,0 +1,182 @@
+---
+/* =====================================================================
+   QUIÉN HACE QUÉ — separación de responsabilidades
+   ---------------------------------------------------------------------
+   Cumple dos funciones comerciales: sube la confianza (nadie promete
+   magia) y FILTRA prospectos malos — el que busca que se lo hagan todo
+   se autoexcluye acá y no consume una reunión de diagnóstico.
+
+   Por eso el compromiso de tiempo va a la vista y no escondido en la
+   FAQ, y el bloque "qué no incluye" se redacta sin tono defensivo: es
+   una válvula hacia el proyecto de implementación, no una disculpa.
+
+   Va inmediatamente ANTES de la garantía, a propósito: primero se dice
+   qué tiene que poner la empresa; al revés, la garantía suena vacía.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { reparto } = integra;
+---
+
+<section class="section i-hielo i-claro" id="quien-hace-que" aria-label="Quién hace qué">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{reparto.eyebrow}</span>
+      <h2 class="t-h2">{reparto.titulo}</h2>
+      <p class="text-muted">{reparto.subtitulo}</p>
+    </header>
+
+    <div class="rep">
+      {
+        reparto.columnas.map((c) => (
+          <article class:list={["rep__col", `rep__col--${c.tono}`]}>
+            <h3 class="rep__t">{c.titulo}</h3>
+            <ul class="rep__lista">
+              {c.items.map((it) => (
+                <li>
+                  <svg class="rep__tick" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12l4 4 10-10" />
+                  </svg>
+                  <span>{it}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="rep__frase i-reveal">
+      {reparto.frase.map((l) => <p>{l}</p>)}
+    </div>
+
+    <div class="rep__pie">
+      <div class="rep__fuera i-reveal">
+        <h3 class="t-h3">{reparto.fuera.titulo}</h3>
+        <p>{reparto.fuera.texto}</p>
+      </div>
+
+      <div class="rep__tiempo i-reveal">
+        <h3 class="t-h3">{reparto.tiempo.titulo}</h3>
+        <ul class="rep__chips">
+          {reparto.tiempo.chips.map((ch) => <li>{ch}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rep {
+    display: grid;
+    gap: 1.15rem;
+  }
+  .rep__col {
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-lg);
+    border-top: 4px solid var(--i-azul-500);
+  }
+  /* Tres intensidades del mismo azul: se leen como un mismo sistema y no
+     como tres bloques compitiendo. */
+  .rep__col--nosotros {
+    border-top-color: var(--i-azul-800);
+  }
+  .rep__col--empresa {
+    border-top-color: var(--i-azul-600);
+  }
+  .rep__col--juntos {
+    border-top-color: var(--i-celeste);
+  }
+  .rep__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.15rem;
+    color: var(--azul-petroleo);
+    padding-bottom: 0.9rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--borde);
+  }
+  .rep__lista {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .rep__lista li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.925rem;
+    line-height: 1.45;
+    color: var(--azul-pizarra);
+  }
+  .rep__tick {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--i-azul-600);
+  }
+
+  .rep__frase {
+    margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-grad);
+    color: #fff;
+    box-shadow: var(--i-glow);
+  }
+  .rep__frase p {
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1rem, 0.9rem + 0.7vw, 1.3rem);
+    line-height: 1.45;
+  }
+  .rep__frase p + p {
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  .rep__pie {
+    display: grid;
+    gap: 1.15rem;
+    margin-top: 1.15rem;
+  }
+  .rep__fuera,
+  .rep__tiempo {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+  }
+  .rep__fuera h3,
+  .rep__tiempo h3 {
+    margin-bottom: 0.6rem;
+  }
+  .rep__fuera p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+  .rep__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+  }
+  .rep__chips li {
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.09);
+    border: 1px solid rgba(30, 92, 242, 0.18);
+    color: var(--verde-resalte);
+    font-size: 0.85rem;
+    font-weight: var(--w-subheadline);
+  }
+
+  @media (min-width: 880px) {
+    .rep {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .rep__pie {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+</style>

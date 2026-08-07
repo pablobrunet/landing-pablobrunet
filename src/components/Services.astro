@@ -1,5 +1,5 @@
 ---
-import { serviciosMeta, servicios, hrefServicio } from "../data/servicios";
+import { serviciosMeta, servicios, hrefServicio, ctaServicio } from "../data/servicios";
 import Icon from "./Icon.astro";
 import Frame from "./Frame.astro";
 import SectionHeading from "./SectionHeading.astro";
@@ -39,7 +39,7 @@ import SectionHeading from "./SectionHeading.astro";
               <h3 class="t-h3">{s.titulo}</h3>
               <p class="text-muted service__text">{s.resumen}</p>
               <span class="service__cta">
-                {s.externo ? "Ir a innerflowai.com" : "Ver servicio"}
+                {ctaServicio(s)}
                 <Icon name="arrowUpRight" size={16} />
               </span>
             </div>

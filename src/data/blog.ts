@@ -245,7 +245,7 @@ export const blog: Post[] = [
       {
         tipo: "parrafo",
         texto:
-          "Si al terminar la planilla te queda la sensación de que estás pagando bastante y decidiendo poco, ese es exactamente el punto de partida del [ciclo de estrategia e implementación](/servicios/estrategia-e-implementacion-de-ia): ordenar lo que ya hay antes de sumar una herramienta más.",
+          "Si al terminar la planilla te queda la sensación de que estás pagando bastante y decidiendo poco, ese es exactamente el punto de partida del [Método INTEGRA](/programa-integra): ordenar lo que ya hay antes de sumar una herramienta más.",
       },
       {
         tipo: "fuentes",
@@ -721,7 +721,7 @@ export const blog: Post[] = [
       {
         tipo: "parrafo",
         texto:
-          "Cuando una empresa arma el hábito de hacer pasar cada idea por estas ocho preguntas, cambia algo más de fondo que la calidad de los proyectos: deja de depender de que aparezca alguien iluminado. Las oportunidades empiezan a salir de donde tienen que salir, que es de la gente que hace el trabajo todos los días. Ese es, exactamente, el sistema que instalo en el [ciclo de 60 días](/servicios/estrategia-e-implementacion-de-ia).",
+          "Cuando una empresa arma el hábito de hacer pasar cada idea por estas ocho preguntas, cambia algo más de fondo que la calidad de los proyectos: deja de depender de que aparezca alguien iluminado. Las oportunidades empiezan a salir de donde tienen que salir, que es de la gente que hace el trabajo todos los días. Ese es, exactamente, el sistema que instalo en el [programa INTEGRA 60](/programa-integra).",
       },
       {
         tipo: "fuentes",
@@ -1736,7 +1736,7 @@ export const blog: Post[] = [
       {
         tipo: "parrafo",
         texto:
-          "Instalar esa cadencia, y dejarla funcionando con gente de la casa, es literalmente el objetivo del [ciclo de 60 días](/servicios/estrategia-e-implementacion-de-ia). Todo lo demás —el tablero, el protocolo, los roles— existe para darle contenido a esos sesenta minutos.",
+          "Instalar esa cadencia, y dejarla funcionando con gente de la casa, es literalmente el objetivo del [programa INTEGRA 60](/programa-integra). Todo lo demás —el tablero, el protocolo, los roles— existe para darle contenido a esos sesenta minutos.",
       },
       {
         tipo: "fuentes",

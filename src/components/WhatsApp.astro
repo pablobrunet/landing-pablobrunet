@@ -9,7 +9,16 @@
 import { site } from "../data/site";
 const { whatsapp } = site;
 
-const href = `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(whatsapp.mensaje)}`;
+/* El número es siempre el mismo; el mensaje precargado cambia según la
+   página. La landing del Método INTEGRA, por ejemplo, abre el chat
+   diciendo de dónde viene. */
+interface Props {
+  mensaje?: string;
+  etiqueta?: string;
+}
+const { mensaje = whatsapp.mensaje, etiqueta = whatsapp.etiqueta } = Astro.props;
+
+const href = `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(mensaje)}`;
 ---
 
 <a
@@ -17,10 +26,10 @@ const href = `https://wa.me/${whatsapp.numero}?text=${encodeURIComponent(whatsap
   href={href}
   target="_blank"
   rel="noopener"
-  aria-label={whatsapp.etiqueta}
-  title={whatsapp.etiqueta}
+  aria-label={etiqueta}
+  title={etiqueta}
 >
-  <span class="wa__texto">{whatsapp.etiqueta}</span>
+  <span class="wa__texto">{etiqueta}</span>
   <span class="wa__icono">
     <svg viewBox="0 0 24 24" width="27" height="27" fill="currentColor" aria-hidden="true">
       <path

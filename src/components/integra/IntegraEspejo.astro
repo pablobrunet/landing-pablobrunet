@@ -1,0 +1,315 @@
+---
+/* =====================================================================
+   ESPEJO DEL PROBLEMA (interactivo)
+   ---------------------------------------------------------------------
+   Convierte "interesante" en "esto me pasa a mí". Ocho tarjetas
+   clickeables; el panel de la derecha cuenta y devuelve una lectura
+   distinta según cuántas marcó.
+
+   Los ocho dolores son textuales de la propuesta madre: se editan en
+   data/integra.ts, no acá. Cada tarjeta es un <button aria-pressed>, así
+   funciona con teclado y lo anuncia un lector de pantalla.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { espejo, anclas } = integra;
+const total = espejo.dolores.length;
+---
+
+<section class="section i-claro" id="espejo" aria-label="Espejo del problema">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{espejo.eyebrow}</span>
+      <h2 class="t-h2">{espejo.titulo}</h2>
+      <p class="text-muted">{espejo.subtitulo}</p>
+    </header>
+
+    <div class="esp" data-espejo data-total={total}>
+      <ul class="esp__grid">
+        {
+          espejo.dolores.map((d, i) => (
+            <li class="i-reveal">
+              <button type="button" class="dolor" aria-pressed="false" data-dolor>
+                <span class="dolor__check" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12l4 4 10-10" />
+                  </svg>
+                </span>
+                <span class="dolor__texto">{d}</span>
+                <span class="dolor__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+
+      <aside class="esp__panel">
+        <div class="marcador">
+          <div class="marcador__num">
+            <strong data-contador>0</strong>
+            <span>de {total}</span>
+          </div>
+          <div class="marcador__barra" role="progressbar" aria-valuemin="0" aria-valuemax={total} aria-valuenow="0" aria-label="Síntomas marcados" data-barra-wrap>
+            <span data-barra></span>
+          </div>
+          <p class="marcador__pista" data-pista>Tocá las tarjetas que reconozcas.</p>
+
+          <div class="marcador__resultado" data-resultado hidden>
+            <h3 class="t-h3" data-resultado-titulo></h3>
+            <p data-resultado-texto></p>
+          </div>
+
+          <p class="marcador__fija">{espejo.fija}</p>
+
+          <a href={`#${anclas.agenda}`} class="btn btn--primary marcador__cta" data-espejo-cta hidden>
+            {espejo.cta}
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script
+  is:inline
+  type="application/json"
+  data-espejo-respuestas
+  set:html={JSON.stringify(espejo.respuestas)}
+/>
+
+<style>
+  .esp {
+    display: grid;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .esp__grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  /* ---- Tarjeta de dolor ---- */
+  .dolor {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    width: 100%;
+    text-align: left;
+    padding: 1.05rem 3rem 1.05rem 1.1rem;
+    font-family: inherit;
+    font-size: 0.975rem;
+    line-height: 1.45;
+    color: var(--azul-petroleo);
+    background: #fff;
+    border: 1.5px solid var(--borde);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition),
+      transform var(--transition), box-shadow var(--transition);
+  }
+  .dolor:hover {
+    border-color: var(--i-azul-500);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  .dolor__check {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    border-radius: 7px;
+    border: 1.5px solid var(--borde-punteado);
+    background: var(--i-hielo-2);
+    color: transparent;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+  }
+  .dolor__n {
+    position: absolute;
+    top: 0.9rem;
+    right: 1rem;
+    font-size: 0.75rem;
+    font-weight: var(--w-headline);
+    color: var(--borde-punteado);
+    letter-spacing: 0.04em;
+  }
+  .dolor[aria-pressed="true"] {
+    border-color: var(--i-azul-600);
+    background: linear-gradient(135deg, rgba(76, 134, 245, 0.1), rgba(30, 92, 242, 0.05));
+  }
+  .dolor[aria-pressed="true"] .dolor__check {
+    background: var(--i-grad);
+    border-color: transparent;
+    color: #fff;
+  }
+  .dolor[aria-pressed="true"] .dolor__texto {
+    font-weight: var(--w-subheadline);
+  }
+  .dolor[aria-pressed="true"] .dolor__n {
+    /* El aclarado (--i-azul-500) queda en 3,5:1 sobre el fondo de la tarjeta
+       marcada: para texto va el Azul Intenso, que llega a 5,2:1. */
+    color: var(--i-azul-600);
+  }
+
+  /* ---- Panel de conteo ---- */
+  .marcador {
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-noche);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  .marcador__num {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .marcador__num strong {
+    font-family: var(--font-title);
+    font-size: 3.25rem;
+    line-height: 1;
+    font-weight: var(--w-display);
+    background: linear-gradient(120deg, #a9c8f5, #4c86f5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .marcador__num span {
+    color: rgba(220, 230, 246, 0.6);
+    font-size: 0.95rem;
+  }
+  .marcador__barra {
+    height: 6px;
+    margin-top: 1rem;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+  }
+  .marcador__barra span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: var(--i-grad);
+    transition: width 380ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .marcador__pista {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: rgba(220, 230, 246, 0.65);
+  }
+  .marcador__resultado {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .marcador__resultado h3 {
+    color: var(--i-neblina);
+    margin-bottom: 0.5rem;
+  }
+  .marcador__resultado p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(220, 230, 246, 0.85);
+  }
+  .marcador__fija {
+    margin-top: 1.35rem;
+    padding: 0.9rem 1rem;
+    border-left: 3px solid var(--i-celeste);
+    border-radius: 0 10px 10px 0;
+    background: rgba(169, 200, 245, 0.08);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: rgba(220, 230, 246, 0.9);
+  }
+  .marcador__cta {
+    width: 100%;
+    margin-top: 1.35rem;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  @media (min-width: 700px) {
+    .esp__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1040px) {
+    .esp {
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 2rem;
+    }
+    .esp__panel {
+      position: sticky;
+      top: calc(var(--nav-alto) + 1.5rem);
+    }
+  }
+</style>
+
+<script>
+  function initEspejo() {
+    const raiz = document.querySelector<HTMLElement>("[data-espejo]");
+    if (!raiz || raiz.dataset.listo) return;
+    raiz.dataset.listo = "1";
+
+    const datos = document.querySelector<HTMLScriptElement>("[data-espejo-respuestas]");
+    type Respuesta = { hasta: number; titulo: string; texto: string };
+    let respuestas: Respuesta[] = [];
+    try {
+      respuestas = JSON.parse(datos?.textContent ?? "[]");
+    } catch {
+      respuestas = [];
+    }
+
+    const total = Number(raiz.dataset.total ?? 8);
+    const tarjetas = Array.from(raiz.querySelectorAll<HTMLButtonElement>("[data-dolor]"));
+    const contador = raiz.querySelector<HTMLElement>("[data-contador]");
+    const barra = raiz.querySelector<HTMLElement>("[data-barra]");
+    const barraWrap = raiz.querySelector<HTMLElement>("[data-barra-wrap]");
+    const pista = raiz.querySelector<HTMLElement>("[data-pista]");
+    const caja = raiz.querySelector<HTMLElement>("[data-resultado]");
+    const titulo = raiz.querySelector<HTMLElement>("[data-resultado-titulo]");
+    const texto = raiz.querySelector<HTMLElement>("[data-resultado-texto]");
+    const cta = raiz.querySelector<HTMLElement>("[data-espejo-cta]");
+
+    function pintar() {
+      const n = tarjetas.filter((t) => t.getAttribute("aria-pressed") === "true").length;
+
+      if (contador) contador.textContent = String(n);
+      if (barra) barra.style.width = `${(n / total) * 100}%`;
+      barraWrap?.setAttribute("aria-valuenow", String(n));
+
+      if (n === 0) {
+        if (caja) caja.hidden = true;
+        if (pista) pista.hidden = false;
+        if (cta) cta.hidden = true;
+        return;
+      }
+
+      if (pista) pista.hidden = true;
+      const r = respuestas.find((x) => n <= x.hasta) ?? respuestas[respuestas.length - 1];
+      if (r && titulo && texto && caja) {
+        titulo.textContent = r.titulo;
+        texto.textContent = r.texto;
+        caja.hidden = false;
+      }
+      /* El CTA aparece recién con 2 marcadas: con una sola todavía no hay
+         suficiente reconocimiento como para pedir la reunión. */
+      if (cta) cta.hidden = n < 2;
+    }
+
+    tarjetas.forEach((t) => {
+      t.addEventListener("click", () => {
+        t.setAttribute("aria-pressed", t.getAttribute("aria-pressed") === "true" ? "false" : "true");
+        pintar();
+      });
+    });
+
+    pintar();
+  }
+
+  initEspejo();
+  document.addEventListener("astro:page-load", initEspejo);
+</script>

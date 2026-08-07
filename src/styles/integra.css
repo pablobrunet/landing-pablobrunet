@@ -1,0 +1,185 @@
+/* =====================================================================
+   MÉTODO INTEGRA — tema azul de la landing /programa-integra
+   ---------------------------------------------------------------------
+   La landing es un anexo del sitio: comparte layout, tipografías y
+   componentes (navbar, footer, botón de WhatsApp), pero cambia la paleta
+   a la familia azul del Método INTEGRA.
+
+   CÓMO FUNCIONA
+   Este archivo se importa SOLO desde las páginas de /programa-integra, así que su
+   CSS viaja únicamente en esas páginas. Redefine los tokens verdes de la
+   marca personal con sus equivalentes azules: por eso el navbar, los
+   botones y el footer se tiñen solos, sin duplicar componentes.
+
+   Los selectores van con especificidad doble (`:root:root`, `.btn.btn--…`)
+   para ganarle a tokens.css / global.css sin depender del orden en que el
+   bundler los concatene.
+
+   PALETA DE MARCA (la definida por Pablo — es la fuente de verdad):
+     Azul Marino    #0D1B3D  base, textos y fondos oscuros
+     Azul Intenso   #1E5CF2  color principal y llamados a la acción
+     Azul Denim     #3B6CB7  secundario, recursos gráficos, apoyo
+     Celeste Suave  #A9C8F5  contraste del isotipo, acentos sobre oscuro
+     Azul Neblina   #DCE6F6  fondos suaves, tarjetas y bloques
+     Gris muy claro #F4F6FA  fondos neutros
+     Blanco         #FFFFFF  base predominante
+
+   Los tonos intermedios (--i-azul-700/800/900, --i-noche) son derivados de
+   esos siete para poder armar degradés y profundidad: no son colores nuevos
+   de la marca, son escalones entre el Azul Intenso y el Azul Marino.
+
+   CONTRASTE (WCAG AA sobre sus fondos reales):
+     #1E5CF2 sobre blanco = 5,4:1 · sobre #F4F6FA = 5,0:1
+     #1747C2 sobre blanco = 7,7:1 · sobre #DCE6F6 = 6,2:1  ← texto sobre neblina
+     #3B6CB7 sobre blanco = 5,2:1
+     #A9C8F5 sobre #0D1B3D = 9,9:1 · blanco sobre #0D1B3D = 16,9:1
+   Por eso el texto azul sobre fondos claros usa --verde-resalte (#1747C2) y
+   no el Azul Intenso: sobre Azul Neblina el intenso queda en 4,3:1.
+   ===================================================================== */
+
+:root:root {
+  /* ---- Reasignación de los tokens de marca (verde → azul INTEGRA) ---- */
+  --azul-petroleo: #0d1b3d; /* Azul Marino: fondos oscuros y texto principal */
+  --azul-pizarra: #3b6cb7; /* Azul Denim: texto secundario */
+  --verde-azulado: #3b6cb7; /* eyebrows, íconos de apoyo */
+  --verde-acento: #1e5cf2; /* Azul Intenso: CTAs y highlights */
+  --verde-acento-oscuro: #1747c2;
+  --verde-resalte: #1747c2; /* texto resaltado sobre claro (AA sobre neblina) */
+  --verde-resalte-claro: #a9c8f5; /* texto resaltado sobre oscuro */
+  --gris-claro: #f4f6fa; /* secciones claras alternadas */
+  --texto-suave: #4c5d80;
+  --borde: #d8e3f5;
+  --borde-punteado: #b9cdeb;
+
+  --shadow-sm: 0 2px 8px rgba(13, 27, 61, 0.06);
+  --shadow: 0 12px 32px rgba(13, 27, 61, 0.1);
+  --shadow-lg: 0 24px 60px rgba(13, 27, 61, 0.18);
+
+  /* ---- Paleta propia de INTEGRA ----
+     Se usa en las secciones de la landing; el resto del sitio no la ve. */
+  --i-noche: #0a1430; /* un escalón más profundo que el marino: hero y cierre */
+  --i-navy: #0d1b3d; /* Azul Marino */
+  --i-navy-claro: #16295a;
+  --i-azul-900: #12306b;
+  --i-azul-800: #17408f;
+  --i-azul-700: #1b4ec0;
+  --i-azul-600: #1e5cf2; /* Azul Intenso */
+  --i-azul-500: #4c86f5; /* aclarado del intenso, para degradés sobre oscuro */
+  --i-denim: #3b6cb7; /* Azul Denim */
+  --i-celeste: #a9c8f5; /* Celeste Suave */
+  --i-neblina: #dce6f6; /* Azul Neblina */
+  --i-hielo: #f4f6fa; /* Gris muy claro */
+  --i-hielo-2: #fafcfe;
+
+  /* Degradés de la marca: se repiten en botones, números y bandas. */
+  --i-grad: linear-gradient(135deg, #4c86f5 0%, #1e5cf2 55%, #17408f 100%);
+  --i-grad-suave: linear-gradient(135deg, rgba(76, 134, 245, 0.14), rgba(30, 92, 242, 0.06));
+  --i-glow: 0 18px 44px rgba(30, 92, 242, 0.32);
+}
+
+/* ---- Botón primario: sobre azul el texto va en blanco ---- */
+.btn.btn--primary {
+  background: var(--i-grad);
+  color: #ffffff;
+  box-shadow: var(--i-glow);
+}
+.btn.btn--primary:hover {
+  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+}
+
+/* Trama de puntos del sistema gráfico, en azul */
+.trama.trama {
+  background-image: radial-gradient(circle at 1.5px 1.5px, rgba(169, 200, 245, 0.35) 1.5px, transparent 0);
+}
+
+/* =====================================================================
+   Utilidades compartidas por las secciones de la landing
+   ===================================================================== */
+
+/* Fondo oscuro de la landing: más azul y más profundo que el del sitio. */
+.i-oscuro {
+  background: var(--i-noche);
+  color: #ffffff;
+}
+.i-oscuro .text-muted {
+  color: rgba(220, 230, 246, 0.72);
+}
+
+.i-hielo {
+  background: var(--i-hielo);
+}
+
+/* Encabezado de sección de la landing (más aire que el del sitio) */
+.i-head {
+  max-width: 760px;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+.i-head--centro {
+  margin-inline: auto;
+  text-align: center;
+}
+.i-head h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.6rem, 1.05rem + 2.1vw, 2.6rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+.i-head p {
+  margin-top: 1rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+/* Etiqueta superior: mismo recurso que `.eyebrow` pero en píldora */
+.i-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-caption);
+  font-weight: var(--w-subheadline);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--verde-resalte);
+  background: rgba(30, 92, 242, 0.08);
+  border: 1px solid rgba(30, 92, 242, 0.16);
+}
+.i-oscuro .i-eyebrow {
+  color: var(--i-neblina);
+  background: rgba(169, 200, 245, 0.12);
+  border-color: rgba(169, 200, 245, 0.26);
+}
+
+/* Palabra resaltada dentro de un título de la landing */
+.i-hl {
+  background: linear-gradient(120deg, #4c86f5, #a9c8f5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Sobre fondo claro el degradé pierde contraste: va color plano. */
+.i-claro .i-hl {
+  background: none;
+  color: var(--verde-resalte);
+}
+
+/* Aparición al hacer scroll. Sin JS (o con motion reducido) el contenido
+   se ve igual: el estado inicial solo se aplica si la clase `is-listo`
+   la pone el script. */
+.i-reveal.is-listo {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 620ms cubic-bezier(0.2, 0.7, 0.3, 1), transform 620ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.i-reveal.is-listo.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .i-reveal.is-listo {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

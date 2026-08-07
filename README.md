@@ -14,10 +14,8 @@ hasta que subas tus imágenes.
 /sobre-mi                 Quién soy (bio, valores, recorrido, credenciales)
 /servicios                Índice de servicios
 /servicios/[slug]         Página de cada servicio
-/casos                    Índice de casos de éxito
-/casos/[slug]             Página de cada caso
-/verticales               IA aplicada por sector
-/verticales/[slug]        Página de cada vertical
+/programa-integra         Landing del Método INTEGRA (programa INTEGRA 60)
+/programa-integra/gracias Confirmación después de agendar el diagnóstico
 /blog                     Índice del blog
 /blog/[slug]              Cada artículo
 /recursos                 Hub de recursos (blog, newsletter, materiales)
@@ -27,9 +25,37 @@ hasta que subas tus imágenes.
 404                       Página de error
 ```
 
-Los menús **Servicios, Casos, Verticales y Recursos** se despliegan en la barra
-de navegación y se arman solos a partir de los datos: si agregás un servicio o
-caso, aparece en el menú y como página nueva automáticamente.
+Los menús **Servicios y Recursos** se despliegan en la barra de navegación y se
+arman solos a partir de los datos: si agregás un servicio, aparece en el menú y
+como página nueva automáticamente.
+
+**Redirecciones** (en `astro.config.mjs`): `/integra`, `/integra/gracias`,
+`/servicios/estrategia-e-implementacion-de-ia`, `/servicios/metodo-integra` y
+`/metodo-integra` van a `/programa-integra`. Son URLs que estuvieron publicadas
+(el servicio que la landing reemplazó, y la ruta corta que usaron los primeros
+enlaces y tres artículos del blog): redirigen en vez de dar 404.
+
+## La landing del Método INTEGRA
+
+Es un **anexo** del sitio: comparte navbar, footer, tipografías y componentes,
+pero usa la paleta azul del método (`src/styles/integra.css`, que redefine los
+tokens verdes de la marca y sólo viaja en esas dos páginas). Los siete colores
+de marca están listados y justificados al principio de ese archivo — si cambia
+la identidad, se tocan ahí y se propagan solos.
+
+- Todo el texto está en `src/data/integra.ts`. No hace falta tocar componentes.
+- Las piezas visuales viven en `src/components/integra/`, una por sección.
+- Usa **su propio calendario** de GoHighLevel (`integra.cierre.calendarioId`),
+  distinto del calendario general de Pablo (`site.agenda.id`). No mezclarlos.
+- El **redirect post-booking** a `/programa-integra/gracias` se configura del
+  lado de GHL, en ese calendario.
+- El **Chequeo exprés** guarda los leads en la tabla `leads_integra` de
+  Supabase. Antes de usarlo hay que correr una vez `supabase/integra-chequeo.sql`.
+  Si no se corre, el quiz funciona igual: muestra el resultado y sólo se pierde
+  el registro.
+- El **VSL todavía no está grabado**: mientras `integra.vsl.url` esté vacío se
+  muestra la portada con el aviso. Al pegar un enlace de YouTube/Vimeo aparece
+  el reproductor solo.
 
 ## Requisitos
 
@@ -53,12 +79,13 @@ los componentes ni las páginas:
 |-----------------------|---------------------------------------------------------|
 | `site.ts`             | Datos globales, navegación, redes, hero y secciones del home |
 | `sobreMi.ts`          | Página "Sobre mí" (bio, valores, recorrido, credenciales) |
-| `servicios.ts`        | Servicios (cada uno genera su subpágina)                |
-| `casos.ts`            | Casos de éxito (cada uno genera su subpágina)           |
-| `verticales.ts`       | Sectores / verticales                                   |
+| `servicios.ts`        | Servicios (con `ruta` o `externo` no generan subpágina)  |
+| `integra.ts`          | Toda la landing del Método INTEGRA y su página de gracias |
 | `blog.ts`             | Artículos del blog                                      |
-| `testimonios.ts`      | Testimonios del home                                    |
 | `recursos.ts`         | Hub de recursos                                         |
+| `prensa.ts`           | Apariciones en prensa                                   |
+| `videos.ts`           | Charlas grabadas                                        |
+| `empresas.ts`         | Logos de empresas                                       |
 
 **Agregar una página nueva** (ej. un servicio o caso) = duplicar un item en su
 array y cambiarle el `slug`. La ruta, el menú y los enlaces se generan solos.

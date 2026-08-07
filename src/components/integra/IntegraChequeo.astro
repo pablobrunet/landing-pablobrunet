@@ -1,0 +1,680 @@
+---
+/* =====================================================================
+   CHEQUEO EXPRÉS — versión web liviana del Chequeo INTEGRA
+   ---------------------------------------------------------------------
+   Segundo camino de conversión: para el que todavía no está listo para
+   agendar en frío. Seis preguntas, una por pantalla, resultado
+   orientativo (semáforo de tres niveles) y salida al calendario.
+
+   Sin score numérico pseudo-científico a la vista: el puntaje existe
+   adentro para elegir el nivel, pero lo que se muestra son hallazgos
+   escritos en clave de capacidad faltante ("nadie tiene asignado el rol
+   de sostener esto"), nunca de automatización faltante.
+
+   La captura de datos es lo último, con el resultado ya calculado. Si
+   Supabase no está configurado o falla, el resultado se muestra igual:
+   se pierde el lead, no la experiencia.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+import { leads } from "../../lib/leads";
+const { chequeo, anclas } = integra;
+const totalPreguntas = chequeo.preguntas.length;
+---
+
+<section class="section i-hielo i-claro" id={anclas.chequeo} aria-label="Chequeo exprés">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{chequeo.eyebrow}</span>
+      <h2 class="t-h2">{chequeo.titulo}</h2>
+      <p class="text-muted">{chequeo.subtitulo}</p>
+    </header>
+
+    <div
+      class="chq i-reveal"
+      data-chequeo
+      data-url={leads.endpointChequeo}
+      data-key={leads.clave}
+    >
+      <!-- ---------- Paso 0: intro ---------- -->
+      <div class="chq__paso" data-paso="intro">
+        <div class="chq__intro">
+          <span class="chq__intro-num">6</span>
+          <div>
+            <h3 class="t-h3">Seis preguntas, dos minutos</h3>
+            <p class="text-muted">
+              Sin registro para empezar. Al final te pedimos el correo solo para
+              mandarte el resultado.
+            </p>
+          </div>
+        </div>
+        <button type="button" class="btn btn--primary" data-empezar>{chequeo.empezar}</button>
+      </div>
+
+      <!-- ---------- Paso 1: preguntas ---------- -->
+      <div class="chq__paso" data-paso="preguntas" hidden>
+        <div class="chq__progreso">
+          <div class="chq__barra" role="progressbar" aria-valuemin="1" aria-valuemax={totalPreguntas} aria-valuenow="1">
+            <span data-progreso></span>
+          </div>
+          <span class="chq__cuenta">
+            <strong data-actual>1</strong> / {totalPreguntas}
+          </span>
+        </div>
+
+        {
+          chequeo.preguntas.map((p, i) => (
+            <fieldset class="chq__pregunta" data-pregunta={i} data-id={p.id} hidden={i !== 0}>
+              <legend class="chq__legend">{p.texto}</legend>
+              <div class="chq__opciones">
+                {p.opciones.map((o, oi) => (
+                  <button
+                    type="button"
+                    class="opcion"
+                    data-opcion={oi}
+                    data-peso={o.peso ?? 0}
+                    data-hallazgo={o.hallazgo ?? ""}
+                    data-texto={o.texto}
+                  >
+                    <span class="opcion__marca" aria-hidden="true" />
+                    <span>{o.texto}</span>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          ))
+        }
+
+        <button type="button" class="chq__volver" data-atras hidden>← Volver</button>
+      </div>
+
+      <!-- ---------- Paso 2: captura ---------- -->
+      <div class="chq__paso" data-paso="datos" hidden>
+        <h3 class="t-h3">{chequeo.formulario.titulo}</h3>
+        <p class="text-muted chq__sub">{chequeo.formulario.subtitulo}</p>
+
+        <form class="chq__form" data-form novalidate>
+          <label>
+            <span>{chequeo.formulario.nombre}</span>
+            <input type="text" name="nombre" required autocomplete="name" />
+          </label>
+          <label>
+            <span>{chequeo.formulario.email}</span>
+            <input type="email" name="email" required autocomplete="email" />
+          </label>
+          <label class="chq__form-ancho">
+            <span>{chequeo.formulario.empresa}</span>
+            <input type="text" name="empresa" required autocomplete="organization" />
+          </label>
+
+          <!-- Trampa para bots: invisible; si viene con algo, se descarta. -->
+          <input class="chq__honey" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <button type="submit" class="btn btn--primary chq__form-ancho">
+            {chequeo.formulario.boton}
+          </button>
+          <p class="chq__privacidad chq__form-ancho">{chequeo.formulario.privacidad}</p>
+        </form>
+      </div>
+
+      <!-- ---------- Paso 3: resultado ---------- -->
+      <div class="chq__paso" data-paso="resultado" hidden>
+        <div class="chq__semaforo" data-nivel-color>
+          <span class="luz luz--rojo"></span>
+          <span class="luz luz--ambar"></span>
+          <span class="luz luz--verde"></span>
+        </div>
+
+        <p class="chq__etiqueta">Tu resultado</p>
+        <h3 class="chq__nivel" data-nivel-nombre></h3>
+        <p class="chq__nivel-texto" data-nivel-texto></p>
+
+        <div class="chq__hallazgos" data-hallazgos hidden>
+          <h4>Lo que vemos en tus respuestas</h4>
+          <ul data-hallazgos-lista></ul>
+        </div>
+
+        <div class="chq__reco">
+          <h4>Por dónde empezar</h4>
+          <p data-reco></p>
+        </div>
+
+        <p class="chq__aviso" data-guardado-error hidden>{chequeo.formulario.error}</p>
+
+        <div class="chq__acciones">
+          <a href={`#${anclas.agenda}`} class="btn btn--primary chq__cta">{chequeo.resultadoCta}</a>
+          <button type="button" class="chq__volver" data-reiniciar>{chequeo.reiniciar}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script
+  is:inline
+  type="application/json"
+  data-chequeo-niveles
+  set:html={JSON.stringify(chequeo.niveles)}
+/>
+
+<style>
+  .chq {
+    max-width: 780px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- Intro ---------- */
+  .chq__intro {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    margin-bottom: 1.5rem;
+  }
+  .chq__intro-num {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    background: var(--i-grad);
+    color: #fff;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.75rem;
+    box-shadow: var(--i-glow);
+  }
+  .chq__intro p {
+    font-size: 0.925rem;
+    margin-top: 0.25rem;
+  }
+
+  /* ---------- Progreso ---------- */
+  .chq__progreso {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .chq__barra {
+    flex-grow: 1;
+    height: 6px;
+    border-radius: 99px;
+    background: var(--i-hielo);
+    overflow: hidden;
+  }
+  .chq__barra span {
+    display: block;
+    height: 100%;
+    width: 16.6%;
+    border-radius: 99px;
+    background: var(--i-grad);
+    transition: width 320ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .chq__cuenta {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    white-space: nowrap;
+  }
+  .chq__cuenta strong {
+    color: var(--verde-resalte);
+    font-size: 1rem;
+  }
+
+  /* ---------- Preguntas ---------- */
+  .chq__pregunta {
+    border: 0;
+  }
+  .chq__legend {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.9vw, 1.5rem);
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+    margin-bottom: 1.25rem;
+  }
+  .chq__opciones {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .opcion {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+    text-align: left;
+    padding: 0.95rem 1.1rem;
+    font-family: inherit;
+    font-size: 0.975rem;
+    color: var(--azul-petroleo);
+    background: #fff;
+    border: 1.5px solid var(--borde);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition), transform var(--transition);
+  }
+  .opcion:hover {
+    border-color: var(--i-azul-500);
+    background: rgba(76, 134, 245, 0.06);
+    transform: translateX(3px);
+  }
+  .opcion__marca {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--borde-punteado);
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  }
+  .opcion:hover .opcion__marca,
+  .opcion.is-elegida .opcion__marca {
+    background: var(--i-azul-600);
+    border-color: var(--i-azul-600);
+    box-shadow: inset 0 0 0 3px #fff;
+  }
+  .chq__volver {
+    margin-top: 1.5rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: var(--texto-suave);
+    cursor: pointer;
+  }
+  .chq__volver:hover {
+    color: var(--verde-resalte);
+  }
+
+  /* ---------- Formulario ---------- */
+  .chq__sub {
+    margin: 0.4rem 0 1.35rem;
+  }
+  .chq__form {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .chq__form label {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .chq__form label span {
+    font-size: 0.85rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-pizarra);
+  }
+  .chq__form input {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--borde);
+    background: var(--i-hielo-2);
+    color: var(--azul-petroleo);
+  }
+  .chq__form input:focus {
+    outline: none;
+    border-color: var(--i-azul-600);
+    background: #fff;
+  }
+  .chq__form input[aria-invalid="true"] {
+    border-color: #c0362c;
+  }
+  .chq__honey {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .chq__privacidad {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--texto-suave);
+  }
+
+  /* ---------- Resultado ---------- */
+  .chq__semaforo {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+  .luz {
+    width: 100%;
+    height: 8px;
+    border-radius: 99px;
+    background: var(--borde);
+    transition: background var(--transition);
+  }
+  [data-nivel-color="rojo"] .luz--rojo {
+    background: #d9534f;
+  }
+  [data-nivel-color="ambar"] .luz--rojo,
+  [data-nivel-color="ambar"] .luz--ambar {
+    background: #e0a13a;
+  }
+  [data-nivel-color="verde"] .luz--rojo,
+  [data-nivel-color="verde"] .luz--ambar,
+  [data-nivel-color="verde"] .luz--verde {
+    background: var(--i-azul-600);
+  }
+  .chq__etiqueta {
+    font-size: var(--fs-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+  }
+  .chq__nivel {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.4rem);
+    line-height: 1.1;
+    margin: 0.25rem 0 0.75rem;
+    background: var(--i-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .chq__nivel-texto {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .chq__hallazgos,
+  .chq__reco {
+    margin-top: 1.5rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--i-hielo);
+  }
+  .chq__hallazgos h4,
+  .chq__reco h4 {
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+    margin-bottom: 0.7rem;
+  }
+  .chq__hallazgos ul {
+    display: grid;
+    gap: 0.65rem;
+  }
+  .chq__hallazgos li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.925rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .chq__hallazgos li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--i-azul-500);
+  }
+  .chq__reco {
+    background: rgba(76, 134, 245, 0.09);
+    border: 1px solid rgba(76, 134, 245, 0.22);
+  }
+  .chq__reco p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--azul-petroleo);
+  }
+  .chq__aviso {
+    margin-top: 1rem;
+    font-size: 0.825rem;
+    color: var(--texto-suave);
+  }
+  .chq__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.75rem;
+  }
+  .chq__cta {
+    white-space: normal;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  @media (min-width: 640px) {
+    .chq__form {
+      grid-template-columns: 1fr 1fr;
+    }
+    .chq__form-ancho {
+      grid-column: 1 / -1;
+    }
+    .chq__form button {
+      justify-self: start;
+    }
+  }
+</style>
+
+<script>
+  import { enviarChequeo } from "../../scripts/enviarChequeo";
+
+  type Nivel = {
+    hasta: number;
+    nombre: string;
+    color: string;
+    texto: string;
+    recomendacion: string;
+  };
+
+  function initChequeo() {
+    const raiz = document.querySelector<HTMLElement>("[data-chequeo]");
+    if (!raiz || raiz.dataset.listo) return;
+    raiz.dataset.listo = "1";
+
+    let niveles: Nivel[] = [];
+    try {
+      niveles = JSON.parse(
+        document.querySelector("[data-chequeo-niveles]")?.textContent ?? "[]"
+      );
+    } catch {
+      niveles = [];
+    }
+
+    const pasos = new Map<string, HTMLElement>();
+    raiz.querySelectorAll<HTMLElement>("[data-paso]").forEach((p) => {
+      pasos.set(p.dataset.paso ?? "", p);
+    });
+    const preguntas = Array.from(raiz.querySelectorAll<HTMLElement>("[data-pregunta]"));
+    const barra = raiz.querySelector<HTMLElement>("[data-progreso]");
+    const barraWrap = raiz.querySelector<HTMLElement>(".chq__barra");
+    const actual = raiz.querySelector<HTMLElement>("[data-actual]");
+    const atras = raiz.querySelector<HTMLButtonElement>("[data-atras]");
+    const form = raiz.querySelector<HTMLFormElement>("[data-form]");
+
+    let i = 0;
+    let puntaje = 0;
+    const hallazgos: string[] = [];
+    const respuestas: Record<string, string> = {};
+
+    const verPaso = (nombre: string) => {
+      pasos.forEach((el, k) => {
+        el.hidden = k !== nombre;
+      });
+    };
+
+    const verPregunta = (n: number) => {
+      i = n;
+      preguntas.forEach((p, idx) => {
+        p.hidden = idx !== n;
+      });
+      const pct = ((n + 1) / preguntas.length) * 100;
+      if (barra) barra.style.width = `${pct}%`;
+      barraWrap?.setAttribute("aria-valuenow", String(n + 1));
+      if (actual) actual.textContent = String(n + 1);
+      if (atras) atras.hidden = n === 0;
+    };
+
+    /* Recalcula puntaje y hallazgos desde cero con lo elegido hasta ahora:
+       así volver atrás y cambiar una respuesta no deja rastros viejos. */
+    const recalcular = () => {
+      puntaje = 0;
+      hallazgos.length = 0;
+      preguntas.forEach((p) => {
+        const elegida = p.querySelector<HTMLElement>(".opcion.is-elegida");
+        if (!elegida) return;
+        puntaje += Number(elegida.dataset.peso ?? 0);
+        const h = elegida.dataset.hallazgo ?? "";
+        if (h) hallazgos.push(h);
+      });
+    };
+
+    const mostrarResultado = (guardado: boolean) => {
+      recalcular();
+      const nivel =
+        niveles.find((n) => puntaje <= n.hasta) ?? niveles[niveles.length - 1];
+      if (!nivel) return;
+
+      raiz.querySelector<HTMLElement>("[data-nivel-color]")?.setAttribute(
+        "data-nivel-color",
+        nivel.color
+      );
+      const nombre = raiz.querySelector<HTMLElement>("[data-nivel-nombre]");
+      const texto = raiz.querySelector<HTMLElement>("[data-nivel-texto]");
+      const reco = raiz.querySelector<HTMLElement>("[data-reco]");
+      if (nombre) nombre.textContent = nivel.nombre;
+      if (texto) texto.textContent = nivel.texto;
+      if (reco) reco.textContent = nivel.recomendacion;
+
+      const caja = raiz.querySelector<HTMLElement>("[data-hallazgos]");
+      const lista = raiz.querySelector<HTMLElement>("[data-hallazgos-lista]");
+      if (caja && lista) {
+        // Como mucho tres: más que eso deja de leerse como un diagnóstico.
+        const top = hallazgos.slice(0, 3);
+        lista.replaceChildren(
+          ...top.map((h) => {
+            const li = document.createElement("li");
+            li.textContent = h;
+            return li;
+          })
+        );
+        caja.hidden = top.length === 0;
+      }
+
+      const aviso = raiz.querySelector<HTMLElement>("[data-guardado-error]");
+      if (aviso) aviso.hidden = guardado;
+
+      verPaso("resultado");
+      raiz.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    /* ---- Navegación ---- */
+    raiz.querySelector<HTMLButtonElement>("[data-empezar]")?.addEventListener("click", () => {
+      verPaso("preguntas");
+      verPregunta(0);
+    });
+
+    atras?.addEventListener("click", () => {
+      if (i > 0) verPregunta(i - 1);
+    });
+
+    preguntas.forEach((p, idx) => {
+      p.querySelectorAll<HTMLButtonElement>(".opcion").forEach((b) => {
+        b.addEventListener("click", () => {
+          p.querySelectorAll(".opcion").forEach((o) => o.classList.remove("is-elegida"));
+          b.classList.add("is-elegida");
+          respuestas[p.dataset.id ?? `p${idx}`] = b.dataset.texto ?? "";
+
+          // Pequeña pausa para que se vea la selección antes de avanzar.
+          window.setTimeout(() => {
+            if (idx < preguntas.length - 1) verPregunta(idx + 1);
+            else verPaso("datos");
+          }, 220);
+        });
+      });
+    });
+
+    /* ---- Captura ---- */
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const datos = new FormData(form);
+
+      // Bot: se lo despacha con el resultado, sin escribir nada.
+      if (String(datos.get("website") ?? "").trim() !== "") {
+        mostrarResultado(true);
+        return;
+      }
+
+      const nombre = String(datos.get("nombre") ?? "").trim();
+      const email = String(datos.get("email") ?? "").trim();
+      const empresa = String(datos.get("empresa") ?? "").trim();
+
+      const campos = [
+        { el: form.elements.namedItem("nombre") as HTMLInputElement, ok: nombre.length > 1 },
+        { el: form.elements.namedItem("email") as HTMLInputElement, ok: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) },
+        { el: form.elements.namedItem("empresa") as HTMLInputElement, ok: empresa.length > 1 },
+      ];
+      let valido = true;
+      campos.forEach((c) => {
+        c.el?.setAttribute("aria-invalid", String(!c.ok));
+        if (!c.ok) valido = false;
+      });
+      if (!valido) {
+        campos.find((c) => !c.ok)?.el?.focus();
+        return;
+      }
+
+      const boton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (boton) {
+        boton.disabled = true;
+        boton.textContent = "Calculando…";
+      }
+
+      recalcular();
+      const nivel =
+        niveles.find((n) => puntaje <= n.hasta) ?? niveles[niveles.length - 1];
+
+      // UTMs guardadas en el primer pageview (ver la landing).
+      let utm: Record<string, string> = {};
+      try {
+        utm = JSON.parse(sessionStorage.getItem("integra_utm") ?? "{}");
+      } catch {
+        utm = {};
+      }
+
+      const r = await enviarChequeo(raiz.dataset.url ?? "", raiz.dataset.key ?? "", {
+        nombre,
+        email,
+        empresa,
+        respuestas,
+        resultado: nivel?.nombre ?? "",
+        utm,
+      });
+
+      if (boton) {
+        boton.disabled = false;
+        boton.textContent = "Ver mi resultado";
+      }
+      mostrarResultado(r.ok);
+    });
+
+    raiz.querySelector<HTMLButtonElement>("[data-reiniciar]")?.addEventListener("click", () => {
+      preguntas.forEach((p) =>
+        p.querySelectorAll(".opcion").forEach((o) => o.classList.remove("is-elegida"))
+      );
+      Object.keys(respuestas).forEach((k) => delete respuestas[k]);
+      form?.reset();
+      verPaso("intro");
+      raiz.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  initChequeo();
+  document.addEventListener("astro:page-load", initChequeo);
+</script>

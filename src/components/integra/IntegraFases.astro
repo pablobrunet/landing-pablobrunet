@@ -1,0 +1,439 @@
+---
+/* =====================================================================
+   EL MÉTODO — las siete fases INTEGRA
+   ---------------------------------------------------------------------
+   Dos piezas que trabajan juntas:
+     1) El CAMINO: las siete iniciales formando I·N·T·E·G·R·A. La G no es
+        un escalón más — se dibuja sobre una banda transversal que corre
+        por debajo de todo el recorrido, porque "Gestionar" va del día 1
+        al 60. Aplanarla a un séptimo paso rompe el sentido del método.
+     2) Las siete tarjetas, cada una con su pregunta central visible sin
+        desplegar. Tocar una inicial abre y enfoca su tarjeta.
+
+   Los cuatro tramos quincenales internos (Preparar · Priorizar ·
+   Experimentar · Institucionalizar) NO aparecen: son gobernanza interna
+   y competirían con el acrónimo. En la landing quedan implícitos en los
+   cuatro puntos de control con sus días.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { metodo, anclas } = integra;
+---
+
+<section class="section i-hielo i-claro" id={anclas.metodo} aria-label="El método INTEGRA">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{metodo.eyebrow}</span>
+      <h2 class="t-h2">{metodo.titulo}</h2>
+      <p class="text-muted">{metodo.subtitulo}</p>
+    </header>
+
+    <!-- ---- El camino: acrónimo + banda transversal ---- -->
+    <div class="camino i-reveal" data-camino>
+      <ol class="camino__letras">
+        {
+          metodo.fases.map((f) => (
+            <li>
+              <button
+                type="button"
+                class:list={["letra", { "letra--g": f.transversal }]}
+                data-ir={f.letra}
+                aria-label={`Ir a la fase ${f.nombre}`}
+              >
+                <span class="letra__l">{f.letra}</span>
+                <span class="letra__n">{f.nombre}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="camino__banda">
+        <span class="camino__banda-flecha" aria-hidden="true"></span>
+        <span class="camino__banda-texto">
+          <strong>Gestionar</strong> corre por debajo de todo el recorrido — del día 1 al 60
+        </span>
+      </div>
+    </div>
+
+    <!-- ---- Las siete fases ---- -->
+    <div class="fases">
+      {
+        metodo.fases.map((f) => (
+          <details class:list={["fase", { "fase--g": f.transversal }]} data-fase={f.letra} name="fase-integra">
+            <summary class="fase__head">
+              <span class="fase__letra" aria-hidden="true">{f.letra}</span>
+              <span class="fase__titulos">
+                <span class="fase__nombre">
+                  {f.nombre}
+                  {f.transversal && <em class="fase__tag">{f.etiqueta}</em>}
+                </span>
+                <span class="fase__pregunta">{f.pregunta}</span>
+              </span>
+              <span class="fase__mas" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </span>
+            </summary>
+            <div class="fase__cuerpo">
+              <p>{f.texto}</p>
+              {f.regla && <p class="fase__regla">{f.regla}</p>}
+              {f.destacado && <p class="fase__destacado">{f.destacado}</p>}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+
+    <!-- ---- Los cuatro puntos de control ---- -->
+    <div class="pdc i-reveal">
+      <header class="pdc__head">
+        <h3 class="t-h2">{metodo.puntosDeControl.titulo}</h3>
+        <p class="text-muted">{metodo.puntosDeControl.subtitulo}</p>
+      </header>
+
+      <ol class="pdc__linea">
+        {
+          metodo.puntosDeControl.items.map((p) => (
+            <li class="pdc__item">
+              <span class="pdc__nodo" aria-hidden="true" />
+              <span class="pdc__dia">Día {p.dia}</span>
+              <p class="pdc__preg">{p.pregunta}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <!-- ---- Acompañamiento + remate ---- -->
+    <div class="acomp i-reveal">
+      <h3 class="t-h3">{metodo.acompanamiento.titulo}</h3>
+      <p>{metodo.acompanamiento.texto}</p>
+    </div>
+    <p class="remate i-reveal">{metodo.remate}</p>
+  </div>
+</section>
+
+<style>
+  /* =========================== EL CAMINO =========================== */
+  .camino {
+    position: relative;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .camino__letras {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: clamp(0.3rem, 1vw, 0.75rem);
+  }
+  .letra {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: clamp(0.55rem, 1.6vw, 1rem) 0.25rem;
+    font-family: inherit;
+    background: #fff;
+    border: 1.5px solid var(--borde);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+  }
+  .letra:hover {
+    transform: translateY(-3px);
+    border-color: var(--i-azul-500);
+    box-shadow: var(--shadow-sm);
+  }
+  .letra__l {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.5rem, 1rem + 2.2vw, 2.6rem);
+    line-height: 1;
+    background: var(--i-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .letra__n {
+    font-size: 0.7rem;
+    font-weight: var(--w-subheadline);
+    color: var(--texto-suave);
+    text-align: center;
+    line-height: 1.2;
+    /* En pantallas chicas el nombre completo no entra: manda la inicial. */
+    display: none;
+  }
+  /* La G se distingue: es la fase que corre todo el tiempo. */
+  .letra--g {
+    border-style: dashed;
+    border-color: var(--i-azul-500);
+    background: linear-gradient(180deg, #fff, rgba(76, 134, 245, 0.1));
+  }
+
+  .camino__banda {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.35rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--radius-pill);
+    background: var(--i-grad);
+    color: #fff;
+    box-shadow: var(--i-glow);
+    text-align: center;
+  }
+  .camino__banda-texto {
+    font-size: clamp(0.8rem, 0.72rem + 0.35vw, 0.95rem);
+    line-height: 1.35;
+  }
+  .camino__banda-texto strong {
+    font-weight: var(--w-headline);
+  }
+  /* Flecha que sube desde la banda hacia la G del camino. */
+  .camino__banda-flecha {
+    position: absolute;
+    top: -9px;
+    left: calc((100% / 7) * 4.5);
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    background: var(--i-azul-600);
+    transform: rotate(45deg);
+    border-radius: 3px;
+  }
+
+  /* =========================== LAS FASES =========================== */
+  .fases {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .fase {
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .fase[open] {
+    border-color: var(--i-azul-500);
+    box-shadow: var(--shadow-sm);
+  }
+  .fase--g {
+    border-left: 4px solid var(--i-azul-600);
+    background: linear-gradient(100deg, rgba(76, 134, 245, 0.07), #fff 55%);
+  }
+  .fase__head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .fase__head::-webkit-details-marker {
+    display: none;
+  }
+  .fase__letra {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.4rem;
+    color: var(--i-azul-600);
+    transition: background var(--transition), color var(--transition);
+  }
+  .fase[open] .fase__letra {
+    background: var(--i-grad);
+    border-color: transparent;
+    color: #fff;
+  }
+  .fase__titulos {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+    flex-grow: 1;
+  }
+  .fase__nombre {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+  }
+  .fase__tag {
+    font-family: var(--font-base);
+    font-style: normal;
+    font-size: 0.7rem;
+    font-weight: var(--w-subheadline);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+  }
+  .fase__pregunta {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: var(--texto-suave);
+  }
+  .fase__mas {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--i-hielo);
+    color: var(--i-azul-600);
+    transition: transform var(--transition);
+  }
+  .fase[open] .fase__mas {
+    transform: rotate(180deg);
+  }
+  .fase__cuerpo {
+    padding: 0 1.25rem 1.35rem calc(1.25rem + 46px + 1rem);
+  }
+  .fase__cuerpo p {
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .fase__regla {
+    margin-top: 0.85rem;
+    font-size: 0.9rem !important;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte) !important;
+  }
+  .fase__destacado {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--i-azul-500);
+    background: rgba(76, 134, 245, 0.08);
+    font-size: 0.92rem !important;
+    color: var(--azul-petroleo) !important;
+  }
+
+  /* ====================== PUNTOS DE CONTROL ======================= */
+  .pdc {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+  .pdc__head {
+    max-width: 700px;
+    margin-bottom: 2rem;
+  }
+  .pdc__head h3 {
+    font-size: clamp(1.3rem, 1.05rem + 1.1vw, 1.8rem);
+    margin-bottom: 0.6rem;
+  }
+  .pdc__linea {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+  }
+  .pdc__item {
+    position: relative;
+    padding: 1.25rem 1.25rem 1.35rem;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    border-top: 3px solid var(--i-azul-500);
+  }
+  .pdc__nodo {
+    position: absolute;
+    top: -9px;
+    left: 1.25rem;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+    border: 3px solid var(--i-hielo);
+  }
+  .pdc__dia {
+    display: inline-block;
+    margin-top: 0.35rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.1rem;
+    color: var(--i-azul-600);
+  }
+  .pdc__preg {
+    margin-top: 0.4rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--azul-pizarra);
+  }
+
+  /* ==================== ACOMPAÑAMIENTO + REMATE =================== */
+  .acomp {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-noche);
+    color: #fff;
+  }
+  .acomp h3 {
+    color: var(--i-neblina);
+    margin-bottom: 0.65rem;
+  }
+  .acomp p {
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: rgba(220, 230, 246, 0.82);
+  }
+  .remate {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.975rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 620px) {
+    .letra__n {
+      display: block;
+    }
+  }
+  @media (min-width: 860px) {
+    .pdc__linea {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
+
+<script>
+  /* Tocar una inicial del camino abre su tarjeta y la trae a la vista. */
+  function initFases() {
+    const camino = document.querySelector<HTMLElement>("[data-camino]");
+    if (!camino || camino.dataset.listo) return;
+    camino.dataset.listo = "1";
+
+    camino.querySelectorAll<HTMLButtonElement>("[data-ir]").forEach((b) => {
+      b.addEventListener("click", () => {
+        const destino = document.querySelector<HTMLDetailsElement>(
+          `[data-fase="${b.dataset.ir}"]`
+        );
+        if (!destino) return;
+        destino.open = true;
+        destino.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+  }
+
+  initFases();
+  document.addEventListener("astro:page-load", initFases);
+</script>

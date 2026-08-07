@@ -8,6 +8,12 @@
    `externo`: si tiene una URL, ese servicio NO genera subpágina acá y
    todos los enlaces apuntan al sitio externo en una pestaña nueva.
 
+   `ruta`: si tiene una ruta interna (ej. la landing /programa-integra), tampoco
+   genera subpágina en /servicios/[slug] — los enlaces van directo ahí.
+   En ese caso los campos de la ficha larga (hero, paraQuien, enfoque,
+   entregables…) no hacen falta: el contenido vive en la landing y
+   duplicarlo acá solo abre la puerta a que queden dos versiones distintas.
+
    Los títulos admiten *un fragmento entre asteriscos* para resaltarlo.
    ===================================================================== */
 
@@ -16,14 +22,16 @@ export interface Servicio {
   titulo: string;
   icon: string;
   resumen: string; // aparece en tarjetas / índice
-  hero: string; // frase de la cabecera de su página
-  paraQuien: string;
-  problema: string;
-  enfoque: { titulo: string; texto: string }[];
-  entregables: string[];
-  faq: { q: string; a: string }[];
-  img: string;
-  imgLabel: string;
+  /* De acá para abajo, todo lo que arma la subpágina. Es opcional porque
+     los servicios con `ruta` o `externo` no la generan. */
+  hero?: string; // frase de la cabecera de su página
+  paraQuien?: string;
+  problema?: string;
+  enfoque?: { titulo: string; texto: string }[];
+  entregables?: string[];
+  faq?: { q: string; a: string }[];
+  img?: string;
+  imgLabel?: string;
   /* Cada foto se muestra en su propia proporción: forzarlas todas a un mismo
      marco recorta de más. `imgPos` corrige el encuadre si hace falta. */
   imgRatio?: string;
@@ -36,6 +44,9 @@ export interface Servicio {
   /* Encuadre de la foto de la tarjeta, si el recorte centrado no sirve. */
   imgTarjetaPos?: string;
   externo?: string; // URL externa (ej. innerflowai.com). Si existe, no hay subpágina.
+  ruta?: string; // Ruta interna propia (ej. /programa-integra). Tampoco genera subpágina.
+  /* Texto del enlace en las tarjetas. Por defecto: "Ver servicio". */
+  cta?: string;
   /* Muestra en la subpágina la misma grilla de charlas grabadas del home
      (los videos viven en data/videos.ts → `charlas`). */
   mostrarCharlas?: boolean;
@@ -190,76 +201,21 @@ export const servicios: Servicio[] = [
     },
   },
   {
-    /* Es la ficha de IA Simple para PyMEs (línea ADOPTA-60). El detalle fino
-       del método —los seis movimientos, los 13 componentes del sistema, la
-       ficha de 8 campos— queda para la propuesta comercial: acá va lo que
-       necesita entender alguien que todavía no te conoce. */
-    slug: "estrategia-e-implementacion-de-ia",
-    titulo: "Estrategia e implementación de IA",
+    /* Reemplazó a "Estrategia e implementación de IA" (la ficha de IA
+       Simple para PyMEs, línea ADOPTA-60), que quedó retirada junto con
+       esos nombres. Ahora el servicio es el Método INTEGRA y su contenido
+       vive completo en la landing /programa-integra: acá va solo la tarjeta.
+       La URL vieja /servicios/estrategia-e-implementacion-de-ia redirige
+       a /programa-integra (ver astro.config.mjs). */
+    slug: "metodo-integra",
+    titulo: "Método INTEGRA",
     icon: "chip",
     resumen:
-      "Instalo en tu empresa un sistema propio para detectar, priorizar, probar y escalar oportunidades de IA. En 60 días, operado por tu propia gente.",
-    hero: "No te dejo un caso que funcionó. Te dejo la forma de seguir encontrando los próximos.",
-    paraQuien:
-      "PyMEs que ya entendieron que la IA sirve, pero no quieren depender de un consultor externo cada vez que aparece una oportunidad. Aplica a toda la empresa, no solo al área comercial.",
-    problema:
-      "El problema no es que falten herramientas: es que nadie adentro tiene un método para decidir cuáles valen la pena, probarlas en serio y escalar lo que funciona. Así cada iniciativa arranca de cero, depende de quien la empuja y se apaga cuando esa persona se ocupa de otra cosa.",
-    /* Las cuatro etapas quincenales: es la forma más clara de contar el
-       recorrido sin entrar en la mecánica interna. */
-    enfoque: [
-      {
-        titulo: "Preparar · días 1 a 15",
-        texto:
-          "Aterrizamos el punto de partida: cómo trabaja hoy la empresa, quién decide qué y dónde duele de verdad.",
-      },
-      {
-        titulo: "Priorizar · días 15 a 30",
-        texto:
-          "Ordenamos las oportunidades detectadas y elegimos cuáles se prueban primero, por impacto y por esfuerzo.",
-      },
-      {
-        titulo: "Experimentar · días 30 a 45",
-        texto:
-          "Pruebas aplicadas: una oportunidad concreta por vez, con responsable, plazo y evidencia. Cada una cierra en una decisión — adoptar, iterar, pausar, descartar o escalar.",
-      },
-      {
-        titulo: "Institucionalizar · días 45 a 60",
-        texto:
-          "El método queda funcionando con gente de la casa, con su cadencia de seguimiento y un plan operativo para los 90 días siguientes.",
-      },
-    ],
-    entregables: [
-      "Un sistema de adopción de IA documentado: roles, tablero de oportunidades, protocolo de pruebas y repositorio",
-      "Tablero de oportunidades priorizado por área",
-      "Pruebas aplicadas cerradas, cada una con su evidencia y su decisión",
-      "Equipo interno formado para seguir sin acompañamiento externo",
-      "Plan operativo para los 90 días posteriores al ciclo",
-    ],
-    faq: [
-      {
-        q: "¿Quién hace el trabajo, vos o mi equipo?",
-        a: "Tu equipo. Yo guío el proceso, sostengo la cadencia y aporto el método, pero no ejecuto ni construyo por ustedes. Es la única forma de que la capacidad quede instalada: si lo hago yo, cuando me voy se va conmigo.",
-      },
-      {
-        q: "¿Cuánto tiempo le demanda a la empresa?",
-        a: "Una persona cumple el rol de referente de adopción con unas 3 o 4 horas semanales. El resto del equipo participa según el área y la prueba en curso. Hay un encuentro operativo por semana y una alineación con dirección cada quince días.",
-      },
-      {
-        q: "¿Incluye desarrollo, integraciones o automatizaciones?",
-        a: "No dentro del ciclo. El foco de estos 60 días es que la empresa sepa decidir y probar. Cuando una prueba justifica construir algo, se cotiza y se ejecuta aparte — normalmente desde InnerFlow AI.",
-      },
-      {
-        q: "¿Qué pasa si una prueba sale mal?",
-        a: "Descartar con evidencia también es un resultado. Saber que algo no conviene, y por qué, ahorra la plata y el tiempo que se hubieran ido en implementarlo.",
-      },
-    ],
-    intro:
-      "Este servicio es **IA Simple para PyMEs**, el programa que fundé para acompañar a empresas a implementar un sistema práctico con el que detectar, priorizar, probar y escalar oportunidades reales de inteligencia artificial. El ciclo dura 60 días y lo opera gente de la casa.",
+      "INTEGRA 60: en 60 días instalo en tu empresa la capacidad de identificar oportunidades de IA, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Operado por gente de la casa.",
+    ruta: "/programa-integra",
+    cta: "Ver el programa",
     // Charla en la Unión Industrial de Santa Fe. Apaisada: va en 4:3.
     imgTarjeta: "/images/servicios/estrategia-tarjeta.jpg",
-    img: "/images/servicios/estrategia.jpg",
-    imgLabel: "/images/servicios/estrategia.jpg",
-    imgRatio: "4/3",
   },
   {
     slug: "automatizacion-de-procesos",
@@ -292,10 +248,14 @@ export const servicios: Servicio[] = [
   },
 ];
 
-/** A dónde apunta cada servicio: su subpágina, o el sitio externo. */
-export const hrefServicio = (s: Servicio) => s.externo ?? `/servicios/${s.slug}`;
+/** A dónde apunta cada servicio: su landing propia, el sitio externo o su subpágina. */
+export const hrefServicio = (s: Servicio) => s.externo ?? s.ruta ?? `/servicios/${s.slug}`;
 
-/** Servicios con página propia dentro de este sitio. */
-export const serviciosInternos = servicios.filter((s) => !s.externo);
+/** Texto del enlace en las tarjetas del home y de /servicios. */
+export const ctaServicio = (s: Servicio) =>
+  s.cta ?? (s.externo ? "Ir a innerflowai.com" : "Ver servicio");
+
+/** Servicios que generan subpágina en /servicios/[slug]. */
+export const serviciosInternos = servicios.filter((s) => !s.externo && !s.ruta);
 
 export const getServicio = (slug: string) => servicios.find((s) => s.slug === slug);

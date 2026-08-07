@@ -71,7 +71,7 @@ export const sobreMi = {
       "Soy Pablo Brunet. Ayudo a dueños y equipos a ordenar prioridades, tomar mejores decisiones y convertir ideas en cambios que realmente puedan sostener.",
       "Conozco de cerca lo que pasa dentro de una PyME: poco tiempo, demasiadas urgencias, procesos que dependen de personas clave y proyectos que se traban al momento de implementarlos.",
       "Por eso, cuando apareció la inteligencia artificial, no me interesó solo aprender herramientas. Me interesó entender cómo aplicarla en empresas reales, sin frenar la operación ni sumar complejidad innecesaria.",
-      "Hoy lidero **InnerFlow AI** e **IA Simple para PyMEs**, y también doy charlas y capacitaciones para empresarios y equipos de dirección.",
+      "Hoy lidero **InnerFlow AI** y creé el **Método INTEGRA**, el sistema con el que las empresas integran inteligencia artificial con método. También doy charlas y capacitaciones para empresarios y equipos de dirección.",
       "Mi trabajo, en cualquier formato, es siempre el mismo: **hacer simple lo complejo** y convertir la inteligencia artificial en algo concreto, útil y aplicable.",
     ],
 

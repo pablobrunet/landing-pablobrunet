@@ -7,11 +7,17 @@ import { site } from "../data/site";
 interface Props {
   title?: string;
   description?: string;
+  /* Mensaje precargado del botón flotante. La landing del Método INTEGRA
+     lo cambia para que el chat abra diciendo de dónde viene la consulta. */
+  waMensaje?: string;
+  waEtiqueta?: string;
 }
 
 const {
   title = `${site.nombre} — ${site.tagline}`,
   description = site.seoDescription,
+  waMensaje,
+  waEtiqueta,
 } = Astro.props;
 ---
 
@@ -50,6 +56,6 @@ const {
   <body>
     <slot />
     <!-- Botón flotante en todas las páginas -->
-    <WhatsApp />
+    <WhatsApp mensaje={waMensaje} etiqueta={waEtiqueta} />
   </body>
 </html>

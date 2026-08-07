@@ -21,7 +21,7 @@ export const site = {
   tagline: "IA aplicada a negocios",
   rol: "Speaker y capacitador en inteligencia artificial",
   // Chips del hero: son la oferta, no capacidades abstractas.
-  disciplinas: ["Charlas y keynotes", "Capacitación de equipos", "Estrategia de IA"],
+  disciplinas: ["Charlas y keynotes", "Capacitación de equipos", "Método INTEGRA"],
   ubicacion: "Santa Fe, Argentina",
   email: "pbrunet@innerflowai.com",
   web: "pablobrunet.com",
@@ -110,13 +110,16 @@ export const site = {
 
   /* ---- AGENDA ----
      Widget de reserva de LeadConnector. Si cambiás de calendario, sólo
-     reemplazá el `id`: la URL se arma sola. */
+     reemplazá el `id`: la URL se arma sola.
+     ⚠️ Este es el calendario GENERAL de Pablo (el de /contacto y el home).
+     El diagnóstico del Método INTEGRA usa otro calendario distinto, que
+     vive en data/integra.ts → cierre.calendarioId. No mezclarlos. */
   agenda: {
     eyebrow: "Agenda",
     titulo: "Reservá un espacio *en mi calendario*",
     subtitulo:
       "Elegí el día y el horario que mejor te queden. Son 30 minutos para entender tu caso y decirte por dónde empezar.",
-    id: "rx4hxRbfbinJEsJoBWWF",
+    id: "nm0xMF4ZzrA3ycbREOLG",
   },
 
   /* ---- HERRAMIENTAS (home) — carrusel infinito ----
@@ -188,7 +191,7 @@ export const site = {
         titulo: "Servicios",
         links: [
           { label: "Speaker y capacitador", href: "/servicios/speaker-y-capacitador", externo: false },
-          { label: "Estrategia e implementación de IA", href: "/servicios/estrategia-e-implementacion-de-ia", externo: false },
+          { label: "Método INTEGRA", href: "/programa-integra", externo: false },
           { label: "Automatización de procesos", href: "https://innerflowai.com", externo: true },
         ],
       },

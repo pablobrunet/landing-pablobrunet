@@ -45,8 +45,14 @@ const clave =
 export const leads = {
   /* Apunta a la función `registrar_lead`, no a la tabla: la clave pública
      no tiene permiso de escritura sobre `leads`, solo de ejecutar esa
-     función. Ver supabase/migracion-02-funcion-registrar-lead.sql. */
+     función. La crea supabase/instalar.sql. */
   endpoint: url ? `${url}/rest/v1/rpc/registrar_lead` : "",
+  /* Chequeo INTEGRA: guarda nombre, empresa, las respuestas del quiz y el
+     resultado, así que va a su propia tabla y su propia función.
+     La crea supabase/integra-chequeo.sql. Si todavía no se corrió, el
+     formulario sigue funcionando: muestra el resultado igual y solo se
+     pierde el registro (ver scripts/enviarChequeo.ts). */
+  endpointChequeo: url ? `${url}/rest/v1/rpc/registrar_chequeo_integra` : "",
   /** Publishable key. Viaja en el header `apikey`, nunca en Authorization. */
   clave,
   /** ¿Está listo para recibir correos? */

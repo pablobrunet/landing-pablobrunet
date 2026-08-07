@@ -1,0 +1,329 @@
+---
+/* =====================================================================
+   HERO + VSL — Método INTEGRA
+   ---------------------------------------------------------------------
+   Está diseñado para TRÁFICO FRÍO: no asume que conocen a Pablo. Abre por
+   el dolor (la IA ya entró sin plan), nunca por "capacidad instalada" —
+   esa idea recién se entiende después del reencuadre.
+
+   El VSL todavía no está grabado: mientras `integra.vsl.url` esté vacío
+   se dibuja la portada con el aviso. Al pegar un enlace, el botón de play
+   monta el iframe recién al hacer clic (nada de terceros en la carga).
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { hero, vsl, anclas } = integra;
+---
+
+<section class="ih" aria-label="Método INTEGRA">
+  <div class="ih__fondo" aria-hidden="true">
+    <span class="ih__halo ih__halo--a"></span>
+    <span class="ih__halo ih__halo--b"></span>
+    <span class="trama ih__trama"></span>
+  </div>
+
+  <div class="container ih__inner">
+    <div class="ih__copy">
+      <p class="ih__chip">{hero.chip}</p>
+
+      <h1 class="t-display ih__titulo">
+        {hero.titulo}
+        <span class="i-hl">{hero.tituloResalte}</span>
+      </h1>
+
+      <p class="ih__sub">{hero.subtitulo}</p>
+
+      <div class="ih__ctas">
+        <a href={`#${anclas.agenda}`} class="btn btn--primary ih__cta">{hero.ctaPrimario}</a>
+        <a href={`#${anclas.chequeo}`} class="btn ih__ghost">{hero.ctaSecundario}</a>
+      </div>
+      <p class="ih__nota">{hero.ctaPrimarioNota}</p>
+
+      <ul class="ih__confianza">
+        {
+          hero.confianza.map((c) => (
+            <li class="ih__conf">
+              {c.tipo === "logo" && c.img ? (
+                <span class="ih__conf-logo">
+                  <img src={c.img} alt="" width="88" height="34" loading="eager" />
+                </span>
+              ) : (
+                <span class="ih__conf-punto" aria-hidden="true" />
+              )}
+              <span>{c.texto}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="ih__vsl">
+      <div class="vsl" data-vsl data-url={vsl.url}>
+        <img class="vsl__poster" src={vsl.poster} alt="" width="640" height="360" />
+        <span class="vsl__velo" aria-hidden="true"></span>
+        <button class="vsl__play" type="button" aria-label={`Reproducir: ${vsl.titulo}`}>
+          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
+            <path d="M8 5.5v13l11-6.5z" fill="currentColor"></path>
+          </svg>
+        </button>
+        <span class="vsl__duracion">{vsl.duracion}</span>
+        <p class="vsl__titulo">{vsl.titulo}</p>
+      </div>
+      {!vsl.url && <p class="ih__aviso">{vsl.avisoSinVideo}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .ih {
+    position: relative;
+    overflow: hidden;
+    background: var(--i-noche);
+    color: #fff;
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 7vw, 5rem);
+  }
+
+  /* ---- Fondo: dos halos de luz + trama fina, todo detrás del contenido ---- */
+  .ih__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .ih__halo {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.55;
+  }
+  .ih__halo--a {
+    width: 46rem;
+    height: 46rem;
+    top: -22rem;
+    right: -14rem;
+    background: radial-gradient(circle, rgba(76, 134, 245, 0.55), transparent 70%);
+  }
+  .ih__halo--b {
+    width: 34rem;
+    height: 34rem;
+    bottom: -18rem;
+    left: -12rem;
+    background: radial-gradient(circle, rgba(30, 92, 242, 0.5), transparent 70%);
+  }
+  .ih__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+  }
+
+  .ih__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 3.5rem);
+    align-items: center;
+  }
+
+  /* ---- Columna de texto ---- */
+  .ih__chip {
+    display: inline-block;
+    padding: 0.45rem 0.95rem;
+    margin-bottom: 1.35rem;
+    border-radius: var(--radius-pill);
+    background: rgba(169, 200, 245, 0.1);
+    border: 1px solid rgba(169, 200, 245, 0.28);
+    color: var(--i-neblina);
+    font-size: 0.8125rem;
+    font-weight: var(--w-subheadline);
+    line-height: 1.35;
+  }
+  .ih__titulo {
+    font-size: clamp(2.05rem, 1.1rem + 3.6vw, 3.6rem);
+    line-height: 1.06;
+  }
+  .ih__titulo .i-hl {
+    display: block;
+  }
+  .ih__sub {
+    max-width: 40rem;
+    margin-top: 1.35rem;
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    color: rgba(220, 230, 246, 0.8);
+  }
+  .ih__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+  .ih__cta {
+    padding-inline: 1.7rem;
+  }
+  .ih__ghost {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+  }
+  .ih__ghost:hover {
+    background: rgba(255, 255, 255, 0.13);
+  }
+  .ih__nota {
+    margin-top: 0.9rem;
+    font-size: var(--fs-caption);
+    color: rgba(220, 230, 246, 0.65);
+  }
+
+  /* ---- Franja de confianza ---- */
+  .ih__confianza {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: 2.25rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .ih__conf {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: rgba(220, 230, 246, 0.82);
+  }
+  /* La insignia oficial viene pensada para fondo claro: va sobre una
+     píldora blanca para que no se coma sobre el azul profundo. */
+  .ih__conf-logo {
+    display: grid;
+    place-items: center;
+    padding: 0.35rem 0.6rem;
+    border-radius: 10px;
+    background: #fff;
+  }
+  .ih__conf-logo img {
+    height: 26px;
+    width: auto;
+  }
+  .ih__conf-punto {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--i-celeste);
+    flex-shrink: 0;
+  }
+
+  /* ---- Tarjeta del VSL ---- */
+  .vsl {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(150deg, #17408f, #0a1430 70%);
+    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.55);
+  }
+  .vsl__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    opacity: 0.92;
+  }
+  .vsl__velo {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(13, 27, 61, 0.15) 0%, rgba(13, 27, 61, 0.85) 100%);
+  }
+  .vsl__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    padding-left: 4px;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #fff;
+    background: var(--i-grad);
+    box-shadow: 0 0 0 10px rgba(169, 200, 245, 0.16), var(--i-glow);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .vsl__play:hover {
+    transform: translate(-50%, -50%) scale(1.06);
+    box-shadow: 0 0 0 16px rgba(169, 200, 245, 0.18), var(--i-glow);
+  }
+  .vsl__duracion {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgba(13, 27, 61, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 0.75rem;
+    font-weight: var(--w-subheadline);
+    letter-spacing: 0.02em;
+  }
+  .vsl__titulo {
+    position: absolute;
+    left: 1.35rem;
+    right: 1.35rem;
+    bottom: 1.2rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+  .vsl :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .ih__aviso {
+    margin-top: 0.9rem;
+    font-size: var(--fs-caption);
+    color: rgba(220, 230, 246, 0.6);
+    text-align: center;
+  }
+
+  @media (min-width: 980px) {
+    .ih__inner {
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 3.5rem;
+    }
+  }
+</style>
+
+<script>
+  /* Play del VSL. Con `data-url` vacío el botón no monta ningún video:
+     lleva al método, que es la información que sí está disponible. */
+  function initVsl() {
+    const caja = document.querySelector<HTMLElement>("[data-vsl]");
+    if (!caja || caja.dataset.listo) return;
+    caja.dataset.listo = "1";
+
+    const boton = caja.querySelector<HTMLButtonElement>(".vsl__play");
+    boton?.addEventListener("click", () => {
+      const url = caja.dataset.url ?? "";
+      if (!url) {
+        document.getElementById("metodo")?.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      const iframe = document.createElement("iframe");
+      iframe.src = url.includes("?") ? `${url}&autoplay=1` : `${url}?autoplay=1`;
+      iframe.title = "Video del Método INTEGRA";
+      iframe.allow = "accelerometer; autoplay; encrypted-media; picture-in-picture";
+      iframe.allowFullscreen = true;
+      caja.replaceChildren(iframe);
+    });
+  }
+
+  initVsl();
+  document.addEventListener("astro:page-load", initVsl);
+</script>
