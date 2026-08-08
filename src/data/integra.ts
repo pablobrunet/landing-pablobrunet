@@ -173,7 +173,10 @@ export const integra = {
      3 · EL COSTO DE SEGUIR ASÍ
      ===================================================================== */
   costo: {
-    titulo: "El problema no es lo que la IA te va a costar. Es lo que ya te está costando.",
+    /* Partido en dos: la segunda oración se resalta en celeste, que es lo
+       que da vuelta la frase. */
+    titulo: "El problema no es lo que la IA te va a costar.",
+    tituloResalte: "Es lo que ya te está costando.",
     bloques: [
       {
         icono: "billete",

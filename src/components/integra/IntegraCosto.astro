@@ -23,7 +23,10 @@ const iconos: Record<string, string> = {
 
   <div class="container costo__inner">
     <header class="i-head i-reveal">
-      <h2 class="t-h2">{costo.titulo}</h2>
+      <h2 class="t-h2">
+        {costo.titulo}
+        <span class="costo__resalte">{costo.tituloResalte}</span>
+      </h2>
     </header>
 
     <div class="costo__grid">
@@ -52,6 +55,15 @@ const iconos: Record<string, string> = {
 </section>
 
 <style>
+  /* La segunda oración baja de renglón y va en Celeste Suave. Es color
+     plano y no el degradé de `.i-hl`: acá el resalte tiene que leerse de
+     un tono parejo, que es lo que hace el contraste con la primera parte.
+     Sobre el azul profundo de la sección da 9,9:1. */
+  .costo__resalte {
+    display: block;
+    color: var(--i-celeste);
+  }
+
   .costo {
     position: relative;
     overflow: hidden;
