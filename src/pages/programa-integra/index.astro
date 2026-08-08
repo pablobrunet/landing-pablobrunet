@@ -15,11 +15,11 @@
      3 Costo               el dolor difuso se vuelve urgencia concreta
      4 Método              las siete fases: el mecanismo creíble
      5 Qué queda           artefactos + capacidades, siempre juntos
-     6 Garantía            cierra el riesgo percibido antes del cierre
-     8 Quién soy           autoridad: en tráfico frío es lo que habilita
-     9 Chequeo exprés      segundo camino de conversión
-    10 Preguntas           los frenos reales, antes del cierre
-    11 Cierre + calendario el CTA final, sin salir de la página
+     6 Quién soy           autoridad: en tráfico frío es lo que habilita
+     7 Chequeo exprés      segundo camino de conversión
+     8 Preguntas           los frenos reales, antes del cierre
+     9 Disponibilidad      la razón para reservar hoy, ya sin objeciones
+    10 Cierre + calendario el CTA final, sin salir de la página
    ===================================================================== */
 import "../../styles/integra.css";
 import Base from "../../layouts/Base.astro";
@@ -30,10 +30,10 @@ import IntegraEspejo from "../../components/integra/IntegraEspejo.astro";
 import IntegraCosto from "../../components/integra/IntegraCosto.astro";
 import IntegraFases from "../../components/integra/IntegraFases.astro";
 import IntegraInstalado from "../../components/integra/IntegraInstalado.astro";
-import IntegraGarantia from "../../components/integra/IntegraGarantia.astro";
 import IntegraAutoridad from "../../components/integra/IntegraAutoridad.astro";
 import IntegraChequeo from "../../components/integra/IntegraChequeo.astro";
 import IntegraFaq from "../../components/integra/IntegraFaq.astro";
+import IntegraDisponibilidad from "../../components/integra/IntegraDisponibilidad.astro";
 import IntegraCierre from "../../components/integra/IntegraCierre.astro";
 import { integra } from "../../data/integra";
 ---
@@ -51,10 +51,10 @@ import { integra } from "../../data/integra";
     <IntegraCosto />
     <IntegraFases />
     <IntegraInstalado />
-    <IntegraGarantia />
     <IntegraAutoridad />
     <IntegraChequeo />
     <IntegraFaq />
+    <IntegraDisponibilidad />
     <IntegraCierre />
   </main>
   <Footer />

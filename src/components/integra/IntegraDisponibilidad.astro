@@ -1,0 +1,106 @@
+---
+/* =====================================================================
+   DISPONIBILIDAD — el empujón corto, justo antes del calendario
+   ---------------------------------------------------------------------
+   Va entre las preguntas y el cierre: cuando ya no quedan objeciones, lo
+   único que falta es la razón para reservar hoy. Es un bloque de paso —
+   una tarjeta, tres líneas y el botón que baja al calendario, que está
+   acá nomás. Por eso el CTA es un ancla a #agenda-integra y no otra ruta.
+
+   La escasez es la real (se trabaja con pocas PyMEs a la vez, ~25 h por
+   PyME por ciclo): no convertirla en contador de lugares ni en cuenta
+   regresiva. Si el texto deja de ser cierto, se saca la sección.
+   ===================================================================== */
+import { integra } from "../../data/integra";
+const { disponibilidad, anclas } = integra;
+---
+
+<section class="section i-hielo i-claro" id="disponibilidad" aria-label="Disponibilidad">
+  <div class="container">
+    <div class="disp i-reveal">
+      <h2 class="t-h2 disp__titulo">{disponibilidad.titulo}</h2>
+      <p class="disp__texto">{disponibilidad.texto}</p>
+
+      <p class="disp__nota">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </svg>
+        {disponibilidad.nota}
+      </p>
+
+      <a href={`#${anclas.agenda}`} class="btn btn--primary disp__cta">{disponibilidad.cta}</a>
+
+      <ul class="disp__refuerzos">
+        {
+          disponibilidad.refuerzos.map((r) => (
+            <li>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12l4 4 10-10" />
+              </svg>
+              {r}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .disp {
+    max-width: 720px;
+    margin-inline: auto;
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.4rem, 4vw, 3rem);
+    text-align: center;
+    border-radius: var(--radius-lg);
+    border: 1.5px solid rgba(30, 92, 242, 0.28);
+    background:
+      radial-gradient(120% 130% at 50% 0%, rgba(76, 134, 245, 0.12), transparent 60%),
+      #fff;
+    box-shadow: var(--shadow-sm);
+  }
+  .disp__titulo {
+    font-size: clamp(1.5rem, 1rem + 1.9vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .disp__texto {
+    margin-top: 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+  /* La línea de escasez: en azul de marca y con peso, para que no se lea
+     como una aclaración al pie. */
+  .disp__nota {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
+  }
+  .disp__cta {
+    display: inline-flex;
+    margin-top: 1.75rem;
+  }
+  .disp__refuerzos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.4rem;
+    margin-top: 1.5rem;
+  }
+  .disp__refuerzos li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9rem;
+    color: var(--azul-petroleo);
+  }
+  .disp__refuerzos svg {
+    color: var(--i-azul-600);
+    flex-shrink: 0;
+  }
+</style>

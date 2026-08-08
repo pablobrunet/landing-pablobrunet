@@ -102,10 +102,15 @@ const maxPuntaje = chequeo.preguntas.reduce(
           ))
         }
 
-        {/* Siempre visible. En la primera pregunta vuelve a la portada del
-            chequeo, no se esconde: antes, apenas empezabas quedabas sin
-            salida hasta terminar las seis. */}
-        <button type="button" class="chq__volver" data-atras>← Volver al inicio</button>
+        {/* Dos salidas siempre a la vista: retroceder de a una pregunta y
+            volver a la portada del chequeo. Antes había un solo botón que
+            cambiaba de destino según la pregunta, y desde la mitad del
+            cuestionario no quedaba forma de salir sin terminarlo.
+            "Volver" se oculta en la primera pregunta: no hay anterior. */}
+        <div class="chq__nav">
+          <button type="button" class="chq__volver" data-atras>← Volver</button>
+          <button type="button" class="chq__volver" data-inicio>Volver al inicio</button>
+        </div>
       </div>
 
       <!-- ---------- Paso 2: captura ---------- -->
@@ -131,9 +136,12 @@ const maxPuntaje = chequeo.preguntas.reduce(
           <p class="chq__privacidad chq__form-ancho">{chequeo.formulario.privacidad}</p>
         </form>
 
-        {/* Y desde el formulario se vuelve a la última pregunta: llegar
-            acá tampoco puede ser un camino de ida. */}
-        <button type="button" class="chq__volver" data-atras-datos>← Volver a las preguntas</button>
+        {/* Y desde el formulario se vuelve a la última pregunta o a la
+            portada: llegar acá tampoco puede ser un camino de ida. */}
+        <div class="chq__nav">
+          <button type="button" class="chq__volver" data-atras-datos>← Volver a las preguntas</button>
+          <button type="button" class="chq__volver" data-inicio>Volver al inicio</button>
+        </div>
       </div>
 
       <!-- ---------- Paso 3: resultado ---------- -->
@@ -336,6 +344,22 @@ const maxPuntaje = chequeo.preguntas.reduce(
     background: var(--i-azul-600);
     border-color: var(--i-azul-600);
     box-shadow: inset 0 0 0 3px #fff;
+  }
+  /* Las dos salidas, en una fila. El separador sale de un borde, así no
+     aparece si "Volver" está oculto en la primera pregunta. */
+  .chq__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-top: 1.5rem;
+  }
+  .chq__nav .chq__volver {
+    margin-top: 0;
+  }
+  .chq__nav .chq__volver:not([hidden]) + .chq__volver {
+    padding-left: 1rem;
+    border-left: 1px solid var(--borde);
   }
   .chq__volver {
     margin-top: 1.5rem;
@@ -652,9 +676,9 @@ const maxPuntaje = chequeo.preguntas.reduce(
       });
       tramosWrap?.setAttribute("aria-valuenow", String(n + 1));
       if (actual) actual.textContent = String(n + 1);
-      /* El botón no se esconde nunca: en la primera pregunta cambia de
-         destino y vuelve a la portada del chequeo. */
-      if (atras) atras.textContent = n === 0 ? "← Volver al inicio" : "← Volver";
+      /* En la primera pregunta no hay anterior: se esconde "Volver" y
+         queda "Volver al inicio", que está siempre. */
+      if (atras) atras.hidden = n === 0;
     };
 
     /* Recalcula puntaje y hallazgos desde cero con lo elegido hasta ahora:
@@ -726,6 +750,15 @@ const maxPuntaje = chequeo.preguntas.reduce(
     atras?.addEventListener("click", () => {
       if (i > 0) verPregunta(i - 1);
       else verPaso("intro");
+    });
+
+    /* Volver a la portada desde cualquier pantalla. No borra lo elegido:
+       si vuelve a empezar, las respuestas siguen marcadas y el puntaje se
+       recalcula desde el DOM. Para arrancar de cero está "reiniciar". */
+    raiz.querySelectorAll<HTMLButtonElement>("[data-inicio]").forEach((b) => {
+      b.addEventListener("click", () => {
+        verPaso("intro");
+      });
     });
 
     /* Del formulario de vuelta a la última pregunta. Las respuestas ya

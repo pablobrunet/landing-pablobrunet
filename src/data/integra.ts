@@ -461,22 +461,12 @@ export const integra = {
     },
     cita:
       "Ahora tenemos responsables, criterios compartidos, una forma de detectar y priorizar oportunidades, un protocolo para probarlas, espacios para decidir, un registro de evidencia y un plan para continuar avanzando.",
-    citaPie: "Así suena una PyME con el sistema instalado.",
+    citaPie: "Miguel S. - Dueño de PyME",
     cta: "Quiero mi diagnóstico",
   },
 
   /* =====================================================================
-     7 · LA GARANTÍA (de sistema instalado, no de implementación)
-     ===================================================================== */
-  garantia: {
-    titulo: "Garantía: el sistema queda instalado.",
-    texto:
-      "Si al día 60 no queda instalado el Sistema INTEGRA definido en el programa, seguimos acompañando a tu PyME sin costo hasta completarlo.",
-    cierre: "Preferimos una garantía chica que podamos cumplir siempre antes que una grande que no te creerías.",
-  },
-
-  /* =====================================================================
-     8 · QUIÉN SOY (autoridad)
+     6 · QUIÉN SOY (autoridad)
      ===================================================================== */
   autoridad: {
     titulo: "Quién está del otro lado del método",
@@ -504,7 +494,7 @@ export const integra = {
   },
 
   /* =====================================================================
-     9 · CHEQUEO EXPRÉS (quiz de 6 preguntas + captura)
+     7 · CHEQUEO EXPRÉS (quiz de 6 preguntas + captura)
      Versión web liviana del Chequeo INTEGRA.
      `peso` va de 0 (peor) a 2 (mejor). La pregunta 1 no puntúa: segmenta.
      `hallazgo` es la lectura que se devuelve si eligió esa opción; está
@@ -543,6 +533,7 @@ export const integra = {
           { texto: "Ninguna", peso: 1 },
           { texto: "Una o dos", peso: 2 },
           { texto: "Entre tres y cinco", peso: 1, hallazgo: "Hay gasto mensual repartido en varias herramientas: sin un inventario y un responsable, es imposible saber cuál se está usando de verdad." },
+          { texto: "Más de cinco", peso: 0, hallazgo: "Son muchas herramientas para una sola PyME: casi siempre hay funciones que se pagan dos veces y licencias que ya nadie abre. Ordenarlo suele bajar el gasto antes de sumar nada." },
           { texto: "No sabemos", peso: 0, hallazgo: "Nadie tiene la cuenta de lo que se paga. Ese es el primer gasto a auditar, y no requiere comprar nada nuevo." },
         ],
       },
@@ -571,6 +562,7 @@ export const integra = {
           { texto: "Nadie", peso: 0, hallazgo: "Nadie tiene asignado el rol de sostener esto. Es el factor que mejor predice si una iniciativa de IA se apaga a las seis semanas." },
           { texto: "El dueño, cuando puede", peso: 1, hallazgo: "El avance depende de que dirección tenga un rato libre: la operación diaria siempre gana esa pulseada." },
           { texto: "Alguien designado, con tiempo asignado", peso: 2 },
+          { texto: "Varias personas designadas", peso: 2, hallazgo: "Hay más de una persona a cargo, que es más de lo que tiene la mayoría. Lo que conviene chequear es que esté claro quién decide cuando no coinciden: si no, el avance se frena en el acuerdo." },
         ],
       },
     ] as PreguntaChequeo[],
@@ -623,7 +615,7 @@ export const integra = {
   },
 
   /* =====================================================================
-     10 · OBJECIONES Y PREGUNTAS FRECUENTES
+     8 · OBJECIONES Y PREGUNTAS FRECUENTES
      ===================================================================== */
   faq: {
     titulo: "Lo que seguramente te estás preguntando",
@@ -660,7 +652,26 @@ export const integra = {
   },
 
   /* =====================================================================
-     11 · CIERRE + CALENDARIO
+     9 · DISPONIBILIDAD (el empujón corto antes del calendario)
+     La escasez es la real: se trabaja con pocas PyMEs a la vez porque
+     cada una se lleva ~25 h por ciclo. No convertirla en contador de
+     lugares ni en cuenta regresiva; si deja de ser cierta, se saca.
+     ===================================================================== */
+  disponibilidad: {
+    titulo: "Trabajo con pocas empresas a la vez",
+    texto:
+      "Coordinemos una conversación para entender dónde estás hoy y qué oportunidades concretas existen.",
+    nota: "Los espacios semanales son limitados.",
+    cta: "Ver horarios disponibles",
+    refuerzos: [
+      "100% enfocada en tu empresa",
+      "Sin compromiso",
+      "Con próximos pasos concretos",
+    ],
+  },
+
+  /* =====================================================================
+     10 · CIERRE + CALENDARIO
      `id` es el calendario de LeadConnector del Método INTEGRA. Es distinto
      del calendario general de Pablo (data/site.ts → agenda.id).
      ===================================================================== */
