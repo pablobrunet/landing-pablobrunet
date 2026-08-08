@@ -247,9 +247,9 @@ export const integra = {
         icono: "lupa",
         dias: "Días 1 a 15",
         lema: "*Ordena* el punto de partida, revela las *oportunidades*.",
-        pregunta: "¿Cuál es el punto de partida y dónde hay problemas u oportunidades que merecen atención?",
+        pregunta: "¿Cuál es el punto de partida y dónde están las oportunidades que valen la pena?",
         texto:
-          "Se designan los roles (sponsor, referente interno, responsables de área), se releva qué sabe hoy cada persona, se inventaría qué herramientas se pagan y quién las usa, se fijan reglas básicas de uso responsable y se registran las primeras oportunidades, expresadas como problemas.",
+          "Se designan los roles, se releva qué sabe hoy cada persona y se inventaría qué herramientas se pagan y quién las usa. Con eso a la vista se registran las primeras oportunidades, expresadas como problemas.",
         claves: [
           {
             icono: "people",
@@ -272,9 +272,9 @@ export const integra = {
         icono: "lista",
         dias: "Días 15 a 30",
         lema: "*Ordena* la discusión, define *qué va primero*.",
-        pregunta: "¿Qué merece atención primero, qué se deja para después y qué no se va a hacer en este ciclo?",
+        pregunta: "¿Qué va primero, qué queda para después y qué no se hace en este ciclo?",
         texto:
-          "Las áreas dejan de hablar de «usar IA» y empiezan a hablar de problemas concretos. Cada oportunidad se puntúa por impacto, esfuerzo, riesgo y capacidad, y entra al Tablero de Oportunidades con responsable asignado. Dirección respalda la cartera.",
+          "Las áreas dejan de hablar de «usar IA» y empiezan a hablar de problemas concretos. Cada oportunidad se puntúa por impacto, esfuerzo, riesgo y capacidad, y entra al Tablero de Oportunidades con responsable.",
         claves: [
           {
             icono: "target",
@@ -315,7 +315,7 @@ export const integra = {
           },
         ],
         remate:
-          "Transformar no significa construir la automatización: significa dejar la prueba lista para que tu equipo la corra.",
+          "No es construir la automatización: es dejar la prueba lista para que tu equipo la corra.",
       },
       {
         letra: "E",
@@ -325,7 +325,7 @@ export const integra = {
         lema: "*Prueba* sobre el trabajo real, *no sobre ejercicios*.",
         pregunta: "¿Qué pasa cuando tu equipo prueba el enfoque sobre trabajo real?",
         texto:
-          "Las áreas ejecutan sus Pruebas Aplicadas sobre tareas y procesos reales —no sobre ejercicios—, con alcance chico, controles humanos y registro de evidencia. Ejecuta tu empresa, con nuestro acompañamiento.",
+          "Las áreas ejecutan sus Pruebas Aplicadas sobre tareas y procesos reales —no sobre ejercicios—, con alcance chico, controles humanos y registro de evidencia. Ejecuta tu equipo, con nuestro acompañamiento.",
         claves: [
           {
             icono: "people",
@@ -351,7 +351,7 @@ export const integra = {
         lema: "*Sostiene* el cambio, multiplica los *resultados*.",
         pregunta: "¿Cómo se sostiene el proceso mientras la operación diaria compite por atención?",
         texto:
-          "Formación según rol y nivel, ritual interno semanal, panel de alertas, resolución de bloqueos y gestión del cambio. Es la fase que evita que la iniciativa se apague — por eso no es una semana del calendario: corre todo el tiempo.",
+          "Formación según rol, ritual interno semanal, panel de alertas y resolución de bloqueos. Es la fase que evita que la iniciativa se apague: por eso no es una semana del calendario, corre todo el tiempo.",
         claves: [
           {
             icono: "people",

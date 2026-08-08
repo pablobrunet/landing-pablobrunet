@@ -13,14 +13,22 @@
      · remate  — la línea de cierre, cruzando medio + claves.
 
    SIN JAVASCRIPT. Son radios + labels: el estado vive en el :checked y el
-   CSS muestra el panel que corresponde. Funciona apenas se pinta el HTML,
-   anda con las flechas del teclado —comportamiento nativo de un grupo de
-   radios— y no depende de ningún bundle.
+   CSS lo lee con `:has()`. Funciona apenas se pinta el HTML, anda con las
+   flechas del teclado —comportamiento nativo de un grupo de radios— y no
+   depende de ningún bundle.
+
+   CADA RADIO VA ADENTRO DE SU TARJETA. No es un detalle: al hacer clic el
+   navegador enfoca el input y, si está fuera de pantalla, lo trae a la
+   vista. Con los siete apilados arriba del bloque, cada clic pegaba un
+   salto hacia arriba y había que volver a bajar para ver el panel.
 
    ALTURA FIJA. Los siete paneles se apilan en la misma celda de grid, así
    que el bloque mide siempre lo que el más largo y no salta al cambiar de
    letra. Los inactivos van con `visibility: hidden`, que además los saca
-   del árbol de accesibilidad.
+   del árbol de accesibilidad. Adentro, las filas van `1fr auto` para que
+   el bloque azul llegue hasta abajo en todas y ninguna se vea recortada.
+   Los textos de las siete fases están emparejados en largo a propósito
+   (data/integra.ts): si uno crece de más, estira el bloque para todas.
    ===================================================================== */
 import Icon from "../Icon.astro";
 import { integra } from "../../data/integra";
@@ -45,25 +53,25 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     </header>
 
     <div class="ft i-reveal" style={`--cols:${cols}`}>
-      {/* Los radios van sueltos y antes de todo: el CSS necesita que sean
-          hermanos del selector y del panel para alcanzarlos con ~. */}
-      {
-        fases.map((f, i) => (
-          <input
-            class="ft__radio"
-            type="radio"
-            name="fase-integra"
-            id={`fase-${f.letra}`}
-            value={f.letra}
-            checked={i === 0}
-          />
-        ))
-      }
-
       <div class="ft__riel" role="radiogroup" aria-label="Las siete fases del Método INTEGRA">
         {
           fases.map((f, i) => (
-            <label class="paso" for={`fase-${f.letra}`}>
+            <label class="paso">
+              {/* El radio va DENTRO de su tarjeta, no suelto arriba de
+                  todo. Al hacer clic el navegador enfoca el input, y si
+                  ese input está fuera de pantalla lo trae a la vista: con
+                  los siete apilados al principio del bloque, cada clic
+                  pegaba un salto hacia arriba y había que volver a bajar
+                  para ver el panel. Adentro de la tarjeta el foco ya está
+                  donde el dedo tocó, así que no hay nada que desplazar. */}
+              <input
+                class="ft__radio"
+                type="radio"
+                name="fase-integra"
+                id={`fase-${f.letra}`}
+                value={f.letra}
+                checked={i === 0}
+              />
               <span class="paso__num" aria-hidden="true">
                 {dosDigitos(i + 1)}
               </span>
@@ -442,83 +450,45 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     color: #fff;
   }
 
-  /* ==================== QUÉ PRENDE CADA RADIO ======================= */
-  /* Tarjeta activa */
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1),
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2),
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3),
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4),
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5),
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6),
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) {
+  /* ==================== QUÉ PRENDE CADA RADIO =======================
+     Con el radio adentro de la tarjeta ya no sirven los combinadores de
+     hermano: se usa `:has()`. De paso queda mucho más corto — el estado
+     de la tarjeta se lee de su propio input en lugar de repetir siete
+     cadenas por cada propiedad. */
+  .paso:has(.ft__radio:checked) {
     background: linear-gradient(165deg, var(--i-azul-600) 0%, var(--i-azul-800) 100%);
     border-color: transparent;
     box-shadow: 0 16px 34px rgba(23, 64, 143, 0.32);
   }
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__num,
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__num,
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__num,
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__num,
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__num,
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__num,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__num,
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__letra,
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__letra,
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__letra,
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__letra,
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__letra,
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__letra,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__letra,
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__nombre,
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__nombre,
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__nombre,
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__nombre,
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__nombre,
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__nombre,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__nombre {
+  .paso:has(.ft__radio:checked) .paso__num,
+  .paso:has(.ft__radio:checked) .paso__letra,
+  .paso:has(.ft__radio:checked) .paso__nombre {
     color: #fff;
   }
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__icono,
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__icono,
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__icono,
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__icono,
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__icono,
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__icono,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__icono {
+  .paso:has(.ft__radio:checked) .paso__icono {
     background: rgba(255, 255, 255, 0.18);
     color: #fff;
   }
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__pico,
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__pico,
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__pico,
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__pico,
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__pico,
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__pico,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__pico {
+  .paso:has(.ft__radio:checked) .paso__pico {
     transform: rotate(45deg) scale(1);
   }
 
-  /* Foco visible por teclado: el radio está oculto, así que el anillo lo
-     tiene que dibujar la tarjeta. */
-  #fase-I:focus-visible ~ .ft__riel .paso:nth-child(1),
-  #fase-N:focus-visible ~ .ft__riel .paso:nth-child(2),
-  #fase-T:focus-visible ~ .ft__riel .paso:nth-child(3),
-  #fase-E:focus-visible ~ .ft__riel .paso:nth-child(4),
-  #fase-G:focus-visible ~ .ft__riel .paso:nth-child(5),
-  #fase-R:focus-visible ~ .ft__riel .paso:nth-child(6),
-  #fase-A:focus-visible ~ .ft__riel .paso:nth-child(7) {
+  /* Foco por teclado: el radio no se ve, así que el anillo lo dibuja la
+     tarjeta que lo contiene. */
+  .paso:has(.ft__radio:focus-visible) {
     outline: 3px solid var(--i-azul-600);
     outline-offset: 3px;
   }
 
-  /* Ficha activa */
-  #fase-I:checked ~ .ft__paneles #panel-I,
-  #fase-N:checked ~ .ft__paneles #panel-N,
-  #fase-T:checked ~ .ft__paneles #panel-T,
-  #fase-E:checked ~ .ft__paneles #panel-E,
-  #fase-G:checked ~ .ft__paneles #panel-G,
-  #fase-R:checked ~ .ft__paneles #panel-R,
-  #fase-A:checked ~ .ft__paneles #panel-A {
+  /* Ficha activa: acá sí hace falta nombrar cada letra, porque la
+     relación es entre un radio y el panel que le corresponde. */
+  .ft:has(#fase-I:checked) #panel-I,
+  .ft:has(#fase-N:checked) #panel-N,
+  .ft:has(#fase-T:checked) #panel-T,
+  .ft:has(#fase-E:checked) #panel-E,
+  .ft:has(#fase-G:checked) #panel-G,
+  .ft:has(#fase-R:checked) #panel-R,
+  .ft:has(#fase-A:checked) #panel-A {
     visibility: visible;
     opacity: 1;
   }
@@ -540,12 +510,18 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   /* El panel pasa a tres columnas, con el bloque azul cruzando las dos
      filas y el remate cruzando medio + claves. */
   @media (min-width: 960px) {
+    /* `1fr auto` en las filas es lo que hace que las siete fichas midan
+       igual: la primera fila se come todo el alto sobrante —el del panel
+       más largo, que es el que fija la altura del bloque— y el remate se
+       queda en su alto natural, pegado abajo. Con `align-content: start`,
+       las fichas más cortas dejaban el bloque azul a media altura y un
+       hueco blanco debajo, que es lo que se veía como recortado. */
     .ficha {
       grid-template-columns: minmax(16.5rem, 0.95fr) 1.25fr 0.95fr;
+      grid-template-rows: 1fr auto;
       grid-template-areas:
         "lado medio claves"
         "lado remate remate";
-      align-content: start;
     }
     .ficha__lado {
       grid-area: lado;
