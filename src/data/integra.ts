@@ -212,7 +212,7 @@ export const integra = {
       },
     ],
     cierre:
-      "Cada mes sin método no es neutro: es tiempo, dinero y oportunidad que la empresa no está capturando — y el mes que viene vuelve a empezar de cero, porque no queda nada aprendido.",
+      "La falta de método tiene un costo silencioso: horas perdidas, oportunidades desaprovechadas y aprendizajes que nunca se convierten en sistema.",
     cta: "Quiero mi diagnóstico",
   },
 
