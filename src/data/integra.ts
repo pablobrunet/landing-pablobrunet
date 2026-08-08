@@ -23,17 +23,30 @@
    tipadas a mano para que los componentes puedan leer esos campos sin
    pelearse con la inferencia de `as const`.
    --------------------------------------------------------------------- */
+export interface ClaveFase {
+  icono: string;
+  titulo: string;
+  texto: string;
+}
+
 export interface FaseIntegra {
   letra: string;
   nombre: string;
-  /** La pregunta central: se ve en la tarjeta sin desplegarla. */
+  /** Ícono del selector; nombre del set de Icon.astro. */
+  icono: string;
+  /** Tramo del calendario, en la píldora del panel. */
+  dias: string;
+  /** Frase corta del panel oscuro. Lo que va entre *asteriscos* se pinta. */
+  lema: string;
+  /** La pregunta que ordena la fase: encabeza el panel. */
   pregunta: string;
   texto: string;
+  /** Las tres cosas concretas que deja la fase. */
+  claves: ClaveFase[];
+  /** Línea que cierra el panel. */
+  remate: string;
   /** Solo la G: corre del día 1 al 60, no es un paso del camino. */
   transversal?: boolean;
-  etiqueta?: string;
-  regla?: string;
-  destacado?: string;
 }
 
 export interface OpcionChequeo {
@@ -204,78 +217,230 @@ export const integra = {
 
   /* =====================================================================
      4 · EL MÉTODO: LAS SIETE FASES INTEGRA
-     La G no es un paso más: es una banda transversal que corre del día 1
-     al 60. No aplanarla a un séptimo escalón (nota de build de la spec).
+     ---------------------------------------------------------------------
+     Cada fase trae, además de su pregunta y su desarrollo:
+       · `icono`  — el del selector, uno distinto por fase
+       · `lema`   — la frase corta del panel oscuro; lo que va entre
+                    *asteriscos* se pinta (ver lib/texto.ts)
+       · `dias`   — el tramo del calendario, en la píldora del panel
+       · `claves` — las tres cosas concretas que deja la fase
+       · `remate` — la línea que cierra el panel
+
+     ⚠️ Los tramos de días salen de los cuatro puntos de control del
+     método (15, 30, 45 y 60) y de qué pregunta cada uno: el del día 15
+     revisa Identificar; el del 30, Negociar y Transformar; el del 45,
+     Ejecutar; el del 60, Rentabilizar y Acelerar. Gestionar es la única
+     que corre de punta a punta. Si el despliegue real usa otro reparto,
+     se corrige acá y se propaga solo.
      ===================================================================== */
   metodo: {
-    eyebrow: "El método",
-    titulo: "No empezamos por las herramientas. Empezamos por los resultados que tu empresa necesita.",
-    /* Antes decía "el Método INTEGRA es un método de integración…", se
-       defendía de lo que no era ("no es un curso ni un catálogo") y
-       explicaba que las iniciales arman el acrónimo. Eso último ya lo
-       resuelve el diseño solo. Ahora arranca por lo concreto —cuántas
-       fases, cuántos días— y cierra en lo que la empresa se lleva. */
+    eyebrow: "Método INTEGRA",
+    titulo: "Así funciona",
+    tituloResalte: "INTEGRA",
     subtitulo:
       "Siete fases en sesenta días. Cada una responde una pregunta concreta sobre tu empresa, y juntas dejan instalado el criterio para decidir dónde conviene aplicar inteligencia artificial y dónde no.",
-    /* Ayuda de uso del selector de fases: sin esto no es obvio que las
-       letras se tocan. */
+    /* Ayuda de uso del selector: sin esto no es obvio que las letras se
+       tocan. */
     pista: "Tocá cada letra para ver la fase.",
     fases: [
       {
         letra: "I",
         nombre: "Identificar",
+        icono: "lupa",
+        dias: "Días 1 a 15",
+        lema: "*Ordena* el punto de partida, revela las *oportunidades*.",
         pregunta: "¿Cuál es el punto de partida y dónde hay problemas u oportunidades que merecen atención?",
         texto:
           "Se designan los roles (sponsor, referente interno, responsables de área), se releva qué sabe hoy cada persona, se inventaría qué herramientas se pagan y quién las usa, se fijan reglas básicas de uso responsable y se registran las primeras oportunidades, expresadas como problemas.",
+        claves: [
+          {
+            icono: "people",
+            titulo: "Roles con nombre",
+            texto: "Sponsor, referente interno y responsables de área, cada uno con tiempo asignado.",
+          },
+          {
+            icono: "lista",
+            titulo: "Inventario real",
+            texto: "Qué herramientas se pagan hoy, quién las usa y para qué sirven de verdad.",
+          },
+          {
+            icono: "lupa",
+            titulo: "Oportunidades a la vista",
+            texto: "Se registran como problemas concretos del trabajo, no como ideas de herramienta.",
+          },
+        ],
+        remate: "Sin un punto de partida claro, todo lo que viene después se discute a ciegas.",
       },
       {
         letra: "N",
         nombre: "Negociar prioridades",
+        icono: "lista",
+        dias: "Días 15 a 30",
+        lema: "*Ordena* la discusión, define *qué va primero*.",
         pregunta: "¿Qué merece atención primero, qué se deja para después y qué no se va a hacer en este ciclo?",
         texto:
           "Las áreas dejan de hablar de «usar IA» y empiezan a hablar de problemas concretos. Cada oportunidad se puntúa por impacto, esfuerzo, riesgo y capacidad, y entra al Tablero de Oportunidades con responsable asignado. Dirección respalda la cartera.",
-        regla: "Regla visible: hasta dos oportunidades priorizadas por área, una sola activa.",
+        claves: [
+          {
+            icono: "target",
+            titulo: "Una sola vara",
+            texto: "Impacto, esfuerzo, riesgo y capacidad: todas las áreas puntúan con los mismos criterios.",
+          },
+          {
+            icono: "lista",
+            titulo: "Tablero de Oportunidades",
+            texto: "Cada oportunidad entra con responsable asignado y con el respaldo de dirección.",
+          },
+          {
+            icono: "check",
+            titulo: "Foco, no lista de deseos",
+            texto: "Hasta dos oportunidades priorizadas por área, y una sola activa por vez.",
+          },
+        ],
+        remate: "Priorizar también es acordar qué no se hace en este ciclo. Eso se decide junto, y por escrito.",
       },
       {
         letra: "T",
         nombre: "Transformar",
+        icono: "intercambio",
+        dias: "Días 15 a 30",
+        lema: "*Convierte* la idea en algo *que se puede probar*.",
         pregunta: "¿Cómo convertimos una oportunidad en una iniciativa chica, segura y decidible?",
         texto:
           "Cada oportunidad priorizada se transforma en una Prueba Aplicada: problema, mejora esperada, responsable, alcance acotado, herramienta o enfoque, riesgos y controles, evidencia a observar y decisión final.",
-        destacado:
-          "Transformar no significa construir la automatización. Significa convertir una idea amplia en una prueba que tu equipo puede ejecutar con sus propios recursos.",
+        claves: [
+          {
+            icono: "intercambio",
+            titulo: "Alcance acotado",
+            texto: "Una prueba chica que tu equipo puede ejecutar con los recursos que ya tiene.",
+          },
+          {
+            icono: "shield",
+            titulo: "Riesgos y controles",
+            texto: "Qué puede salir mal y qué control humano lo cubre, definido antes de empezar.",
+          },
+          {
+            icono: "data",
+            titulo: "Evidencia definida",
+            texto: "Qué se va a mirar para poder decidir después sin discutir impresiones.",
+          },
+        ],
+        remate:
+          "Transformar no significa construir la automatización: significa dejar la prueba lista para que tu equipo la corra.",
       },
       {
         letra: "E",
         nombre: "Ejecutar",
+        icono: "play",
+        dias: "Días 30 a 45",
+        lema: "*Prueba* sobre el trabajo real, *no sobre ejercicios*.",
         pregunta: "¿Qué pasa cuando tu equipo prueba el enfoque sobre trabajo real?",
         texto:
-          "Las áreas ejecutan sus Pruebas Aplicadas sobre tareas y procesos reales —no sobre ejercicios—, con alcance chico, controles humanos y registro de evidencia. Ejecuta tu empresa, con nuestro acompañamiento: nadie aprende a decidir mirando cómo decide otro.",
+          "Las áreas ejecutan sus Pruebas Aplicadas sobre tareas y procesos reales —no sobre ejercicios—, con alcance chico, controles humanos y registro de evidencia. Ejecuta tu empresa, con nuestro acompañamiento.",
+        claves: [
+          {
+            icono: "people",
+            titulo: "Lo hace tu equipo",
+            texto: "Con nuestro acompañamiento: nadie aprende a decidir mirando cómo decide otro.",
+          },
+          {
+            icono: "flow",
+            titulo: "Sobre tareas de todos los días",
+            texto: "Cotizaciones, reportes, respuestas a clientes: el trabajo que ya existe.",
+          },
+          {
+            icono: "documento",
+            titulo: "Registro mientras pasa",
+            texto: "La evidencia se anota en el momento, no se reconstruye de memoria al final.",
+          },
+        ],
+        remate: "Acá es donde la capacidad deja de ser una idea y empieza a ser algo que el equipo sabe hacer.",
       },
       {
         letra: "G",
         nombre: "Gestionar",
+        icono: "growth",
         transversal: true,
-        etiqueta: "Del día 1 al 60",
+        dias: "Del día 1 al 60",
+        lema: "*Sostiene* el cambio, multiplica los *resultados*.",
         pregunta: "¿Cómo se sostiene el proceso mientras la operación diaria compite por atención?",
         texto:
           "Formación según rol y nivel, ritual interno semanal, panel de alertas, resolución de bloqueos y gestión del cambio. Es la fase que evita que la iniciativa se apague — por eso no es una semana del calendario: corre todo el tiempo.",
+        claves: [
+          {
+            icono: "people",
+            titulo: "Rituales y cadencia",
+            texto: "Hábitos semanales que mantienen el foco y la ejecución en el día a día.",
+          },
+          {
+            icono: "campana",
+            titulo: "Visibilidad y alertas",
+            texto: "Un panel simple que anticipa desvíos y permite actuar a tiempo.",
+          },
+          {
+            icono: "shield",
+            titulo: "Gestión del cambio",
+            texto: "Acompañamos a las personas para sostener la adopción y superar resistencias.",
+          },
+        ],
+        remate: "Esta fase no termina: es el sistema que asegura que lo logrado hoy se mejore mañana.",
       },
       {
         letra: "R",
         nombre: "Rentabilizar",
+        icono: "barras",
+        dias: "Días 45 a 60",
+        lema: "*Cierra* cada prueba con una *decisión*.",
         pregunta: "¿Qué valor produjo cada prueba y qué decisión conviene tomar?",
         texto:
-          "Cada prueba activa termina en una decisión fundada: adoptar, iterar, pausar, descartar o escalar.",
-        destacado:
-          "Descartar una oportunidad con evidencia también es rentabilizar: te ahorraste una inversión mala y tu equipo aprendió a decidir. Rentabilizar no es una promesa de retorno financiero — es que ninguna prueba quede sin decisión.",
+          "Cada prueba activa termina en una decisión fundada: adoptar, iterar, pausar, descartar o escalar. La decisión se toma con la evidencia a la vista y queda registrada con su motivo.",
+        claves: [
+          {
+            icono: "target",
+            titulo: "Cinco salidas posibles",
+            texto: "Adoptar, iterar, pausar, descartar o escalar. Ninguna prueba queda abierta.",
+          },
+          {
+            icono: "data",
+            titulo: "Se decide con evidencia",
+            texto: "Con lo que efectivamente pasó, no con lo que se esperaba que pasara.",
+          },
+          {
+            icono: "check",
+            titulo: "Descartar también suma",
+            texto: "Te ahorraste una inversión mala y tu equipo aprendió a distinguir cuál lo era.",
+          },
+        ],
+        remate:
+          "Rentabilizar no es una promesa de retorno financiero: es que ninguna prueba quede sin decisión.",
       },
       {
         letra: "A",
         nombre: "Acelerar",
+        icono: "cohete",
+        dias: "Días 45 a 60",
+        lema: "*Convierte* lo aprendido en *forma de trabajo*.",
         pregunta: "¿Cómo logra tu empresa repetir el ciclo con más autonomía y menos fricción?",
         texto:
-          "Lo aprendido se convierte en forma de trabajo: quién carga las oportunidades nuevas, quién prioriza, qué ritual semanal queda corriendo, dónde vive la documentación y qué se hace en los siguientes 90 días. Acelerar no es implementar más soluciones: es que el próximo ciclo te cueste la mitad.",
+          "Lo aprendido se convierte en forma de trabajo: quién carga las oportunidades nuevas, quién prioriza, qué ritual semanal queda corriendo y dónde vive la documentación para que nada dependa de la memoria de una persona.",
+        claves: [
+          {
+            icono: "people",
+            titulo: "Roles que quedan",
+            texto: "Quién carga las oportunidades nuevas y quién prioriza, de acá en adelante.",
+          },
+          {
+            icono: "clock",
+            titulo: "El ritual sigue corriendo",
+            texto: "La cadencia semanal no se apaga cuando termina el acompañamiento.",
+          },
+          {
+            icono: "documento",
+            titulo: "Todo documentado",
+            texto: "Dónde vive lo que funcionó y, sobre todo, lo que no funcionó y por qué.",
+          },
+        ],
+        remate: "Acelerar no es implementar más soluciones: es que el próximo ciclo te cueste la mitad.",
       },
     ] as FaseIntegra[],
   },

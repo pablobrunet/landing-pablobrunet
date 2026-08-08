@@ -2,23 +2,15 @@
 /* =====================================================================
    EL MÉTODO — las siete fases INTEGRA
    ---------------------------------------------------------------------
-   Es la sección que tiene que demostrar que hay un método atrás. Dos
-   decisiones de diseño sostienen eso:
+   Selector de siete tarjetas (una por inicial) y, debajo, un panel único
+   que cambia de contenido según la que esté elegida.
 
-   1) SECUENCIA, NO BLOQUES SUELTOS. Las siete letras van sobre un riel
-      con su número de orden (01…07) y una barra de progreso que avanza
-      con la fase elegida. Antes eran siete cuadrados iguales flotando,
-      que se leían como bloques de juguete: nada indicaba que fuera un
-      recorrido con principio y final.
-
-   2) FICHA TÉCNICA, NO TARJETA. El panel se abre con una cabecera oscura
-      que dice en qué fase estás ("Fase 03 de 07") y sigue con la pregunta
-      que ordena esa fase y su desarrollo. La forma es la de un documento
-      de trabajo, que es exactamente lo que se está vendiendo.
-
-   Se sacaron las letras con degradé: el texto relleno con gradiente es el
-   recurso que más rápido delata una plantilla y le quitaba seriedad a lo
-   único que la sección tiene que transmitir.
+   El panel tiene cuatro zonas:
+     · lado    — bloque azul con el nombre de la fase, su lema y el tramo
+                 de días. Es lo que ancla visualmente el conjunto.
+     · medio   — la pregunta que ordena la fase y su desarrollo.
+     · claves  — las tres cosas concretas que deja la fase.
+     · remate  — la línea de cierre, cruzando medio + claves.
 
    SIN JAVASCRIPT. Son radios + labels: el estado vive en el :checked y el
    CSS muestra el panel que corresponde. Funciona apenas se pinta el HTML,
@@ -26,11 +18,13 @@
    radios— y no depende de ningún bundle.
 
    ALTURA FIJA. Los siete paneles se apilan en la misma celda de grid, así
-   que el bloque mide siempre lo mismo que el más largo y no salta al
-   cambiar de letra. Los inactivos van con `visibility: hidden`, que
-   además los saca del árbol de accesibilidad.
+   que el bloque mide siempre lo que el más largo y no salta al cambiar de
+   letra. Los inactivos van con `visibility: hidden`, que además los saca
+   del árbol de accesibilidad.
    ===================================================================== */
+import Icon from "../Icon.astro";
 import { integra } from "../../data/integra";
+import { resaltar } from "../../lib/texto";
 const { metodo, anclas } = integra;
 
 const fases = metodo.fases;
@@ -38,17 +32,21 @@ const cols = fases.length;
 const dosDigitos = (n: number) => String(n).padStart(2, "0");
 ---
 
-<section class="section i-hielo i-claro" id={anclas.metodo} aria-label="El método INTEGRA">
+<section class="section i-hielo i-claro fs" id={anclas.metodo} aria-label="El método INTEGRA">
+  <div class="fs__fondo" aria-hidden="true"></div>
+
   <div class="container">
     <header class="i-head i-head--centro i-reveal">
       <span class="i-eyebrow">{metodo.eyebrow}</span>
-      <h2 class="t-h2">{metodo.titulo}</h2>
+      <h2 class="t-h2">
+        {metodo.titulo} <span class="i-hl">{metodo.tituloResalte}</span>
+      </h2>
       <p class="text-muted">{metodo.subtitulo}</p>
     </header>
 
     <div class="ft i-reveal" style={`--cols:${cols}`}>
       {/* Los radios van sueltos y antes de todo: el CSS necesita que sean
-          hermanos del riel y del panel para alcanzarlos con ~. */}
+          hermanos del selector y del panel para alcanzarlos con ~. */}
       {
         fases.map((f, i) => (
           <input
@@ -62,11 +60,6 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
         ))
       }
 
-      <div class="ft__barra">
-        <span class="ft__barra-linea" aria-hidden="true"></span>
-        <span class="ft__barra-avance" aria-hidden="true"></span>
-      </div>
-
       <div class="ft__riel" role="radiogroup" aria-label="Las siete fases del Método INTEGRA">
         {
           fases.map((f, i) => (
@@ -77,7 +70,11 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
               <span class="paso__letra" aria-hidden="true">
                 {f.letra}
               </span>
+              <span class="paso__icono" aria-hidden="true">
+                <Icon name={f.icono} size={18} />
+              </span>
               <span class="paso__nombre">{f.nombre}</span>
+              <span class="paso__pico" aria-hidden="true" />
             </label>
           ))
         }
@@ -89,25 +86,41 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
         {
           fases.map((f, i) => (
             <article class="ficha" id={`panel-${f.letra}`}>
-              <header class="ficha__head">
-                <span class="ficha__letra" aria-hidden="true">
-                  {f.letra}
+              <div class="ficha__lado">
+                <span class="ficha__orden">Fase {dosDigitos(i + 1)}</span>
+                <p class="ficha__nombre">{f.nombre}</p>
+                <p class="ficha__lema" set:html={resaltar(f.lema)} />
+                <span class="ficha__dias">
+                  <Icon name="calendario" size={17} />
+                  {f.dias}
                 </span>
-                <span class="ficha__ident">
-                  <span class="ficha__orden">
-                    Fase {dosDigitos(i + 1)} <i>de</i> {dosDigitos(cols)}
-                  </span>
-                  <span class="ficha__nombre">{f.nombre}</span>
-                </span>
-                {f.etiqueta && <span class="ficha__tag">{f.etiqueta}</span>}
-              </header>
-
-              <div class="ficha__cuerpo">
-                <p class="ficha__pregunta">{f.pregunta}</p>
-                <p class="ficha__texto">{f.texto}</p>
-                {f.regla && <p class="ficha__regla">{f.regla}</p>}
-                {f.destacado && <p class="ficha__destacado">{f.destacado}</p>}
               </div>
+
+              <div class="ficha__medio">
+                <h3 class="ficha__pregunta">{f.pregunta}</h3>
+                <p class="ficha__texto">{f.texto}</p>
+              </div>
+
+              <ul class="ficha__claves">
+                {f.claves.map((c) => (
+                  <li>
+                    <span class="clave__icono" aria-hidden="true">
+                      <Icon name={c.icono} size={19} />
+                    </span>
+                    <div>
+                      <h4 class="clave__t">{c.titulo}</h4>
+                      <p class="clave__p">{c.texto}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <p class="ficha__remate">
+                <span class="ficha__remate-ico" aria-hidden="true">
+                  <Icon name="estrella" size={16} />
+                </span>
+                {f.remate}
+              </p>
             </article>
           ))
         }
@@ -117,11 +130,32 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
 </section>
 
 <style>
-  .ft {
+  .fs {
     position: relative;
-    --activa: 0; /* la fija el radio marcado; mueve la barra de avance */
+    overflow: hidden;
+  }
+  /* Círculos concéntricos muy tenues sobre el margen derecho: dan
+     profundidad sin competir con nada. */
+  .fs__fondo {
+    position: absolute;
+    top: -14rem;
+    right: -22rem;
+    width: 58rem;
+    height: 58rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 58%, rgba(30, 92, 242, 0.05) 58.4%, transparent 59%),
+      radial-gradient(circle, transparent 44%, rgba(30, 92, 242, 0.05) 44.4%, transparent 45%),
+      radial-gradient(circle, transparent 30%, rgba(30, 92, 242, 0.05) 30.4%, transparent 31%);
+  }
+  .fs > .container {
+    position: relative;
   }
 
+  .ft {
+    position: relative;
+  }
   /* Los radios no se ven pero SÍ se enfocan: por eso no van con
      `display:none`, que los sacaría del orden de tabulación. */
   .ft__radio {
@@ -132,93 +166,82 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     pointer-events: none;
   }
 
-  /* ------------------------- El riel y su avance --------------------- */
-  .ft__barra {
-    position: relative;
-    height: 2px;
-    margin-bottom: 1.25rem;
-  }
-  .ft__barra-linea {
-    position: absolute;
-    inset: 0;
-    background: var(--borde);
-  }
-  .ft__barra-avance {
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    /* Se detiene en el centro de la fase activa, no en su borde. */
-    width: calc((var(--activa) + 0.5) * (100% / var(--cols)));
-    background: var(--i-azul-600);
-    transition: width 320ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  }
-
-  /* Gap chico a propósito: las siete iniciales tienen que leerse juntas
-     como la palabra INTEGRA, que es el recurso mnemotécnico del método.
-     Separadas se leían como siete botones sueltos. */
+  /* =========================== EL SELECTOR ========================== */
   .ft__riel {
     display: grid;
     grid-template-columns: repeat(var(--cols), 1fr);
-    gap: clamp(0.15rem, 0.5vw, 0.5rem);
+    gap: clamp(0.3rem, 0.8vw, 0.75rem);
+    align-items: stretch;
   }
   .paso {
     position: relative;
     display: grid;
     justify-items: center;
-    gap: 0.45rem;
-    padding: clamp(0.5rem, 1.2vw, 0.85rem) 0.15rem;
-    border-radius: 14px;
-    border: 1px solid transparent;
+    gap: 0.5rem;
+    padding: clamp(0.75rem, 1.6vw, 1.15rem) 0.3rem clamp(0.85rem, 1.8vw, 1.25rem);
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
     cursor: pointer;
-    transition: background var(--transition), border-color var(--transition);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition),
+      background var(--transition), border-color var(--transition);
   }
   .paso:hover {
-    background: rgba(30, 92, 242, 0.06);
-  }
-  .paso:hover .paso__letra {
-    border-color: var(--i-azul-600);
-    color: var(--i-azul-600);
+    transform: translateY(-3px);
+    border-color: var(--i-azul-500);
   }
   .paso__num {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: var(--w-headline);
-    letter-spacing: 0.12em;
-    color: var(--borde-punteado);
+    letter-spacing: 0.14em;
+    color: var(--i-azul-500);
     transition: color var(--transition);
   }
-  /* Las iniciales son el ancla visual de la sección: van grandes. A 48px
-     de caja se perdían contra el resto de la página y no invitaban a
-     tocarlas. Sin degradé y con el trazo cerrado, para que se lean como
-     un dato y no como una decoración. */
   .paso__letra {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    max-width: clamp(2.5rem, 9vw, 5.25rem);
-    aspect-ratio: 1;
-    border-radius: 14px;
-    border: 1.5px solid var(--borde-punteado);
-    background: #fff;
     font-family: var(--font-title);
     font-weight: var(--w-display);
-    font-size: clamp(1.35rem, 4.6vw, 2.75rem);
+    font-size: clamp(1.5rem, 0.9rem + 2.6vw, 3.1rem);
     line-height: 1;
     letter-spacing: -0.02em;
-    color: var(--azul-pizarra);
-    transition: background var(--transition), border-color var(--transition),
-      color var(--transition), transform var(--transition), box-shadow var(--transition);
+    color: var(--i-azul-600);
+    transition: color var(--transition);
+  }
+  .paso__icono {
+    display: grid;
+    place-items: center;
+    width: clamp(1.9rem, 3.4vw, 2.5rem);
+    height: clamp(1.9rem, 3.4vw, 2.5rem);
+    border-radius: 50%;
+    background: var(--i-hielo);
+    color: var(--i-azul-600);
+    transition: background var(--transition), color var(--transition);
   }
   .paso__nombre {
-    font-size: 0.68rem;
-    font-weight: var(--w-subheadline);
-    line-height: 1.2;
+    font-size: 0.8rem;
+    font-weight: var(--w-headline);
+    line-height: 1.25;
     text-align: center;
-    color: var(--texto-suave);
-    /* En pantallas chicas no entra el nombre completo: manda la inicial,
-       que además es la que arma el acrónimo. */
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+    /* En pantallas chicas no entra: manda la inicial, que además es la
+       que arma el acrónimo. */
     display: none;
   }
+  /* Pico que baja de la tarjeta elegida hacia el panel. */
+  .paso__pico {
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 3px;
+    background: var(--i-azul-700);
+    transform: rotate(45deg) scale(0);
+    transition: transform var(--transition);
+  }
+
   .ft__pista {
     margin-top: 0.9rem;
     font-size: var(--fs-caption);
@@ -226,7 +249,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     text-align: center;
   }
 
-  /* ---------------------------- La ficha ----------------------------- */
+  /* ============================= EL PANEL =========================== */
   .ft__paneles {
     display: grid;
     margin-top: 1.5rem;
@@ -240,118 +263,179 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
      cambia al elegir otra letra. */
   .ficha {
     grid-area: 1 / 1;
+    display: grid;
     visibility: hidden;
     opacity: 0;
     transition: opacity 220ms ease, visibility 220ms;
   }
-  .ficha__head {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: clamp(1rem, 2.5vw, 1.35rem) clamp(1.25rem, 3.5vw, 2.25rem);
-    background: var(--i-navy);
+
+  /* ---- Bloque azul ---- */
+  .ficha__lado {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.6rem, 4vw, 2.5rem);
+    background: linear-gradient(155deg, var(--i-azul-700) 0%, var(--i-navy) 70%);
     color: #fff;
   }
-  .ficha__letra {
+  /* Arcos finos en la esquina inferior, como en el resto del sistema. */
+  .ficha__lado::after {
+    content: "";
+    position: absolute;
+    right: -9rem;
+    bottom: -12rem;
+    width: 26rem;
+    height: 26rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 62%, rgba(169, 200, 245, 0.16) 62.5%, transparent 63.5%),
+      radial-gradient(circle, transparent 48%, rgba(169, 200, 245, 0.14) 48.5%, transparent 49.5%),
+      radial-gradient(circle, transparent 34%, rgba(169, 200, 245, 0.12) 34.5%, transparent 35.5%);
+  }
+  .ficha__lado > * {
+    position: relative;
+  }
+  .ficha__orden {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .ficha__nombre {
+    margin-top: 0.5rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.9rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .ficha__lema {
+    margin-top: 0.9rem;
+    font-size: clamp(1rem, 0.94rem + 0.35vw, 1.15rem);
+    line-height: 1.45;
+    color: rgba(220, 230, 246, 0.9);
+    max-width: 22rem;
+  }
+  /* Sobre el azul profundo, el resalte va en Celeste Suave (9,9:1). */
+  .ficha__lema :global(.hl) {
+    color: var(--i-celeste);
+  }
+  .ficha__dias {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(169, 200, 245, 0.3);
+    font-size: 0.9rem;
+    font-weight: var(--w-subheadline);
+  }
+
+  /* ---- Columna del medio ---- */
+  .ficha__medio {
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  }
+  .ficha__pregunta {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
+    line-height: 1.4;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  /* Subrayado corto debajo de la pregunta, a modo de separador. */
+  .ficha__pregunta::after {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 3px;
+    margin: 1.1rem 0 1.25rem;
+    border-radius: 2px;
+    background: var(--i-azul-600);
+  }
+  .ficha__texto {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--azul-pizarra);
+  }
+
+  /* ---- Las tres claves ---- */
+  .ficha__claves {
+    display: grid;
+    align-content: start;
+    gap: 1.35rem;
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    padding-top: 0;
+  }
+  .ficha__claves li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .clave__icono {
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 11px;
-    background: var(--i-azul-600);
-    font-family: var(--font-title);
-    font-weight: var(--w-display);
-    font-size: 1.5rem;
-    line-height: 1;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: var(--i-hielo);
+    color: var(--i-azul-600);
   }
-  .ficha__ident {
-    display: grid;
-    gap: 0.1rem;
-    min-width: 0;
-  }
-  .ficha__orden {
-    font-size: 0.7rem;
-    font-weight: var(--w-headline);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--i-celeste);
-  }
-  .ficha__orden i {
-    font-style: normal;
-    opacity: 0.55;
-  }
-  .ficha__nombre {
+  .clave__t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
-    font-size: clamp(1.1rem, 0.95rem + 0.7vw, 1.45rem);
-    line-height: 1.15;
-  }
-  .ficha__tag {
-    margin-left: auto;
-    flex-shrink: 0;
-    padding: 0.3rem 0.7rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(169, 200, 245, 0.35);
-    background: rgba(169, 200, 245, 0.12);
-    font-size: 0.68rem;
-    font-weight: var(--w-subheadline);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--i-celeste);
-  }
-
-  .ficha__cuerpo {
-    padding: clamp(1.25rem, 3.5vw, 2.25rem);
-  }
-  /* Todo el texto de la ficha va al mismo cuerpo que los subtítulos de
-     sección (`.i-head p` en integra.css: 1,0625rem / 1,65). La jerarquía
-     la marcan el peso, el color y la regla al costado — no el tamaño. */
-  .ficha__cuerpo p {
-    font-size: 1.0625rem;
-    line-height: 1.65;
-  }
-  /* La pregunta es la que ordena cada fase: mismo cuerpo, pero con la
-     tipografía de títulos y una regla al costado. */
-  .ficha__pregunta {
-    padding-left: 0.9rem;
-    border-left: 3px solid var(--i-azul-600);
-    font-family: var(--font-title);
-    font-weight: var(--w-subheadline);
+    font-size: 0.975rem;
     color: var(--azul-petroleo);
   }
-  .ficha__texto {
-    margin-top: 1.1rem;
-    color: var(--azul-pizarra);
+  .clave__p {
+    margin-top: 0.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
   }
-  .ficha__regla {
-    margin-top: 1rem;
+
+  /* ---- Remate ---- */
+  .ficha__remate {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 clamp(1.5rem, 3.5vw, 2.25rem) clamp(1.5rem, 3.5vw, 2.25rem);
+    padding: 0.9rem 1.15rem;
+    border-radius: var(--radius);
+    background: rgba(30, 92, 242, 0.06);
+    font-size: 0.95rem;
+    line-height: 1.5;
     font-weight: var(--w-subheadline);
     color: var(--verde-resalte);
   }
-  .ficha__destacado {
-    margin-top: 1.25rem;
-    padding: 1rem 1.15rem;
-    border-radius: var(--radius-sm);
-    background: var(--i-hielo);
-    border: 1px solid var(--borde);
-    color: var(--azul-petroleo);
+  .ficha__remate-ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+    color: #fff;
   }
 
-  /* --------------------- Qué prende cada radio ----------------------- */
-  /* Paso activo */
-  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__letra,
-  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__letra,
-  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__letra,
-  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__letra,
-  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__letra,
-  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__letra,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__letra {
-    background: var(--i-navy);
-    border-color: var(--i-navy);
-    color: #fff;
-    transform: translateY(-4px);
-    box-shadow: 0 14px 28px rgba(13, 27, 61, 0.28);
+  /* ==================== QUÉ PRENDE CADA RADIO ======================= */
+  /* Tarjeta activa */
+  #fase-I:checked ~ .ft__riel .paso:nth-child(1),
+  #fase-N:checked ~ .ft__riel .paso:nth-child(2),
+  #fase-T:checked ~ .ft__riel .paso:nth-child(3),
+  #fase-E:checked ~ .ft__riel .paso:nth-child(4),
+  #fase-G:checked ~ .ft__riel .paso:nth-child(5),
+  #fase-R:checked ~ .ft__riel .paso:nth-child(6),
+  #fase-A:checked ~ .ft__riel .paso:nth-child(7) {
+    background: linear-gradient(165deg, var(--i-azul-600) 0%, var(--i-azul-800) 100%);
+    border-color: transparent;
+    box-shadow: 0 16px 34px rgba(23, 64, 143, 0.32);
   }
   #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__num,
   #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__num,
@@ -359,9 +443,14 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__num,
   #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__num,
   #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__num,
-  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__num {
-    color: var(--i-azul-600);
-  }
+  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__num,
+  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__letra,
+  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__letra,
+  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__letra,
+  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__letra,
+  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__letra,
+  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__letra,
+  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__letra,
   #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__nombre,
   #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__nombre,
   #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__nombre,
@@ -369,12 +458,30 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__nombre,
   #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__nombre,
   #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__nombre {
-    color: var(--azul-petroleo);
-    font-weight: var(--w-headline);
+    color: #fff;
+  }
+  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__icono,
+  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__icono,
+  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__icono,
+  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__icono,
+  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__icono,
+  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__icono,
+  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__icono {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+  #fase-I:checked ~ .ft__riel .paso:nth-child(1) .paso__pico,
+  #fase-N:checked ~ .ft__riel .paso:nth-child(2) .paso__pico,
+  #fase-T:checked ~ .ft__riel .paso:nth-child(3) .paso__pico,
+  #fase-E:checked ~ .ft__riel .paso:nth-child(4) .paso__pico,
+  #fase-G:checked ~ .ft__riel .paso:nth-child(5) .paso__pico,
+  #fase-R:checked ~ .ft__riel .paso:nth-child(6) .paso__pico,
+  #fase-A:checked ~ .ft__riel .paso:nth-child(7) .paso__pico {
+    transform: rotate(45deg) scale(1);
   }
 
   /* Foco visible por teclado: el radio está oculto, así que el anillo lo
-     tiene que dibujar el paso. */
+     tiene que dibujar la tarjeta. */
   #fase-I:focus-visible ~ .ft__riel .paso:nth-child(1),
   #fase-N:focus-visible ~ .ft__riel .paso:nth-child(2),
   #fase-T:focus-visible ~ .ft__riel .paso:nth-child(3),
@@ -383,7 +490,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   #fase-R:focus-visible ~ .ft__riel .paso:nth-child(6),
   #fase-A:focus-visible ~ .ft__riel .paso:nth-child(7) {
     outline: 3px solid var(--i-azul-600);
-    outline-offset: 2px;
+    outline-offset: 3px;
   }
 
   /* Ficha activa */
@@ -398,26 +505,44 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     opacity: 1;
   }
 
-  /* Índice de la fase activa, para el avance de la barra */
-  #fase-I:checked ~ .ft__barra { --activa: 0; }
-  #fase-N:checked ~ .ft__barra { --activa: 1; }
-  #fase-T:checked ~ .ft__barra { --activa: 2; }
-  #fase-E:checked ~ .ft__barra { --activa: 3; }
-  #fase-G:checked ~ .ft__barra { --activa: 4; }
-  #fase-R:checked ~ .ft__barra { --activa: 5; }
-  #fase-A:checked ~ .ft__barra { --activa: 6; }
-
   @media (prefers-reduced-motion: reduce) {
     .ficha,
-    .paso__letra,
-    .ft__barra-avance {
+    .paso,
+    .paso__pico {
       transition: none;
     }
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 780px) {
     .paso__nombre {
       display: block;
+    }
+  }
+
+  /* El panel pasa a tres columnas, con el bloque azul cruzando las dos
+     filas y el remate cruzando medio + claves. */
+  @media (min-width: 960px) {
+    .ficha {
+      grid-template-columns: minmax(15rem, 0.9fr) 1.3fr 1fr;
+      grid-template-areas:
+        "lado medio claves"
+        "lado remate remate";
+      align-content: start;
+    }
+    .ficha__lado {
+      grid-area: lado;
+    }
+    .ficha__medio {
+      grid-area: medio;
+      border-right: 1px solid var(--borde);
+    }
+    .ficha__claves {
+      grid-area: claves;
+      padding-top: clamp(1.5rem, 3.5vw, 2.25rem);
+    }
+    .ficha__remate {
+      grid-area: remate;
+      margin-top: 0;
     }
   }
 </style>
