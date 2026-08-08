@@ -581,6 +581,7 @@ export const integra = {
         hasta: 3,
         nombre: "Uso disperso",
         color: "rojo",
+        emoji: "⚠️",
         texto:
           "En tu PyME la IA existe, pero sin dueño ni criterio: cada persona resuelve como puede y lo aprendido no queda en ningún lado. Es el escenario donde más plata se pierde sin que aparezca en ningún informe.",
         recomendacion:
@@ -590,6 +591,7 @@ export const integra = {
         hasta: 6,
         nombre: "En transición",
         color: "ambar",
+        emoji: "🌱",
         texto:
           "Hay movimiento real y gente con ganas, pero todavía falta la forma común de decidir qué se prueba, quién lo hace y cómo se cierra. Es el punto donde una PyME avanza rápido si instala método, o se estanca si sigue improvisando.",
         recomendacion:
@@ -599,6 +601,7 @@ export const integra = {
         hasta: 10,
         nombre: "Con método",
         color: "verde",
+        emoji: "🚀",
         texto:
           "Tu PyME está por delante de la mayoría: hay uso ordenado y responsables. El riesgo ahora es otro — que todo dependa de las mismas dos o tres personas y no exista un sistema que sobreviva a un cambio de equipo.",
         recomendacion:
@@ -610,7 +613,6 @@ export const integra = {
       subtitulo: "Decinos a dónde te lo mandamos y lo ves ahora mismo.",
       nombre: "Nombre",
       email: "Email",
-      empresa: "Empresa",
       boton: "Ver mi resultado",
       privacidad:
         "Usamos tus datos solo para enviarte el resultado y contactarte por el diagnóstico. No compartimos tu información con nadie.",
@@ -671,8 +673,6 @@ export const integra = {
     refuerzos: ["Sin costo", "Sin compromiso", "30 minutos"],
     /* El número es real y sale de la carga operativa (~25 h por PyME por
        ciclo). No inflarlo ni convertirlo en contador falso de lugares. */
-    escasez:
-      "Trabajamos con 4 o 5 PyMEs a la vez, porque el acompañamiento es en vivo y privado, no grabado. Los lugares se toman por orden de arranque.",
     fallbackTitulo: "¿Preferís escribirnos directo?",
     fallbackCta: "Escribirme por WhatsApp",
   },

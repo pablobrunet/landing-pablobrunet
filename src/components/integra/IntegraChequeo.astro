@@ -15,10 +15,20 @@
    Supabase no está configurado o falla, el resultado se muestra igual:
    se pierde el lead, no la experiencia.
    ===================================================================== */
+import Icon from "../Icon.astro";
 import { integra } from "../../data/integra";
 import { leads } from "../../lib/leads";
 const { chequeo, anclas } = integra;
 const totalPreguntas = chequeo.preguntas.length;
+
+/* El puntaje máximo sale de los datos, no de una constante: si mañana se
+   agrega una pregunta o cambian los pesos, el "/10" se ajusta solo. La
+   primera pregunta no puntúa —sólo segmenta por tamaño— y por eso aporta
+   cero. */
+const maxPuntaje = chequeo.preguntas.reduce(
+  (total, p) => total + Math.max(0, ...p.opciones.map((o) => o.peso ?? 0)),
+  0
+);
 ---
 
 <section class="section i-hielo i-claro" id={anclas.chequeo} aria-label="Chequeo exprés">
@@ -112,11 +122,6 @@ const totalPreguntas = chequeo.preguntas.length;
             <span>{chequeo.formulario.email}</span>
             <input type="email" name="email" required autocomplete="email" />
           </label>
-          <label class="chq__form-ancho">
-            <span>{chequeo.formulario.empresa}</span>
-            <input type="text" name="empresa" required autocomplete="organization" />
-          </label>
-
           <!-- Trampa para bots: invisible; si viene con algo, se descarta. -->
           <input class="chq__honey" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
@@ -133,23 +138,38 @@ const totalPreguntas = chequeo.preguntas.length;
 
       <!-- ---------- Paso 3: resultado ---------- -->
       <div class="chq__paso" data-paso="resultado" hidden>
-        <div class="chq__semaforo" data-nivel-color>
-          <span class="luz luz--rojo"></span>
-          <span class="luz luz--ambar"></span>
-          <span class="luz luz--verde"></span>
+        {/* El puntaje ahora se muestra, con un emoji que lo hace legible
+            de un vistazo. La barra le da escala: 7 sobre 10 no dice lo
+            mismo si no se ve contra qué. */}
+        <div class="marcador-chq" data-nivel-color data-max={maxPuntaje}>
+          <span class="marcador-chq__emoji" data-nivel-emoji aria-hidden="true"></span>
+          <div class="marcador-chq__cifra">
+            <p class="chq__etiqueta">Tu resultado</p>
+            <p class="marcador-chq__num">
+              <strong data-puntaje>0</strong><i>/{maxPuntaje}</i>
+            </p>
+          </div>
+          <div class="marcador-chq__barra">
+            <span data-puntaje-barra></span>
+          </div>
         </div>
 
-        <p class="chq__etiqueta">Tu resultado</p>
         <h3 class="chq__nivel" data-nivel-nombre></h3>
         <p class="chq__nivel-texto" data-nivel-texto></p>
 
         <div class="chq__hallazgos" data-hallazgos hidden>
-          <h4>Lo que vemos en tus respuestas</h4>
+          <h4>
+            <span class="chq__h4-ico" aria-hidden="true"><Icon name="lupa" size={17} /></span>
+            Lo que vemos en tus respuestas
+          </h4>
           <ul data-hallazgos-lista></ul>
         </div>
 
         <div class="chq__reco">
-          <h4>Por dónde empezar</h4>
+          <h4>
+            <span class="chq__h4-ico" aria-hidden="true"><Icon name="brujula" size={17} /></span>
+            Por dónde empezar
+          </h4>
           <p data-reco></p>
         </div>
 
@@ -379,30 +399,77 @@ const totalPreguntas = chequeo.preguntas.length;
   }
 
   /* ---------- Resultado ---------- */
-  .chq__semaforo {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.1rem;
+  /* Marcador: emoji grande, cifra y barra. Reemplaza al semáforo de tres
+     luces, que ocupaba lo mismo y decía menos. */
+  .marcador-chq {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.5rem 1.1rem;
+    padding: clamp(1.1rem, 3vw, 1.5rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    margin-bottom: 1.5rem;
   }
-  .luz {
-    width: 100%;
+  .marcador-chq__emoji {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: clamp(52px, 11vw, 66px);
+    height: clamp(52px, 11vw, 66px);
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--borde);
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    line-height: 1;
+  }
+  .marcador-chq__cifra {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .marcador-chq__num {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-title);
+    color: var(--azul-petroleo);
+  }
+  .marcador-chq__num strong {
+    font-weight: var(--w-display);
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    line-height: 1;
+  }
+  .marcador-chq__num i {
+    font-style: normal;
+    font-size: 1rem;
+    color: var(--texto-suave);
+  }
+  .marcador-chq__barra {
     height: 8px;
     border-radius: 99px;
-    background: var(--borde);
-    transition: background var(--transition);
+    background: #fff;
+    border: 1px solid var(--borde);
+    overflow: hidden;
   }
-  [data-nivel-color="rojo"] .luz--rojo {
+  .marcador-chq__barra span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: var(--i-grad);
+    transition: width 520ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  /* El color de la barra sigue al nivel, igual que el semáforo viejo. */
+  [data-nivel-color="rojo"] .marcador-chq__barra span {
     background: #d9534f;
   }
-  [data-nivel-color="ambar"] .luz--rojo,
-  [data-nivel-color="ambar"] .luz--ambar {
+  [data-nivel-color="ambar"] .marcador-chq__barra span {
     background: #e0a13a;
   }
-  [data-nivel-color="verde"] .luz--rojo,
-  [data-nivel-color="verde"] .luz--ambar,
-  [data-nivel-color="verde"] .luz--verde {
-    background: var(--i-azul-600);
-  }
+
   .chq__etiqueta {
     font-size: var(--fs-caption);
     letter-spacing: 0.08em;
@@ -434,13 +501,29 @@ const totalPreguntas = chequeo.preguntas.length;
   }
   .chq__hallazgos h4,
   .chq__reco h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     font-family: var(--font-title);
     font-size: 0.85rem;
     font-weight: var(--w-headline);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--verde-resalte);
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.8rem;
+  }
+  /* Ícono del subtítulo, en una pastilla blanca para que se despegue del
+     fondo tenue del bloque. */
+  .chq__h4-ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: #fff;
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
   }
   .chq__hallazgos ul {
     display: grid;
@@ -448,7 +531,7 @@ const totalPreguntas = chequeo.preguntas.length;
   }
   .chq__hallazgos li {
     position: relative;
-    padding-left: 1.1rem;
+    padding-left: 1.5rem;
     font-size: 0.925rem;
     line-height: 1.6;
     color: var(--azul-pizarra);
@@ -457,11 +540,12 @@ const totalPreguntas = chequeo.preguntas.length;
     content: "";
     position: absolute;
     left: 0;
-    top: 0.65em;
-    width: 6px;
-    height: 6px;
+    top: 0.58em;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: var(--i-azul-500);
+    background: var(--i-azul-600);
+    box-shadow: 0 0 0 3px rgba(30, 92, 242, 0.14);
   }
   .chq__reco {
     background: rgba(76, 134, 245, 0.09);
@@ -510,6 +594,7 @@ const totalPreguntas = chequeo.preguntas.length;
     hasta: number;
     nombre: string;
     color: string;
+      emoji?: string;
     texto: string;
     recomendacion: string;
   };
@@ -527,6 +612,11 @@ const totalPreguntas = chequeo.preguntas.length;
     } catch {
       niveles = [];
     }
+
+    /* El máximo lo calcula el componente desde los datos y lo deja en un
+       atributo: así el script no repite la cuenta ni depende de cómo esté
+       escrito el "/10" en pantalla. */
+    const MAX_PUNTAJE = Number(raiz.querySelector<HTMLElement>("[data-max]")?.dataset.max) || 10;
 
     const pasos = new Map<string, HTMLElement>();
     raiz.querySelectorAll<HTMLElement>("[data-paso]").forEach((p) => {
@@ -591,6 +681,13 @@ const totalPreguntas = chequeo.preguntas.length;
         "data-nivel-color",
         nivel.color
       );
+      const emoji = raiz.querySelector<HTMLElement>("[data-nivel-emoji]");
+      const cifra = raiz.querySelector<HTMLElement>("[data-puntaje]");
+      const barraP = raiz.querySelector<HTMLElement>("[data-puntaje-barra]");
+      if (emoji) emoji.textContent = nivel.emoji ?? "";
+      if (cifra) cifra.textContent = String(puntaje);
+      if (barraP) barraP.style.width = `${(puntaje / MAX_PUNTAJE) * 100}%`;
+
       const nombre = raiz.querySelector<HTMLElement>("[data-nivel-nombre]");
       const texto = raiz.querySelector<HTMLElement>("[data-nivel-texto]");
       const reco = raiz.querySelector<HTMLElement>("[data-reco]");
@@ -668,12 +765,10 @@ const totalPreguntas = chequeo.preguntas.length;
 
       const nombre = String(datos.get("nombre") ?? "").trim();
       const email = String(datos.get("email") ?? "").trim();
-      const empresa = String(datos.get("empresa") ?? "").trim();
 
       const campos = [
         { el: form.elements.namedItem("nombre") as HTMLInputElement, ok: nombre.length > 1 },
         { el: form.elements.namedItem("email") as HTMLInputElement, ok: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) },
-        { el: form.elements.namedItem("empresa") as HTMLInputElement, ok: empresa.length > 1 },
       ];
       let valido = true;
       campos.forEach((c) => {
@@ -706,7 +801,6 @@ const totalPreguntas = chequeo.preguntas.length;
       const r = await enviarChequeo(raiz.dataset.url ?? "", raiz.dataset.key ?? "", {
         nombre,
         email,
-        empresa,
         respuestas,
         resultado: nivel?.nombre ?? "",
         utm,

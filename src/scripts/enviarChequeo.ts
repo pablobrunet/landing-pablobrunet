@@ -16,7 +16,10 @@
 export interface DatosChequeo {
   nombre: string;
   email: string;
-  empresa: string;
+  /** El formulario ya no lo pide. Se manda igual, vacío: la función de
+   *  Supabase declara `p_empresa` sin valor por defecto y PostgREST
+   *  rechaza la llamada si falta un argumento. La columna admite ''. */
+  empresa?: string;
   /** Par pregunta → respuesta elegida, tal cual las leyó la persona. */
   respuestas: Record<string, string>;
   /** Nivel devuelto: 'Uso disperso' | 'En transición' | 'Con método'. */
@@ -56,7 +59,7 @@ export async function enviarChequeo(
       body: JSON.stringify({
         p_nombre: datos.nombre,
         p_email: datos.email,
-        p_empresa: datos.empresa,
+        p_empresa: datos.empresa ?? "",
         p_respuestas: datos.respuestas,
         p_resultado: datos.resultado,
         p_utm: datos.utm ?? {},

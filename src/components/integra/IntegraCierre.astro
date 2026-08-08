@@ -18,8 +18,6 @@
    el alto al iframe; se reinserta en cada navegación con View Transitions
    porque, si no, al volver queda con el alto por defecto.
 
-   La escasez (4-5 empresas) es el techo real de carga operativa, no un
-   recurso de venta: no inflarla ni convertirla en contador falso.
    ===================================================================== */
 import { integra } from "../../data/integra";
 import { site } from "../../data/site";
@@ -84,8 +82,6 @@ const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(what
         explican los cupos y la salida por WhatsApp. Arriba competían con
         el CTA y empujaban el calendario fuera de pantalla. */}
     <div class="cierre__pie i-reveal">
-      <p class="cierre__escasez">{cierre.escasez}</p>
-
       <div class="cierre__fallback">
         <span>{cierre.fallbackTitulo}</span>
         <a href={wa} target="_blank" rel="noopener" class="cierre__wa">
@@ -172,15 +168,6 @@ const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(what
     max-width: 760px;
     margin-inline: auto;
     margin-top: clamp(1.75rem, 4vw, 2.5rem);
-  }
-  .cierre__escasez {
-    padding: 1rem 1.15rem;
-    border-radius: var(--radius);
-    border-left: 3px solid var(--i-celeste);
-    background: rgba(255, 255, 255, 0.05);
-    font-size: 0.925rem;
-    line-height: 1.6;
-    color: rgba(220, 230, 246, 0.88);
   }
   .cierre__fallback {
     display: flex;
