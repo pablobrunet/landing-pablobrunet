@@ -81,9 +81,9 @@ export const integra = {
   },
 
   seo: {
-    title: "Método INTEGRA — Instalá en tu empresa la capacidad de integrar IA con método",
+    title: "Método INTEGRA — Instalá en tu PyME la capacidad de integrar IA con método",
     description:
-      "INTEGRA 60: en 60 días tu empresa aprende a identificar oportunidades de inteligencia artificial, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Primer paso gratis: el Chequeo INTEGRA.",
+      "INTEGRA 60: en 60 días tu PyME aprende a identificar oportunidades de inteligencia artificial, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Primer paso gratis: el Chequeo INTEGRA.",
   },
 
   /* ---- Ancla de navegación interna de la propia landing ---- */
@@ -101,13 +101,13 @@ export const integra = {
     /* Headline principal. Las alternativas validadas quedan anotadas para
        testear sin volver a buscarlas en la spec:
          A · "Tu PyME no necesita otro curso de inteligencia artificial."
-         B · "Tu empresa ya paga por IA. Todavía no cobró nada a cambio."
-         C · "En 60 días instalamos en tu empresa la capacidad para
+         B · "Tu PyME ya paga por IA. Todavía no cobró nada a cambio."
+         C · "En 60 días instalamos en tu PyME la capacidad para
               integrar inteligencia artificial con método." */
     titulo: "El resultado no es usar IA.",
     tituloResalte: "Es saber qué hacer con ella.",
     subtitulo:
-      "Cada persona usa una herramienta distinta, se pagan suscripciones que nadie controla y las capacitaciones no cambiaron nada. En 60 días instalamos en tu empresa un sistema práctico para integrar IA: gente formada, oportunidades priorizadas, pruebas sobre trabajo real y una forma de decidir.",
+      "Cada persona usa una herramienta distinta, se pagan suscripciones que nadie controla y las capacitaciones no cambiaron nada. En 60 días instalamos en tu PyME un sistema práctico para integrar IA: gente formada, oportunidades priorizadas, pruebas sobre trabajo real y una forma de decidir.",
     ctaPrimario: "Agendar diagnóstico gratuito",
     ctaPrimarioNota: "30 minutos, por videollamada. Te vas con claridad, lo contrates o no.",
     ctaSecundario: "Hacer el chequeo de 2 minutos",
@@ -131,7 +131,7 @@ export const integra = {
      ===================================================================== */
   espejo: {
     titulo: "¿Cuántas de estas te pasan hoy?",
-    subtitulo: "Tocá las que reconozcas en tu empresa. Sin registro, sin trampa.",
+    subtitulo: "Tocá las que reconozcas en tu PyME. Sin registro, sin trampa.",
     dolores: [
       "Cada persona usa herramientas de IA diferentes, sin criterio común.",
       "Se pagan suscripciones sin saber si hacen falta.",
@@ -160,12 +160,12 @@ export const integra = {
       {
         titulo: "Acá empieza a costar plata",
         texto:
-          "Con tres, tu empresa está en el punto exacto donde la IA dispersa empieza a costar plata. No porque falten herramientas: porque todavía no hay una forma común de decidir dónde aplicarlas.",
+          "Con tres, tu PyME está en el punto exacto donde la IA dispersa empieza a costar plata. No porque falten herramientas: porque todavía no hay una forma común de decidir dónde aplicarlas.",
       },
       {
         titulo: "Ya es el patrón, no la excepción",
         texto:
-          "Cuatro dejan de ser problemas sueltos y pasan a ser cómo funciona la empresa con la IA. A esta altura cada mes que pasa se paga en horas y en suscripciones.",
+          "Cuatro dejan de ser problemas sueltos y pasan a ser cómo funciona la PyME con la IA. A esta altura cada mes que pasa se paga en horas y en suscripciones.",
       },
       {
         titulo: "No es un problema de IA. Es de método.",
@@ -239,7 +239,7 @@ export const integra = {
     titulo: "Así funciona",
     tituloResalte: "INTEGRA",
     subtitulo:
-      "Siete fases en sesenta días. Cada una responde una pregunta concreta sobre tu empresa, y juntas dejan instalado el criterio para decidir dónde conviene aplicar inteligencia artificial y dónde no.",
+      "Siete fases en sesenta días. Cada una responde una pregunta concreta sobre tu PyME, y juntas dejan instalado el criterio para decidir dónde conviene aplicar inteligencia artificial y dónde no.",
     fases: [
       {
         letra: "I",
@@ -400,7 +400,7 @@ export const integra = {
         icono: "cohete",
         dias: "Días 45 a 60",
         lema: "*Convierte* lo aprendido en *forma de trabajo*.",
-        pregunta: "¿Cómo logra tu empresa repetir el ciclo con más autonomía y menos fricción?",
+        pregunta: "¿Cómo logra tu PyME repetir el ciclo con más autonomía y menos fricción?",
         texto:
           "Lo aprendido se convierte en forma de trabajo: quién carga las oportunidades nuevas, quién prioriza, qué ritual semanal queda corriendo y dónde vive la documentación para que nada dependa de la memoria de una persona.",
         claves: [
@@ -426,7 +426,7 @@ export const integra = {
      5 · QUÉ QUEDA INSTALADO
      ===================================================================== */
   instalado: {
-    titulo: "Al día 60 tu empresa se queda con esto.",
+    titulo: "Al día 60 tu PyME se queda con esto.",
     subtitulo:
       "No con una automatización que funciona hasta que se rompe. Con un sistema propio para seguir identificando, decidiendo y probando.",
     capacidades: {
@@ -439,7 +439,7 @@ export const integra = {
           titulo: "Capacidad técnica",
           icono: "chip",
           texto:
-            "Gente que sabe usar con responsabilidad la herramienta principal de la empresa: dar contexto, trabajar con documentos y datos internos, iterar, verificar salidas, detectar invenciones y aplicar controles humanos.",
+            "Gente que sabe usar con responsabilidad la herramienta principal de la PyME: dar contexto, trabajar con documentos y datos internos, iterar, verificar salidas, detectar invenciones y aplicar controles humanos.",
         },
         {
           titulo: "Capacidad metodológica",
@@ -457,7 +457,7 @@ export const integra = {
     },
     cita:
       "Ahora tenemos responsables, criterios compartidos, una forma de detectar y priorizar oportunidades, un protocolo para probarlas, espacios para decidir, un registro de evidencia y un plan para continuar avanzando.",
-    citaPie: "Así suena una empresa con el sistema instalado.",
+    citaPie: "Así suena una PyME con el sistema instalado.",
     cta: "Quiero mi diagnóstico",
   },
 
@@ -491,8 +491,8 @@ export const integra = {
         items: ["Priorizar las oportunidades", "Probar sobre trabajo real", "Decidir con la evidencia a la vista"],
       },
       {
-        titulo: "Pone tu empresa",
-        tono: "empresa",
+        titulo: "Pone tu PyME",
+        tono: "PyME",
         icono: "equipo",
         items: ["Un referente interno", "Las personas y su tiempo", "Las decisiones"],
       },
@@ -505,7 +505,7 @@ export const integra = {
   garantia: {
     titulo: "Garantía: el sistema queda instalado.",
     texto:
-      "Si al día 60 no queda instalado el Sistema INTEGRA definido en el programa, seguimos acompañando a tu empresa sin costo hasta completarlo.",
+      "Si al día 60 no queda instalado el Sistema INTEGRA definido en el programa, seguimos acompañando a tu PyME sin costo hasta completarlo.",
     cierre: "Preferimos una garantía chica que podamos cumplir siempre antes que una grande que no te creerías.",
   },
 
@@ -517,8 +517,8 @@ export const integra = {
     foto: "/images/about/retrato-sobre-mi.png",
     fotoAlt: "Pablo Brunet, creador del Método INTEGRA",
     cuerpo: [
-      "Soy Pablo Brunet. Trabajo en la intersección entre estrategia comercial, inteligencia artificial e integración tecnológica en empresas.",
-      "No vengo a venderte herramientas ni cursos, y tampoco a hacerte el trabajo: ayudo a empresas como la tuya a decidir dónde aplicar IA, a desarrollar capacidad real en el equipo y a quedarse con un método propio para seguir sin mí.",
+      "Soy Pablo Brunet. Trabajo en la intersección entre estrategia comercial, inteligencia artificial e integración tecnológica en PyMEs.",
+      "No vengo a venderte herramientas ni cursos, y tampoco a hacerte el trabajo: ayudo a PyMEs como la tuya a decidir dónde aplicar IA, a desarrollar capacidad real en el equipo y a quedarse con un método propio para seguir sin mí.",
       "Hablo el idioma de las PyMEs — no sólo el de los departamentos de sistemas.",
     ],
     credencialDestacada: {
@@ -534,7 +534,7 @@ export const integra = {
       "Diseño y facilitación de programas de integración de IA, cohortes y comunidades de acompañamiento",
     ],
     cita:
-      "El objetivo no es que tu empresa use más inteligencia artificial. Es que sepa decidir dónde usarla: para trabajar con mayor productividad, gastar menos y ganar más.",
+      "El objetivo no es que tu PyME use más inteligencia artificial. Es que sepa decidir dónde usarla: para trabajar con mayor productividad, gastar menos y ganar más.",
   },
 
   /* =====================================================================
@@ -545,13 +545,13 @@ export const integra = {
      escrito en clave de capacidad faltante, nunca de automatización.
      ===================================================================== */
   chequeo: {
-    titulo: "¿Está su empresa lista para integrar IA?",
+    titulo: "¿Está su PyME lista para integrar IA?",
     subtitulo: "6 preguntas, 2 minutos. Resultado al instante.",
     empezar: "Empezar el chequeo",
     preguntas: [
       {
         id: "tamano",
-        texto: "¿Cuánta gente trabaja en tu empresa?",
+        texto: "¿Cuánta gente trabaja en tu PyME?",
         opciones: [
           { texto: "Menos de 10" },
           { texto: "Entre 10 y 30" },
@@ -616,7 +616,7 @@ export const integra = {
         nombre: "Uso disperso",
         color: "rojo",
         texto:
-          "En tu empresa la IA existe, pero sin dueño ni criterio: cada persona resuelve como puede y lo aprendido no queda en ningún lado. Es el escenario donde más plata se pierde sin que aparezca en ningún informe.",
+          "En tu PyME la IA existe, pero sin dueño ni criterio: cada persona resuelve como puede y lo aprendido no queda en ningún lado. Es el escenario donde más plata se pierde sin que aparezca en ningún informe.",
         recomendacion:
           "Empezá por ordenar antes de sumar: un punto de partida claro, un responsable con tiempo asignado y una lista corta de oportunidades priorizadas. Eso es exactamente lo que instala INTEGRA 60.",
       },
@@ -625,7 +625,7 @@ export const integra = {
         nombre: "En transición",
         color: "ambar",
         texto:
-          "Hay movimiento real y gente con ganas, pero todavía falta la forma común de decidir qué se prueba, quién lo hace y cómo se cierra. Es el punto donde una empresa avanza rápido si instala método, o se estanca si sigue improvisando.",
+          "Hay movimiento real y gente con ganas, pero todavía falta la forma común de decidir qué se prueba, quién lo hace y cómo se cierra. Es el punto donde una PyME avanza rápido si instala método, o se estanca si sigue improvisando.",
         recomendacion:
           "Lo que falta no es más herramienta: es un tablero de oportunidades, un protocolo de pruebas y espacios de decisión con dirección. En 60 días queda funcionando con gente de la casa.",
       },
@@ -634,7 +634,7 @@ export const integra = {
         nombre: "Con método",
         color: "verde",
         texto:
-          "Tu empresa está por delante de la mayoría: hay uso ordenado y responsables. El riesgo ahora es otro — que todo dependa de las mismas dos o tres personas y no exista un sistema que sobreviva a un cambio de equipo.",
+          "Tu PyME está por delante de la mayoría: hay uso ordenado y responsables. El riesgo ahora es otro — que todo dependa de las mismas dos o tres personas y no exista un sistema que sobreviva a un cambio de equipo.",
         recomendacion:
           "El paso siguiente es institucionalizar: documentar el criterio, formar más gente y dejar corriendo un ciclo que produzca la próxima oportunidad sin que nadie lo empuje.",
       },
@@ -662,14 +662,14 @@ export const integra = {
     items: [
       {
         q: "¿Esto es otro curso de IA?",
-        a: "No. Los cursos son un componente, no el producto. El método incluye el relevamiento de tu empresa, un tablero de oportunidades propio, acompañamiento semanal en vivo, pruebas sobre trabajo real y una forma de decidir. Nada se consume «suelto».",
+        a: "No. Los cursos son un componente, no el producto. El método incluye el relevamiento de tu PyME, un tablero de oportunidades propio, acompañamiento semanal en vivo, pruebas sobre trabajo real y una forma de decidir. Nada se consume «suelto».",
       },
       {
         q: "¿Ustedes nos implementan las automatizaciones?",
         a: "No dentro de este programa, y es a propósito. INTEGRA 60 te ayuda a definir el problema, acotar la solución, preparar una prueba y decidir con evidencia. Si después necesitás desarrollar, automatizar o integrar técnicamente, se cotiza como proyecto independiente.",
       },
       {
-        q: "No somos una empresa técnica.",
+        q: "No somos técnicos.",
         a: "Mejor. El método está diseñado para PyMEs sin área de tecnología. Hablamos de cotizaciones, clientes y horas — no de modelos ni de código.",
       },
       {
@@ -678,11 +678,11 @@ export const integra = {
       },
       {
         q: "¿Y si las pruebas no salen bien?",
-        a: "Una prueba que se descarta con fundamento también es un resultado: tu empresa se ahorró una inversión mala y aprendió a decidir. El programa no se mide por cantidad de automatizaciones, sino por la capacidad que queda instalada.",
+        a: "Una prueba que se descarta con fundamento también es un resultado: tu PyME se ahorró una inversión mala y aprendió a decidir. El programa no se mide por cantidad de automatizaciones, sino por la capacidad que queda instalada.",
       },
       {
         q: "¿Cuánto cuesta?",
-        a: "El programa tiene un valor único según la cantidad de personas de tu empresa que participen. Lo conversamos en el diagnóstico, cuando sepamos qué necesita tu empresa — la reunión es gratuita y sin compromiso.",
+        a: "El programa tiene un valor único según la cantidad de personas de tu PyME que participen. Lo conversamos en el diagnóstico, cuando sepamos qué necesita tu PyME — la reunión es gratuita y sin compromiso.",
       },
       {
         q: "¿Es presencial?",
@@ -698,15 +698,15 @@ export const integra = {
      ===================================================================== */
   cierre: {
     eyebrow: "El primer paso",
-    titulo: "Descubrí dónde la IA puede generar mayor impacto en tu empresa",
+    titulo: "Descubrí dónde la IA puede generar mayor impacto en tu PyME",
     subtitulo:
-      "Agendá la reunión de diagnóstico gratuita. En 30 minutos analizamos cómo está usando IA tu empresa, cuáles son sus brechas y dónde están las oportunidades más grandes. Te vas con claridad, avances con nosotros o no.",
+      "Agendá la reunión de diagnóstico gratuita. En 30 minutos analizamos cómo está usando IA tu PyME, cuáles son sus brechas y dónde están las oportunidades más grandes. Te vas con claridad, avances con nosotros o no.",
     calendarioId: "rx4hxRbfbinJEsJoBWWF",
     refuerzos: ["Sin costo", "Sin compromiso", "30 minutos"],
-    /* El número es real y sale de la carga operativa (~25 h por empresa por
+    /* El número es real y sale de la carga operativa (~25 h por PyME por
        ciclo). No inflarlo ni convertirlo en contador falso de lugares. */
     escasez:
-      "Trabajamos con 4 o 5 empresas a la vez, porque el acompañamiento es en vivo y privado, no grabado. Los lugares se toman por orden de arranque.",
+      "Trabajamos con 4 o 5 PyMEs a la vez, porque el acompañamiento es en vivo y privado, no grabado. Los lugares se toman por orden de arranque.",
     fallbackTitulo: "¿Preferís escribirnos directo?",
     fallbackCta: "Escribirme por WhatsApp",
   },
@@ -726,7 +726,7 @@ export const integra = {
     queEsperar: {
       titulo: "Qué vamos a hacer en esos 30 minutos",
       items: [
-        "Miramos cómo usa IA tu empresa hoy: quién la usa, con qué herramientas y con qué criterio.",
+        "Miramos cómo usa IA tu PyME hoy: quién la usa, con qué herramientas y con qué criterio.",
         "Identificamos las brechas y las oportunidades más grandes, en tu operación real.",
         "Te digo qué modalidad conviene y por dónde empezar — te vayas con nosotros o no.",
       ],

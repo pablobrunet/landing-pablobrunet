@@ -211,7 +211,7 @@ export const servicios: Servicio[] = [
     titulo: "Método INTEGRA",
     icon: "chip",
     resumen:
-      "INTEGRA 60: en 60 días instalo en tu empresa la capacidad de identificar oportunidades de IA, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Operado por gente de la casa.",
+      "INTEGRA 60: en 60 días instalo en tu PyME la capacidad de identificar oportunidades de IA, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Operado por gente de la casa.",
     ruta: "/programa-integra",
     cta: "Ver el programa",
     // Charla en la Unión Industrial de Santa Fe. Apaisada: va en 4:3.
