@@ -209,8 +209,13 @@ export const integra = {
   metodo: {
     eyebrow: "El método",
     titulo: "No empezamos por las herramientas. Empezamos por los resultados que tu empresa necesita.",
+    /* Antes decía "el Método INTEGRA es un método de integración…", se
+       defendía de lo que no era ("no es un curso ni un catálogo") y
+       explicaba que las iniciales arman el acrónimo. Eso último ya lo
+       resuelve el diseño solo. Ahora arranca por lo concreto —cuántas
+       fases, cuántos días— y cierra en lo que la empresa se lleva. */
     subtitulo:
-      "El Método INTEGRA es un método de integración práctica de inteligencia artificial. No es un curso ni un catálogo de herramientas: son siete fases cuyas iniciales forman el nombre del método, recorridas en 60 días.",
+      "Siete fases en sesenta días. Cada una responde una pregunta concreta sobre tu empresa, y juntas dejan instalado el criterio para decidir dónde conviene aplicar inteligencia artificial y dónde no.",
     /* Ayuda de uso del selector de fases: sin esto no es obvio que las
        letras se tocan. */
     pista: "Tocá cada letra para ver la fase.",
