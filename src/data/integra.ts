@@ -116,7 +116,6 @@ export const integra = {
      2 · ESPEJO DEL PROBLEMA (interactivo)
      ===================================================================== */
   espejo: {
-    eyebrow: "El espejo",
     titulo: "¿Cuántas de estas te pasan hoy?",
     subtitulo: "Tocá las que reconozcas en tu empresa. Sin registro, sin trampa.",
     dolores: [
@@ -174,7 +173,6 @@ export const integra = {
      3 · EL COSTO DE SEGUIR ASÍ
      ===================================================================== */
   costo: {
-    eyebrow: "La cuenta que ya estás pagando",
     titulo: "El problema no es lo que la IA te va a costar. Es lo que ya te está costando.",
     bloques: [
       {
@@ -283,7 +281,6 @@ export const integra = {
      5 · QUÉ QUEDA INSTALADO
      ===================================================================== */
   instalado: {
-    eyebrow: "Qué te queda",
     titulo: "Al día 60 tu empresa se queda con esto.",
     subtitulo:
       "No con una automatización que funciona hasta que se rompe. Con un sistema propio para seguir identificando, decidiendo y probando.",
@@ -321,7 +318,6 @@ export const integra = {
      sección justo antes del cierre.
      ===================================================================== */
   reparto: {
-    eyebrow: "El reparto",
     /* El título va partido en dos: la segunda oración baja de renglón y se
        resalta en azul, igual que en el hero. */
     titulo: "Esto no lo hacemos por vos.",
@@ -357,7 +353,6 @@ export const integra = {
      7 · LA GARANTÍA (de sistema instalado, no de implementación)
      ===================================================================== */
   garantia: {
-    eyebrow: "Sin riesgo",
     titulo: "Garantía: el sistema queda instalado.",
     texto:
       "Si al día 60 no queda instalado el Sistema INTEGRA definido en el programa, seguimos acompañando a tu empresa sin costo hasta completarlo.",
@@ -368,7 +363,6 @@ export const integra = {
      8 · QUIÉN SOY (autoridad)
      ===================================================================== */
   autoridad: {
-    eyebrow: "Quién está detrás",
     titulo: "Quién está del otro lado del método",
     foto: "/images/about/retrato-sobre-mi.png",
     fotoAlt: "Pablo Brunet, creador del Método INTEGRA",
@@ -401,7 +395,6 @@ export const integra = {
      escrito en clave de capacidad faltante, nunca de automatización.
      ===================================================================== */
   chequeo: {
-    eyebrow: "Chequeo exprés",
     titulo: "¿Está su empresa lista para integrar IA?",
     subtitulo: "6 preguntas, 2 minutos. Resultado al instante.",
     empezar: "Empezar el chequeo",
@@ -515,7 +508,6 @@ export const integra = {
      10 · OBJECIONES Y PREGUNTAS FRECUENTES
      ===================================================================== */
   faq: {
-    eyebrow: "Preguntas frecuentes",
     titulo: "Lo que seguramente te estás preguntando",
     items: [
       {

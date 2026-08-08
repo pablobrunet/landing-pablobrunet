@@ -16,7 +16,6 @@ const { faq } = integra;
 <section class="section i-claro" id="preguntas" aria-label="Preguntas frecuentes">
   <div class="container">
     <header class="i-head i-head--centro i-reveal">
-      <span class="i-eyebrow">{faq.eyebrow}</span>
       <h2 class="t-h2">{faq.titulo}</h2>
     </header>
 
@@ -54,9 +53,19 @@ const { faq } = integra;
     overflow: hidden;
     transition: border-color var(--transition), box-shadow var(--transition);
   }
+  /* Abierta = azul. Antes sólo cambiaba el borde y con varias preguntas
+     en pantalla no se distinguía cuál estaba desplegada. Ahora se tiñe la
+     tarjeta entera: fondo con un tinte suave, borde marcado y la pregunta
+     en azul. */
   .faq__item[open] {
-    border-color: var(--i-azul-500);
+    border-color: var(--i-azul-600);
     box-shadow: var(--shadow-sm);
+    background:
+      linear-gradient(180deg, rgba(30, 92, 242, 0.06), rgba(30, 92, 242, 0.02)),
+      #fff;
+  }
+  .faq__item[open] summary {
+    color: var(--verde-resalte);
   }
   .faq__item summary {
     display: flex;
@@ -70,6 +79,10 @@ const { faq } = integra;
     font-weight: var(--w-headline);
     font-size: 1rem;
     color: var(--azul-petroleo);
+    transition: color var(--transition);
+  }
+  .faq__item:not([open]) summary:hover {
+    color: var(--verde-resalte);
   }
   .faq__item summary::-webkit-details-marker {
     display: none;
