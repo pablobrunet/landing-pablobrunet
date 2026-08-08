@@ -11,13 +11,14 @@
    escritos en clave de capacidad faltante ("nadie tiene asignado el rol
    de sostener esto"), nunca de automatización faltante.
 
-   La captura de datos es lo último, con el resultado ya calculado. Si
-   Supabase no está configurado o falla, el resultado se muestra igual:
-   se pierde el lead, no la experiencia.
+   No se piden datos en ningún momento: al responder la última pregunta
+   se muestra el resultado y listo. Pedir nombre y correo para ver lo que
+   la persona ya se ganó respondiendo era el peaje que más gente perdía
+   justo antes del CTA. El chequeo no captura leads: convierte con el
+   botón al calendario, que es el paso que de verdad importa.
    ===================================================================== */
 import Icon from "../Icon.astro";
 import { integra } from "../../data/integra";
-import { leads } from "../../lib/leads";
 const { chequeo, anclas } = integra;
 const totalPreguntas = chequeo.preguntas.length;
 
@@ -38,12 +39,7 @@ const maxPuntaje = chequeo.preguntas.reduce(
       <p class="text-muted">{chequeo.subtitulo}</p>
     </header>
 
-    <div
-      class="chq i-reveal"
-      data-chequeo
-      data-url={leads.endpointChequeo}
-      data-key={leads.clave}
-    >
+    <div class="chq i-reveal" data-chequeo>
       <!-- ---------- Paso 0: intro ---------- -->
       <div class="chq__paso" data-paso="intro">
         {/* Sin el "6" gigante en una caja con degradé: tres datos secos
@@ -62,7 +58,7 @@ const maxPuntaje = chequeo.preguntas.reduce(
         </p>
 
         <button type="button" class="btn btn--primary" data-empezar>{chequeo.empezar}</button>
-        <p class="chq__legal-intro">Sin registro para empezar. El correo se pide recién al final, para mandarte el resultado.</p>
+        <p class="chq__legal-intro">Sin registro y sin dejar datos: el resultado aparece acá mismo al terminar.</p>
       </div>
 
       <!-- ---------- Paso 1: preguntas ---------- -->
@@ -113,38 +109,7 @@ const maxPuntaje = chequeo.preguntas.reduce(
         </div>
       </div>
 
-      <!-- ---------- Paso 2: captura ---------- -->
-      <div class="chq__paso" data-paso="datos" hidden>
-        <h3 class="t-h3">{chequeo.formulario.titulo}</h3>
-        <p class="text-muted chq__sub">{chequeo.formulario.subtitulo}</p>
-
-        <form class="chq__form" data-form novalidate>
-          <label>
-            <span>{chequeo.formulario.nombre}</span>
-            <input type="text" name="nombre" required autocomplete="name" />
-          </label>
-          <label>
-            <span>{chequeo.formulario.email}</span>
-            <input type="email" name="email" required autocomplete="email" />
-          </label>
-          <!-- Trampa para bots: invisible; si viene con algo, se descarta. -->
-          <input class="chq__honey" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
-
-          <button type="submit" class="btn btn--primary chq__form-ancho">
-            {chequeo.formulario.boton}
-          </button>
-          <p class="chq__privacidad chq__form-ancho">{chequeo.formulario.privacidad}</p>
-        </form>
-
-        {/* Y desde el formulario se vuelve a la última pregunta o a la
-            portada: llegar acá tampoco puede ser un camino de ida. */}
-        <div class="chq__nav">
-          <button type="button" class="chq__volver" data-atras-datos>← Volver a las preguntas</button>
-          <button type="button" class="chq__volver" data-inicio>Volver al inicio</button>
-        </div>
-      </div>
-
-      <!-- ---------- Paso 3: resultado ---------- -->
+      <!-- ---------- Paso 2: resultado ---------- -->
       <div class="chq__paso" data-paso="resultado" hidden>
         {/* El puntaje ahora se muestra, con un emoji que lo hace legible
             de un vistazo. La barra le da escala: 7 sobre 10 no dice lo
@@ -180,8 +145,6 @@ const maxPuntaje = chequeo.preguntas.reduce(
           </h4>
           <p data-reco></p>
         </div>
-
-        <p class="chq__aviso" data-guardado-error hidden>{chequeo.formulario.error}</p>
 
         <div class="chq__acciones">
           <a href={`#${anclas.agenda}`} class="btn btn--primary chq__cta">{chequeo.resultadoCta}</a>
@@ -375,53 +338,6 @@ const maxPuntaje = chequeo.preguntas.reduce(
     color: var(--verde-resalte);
   }
 
-  /* ---------- Formulario ---------- */
-  .chq__sub {
-    margin: 0.4rem 0 1.35rem;
-  }
-  .chq__form {
-    display: grid;
-    gap: 0.9rem;
-  }
-  .chq__form label {
-    display: grid;
-    gap: 0.35rem;
-  }
-  .chq__form label span {
-    font-size: 0.85rem;
-    font-weight: var(--w-subheadline);
-    color: var(--azul-pizarra);
-  }
-  .chq__form input {
-    font-family: inherit;
-    font-size: 1rem;
-    padding: 0.8rem 1rem;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid var(--borde);
-    background: var(--i-hielo-2);
-    color: var(--azul-petroleo);
-  }
-  .chq__form input:focus {
-    outline: none;
-    border-color: var(--i-azul-600);
-    background: #fff;
-  }
-  .chq__form input[aria-invalid="true"] {
-    border-color: #c0362c;
-  }
-  .chq__honey {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-  }
-  .chq__privacidad {
-    font-size: 0.8rem;
-    line-height: 1.5;
-    color: var(--texto-suave);
-  }
-
   /* ---------- Resultado ---------- */
   /* Marcador: emoji grande, cifra y barra. Reemplaza al semáforo de tres
      luces, que ocupaba lo mismo y decía menos. */
@@ -580,11 +496,6 @@ const maxPuntaje = chequeo.preguntas.reduce(
     line-height: 1.65;
     color: var(--azul-petroleo);
   }
-  .chq__aviso {
-    margin-top: 1rem;
-    font-size: 0.825rem;
-    color: var(--texto-suave);
-  }
   .chq__acciones {
     display: flex;
     flex-wrap: wrap;
@@ -597,23 +508,9 @@ const maxPuntaje = chequeo.preguntas.reduce(
     text-align: center;
     line-height: 1.35;
   }
-
-  @media (min-width: 640px) {
-    .chq__form {
-      grid-template-columns: 1fr 1fr;
-    }
-    .chq__form-ancho {
-      grid-column: 1 / -1;
-    }
-    .chq__form button {
-      justify-self: start;
-    }
-  }
 </style>
 
 <script>
-  import { enviarChequeo } from "../../scripts/enviarChequeo";
-
   type Nivel = {
     hasta: number;
     nombre: string;
@@ -651,12 +548,10 @@ const maxPuntaje = chequeo.preguntas.reduce(
     const tramosWrap = raiz.querySelector<HTMLElement>(".chq__tramos");
     const actual = raiz.querySelector<HTMLElement>("[data-actual]");
     const atras = raiz.querySelector<HTMLButtonElement>("[data-atras]");
-    const form = raiz.querySelector<HTMLFormElement>("[data-form]");
 
     let i = 0;
     let puntaje = 0;
     const hallazgos: string[] = [];
-    const respuestas: Record<string, string> = {};
 
     const verPaso = (nombre: string) => {
       pasos.forEach((el, k) => {
@@ -695,7 +590,7 @@ const maxPuntaje = chequeo.preguntas.reduce(
       });
     };
 
-    const mostrarResultado = (guardado: boolean) => {
+    const mostrarResultado = () => {
       recalcular();
       const nivel =
         niveles.find((n) => puntaje <= n.hasta) ?? niveles[niveles.length - 1];
@@ -734,9 +629,6 @@ const maxPuntaje = chequeo.preguntas.reduce(
         caja.hidden = top.length === 0;
       }
 
-      const aviso = raiz.querySelector<HTMLElement>("[data-guardado-error]");
-      if (aviso) aviso.hidden = guardado;
-
       verPaso("resultado");
       raiz.scrollIntoView({ behavior: "smooth", block: "start" });
     };
@@ -761,97 +653,26 @@ const maxPuntaje = chequeo.preguntas.reduce(
       });
     });
 
-    /* Del formulario de vuelta a la última pregunta. Las respuestas ya
-       elegidas quedan marcadas —el puntaje se recalcula desde el DOM—,
-       así que se puede ir y venir sin perder nada. */
-    raiz.querySelector<HTMLButtonElement>("[data-atras-datos]")?.addEventListener("click", () => {
-      verPaso("preguntas");
-      verPregunta(preguntas.length - 1);
-    });
-
     preguntas.forEach((p, idx) => {
       p.querySelectorAll<HTMLButtonElement>(".opcion").forEach((b) => {
         b.addEventListener("click", () => {
           p.querySelectorAll(".opcion").forEach((o) => o.classList.remove("is-elegida"));
           b.classList.add("is-elegida");
-          respuestas[p.dataset.id ?? `p${idx}`] = b.dataset.texto ?? "";
 
           // Pequeña pausa para que se vea la selección antes de avanzar.
           window.setTimeout(() => {
+            // La última respuesta lleva directo al resultado: no hay peaje.
             if (idx < preguntas.length - 1) verPregunta(idx + 1);
-            else verPaso("datos");
+            else mostrarResultado();
           }, 220);
         });
       });
-    });
-
-    /* ---- Captura ---- */
-    form?.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const datos = new FormData(form);
-
-      // Bot: se lo despacha con el resultado, sin escribir nada.
-      if (String(datos.get("website") ?? "").trim() !== "") {
-        mostrarResultado(true);
-        return;
-      }
-
-      const nombre = String(datos.get("nombre") ?? "").trim();
-      const email = String(datos.get("email") ?? "").trim();
-
-      const campos = [
-        { el: form.elements.namedItem("nombre") as HTMLInputElement, ok: nombre.length > 1 },
-        { el: form.elements.namedItem("email") as HTMLInputElement, ok: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) },
-      ];
-      let valido = true;
-      campos.forEach((c) => {
-        c.el?.setAttribute("aria-invalid", String(!c.ok));
-        if (!c.ok) valido = false;
-      });
-      if (!valido) {
-        campos.find((c) => !c.ok)?.el?.focus();
-        return;
-      }
-
-      const boton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      if (boton) {
-        boton.disabled = true;
-        boton.textContent = "Calculando…";
-      }
-
-      recalcular();
-      const nivel =
-        niveles.find((n) => puntaje <= n.hasta) ?? niveles[niveles.length - 1];
-
-      // UTMs guardadas en el primer pageview (ver la landing).
-      let utm: Record<string, string> = {};
-      try {
-        utm = JSON.parse(sessionStorage.getItem("integra_utm") ?? "{}");
-      } catch {
-        utm = {};
-      }
-
-      const r = await enviarChequeo(raiz.dataset.url ?? "", raiz.dataset.key ?? "", {
-        nombre,
-        email,
-        respuestas,
-        resultado: nivel?.nombre ?? "",
-        utm,
-      });
-
-      if (boton) {
-        boton.disabled = false;
-        boton.textContent = "Ver mi resultado";
-      }
-      mostrarResultado(r.ok);
     });
 
     raiz.querySelector<HTMLButtonElement>("[data-reiniciar]")?.addEventListener("click", () => {
       preguntas.forEach((p) =>
         p.querySelectorAll(".opcion").forEach((o) => o.classList.remove("is-elegida"))
       );
-      Object.keys(respuestas).forEach((k) => delete respuestas[k]);
-      form?.reset();
       verPaso("intro");
       raiz.scrollIntoView({ behavior: "smooth", block: "start" });
     });

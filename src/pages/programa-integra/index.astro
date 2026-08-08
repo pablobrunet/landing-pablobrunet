@@ -76,33 +76,19 @@ import { integra } from "../../data/integra";
 
 <script>
   /* ------------------------------------------------------------------
-     Tres cosas, todas livianas y sin dependencias:
-       1. UTMs → sessionStorage, para que viajen con el lead del chequeo.
-       2. Aparición al hacer scroll (se desactiva con motion reducido).
-       3. El botón de WhatsApp se esconde cuando el calendario está a la
+     Dos cosas, las dos livianas y sin dependencias:
+       1. Aparición al hacer scroll (se desactiva con motion reducido).
+       2. El botón de WhatsApp se esconde cuando el calendario está a la
           vista, para no competir con el CTA principal.
+
+     Acá vivía la captura de UTMs en sessionStorage: viajaban con el lead
+     del chequeo, y el chequeo ya no pide datos ni escribe nada. Sin
+     consumidor, guardarlas era juntar polvo.
      ------------------------------------------------------------------ */
   function initLandingIntegra() {
     if (!document.querySelector("#agenda-integra")) return;
 
-    /* ---- 1. UTMs ---- */
-    try {
-      const p = new URLSearchParams(window.location.search);
-      const claves = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
-      const encontradas: Record<string, string> = {};
-      claves.forEach((k) => {
-        const v = p.get(k);
-        if (v) encontradas[k] = v;
-      });
-      // Solo se pisan si esta visita trae UTMs: si no, mandan las primeras.
-      if (Object.keys(encontradas).length > 0) {
-        sessionStorage.setItem("integra_utm", JSON.stringify(encontradas));
-      }
-    } catch {
-      /* sessionStorage bloqueado (modo privado estricto): no es crítico */
-    }
-
-    /* ---- 2. Aparición al hacer scroll ---- */
+    /* ---- 1. Aparición al hacer scroll ---- */
     const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
 
@@ -123,7 +109,7 @@ import { integra } from "../../data/integra";
       bloques.forEach((b) => obs.observe(b));
     }
 
-    /* ---- 3. WhatsApp vs. calendario ---- */
+    /* ---- 2. WhatsApp vs. calendario ---- */
     const calendario = document.getElementById("agenda-integra");
     if (calendario && "IntersectionObserver" in window) {
       const obsWa = new IntersectionObserver(

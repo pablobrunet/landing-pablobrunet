@@ -600,16 +600,6 @@ export const integra = {
           "El paso siguiente es institucionalizar: documentar el criterio, formar más gente y dejar corriendo un ciclo que produzca la próxima oportunidad sin que nadie lo empuje.",
       },
     ],
-    formulario: {
-      titulo: "Tu resultado está listo",
-      subtitulo: "Decinos a dónde te lo mandamos y lo ves ahora mismo.",
-      nombre: "Nombre",
-      email: "Email",
-      boton: "Ver mi resultado",
-      privacidad:
-        "Usamos tus datos solo para enviarte el resultado y contactarte por el diagnóstico. No compartimos tu información con nadie.",
-      error: "No pudimos guardar tus datos, pero tu resultado está abajo igual.",
-    },
     resultadoCta: "Quiero mi diagnóstico gratuito",
     reiniciar: "Volver a empezar",
   },
