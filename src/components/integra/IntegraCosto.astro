@@ -55,12 +55,13 @@ const iconos: Record<string, string> = {
 </section>
 
 <style>
-  /* La segunda oración baja de renglón y va en Celeste Suave. Es color
-     plano y no el degradé de `.i-hl`: acá el resalte tiene que leerse de
-     un tono parejo, que es lo que hace el contraste con la primera parte.
-     Sobre el azul profundo de la sección da 9,9:1. */
+  /* Las dos oraciones corren seguidas: el salto forzado las separaba como
+     si fueran dos titulares distintos. Quiebra sola donde no entre.
+     El resalte va en Celeste Suave, color plano y no el degradé de
+     `.i-hl`: tiene que leerse de un tono parejo, que es lo que hace el
+     contraste con la primera parte. Sobre el azul profundo da 9,9:1. */
   .costo__resalte {
-    display: block;
+    display: inline;
     color: var(--i-celeste);
   }
 
