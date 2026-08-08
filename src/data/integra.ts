@@ -662,11 +662,14 @@ export const integra = {
     texto:
       "Coordinemos una conversación para entender dónde estás hoy y qué oportunidades concretas existen.",
     nota: "Los espacios semanales son limitados.",
+    notaPie: "Asegurá tu espacio esta semana.",
     cta: "Ver horarios disponibles",
+    /* `icono` sale del set de Icon.astro. Si se cambia el texto, revisar
+       que el ícono siga diciendo lo mismo. */
     refuerzos: [
-      "100% enfocada en tu empresa",
-      "Sin compromiso",
-      "Con próximos pasos concretos",
+      { texto: "100% enfocada en tu empresa", icono: "target" },
+      { texto: "Sin compromiso", icono: "shield" },
+      { texto: "Con próximos pasos concretos", icono: "growth" },
     ],
   },
 
@@ -676,7 +679,6 @@ export const integra = {
      del calendario general de Pablo (data/site.ts → agenda.id).
      ===================================================================== */
   cierre: {
-    eyebrow: "El primer paso",
     titulo: "Consultoría Estratégica Gratuita",
     subtitulo:
       "En 30 minutos analizamos cómo está usando IA tu PyME, cuáles son sus brechas y dónde están las oportunidades más grandes. Te vas con claridad, avances con nosotros o no.",
