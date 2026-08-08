@@ -23,10 +23,11 @@
    tipadas a mano para que los componentes puedan leer esos campos sin
    pelearse con la inferencia de `as const`.
    --------------------------------------------------------------------- */
+/* Sólo ícono y título: las claves son una lista corta de lo que deja la
+   fase, no tres párrafos más. El desarrollo ya está en `texto`. */
 export interface ClaveFase {
   icono: string;
   titulo: string;
-  texto: string;
 }
 
 export interface FaseIntegra {
@@ -239,9 +240,6 @@ export const integra = {
     tituloResalte: "INTEGRA",
     subtitulo:
       "Siete fases en sesenta días. Cada una responde una pregunta concreta sobre tu empresa, y juntas dejan instalado el criterio para decidir dónde conviene aplicar inteligencia artificial y dónde no.",
-    /* Ayuda de uso del selector: sin esto no es obvio que las letras se
-       tocan. */
-    pista: "Tocá cada letra para ver la fase.",
     fases: [
       {
         letra: "I",
@@ -256,17 +254,14 @@ export const integra = {
           {
             icono: "people",
             titulo: "Roles con nombre",
-            texto: "Sponsor, referente interno y responsables de área, cada uno con tiempo asignado.",
           },
           {
             icono: "lista",
             titulo: "Inventario real",
-            texto: "Qué herramientas se pagan hoy, quién las usa y para qué sirven de verdad.",
           },
           {
             icono: "lupa",
             titulo: "Oportunidades a la vista",
-            texto: "Se registran como problemas concretos del trabajo, no como ideas de herramienta.",
           },
         ],
         remate: "Sin un punto de partida claro, todo lo que viene después se discute a ciegas.",
@@ -284,17 +279,14 @@ export const integra = {
           {
             icono: "target",
             titulo: "Una sola vara",
-            texto: "Impacto, esfuerzo, riesgo y capacidad: todas las áreas puntúan con los mismos criterios.",
           },
           {
             icono: "lista",
             titulo: "Tablero de Oportunidades",
-            texto: "Cada oportunidad entra con responsable asignado y con el respaldo de dirección.",
           },
           {
             icono: "check",
             titulo: "Foco, no lista de deseos",
-            texto: "Hasta dos oportunidades priorizadas por área, y una sola activa por vez.",
           },
         ],
         remate: "Priorizar también es acordar qué no se hace en este ciclo. Eso se decide junto, y por escrito.",
@@ -312,17 +304,14 @@ export const integra = {
           {
             icono: "intercambio",
             titulo: "Alcance acotado",
-            texto: "Una prueba chica que tu equipo puede ejecutar con los recursos que ya tiene.",
           },
           {
             icono: "shield",
             titulo: "Riesgos y controles",
-            texto: "Qué puede salir mal y qué control humano lo cubre, definido antes de empezar.",
           },
           {
             icono: "data",
             titulo: "Evidencia definida",
-            texto: "Qué se va a mirar para poder decidir después sin discutir impresiones.",
           },
         ],
         remate:
@@ -341,17 +330,14 @@ export const integra = {
           {
             icono: "people",
             titulo: "Lo hace tu equipo",
-            texto: "Con nuestro acompañamiento: nadie aprende a decidir mirando cómo decide otro.",
           },
           {
             icono: "flow",
             titulo: "Sobre tareas de todos los días",
-            texto: "Cotizaciones, reportes, respuestas a clientes: el trabajo que ya existe.",
           },
           {
             icono: "documento",
             titulo: "Registro mientras pasa",
-            texto: "La evidencia se anota en el momento, no se reconstruye de memoria al final.",
           },
         ],
         remate: "Acá es donde la capacidad deja de ser una idea y empieza a ser algo que el equipo sabe hacer.",
@@ -370,17 +356,14 @@ export const integra = {
           {
             icono: "people",
             titulo: "Rituales y cadencia",
-            texto: "Hábitos semanales que mantienen el foco y la ejecución en el día a día.",
           },
           {
             icono: "campana",
             titulo: "Visibilidad y alertas",
-            texto: "Un panel simple que anticipa desvíos y permite actuar a tiempo.",
           },
           {
             icono: "shield",
             titulo: "Gestión del cambio",
-            texto: "Acompañamos a las personas para sostener la adopción y superar resistencias.",
           },
         ],
         remate: "Esta fase no termina: es el sistema que asegura que lo logrado hoy se mejore mañana.",
@@ -398,17 +381,14 @@ export const integra = {
           {
             icono: "target",
             titulo: "Cinco salidas posibles",
-            texto: "Adoptar, iterar, pausar, descartar o escalar. Ninguna prueba queda abierta.",
           },
           {
             icono: "data",
             titulo: "Se decide con evidencia",
-            texto: "Con lo que efectivamente pasó, no con lo que se esperaba que pasara.",
           },
           {
             icono: "check",
             titulo: "Descartar también suma",
-            texto: "Te ahorraste una inversión mala y tu equipo aprendió a distinguir cuál lo era.",
           },
         ],
         remate:
@@ -427,17 +407,14 @@ export const integra = {
           {
             icono: "people",
             titulo: "Roles que quedan",
-            texto: "Quién carga las oportunidades nuevas y quién prioriza, de acá en adelante.",
           },
           {
             icono: "clock",
             titulo: "El ritual sigue corriendo",
-            texto: "La cadencia semanal no se apaga cuando termina el acompañamiento.",
           },
           {
             icono: "documento",
             titulo: "Todo documentado",
-            texto: "Dónde vive lo que funcionó y, sobre todo, lo que no funcionó y por qué.",
           },
         ],
         remate: "Acelerar no es implementar más soluciones: es que el próximo ciclo te cueste la mitad.",

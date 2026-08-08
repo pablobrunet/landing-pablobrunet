@@ -80,8 +80,6 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
         }
       </div>
 
-      <p class="ft__pista">{metodo.pista}</p>
-
       <div class="ft__paneles">
         {
           fases.map((f, i) => (
@@ -107,10 +105,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
                     <span class="clave__icono" aria-hidden="true">
                       <Icon name={c.icono} size={19} />
                     </span>
-                    <div>
-                      <h4 class="clave__t">{c.titulo}</h4>
-                      <p class="clave__p">{c.texto}</p>
-                    </div>
+                    <span class="clave__t">{c.titulo}</span>
                   </li>
                 ))}
               </ul>
@@ -130,9 +125,22 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
 </section>
 
 <style>
+  /* La sección tiene que entrar de una en una pantalla de escritorio: si
+     hay que bajar para leer el panel y volver a subir para cambiar de
+     letra, se pierde el hilo. De ahí el aire recortado acá y en el
+     encabezado, sumado a las claves sin bajada. */
   .fs {
     position: relative;
     overflow: hidden;
+    padding-block: clamp(2.5rem, 5vw, 3.75rem);
+  }
+  .fs .i-head {
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+  .fs .i-head p {
+    margin-top: 0.6rem;
+    max-width: 46rem;
+    margin-inline: auto;
   }
   /* Círculos concéntricos muy tenues sobre el margen derecho: dan
      profundidad sin competir con nada. */
@@ -218,12 +226,14 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     transition: background var(--transition), color var(--transition);
   }
   .paso__nombre {
+    max-width: 100%;
     font-size: 0.8rem;
     font-weight: var(--w-headline);
     line-height: 1.25;
     text-align: center;
     color: var(--azul-petroleo);
     text-wrap: balance;
+    overflow-wrap: break-word;
     /* En pantallas chicas no entra: manda la inicial, que además es la
        que arma el acrónimo. */
     display: none;
@@ -252,7 +262,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   /* ============================= EL PANEL =========================== */
   .ft__paneles {
     display: grid;
-    margin-top: 1.5rem;
+    margin-top: 1.15rem;
     background: #fff;
     border: 1px solid var(--borde);
     border-radius: var(--radius-lg);
@@ -273,7 +283,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   .ficha__lado {
     position: relative;
     overflow: hidden;
-    padding: clamp(1.6rem, 4vw, 2.5rem);
+    padding: clamp(1.5rem, 3.2vw, 2.1rem);
     background: linear-gradient(155deg, var(--i-azul-700) 0%, var(--i-navy) 70%);
     color: #fff;
   }
@@ -303,13 +313,19 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     text-transform: uppercase;
     color: var(--i-celeste);
   }
+  /* "Negociar prioridades" es la más larga: a 2,9rem no entraba en la
+     columna y el `overflow: hidden` del bloque —que existe para recortar
+     los arcos decorativos— se comía el final de la palabra. Con un tope
+     más bajo y corte de palabra habilitado, ya no se puede cortar. */
   .ficha__nombre {
     margin-top: 0.5rem;
     font-family: var(--font-title);
     font-weight: var(--w-display);
-    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.9rem);
-    line-height: 1.05;
+    font-size: clamp(1.6rem, 1.05rem + 1.5vw, 2.35rem);
+    line-height: 1.08;
     letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   .ficha__lema {
     margin-top: 0.9rem;
@@ -326,8 +342,8 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1.5rem;
-    padding: 0.6rem 1.1rem;
+    margin-top: 1.25rem;
+    padding: 0.55rem 1rem;
     border-radius: var(--radius-pill);
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(169, 200, 245, 0.3);
@@ -337,7 +353,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
 
   /* ---- Columna del medio ---- */
   .ficha__medio {
-    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    padding: clamp(1.25rem, 3vw, 1.85rem);
   }
   .ficha__pregunta {
     font-family: var(--font-title);
@@ -363,40 +379,42 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     color: var(--azul-pizarra);
   }
 
-  /* ---- Las tres claves ---- */
+  /* ---- Las tres claves ----
+     Sólo el título, sin bajada: son un resumen de un vistazo de lo que
+     deja la fase. Con tres párrafos más, la sección no entraba en una
+     pantalla y obligaba a bajar y volver a subir para cambiar de letra. */
   .ficha__claves {
     display: grid;
     align-content: start;
-    gap: 1.35rem;
-    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    gap: 0.6rem;
+    padding: clamp(1.25rem, 3vw, 1.85rem);
     padding-top: 0;
   }
   .ficha__claves li {
     display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--i-hielo);
   }
   .clave__icono {
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-    background: var(--i-hielo);
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #fff;
     color: var(--i-azul-600);
   }
   .clave__t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
-    font-size: 0.975rem;
+    font-size: 0.95rem;
+    line-height: 1.3;
     color: var(--azul-petroleo);
-  }
-  .clave__p {
-    margin-top: 0.2rem;
-    font-size: 0.9rem;
-    line-height: 1.55;
-    color: var(--texto-suave);
+    text-wrap: balance;
   }
 
   /* ---- Remate ---- */
@@ -404,7 +422,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin: 0 clamp(1.5rem, 3.5vw, 2.25rem) clamp(1.5rem, 3.5vw, 2.25rem);
+    margin: 0 clamp(1.25rem, 3vw, 1.85rem) clamp(1.25rem, 3vw, 1.85rem);
     padding: 0.9rem 1.15rem;
     border-radius: var(--radius);
     background: rgba(30, 92, 242, 0.06);
@@ -523,7 +541,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
      filas y el remate cruzando medio + claves. */
   @media (min-width: 960px) {
     .ficha {
-      grid-template-columns: minmax(15rem, 0.9fr) 1.3fr 1fr;
+      grid-template-columns: minmax(16.5rem, 0.95fr) 1.25fr 0.95fr;
       grid-template-areas:
         "lado medio claves"
         "lado remate remate";
@@ -538,7 +556,7 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     }
     .ficha__claves {
       grid-area: claves;
-      padding-top: clamp(1.5rem, 3.5vw, 2.25rem);
+      padding-top: clamp(1.25rem, 3vw, 1.85rem);
     }
     .ficha__remate {
       grid-area: remate;
