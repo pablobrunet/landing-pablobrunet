@@ -322,7 +322,10 @@ export const integra = {
      ===================================================================== */
   reparto: {
     eyebrow: "El reparto",
-    titulo: "Esto no lo hacemos por vos. Lo hacemos con vos.",
+    /* El título va partido en dos: la segunda oración baja de renglón y se
+       resalta en azul, igual que en el hero. */
+    titulo: "Esto no lo hacemos por vos.",
+    tituloResalte: "Lo hacemos con vos.",
     subtitulo:
       "Tu equipo aprende haciendo, sobre el trabajo real de todos los días. Nosotros ponemos el método y el ritmo para que eso pase.",
     columnas: [
