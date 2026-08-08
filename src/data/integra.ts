@@ -165,11 +165,9 @@ export const integra = {
           "Marcaste todas. La buena noticia es que las seis tienen la misma causa y una sola salida: un método propio, operado por gente de la casa. Es lo que hacemos en 60 días.",
       },
     ],
-    /* Remate de la sección: se dibuja a todo el ancho, debajo de las dos
-       columnas. La sección no lleva botón — el llamado a agendar aparece
-       en la siguiente, después del costo de no tener método. */
-    fija:
-      "Ninguna de estas se arregla comprando otra herramienta ni contratando a alguien que la use por vos. Se arregla cuando tu equipo sabe decidir.",
+    /* La sección cierra con el conteo y su lectura, sin remate ni botón:
+       el llamado a agendar aparece en la siguiente, después del costo de
+       no tener método. */
   },
 
   /* =====================================================================

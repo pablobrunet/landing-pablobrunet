@@ -11,9 +11,11 @@
    que más mejora la reunión y no compite con nada más.
    ===================================================================== */
 import "../../styles/integra.css";
+import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 import Navbar from "../../components/Navbar.astro";
 import Footer from "../../components/Footer.astro";
+import logoIntegra from "../../assets/integra/integra-lockup-blanco.png";
 import { integra } from "../../data/integra";
 import { site } from "../../data/site";
 
@@ -38,6 +40,16 @@ const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(
       </div>
 
       <div class="container gr__inner">
+        <Image
+          class="gr__logo"
+          src={logoIntegra}
+          alt="Método INTEGRA"
+          widths={[220, 440]}
+          sizes="220px"
+          formats={["webp"]}
+          loading="eager"
+        />
+
         <span class="gr__tilde" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12l4 4 10-10" />
@@ -113,6 +125,12 @@ const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(
     position: relative;
     max-width: 860px;
     text-align: center;
+  }
+  .gr__logo {
+    display: block;
+    width: auto;
+    height: clamp(1.9rem, 4vw, 2.5rem);
+    margin: 0 auto 2rem;
   }
   .gr__tilde {
     display: grid;

@@ -16,6 +16,7 @@
 import { Image } from "astro:assets";
 import { integra } from "../../data/integra";
 import portada from "../../assets/hero/integra1.jpg";
+import logoIntegra from "../../assets/integra/integra-lockup-blanco.png";
 const { hero, imagen, anclas } = integra;
 ---
 
@@ -28,6 +29,19 @@ const { hero, imagen, anclas } = integra;
 
   <div class="container ih__inner">
     <div class="ih__copy">
+      {/* La marca del programa antes que nada: quien llega de LinkedIn o
+          de una pauta tiene que saber en un vistazo dónde está. El lockup
+          blanco es el que sirve acá, sobre el azul profundo. */}
+      <Image
+        class="ih__logo"
+        src={logoIntegra}
+        alt="Método INTEGRA"
+        widths={[240, 480]}
+        sizes="240px"
+        formats={["webp"]}
+        loading="eager"
+      />
+
       <p class="ih__chip">{hero.chip}</p>
 
       <h1 class="t-display ih__titulo">
@@ -136,6 +150,12 @@ const { hero, imagen, anclas } = integra;
   }
 
   /* ---- Columna de texto ---- */
+  .ih__logo {
+    display: block;
+    width: auto;
+    height: clamp(2.1rem, 4.5vw, 2.9rem);
+    margin-bottom: 1.5rem;
+  }
   .ih__chip {
     display: inline-block;
     padding: 0.45rem 0.95rem;

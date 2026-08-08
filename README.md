@@ -59,6 +59,12 @@ la identidad, se tocan ahí y se propagan solos.
   por el optimizador de Astro (el original son 3,2 MB de cámara y se sirve en
   webp de 22 a 60 kB según la pantalla). Si la cambiás, reemplazá el archivo
   ahí y listo. El resto de las imágenes del sitio siguen en `public/images/`.
+- El **logo de INTEGRA** tiene dos versiones en `src/assets/integra/`, las dos
+  recortadas y con fondo transparente:
+  `integra-lockup-blanco.png` para fondos oscuros (es el que se usa hoy, en el
+  hero y en la página de gracias) y `integra-lockup-color.png` para fondos
+  claros. Salieron de los mockups de `public/images/integra/`, que traían el
+  fondo quemado y no servían tal cual.
 - Los **seis síntomas** del espejo y sus **seis respuestas** van emparejados
   uno a uno en `integra.ts`: hay una lectura distinta por cada cantidad
   marcada, para que el diagnóstico suba de a poco. Si agregás un síntoma,
