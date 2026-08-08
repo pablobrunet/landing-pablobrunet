@@ -10,6 +10,7 @@
    entrega de papeles y competía con lo que de verdad se vende, que es la
    capacidad que queda funcionando.
    ===================================================================== */
+import Icon from "../Icon.astro";
 import { integra } from "../../data/integra";
 const { instalado, anclas } = integra;
 ---
@@ -29,9 +30,7 @@ const { instalado, anclas } = integra;
         instalado.capacidades.items.map((it) => (
           <li class="queda__card i-reveal">
             <span class="queda__n" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12l4 4 10-10" />
-              </svg>
+              <Icon name={it.icono} size={22} />
             </span>
             <h3 class="queda__t">{it.titulo}</h3>
             <p class="text-muted">{it.texto}</p>
@@ -62,15 +61,20 @@ const { instalado, anclas } = integra;
     border: 1px solid var(--borde);
     background: linear-gradient(180deg, var(--i-hielo-2), #fff 40%);
   }
+  /* Mismo tratamiento que los íconos del reparto, para que las dos
+     secciones de tarjetas se lean como un solo sistema. El relleno azul
+     con la tilde blanca pesaba de más para lo que era: tres tildes
+     iguales que no decían nada del contenido. */
   .queda__n {
     display: grid;
     place-items: center;
-    width: 34px;
-    height: 34px;
-    margin-bottom: 0.9rem;
-    border-radius: 10px;
-    background: var(--i-grad);
-    color: #fff;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1rem;
+    border-radius: 13px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
   }
   .queda__t {
     font-family: var(--font-title);

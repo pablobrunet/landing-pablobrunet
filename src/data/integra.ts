@@ -291,18 +291,23 @@ export const integra = {
       titulo: "Lo que se lleva instalado",
       etiqueta: "3 capacidades",
       items: [
+        /* `icono` sale del set de Icon.astro. Uno distinto por capacidad:
+           tres tildes iguales no decían nada de lo que hay adentro. */
         {
           titulo: "Capacidad técnica",
+          icono: "chip",
           texto:
             "Gente que sabe usar con responsabilidad la herramienta principal de la empresa: dar contexto, trabajar con documentos y datos internos, iterar, verificar salidas, detectar invenciones y aplicar controles humanos.",
         },
         {
           titulo: "Capacidad metodológica",
+          icono: "target",
           texto:
             "Gente que sabe mirar su propio trabajo, distinguir un problema real de una idea genérica de herramienta, expresar la mejora esperada, negociar prioridades con criterios comunes, diseñar una prueba chica y decidir con evidencia.",
         },
         {
           titulo: "Capacidad organizacional",
+          icono: "people",
           texto:
             "Cada persona sabe qué le toca dentro de una iniciativa de IA: qué decide dirección, qué sostiene el referente interno, qué autoriza el responsable de un área y qué ejecuta y documenta quien lleva adelante una prueba.",
         },
@@ -341,7 +346,7 @@ export const integra = {
         titulo: "Lo hacemos juntos",
         tono: "juntos",
         icono: "manos",
-        items: ["Priorizar las oportunidades", "Probar sobre trabajo real", "Definir los próximos 90 días"],
+        items: ["Priorizar las oportunidades", "Probar sobre trabajo real", "Decidir con la evidencia a la vista"],
       },
       {
         titulo: "Pone tu empresa",
