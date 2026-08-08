@@ -666,9 +666,9 @@ export const integra = {
      ===================================================================== */
   cierre: {
     eyebrow: "El primer paso",
-    titulo: "Descubrí dónde la IA puede generar mayor impacto en tu PyME",
+    titulo: "Consultoría Estratégica Gratuita",
     subtitulo:
-      "Agendá la reunión de diagnóstico gratuita. En 30 minutos analizamos cómo está usando IA tu PyME, cuáles son sus brechas y dónde están las oportunidades más grandes. Te vas con claridad, avances con nosotros o no.",
+      "En 30 minutos analizamos cómo está usando IA tu PyME, cuáles son sus brechas y dónde están las oportunidades más grandes. Te vas con claridad, avances con nosotros o no.",
     calendarioId: "rx4hxRbfbinJEsJoBWWF",
     refuerzos: ["Sin costo", "Sin compromiso", "30 minutos"],
     /* El número es real y sale de la carga operativa (~25 h por PyME por
