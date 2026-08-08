@@ -23,8 +23,13 @@ html {
    elemento al borde superior de la ventana — justo donde está la barra fija,
    que lo tapa. `scroll-margin-top` le reserva ese alto más un respiro, así
    el título del bloque queda a la vista y no cortado.
-   Se aplica a todo `[id]` porque solo tiene efecto cuando el elemento es
-   destino de un salto; en el resto no cambia nada. */
+
+   ⚠️ Se aplica a todo `[id]`, y NO actúa sólo en los saltos de ancla: el
+   navegador respeta el mismo margen cada vez que desplaza un elemento a la
+   vista, incluido cuando lo enfoca. Un control con id escondido dentro de
+   un bloque —por ejemplo los radios del selector de fases de INTEGRA— hace
+   saltar la página en cada clic por culpa de esto. Si agregás uno así,
+   ponele `scroll-margin: 0`. */
 [id] {
   scroll-margin-top: calc(var(--nav-alto) + 1.75rem);
 }

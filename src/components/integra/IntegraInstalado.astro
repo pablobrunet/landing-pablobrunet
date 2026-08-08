@@ -22,22 +22,30 @@ const { instalado, anclas } = integra;
       <p class="text-muted">{instalado.subtitulo}</p>
     </header>
 
-    {/* <ul> y no <ol>: las tres capacidades no son pasos ordenados, y el
-        reset de global.css sólo saca los marcadores de <ul> — con <ol> el
-        navegador dibujaba "1. 2. 3." delante de cada tarjeta. */}
-    <ul class="queda">
-      {
-        instalado.capacidades.items.map((it) => (
-          <li class="queda__card i-reveal">
-            <span class="queda__n" aria-hidden="true">
-              <Icon name={it.icono} size={22} />
-            </span>
-            <h3 class="queda__t">{it.titulo}</h3>
-            <p class="text-muted">{it.texto}</p>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="queda">
+      {/* <ul> y no <ol>: las tres capacidades no son pasos ordenados, y el
+          reset de global.css sólo saca los marcadores de <ul> — con <ol> el
+          navegador dibujaba "1. 2. 3." delante de cada tarjeta. */}
+      <ul class="queda__lista">
+        {
+          instalado.capacidades.items.map((it) => (
+            <li class="queda__card i-reveal">
+              <span class="queda__n" aria-hidden="true">
+                <Icon name={it.icono} size={22} />
+              </span>
+              <div>
+                <h3 class="queda__t">{it.titulo}</h3>
+                <p class="text-muted">{it.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <figure class="queda__foto i-reveal">
+        <img src={instalado.foto} alt={instalado.fotoAlt} width="1400" height="1050" loading="lazy" />
+      </figure>
+    </div>
 
     <figure class="queda__cita i-reveal">
       <blockquote>{instalado.cita}</blockquote>
@@ -53,24 +61,32 @@ const { instalado, anclas } = integra;
 <style>
   .queda {
     display: grid;
-    gap: 1.25rem;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  /* Las tres capacidades apiladas, no en fila: así cada una se lee como
+     un renglón corto y queda lugar al costado para la foto. */
+  .queda__lista {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
   }
   .queda__card {
-    padding: clamp(1.35rem, 3vw, 1.85rem);
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: clamp(1.1rem, 2.5vw, 1.4rem);
     border-radius: var(--radius-lg);
     border: 1px solid var(--borde);
-    background: linear-gradient(180deg, var(--i-hielo-2), #fff 40%);
+    background: linear-gradient(120deg, var(--i-hielo-2), #fff 45%);
   }
-  /* Mismo tratamiento que los íconos del reparto, para que las dos
-     secciones de tarjetas se lean como un solo sistema. El relleno azul
-     con la tilde blanca pesaba de más para lo que era: tres tildes
-     iguales que no decían nada del contenido. */
+  /* El ícono al costado del texto, no encima: apilado sumaba una línea
+     por tarjeta y estiraba la columna al pedo. */
   .queda__n {
+    flex-shrink: 0;
     display: grid;
     place-items: center;
     width: 44px;
     height: 44px;
-    margin-bottom: 1rem;
     border-radius: 13px;
     background: var(--i-hielo);
     border: 1px solid var(--borde);
@@ -80,11 +96,28 @@ const { instalado, anclas } = integra;
     font-family: var(--font-title);
     font-weight: var(--w-headline);
     font-size: 1.05rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
   }
   .queda__card p {
     font-size: 0.925rem;
     line-height: 1.6;
+  }
+
+  .queda__foto {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow);
+    /* En mobile manda su propia proporción; en escritorio toma el alto de
+       la columna de tarjetas (ver el media query). */
+    aspect-ratio: 4 / 3;
+  }
+  .queda__foto img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .queda__cita {
@@ -122,7 +155,15 @@ const { instalado, anclas } = integra;
 
   @media (min-width: 860px) {
     .queda {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1.15fr 1fr;
+      align-items: stretch;
+    }
+    /* Sin proporción fija, la foto se estira a lo que midan las tres
+       tarjetas: arranca y termina a la misma altura que la columna de al
+       lado. */
+    .queda__foto {
+      aspect-ratio: auto;
+      height: 100%;
     }
   }
 </style>

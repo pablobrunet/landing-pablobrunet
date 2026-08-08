@@ -247,7 +247,7 @@ export const integra = {
         icono: "lupa",
         dias: "Días 1 a 15",
         lema: "*Ordena* el punto de partida, revela las *oportunidades*.",
-        pregunta: "¿Cuál es el punto de partida y dónde están las oportunidades que valen la pena?",
+        pregunta: "¿De dónde partimos y dónde están las oportunidades que valen la pena?",
         texto:
           "Se designan los roles, se releva qué sabe hoy cada persona y se inventaría qué herramientas se pagan y quién las usa. Con eso a la vista se registran las primeras oportunidades, expresadas como problemas.",
         claves: [
@@ -297,7 +297,7 @@ export const integra = {
         icono: "intercambio",
         dias: "Días 15 a 30",
         lema: "*Convierte* la idea en algo *que se puede probar*.",
-        pregunta: "¿Cómo convertimos una oportunidad en una iniciativa chica, segura y decidible?",
+        pregunta: "¿Cómo convertimos una oportunidad en una prueba chica y segura?",
         texto:
           "Cada oportunidad priorizada se transforma en una Prueba Aplicada: problema, mejora esperada, responsable, alcance acotado, herramienta o enfoque, riesgos y controles, evidencia a observar y decisión final.",
         claves: [
@@ -349,7 +349,7 @@ export const integra = {
         transversal: true,
         dias: "Del día 1 al 60",
         lema: "*Sostiene* el cambio, multiplica los *resultados*.",
-        pregunta: "¿Cómo se sostiene el proceso mientras la operación diaria compite por atención?",
+        pregunta: "¿Cómo se sostiene el proceso cuando la operación compite por atención?",
         texto:
           "Formación según rol, ritual interno semanal, panel de alertas y resolución de bloqueos. Es la fase que evita que la iniciativa se apague: por eso no es una semana del calendario, corre todo el tiempo.",
         claves: [
@@ -376,7 +376,7 @@ export const integra = {
         lema: "*Cierra* cada prueba con una *decisión*.",
         pregunta: "¿Qué valor produjo cada prueba y qué decisión conviene tomar?",
         texto:
-          "Cada prueba activa termina en una decisión fundada: adoptar, iterar, pausar, descartar o escalar. La decisión se toma con la evidencia a la vista y queda registrada con su motivo.",
+          "Cada prueba activa termina en una decisión fundada: adoptar, iterar, pausar, descartar o escalar. Se decide con lo que se observó, no con lo que se esperaba, y queda registrada con su motivo.",
         claves: [
           {
             icono: "target",
@@ -402,7 +402,7 @@ export const integra = {
         lema: "*Convierte* lo aprendido en *forma de trabajo*.",
         pregunta: "¿Cómo logra tu PyME repetir el ciclo con más autonomía y menos fricción?",
         texto:
-          "Lo aprendido se convierte en forma de trabajo: quién carga las oportunidades nuevas, quién prioriza, qué ritual semanal queda corriendo y dónde vive la documentación para que nada dependa de la memoria de una persona.",
+          "Lo aprendido se convierte en forma de trabajo: quién carga las oportunidades nuevas, quién prioriza, qué ritual semanal queda corriendo y dónde vive la documentación de lo que funcionó y de lo que no.",
         claves: [
           {
             icono: "people",
@@ -429,6 +429,10 @@ export const integra = {
     titulo: "Al día 60 tu PyME se queda con esto.",
     subtitulo:
       "No con una automatización que funciona hasta que se rompe. Con un sistema propio para seguir identificando, decidiendo y probando.",
+    /* Foto real de una capacitación: la sección habla de gente formada,
+       así que muestra gente. */
+    foto: "/images/servicios/estrategia-tarjeta.jpg",
+    fotoAlt: "Pablo Brunet dando una capacitación a un equipo alrededor de una mesa",
     capacidades: {
       titulo: "Lo que se lleva instalado",
       etiqueta: "3 capacidades",
@@ -439,19 +443,19 @@ export const integra = {
           titulo: "Capacidad técnica",
           icono: "chip",
           texto:
-            "Gente que sabe usar con responsabilidad la herramienta principal de la PyME: dar contexto, trabajar con documentos y datos internos, iterar, verificar salidas, detectar invenciones y aplicar controles humanos.",
+            "Gente que sabe darle contexto a la herramienta, trabajar con información interna, verificar lo que devuelve y aplicar controles humanos.",
         },
         {
           titulo: "Capacidad metodológica",
           icono: "target",
           texto:
-            "Gente que sabe mirar su propio trabajo, distinguir un problema real de una idea genérica de herramienta, expresar la mejora esperada, negociar prioridades con criterios comunes, diseñar una prueba chica y decidir con evidencia.",
+            "Distinguir un problema real de una idea suelta, priorizar con criterios comunes y diseñar pruebas chicas que terminen en una decisión.",
         },
         {
           titulo: "Capacidad organizacional",
           icono: "people",
           texto:
-            "Cada persona sabe qué le toca dentro de una iniciativa de IA: qué decide dirección, qué sostiene el referente interno, qué autoriza el responsable de un área y qué ejecuta y documenta quien lleva adelante una prueba.",
+            "Cada persona sabe qué le toca en una iniciativa de IA: qué decide dirección, qué sostiene el referente y qué ejecuta cada área.",
         },
       ],
     },
@@ -459,44 +463,6 @@ export const integra = {
       "Ahora tenemos responsables, criterios compartidos, una forma de detectar y priorizar oportunidades, un protocolo para probarlas, espacios para decidir, un registro de evidencia y un plan para continuar avanzando.",
     citaPie: "Así suena una PyME con el sistema instalado.",
     cta: "Quiero mi diagnóstico",
-  },
-
-  /* =====================================================================
-     6 · QUIÉN HACE QUÉ
-     Tres columnas parejas y cortas. La versión larga (trece ítems de un
-     lado, nueve del otro) se leía como un contrato y desinflaba la
-     sección justo antes del cierre.
-     ===================================================================== */
-  reparto: {
-    /* El título va partido en dos: la segunda oración baja de renglón y se
-       resalta en azul, igual que en el hero. */
-    titulo: "Esto no lo hacemos por vos.",
-    tituloResalte: "Lo hacemos con vos.",
-    subtitulo:
-      "Tu equipo aprende haciendo, sobre el trabajo real de todos los días. Nosotros ponemos el método y el ritmo para que eso pase.",
-    columnas: [
-      {
-        titulo: "Ponemos nosotros",
-        tono: "nosotros",
-        icono: "brujula",
-        items: ["El método y los materiales", "La facilitación de cada reunión", "El acompañamiento semanal"],
-      },
-      /* "Juntos" va en el MEDIO a propósito: es la zona donde se cruzan
-         las dos partes, y el diseño la dibuja como tal. Si se reordena
-         esta lista, se rompe esa lectura. */
-      {
-        titulo: "Lo hacemos juntos",
-        tono: "juntos",
-        icono: "manos",
-        items: ["Priorizar las oportunidades", "Probar sobre trabajo real", "Decidir con la evidencia a la vista"],
-      },
-      {
-        titulo: "Pone tu PyME",
-        tono: "PyME",
-        icono: "equipo",
-        items: ["Un referente interno", "Las personas y su tiempo", "Las decisiones"],
-      },
-    ],
   },
 
   /* =====================================================================

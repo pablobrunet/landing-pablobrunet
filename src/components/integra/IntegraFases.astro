@@ -173,13 +173,26 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
     position: relative;
   }
   /* Los radios no se ven pero SÍ se enfocan: por eso no van con
-     `display:none`, que los sacaría del orden de tabulación. */
+     `display:none`, que los sacaría del orden de tabulación.
+
+     `scroll-margin: 0` no es decorativo. global.css le pone a TODO `[id]`
+     un `scroll-margin-top` de ~120px para que los saltos de ancla no
+     queden tapados por la barra fija, y estos radios tienen id. Pero esa
+     propiedad no actúa sólo en los saltos: también cuando el navegador
+     enfoca un elemento, que es lo que pasa al tocar el label. El
+     navegador desplazaba la página para dejar visible el radio MÁS esos
+     120px de aire imaginario encima, y de ahí el salto hacia arriba en
+     cada clic. Con el margen en cero, y el radio pegado a la esquina de
+     una tarjeta que ya está a la vista, no hay nada que desplazar. */
   .ft__radio {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 1px;
     height: 1px;
     opacity: 0;
     pointer-events: none;
+    scroll-margin: 0;
   }
 
   /* =========================== EL SELECTOR ========================== */
@@ -524,18 +537,22 @@ const dosDigitos = (n: number) => String(n).padStart(2, "0");
   /* El panel pasa a tres columnas, con el bloque azul cruzando las dos
      filas y el remate cruzando medio + claves. */
   @media (min-width: 960px) {
-    /* `1fr auto` en las filas es lo que hace que las siete fichas midan
-       igual: la primera fila se come todo el alto sobrante —el del panel
-       más largo, que es el que fija la altura del bloque— y el remate se
-       queda en su alto natural, pegado abajo. Con `align-content: start`,
-       las fichas más cortas dejaban el bloque azul a media altura y un
-       hueco blanco debajo, que es lo que se veía como recortado. */
+    /* Tres filas: contenido, remate y una última elástica.
+       El bloque mide lo que la ficha más larga de las siete, así que en
+       las demás sobra alto. Con `1fr auto` ese sobrante se lo comía la
+       primera fila y aparecía como un hueco entre el texto y el remate.
+       Ahora las dos primeras filas van a su alto natural —el remate queda
+       pegado al texto— y el sobrante cae en la tercera, debajo de todo,
+       donde se lee como margen inferior y no como un agujero.
+       El bloque azul cruza las tres filas, así que igual llega hasta abajo
+       en todas las fichas. */
     .ficha {
       grid-template-columns: minmax(16.5rem, 0.95fr) 1.25fr 0.95fr;
-      grid-template-rows: 1fr auto;
+      grid-template-rows: auto auto 1fr;
       grid-template-areas:
-        "lado medio claves"
-        "lado remate remate";
+        "lado medio  claves"
+        "lado remate remate"
+        "lado .      .";
     }
     .ficha__lado {
       grid-area: lado;
