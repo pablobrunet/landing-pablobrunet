@@ -1,0 +1,170 @@
+---
+/* =====================================================================
+   ETAPA 1 — RELEVAMIENTO INICIAL
+   ---------------------------------------------------------------------
+   Las dos instancias del diagnóstico, una al lado de la otra: la
+   individual (18 formularios) y la organizacional (una reunión con
+   referentes). Van emparejadas a propósito — son dos miradas del mismo
+   relevamiento, no una principal y una opcional.
+
+   Cada tarjeta cierra con su remate en una franja: es la línea que
+   explica por qué ese relevamiento existe, y sin destacarla se perdía al
+   final de una lista de once ítems.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+const { relevamiento } = royjo;
+---
+
+<section class="section i-claro rel" aria-label="Relevamiento inicial">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{relevamiento.eyebrow}</span>
+      <h2 class="t-h2">
+        {relevamiento.titulo} <span class="i-hl">{relevamiento.tituloResalte}</span>
+      </h2>
+      <p class="text-muted">{relevamiento.subtitulo}</p>
+    </header>
+
+    <div class="rel__grid">
+      {
+        relevamiento.bloques.map((b) => (
+          <article class="rel__card i-reveal">
+            <div class="rel__head">
+              <span class="rel__icono" aria-hidden="true">
+                <Icon name={b.icono} size={22} />
+              </span>
+              <div>
+                <span class="rel__et">{b.etiqueta}</span>
+                <h3 class="rel__t">{b.titulo}</h3>
+              </div>
+            </div>
+
+            {"subtitulo" in b && b.subtitulo && <p class="rel__sub">{b.subtitulo}</p>}
+
+            <ul class="rel__items">
+              {b.items.map((it) => (
+                <li>
+                  <span class="rel__punto" aria-hidden="true" />
+                  <span>{it}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p class="rel__remate">{b.remate}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .rel__grid {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    align-items: stretch;
+  }
+  /* Columna flexible con el remate al pie: las dos listas tienen distinto
+     largo (once ítems contra nueve) y sin esto las franjas de cierre
+     quedaban a alturas distintas. */
+  .rel__card {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .rel__card:hover {
+    border-color: var(--i-azul-500);
+    box-shadow: var(--shadow);
+  }
+  .rel__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding-bottom: 1.1rem;
+    margin-bottom: 1.1rem;
+    border-bottom: 1px solid var(--borde);
+  }
+  .rel__icono {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .rel__et {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .rel__t {
+    margin-top: 0.3rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+  }
+  .rel__sub {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
+  }
+  .rel__items {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .rel__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--azul-pizarra);
+  }
+  .rel__punto {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin-top: 0.55rem;
+    border-radius: 50%;
+    background: var(--i-azul-500);
+  }
+  .rel__remate {
+    /* `auto` empuja la franja al pie de la tarjeta más corta. */
+    margin-top: auto;
+    padding-top: 1.25rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--verde-resalte);
+  }
+  .rel__remate::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-bottom: 1.1rem;
+    background: var(--borde);
+  }
+
+  @media (min-width: 900px) {
+    .rel__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

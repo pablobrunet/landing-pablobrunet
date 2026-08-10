@@ -11,6 +11,10 @@ interface Props {
      lo cambia para que el chat abra diciendo de dónde viene la consulta. */
   waMensaje?: string;
   waEtiqueta?: string;
+  /* Páginas que se comparten por enlace directo y no son contenido del
+     sitio — las cotizaciones para un cliente concreto, por ejemplo — se
+     marcan con `noindex` para que no aparezcan en buscadores. */
+  noindex?: boolean;
 }
 
 const {
@@ -18,6 +22,7 @@ const {
   description = site.seoDescription,
   waMensaje,
   waEtiqueta,
+  noindex = false,
 } = Astro.props;
 ---
 
@@ -30,6 +35,7 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

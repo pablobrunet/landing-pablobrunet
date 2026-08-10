@@ -1,0 +1,226 @@
+---
+/* =====================================================================
+   PORTADA — Propuesta para Distribuidora Royjo
+   ---------------------------------------------------------------------
+   No es tráfico frío: quien abre esta página ya habló con Pablo y espera
+   una cotización. Por eso la portada no vende, ubica — el titular dice
+   qué se compra y la tarjeta de al lado tiene los datos duros del
+   encabezado del documento original (empresa, modalidad, participantes).
+
+   Mismo lenguaje visual que el hero del Método INTEGRA: azul profundo,
+   dos halos de luz y la trama de puntos, todo detrás del contenido.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+const { hero, anclas } = royjo;
+---
+
+<section class="rh" aria-label="Propuesta para Distribuidora Royjo">
+  <div class="rh__fondo" aria-hidden="true">
+    <span class="rh__halo rh__halo--a"></span>
+    <span class="rh__halo rh__halo--b"></span>
+    <span class="trama rh__trama"></span>
+  </div>
+
+  <div class="container rh__inner">
+    <div class="rh__copy">
+      <p class="rh__chip">{hero.chip}</p>
+
+      <h1 class="t-display rh__titulo">
+        {hero.titulo}
+        <span class="i-hl">{hero.tituloResalte}</span>
+      </h1>
+
+      <p class="rh__sub">{hero.subtitulo}</p>
+
+      <div class="rh__ctas">
+        <a href={`#${anclas.alternativas}`} class="btn btn--primary rh__cta">{hero.ctaPrimario}</a>
+        <a href={`#${anclas.alcance}`} class="btn rh__ghost">{hero.ctaSecundario}</a>
+      </div>
+    </div>
+
+    {/* La ficha con los datos del encabezado. En una cotización es lo
+        primero que se chequea, así que va a la altura del titular y no
+        perdida al pie. */}
+    <aside class="rh__ficha">
+      <p class="rh__ficha-t">{hero.fichaTitulo}</p>
+      <dl class="rh__filas">
+        {
+          hero.fichaFilas.map((f) => (
+            <div class="rh__fila">
+              <span class="rh__fila-ico" aria-hidden="true">
+                <Icon name={f.icono} size={17} />
+              </span>
+              <div>
+                <dt>{f.etiqueta}</dt>
+                <dd>{f.valor}</dd>
+              </div>
+            </div>
+          ))
+        }
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .rh {
+    position: relative;
+    overflow: hidden;
+    background: var(--i-noche);
+    color: #fff;
+    padding-block: clamp(3rem, 7vw, 5rem) clamp(3rem, 7vw, 4.5rem);
+  }
+
+  /* ---- Fondo ---- */
+  .rh__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .rh__halo {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.55;
+  }
+  .rh__halo--a {
+    width: 44rem;
+    height: 44rem;
+    top: -22rem;
+    right: -14rem;
+    background: radial-gradient(circle, rgba(76, 134, 245, 0.55), transparent 70%);
+  }
+  .rh__halo--b {
+    width: 32rem;
+    height: 32rem;
+    bottom: -18rem;
+    left: -12rem;
+    background: radial-gradient(circle, rgba(30, 92, 242, 0.5), transparent 70%);
+  }
+  .rh__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+  }
+
+  .rh__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(2.25rem, 5vw, 3.25rem);
+    align-items: center;
+  }
+
+  /* ---- Columna de texto ---- */
+  .rh__chip {
+    display: inline-block;
+    padding: 0.45rem 0.95rem;
+    margin-bottom: 1.35rem;
+    border-radius: var(--radius-pill);
+    background: rgba(169, 200, 245, 0.1);
+    border: 1px solid rgba(169, 200, 245, 0.28);
+    color: var(--i-neblina);
+    font-size: 0.8125rem;
+    font-weight: var(--w-subheadline);
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+  }
+  .rh__titulo {
+    font-size: clamp(1.95rem, 1.1rem + 3.1vw, 3.1rem);
+    line-height: 1.08;
+  }
+  /* Las dos oraciones corren seguidas: el salto forzado las leería como
+     dos titulares distintos. Quiebra sola donde no entre. */
+  .rh__titulo .i-hl {
+    display: inline;
+  }
+  .rh__sub {
+    max-width: 40rem;
+    margin-top: 1.35rem;
+    font-size: 1.0625rem;
+    line-height: 1.68;
+    color: rgba(220, 230, 246, 0.8);
+  }
+  .rh__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+  .rh__cta {
+    padding-inline: 1.7rem;
+  }
+  .rh__ghost {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+  }
+  .rh__ghost:hover {
+    background: rgba(255, 255, 255, 0.13);
+  }
+
+  /* ---- Ficha ---- */
+  .rh__ficha {
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.5);
+    backdrop-filter: blur(6px);
+  }
+  .rh__ficha-t {
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(169, 200, 245, 0.2);
+  }
+  .rh__filas {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .rh__fila {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.9rem 0;
+  }
+  .rh__fila + .rh__fila {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .rh__fila-ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(169, 200, 245, 0.12);
+    color: var(--i-celeste);
+  }
+  .rh__fila dt {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(220, 230, 246, 0.6);
+  }
+  .rh__fila dd {
+    margin-top: 0.2rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.95rem;
+    line-height: 1.35;
+    color: #fff;
+  }
+
+  @media (min-width: 980px) {
+    .rh__inner {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+    }
+  }
+</style>

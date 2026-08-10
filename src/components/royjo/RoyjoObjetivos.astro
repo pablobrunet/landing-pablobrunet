@@ -1,0 +1,152 @@
+---
+/* =====================================================================
+   OBJETIVOS
+   ---------------------------------------------------------------------
+   El general va en un bloque azul, solo: es UNA frase y compite con nada.
+   Los once específicos van al lado, en dos columnas de renglones con
+   tilde — son verificables, así que se leen como un checklist de cierre
+   del programa y no como una lista de intenciones.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+const { objetivos } = royjo;
+---
+
+<section class="section i-hielo i-claro obj" aria-label="Objetivos del programa">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{objetivos.eyebrow}</span>
+      <h2 class="t-h2">{objetivos.titulo}</h2>
+    </header>
+
+    <div class="obj__grid">
+      <div class="obj__general i-reveal">
+        <span class="obj__general-et">{objetivos.general.etiqueta}</span>
+        <p class="obj__general-t">{objetivos.general.texto}</p>
+      </div>
+
+      <div class="obj__especificos i-reveal">
+        <p class="obj__esp-t">{objetivos.especificosTitulo}</p>
+        <ul class="obj__items">
+          {
+            objetivos.especificos.map((e) => (
+              <li>
+                <span class="obj__tick" aria-hidden="true">
+                  <Icon name="check" size={14} />
+                </span>
+                <span>{e}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .obj__grid {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    align-items: start;
+  }
+
+  /* ---- Objetivo general ---- */
+  .obj__general {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.5rem, 3.5vw, 2.1rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(155deg, var(--i-azul-700) 0%, var(--i-navy) 72%);
+    color: #fff;
+    box-shadow: var(--shadow);
+  }
+  /* Arcos finos en la esquina, el mismo recurso del panel de fases. */
+  .obj__general::after {
+    content: "";
+    position: absolute;
+    right: -8rem;
+    bottom: -11rem;
+    width: 24rem;
+    height: 24rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 62%, rgba(169, 200, 245, 0.16) 62.5%, transparent 63.5%),
+      radial-gradient(circle, transparent 48%, rgba(169, 200, 245, 0.14) 48.5%, transparent 49.5%),
+      radial-gradient(circle, transparent 34%, rgba(169, 200, 245, 0.12) 34.5%, transparent 35.5%);
+  }
+  .obj__general > * {
+    position: relative;
+  }
+  .obj__general-et {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+    margin-bottom: 0.9rem;
+  }
+  .obj__general-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1.05rem, 0.92rem + 0.6vw, 1.3rem);
+    line-height: 1.5;
+  }
+
+  /* ---- Específicos ---- */
+  .obj__especificos {
+    padding: clamp(1.5rem, 3.5vw, 2.1rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .obj__esp-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+    margin-bottom: 1.15rem;
+  }
+  .obj__items {
+    display: grid;
+    gap: 0.65rem 1.75rem;
+  }
+  .obj__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--azul-pizarra);
+  }
+  .obj__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 0.1rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+  }
+
+  @media (min-width: 700px) {
+    .obj__items {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1000px) {
+    .obj__grid {
+      grid-template-columns: 0.85fr 1.15fr;
+    }
+    /* Vuelve a una columna: al lado del bloque azul, dos columnas de
+       tildes dejaban renglones de cuatro palabras. */
+    .obj__items {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

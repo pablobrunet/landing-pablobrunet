@@ -1,0 +1,117 @@
+---
+/* =====================================================================
+   /cotizacion-distribuidora-royjo — PROPUESTA PARA DISTRIBUIDORA ROYJO
+   ---------------------------------------------------------------------
+   Cotización para un cliente concreto, no contenido del sitio: se
+   comparte por enlace directo y va con `noindex` (ver el layout).
+
+   IDENTIDAD VISUAL. Reusa el tema azul del Método INTEGRA
+   (styles/integra.css): mismos tokens, mismas utilidades (`.i-oscuro`,
+   `.i-head`, `.i-eyebrow`, `.i-hl`, `.i-reveal`) y el mismo navbar, pie y
+   tipografías del resto del sitio. El CSS se importa sólo acá, así que no
+   viaja en las demás páginas.
+
+   EL ORDEN ES EL DEL DOCUMENTO, con una corrección de lectura: las tres
+   alternativas van ANTES de los entregables, porque la lista de
+   entregables sólo se entiende sabiendo que el alcance depende de la
+   modalidad elegida.
+
+   Los criterios de éxito y el rol de la empresa (secciones 13 y 14 del
+   documento) NO están en la página: se sacaron a pedido de Pablo. Con
+   ellos se fue la salvedad de "primero aprovechamos las licencias que ya
+   tienen"; si alguna vez hace falta recuperarla, va como remate de la
+   sección de enfoque o de alternativas.
+
+      1 Portada           qué se propone y a quién, con la ficha al lado
+      2 Contexto          el reencuadre y las nueve oportunidades
+      3 Objetivos         general + los once específicos
+      4 Enfoque           adopción, no capacitación: las 4 dimensiones
+      5 Relevamiento      cómo se define el contenido definitivo
+      6 Segmentación      por rol y por nivel de uso de IA
+      7 Contenidos        los ocho ejes previstos
+      8 Continuidad       entre encuentros, portal y biblioteca interna
+      9 Alternativas      las tres opciones + cronograma de la recomendada
+     10 Entregables       qué les queda en la mano
+     11 Próximos pasos    la secuencia y las vías de contacto
+
+   TONO: se le habla a la empresa DIRECTAMENTE, en "ustedes". El nombre
+   propio queda sólo donde es el valor de un campo (ficha de la portada,
+   <title>, asunto del correo). La regla completa está en data/royjo.ts.
+   ===================================================================== */
+import "../../styles/integra.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import RoyjoHero from "../../components/royjo/RoyjoHero.astro";
+import RoyjoContexto from "../../components/royjo/RoyjoContexto.astro";
+import RoyjoObjetivos from "../../components/royjo/RoyjoObjetivos.astro";
+import RoyjoEnfoque from "../../components/royjo/RoyjoEnfoque.astro";
+import RoyjoRelevamiento from "../../components/royjo/RoyjoRelevamiento.astro";
+import RoyjoSegmentacion from "../../components/royjo/RoyjoSegmentacion.astro";
+import RoyjoContenidos from "../../components/royjo/RoyjoContenidos.astro";
+import RoyjoContinuidad from "../../components/royjo/RoyjoContinuidad.astro";
+import RoyjoAlternativas from "../../components/royjo/RoyjoAlternativas.astro";
+import RoyjoEntregables from "../../components/royjo/RoyjoEntregables.astro";
+import RoyjoCierre from "../../components/royjo/RoyjoCierre.astro";
+import { royjo } from "../../data/royjo";
+---
+
+<Base
+  title={royjo.seo.title}
+  description={royjo.seo.description}
+  waMensaje={royjo.whatsapp.mensaje}
+  waEtiqueta={royjo.whatsapp.etiqueta}
+  noindex
+>
+  <Navbar />
+  <main>
+    <RoyjoHero />
+    <RoyjoContexto />
+    <RoyjoObjetivos />
+    <RoyjoEnfoque />
+    <RoyjoRelevamiento />
+    <RoyjoSegmentacion />
+    <RoyjoContenidos />
+    <RoyjoContinuidad />
+    <RoyjoAlternativas />
+    <RoyjoEntregables />
+    <RoyjoCierre />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  /* ------------------------------------------------------------------
+     Aparición al hacer scroll, igual que en la landing del Método
+     INTEGRA. La clase `is-listo` es la que aplica el estado inicial
+     oculto: sin JS nunca se agrega y el contenido se ve normal.
+
+     El resto de la interacción de la página (el selector de roles y el
+     acordeón de contenidos) no necesita JavaScript: son radios y
+     <details> nativos.
+     ------------------------------------------------------------------ */
+  function initPropuestaRoyjo() {
+    if (!document.querySelector("#alternativas")) return;
+
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducido || !("IntersectionObserver" in window)) return;
+
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
+    bloques.forEach((b) => b.classList.add("is-listo"));
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).classList.add("is-visible");
+          obs.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+    bloques.forEach((b) => obs.observe(b));
+  }
+
+  initPropuestaRoyjo();
+  document.addEventListener("astro:page-load", initPropuestaRoyjo);
+</script>

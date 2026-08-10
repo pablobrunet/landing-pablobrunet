@@ -1,0 +1,117 @@
+---
+/* =====================================================================
+   CONTEXTO Y OPORTUNIDAD
+   ---------------------------------------------------------------------
+   Abre el alcance: primero el reencuadre (el problema no es de contenidos
+   comerciales, es de forma de trabajo) y después las nueve oportunidades
+   concretas que salieron de la conversación previa.
+
+   Las oportunidades van en dos columnas numeradas y no en tarjetas: son
+   nueve renglones cortos, y nueve tarjetas habrían inflado la sección sin
+   agregar nada.
+
+   Lleva el ancla `alcance`: es donde apunta el CTA secundario de la
+   portada, porque acá arranca el detalle de la propuesta.
+   ===================================================================== */
+import { royjo } from "../../data/royjo";
+const { contexto, anclas } = royjo;
+---
+
+<section class="section i-claro ctx" id={anclas.alcance} aria-label="Contexto y oportunidad">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{contexto.eyebrow}</span>
+      <h2 class="t-h2">
+        {contexto.titulo} <span class="i-hl">{contexto.tituloResalte}</span>
+      </h2>
+      {contexto.parrafos.map((p) => <p class="text-muted">{p}</p>)}
+    </header>
+
+    <div class="ctx__lista i-reveal">
+      <p class="ctx__lista-t">{contexto.listaTitulo}</p>
+      <ol class="ctx__items">
+        {
+          contexto.oportunidades.map((o, i) => (
+            <li>
+              <span class="ctx__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <span>{o}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <p class="ctx__remate i-reveal">{contexto.remate}</p>
+  </div>
+</section>
+
+<style>
+  .ctx .i-head {
+    max-width: 62rem;
+  }
+  .ctx .i-head p + p {
+    margin-top: 0.9rem;
+  }
+
+  .ctx__lista {
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--borde);
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
+    box-shadow: var(--shadow-sm);
+  }
+  .ctx__lista-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+    margin-bottom: 1.25rem;
+  }
+  /* `list-style: none` porque el número lo dibuja el span: el marcador del
+     navegador no se puede alinear con el ícono ni teñir de azul. */
+  .ctx__items {
+    display: grid;
+    gap: 0.7rem 2rem;
+    list-style: none;
+  }
+  .ctx__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    font-size: 0.975rem;
+    line-height: 1.55;
+    color: var(--azul-pizarra);
+  }
+  .ctx__n {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--i-neblina);
+    color: var(--verde-resalte);
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.06em;
+  }
+
+  .ctx__remate {
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.85rem);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1rem, 0.92rem + 0.5vw, 1.2rem);
+    line-height: 1.55;
+    color: var(--azul-petroleo);
+  }
+
+  @media (min-width: 820px) {
+    .ctx__items {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

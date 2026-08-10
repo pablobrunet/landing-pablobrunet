@@ -1,0 +1,218 @@
+---
+/* =====================================================================
+   PRÓXIMOS PASOS + CIERRE
+   ---------------------------------------------------------------------
+   Los ocho pasos que siguen a la selección de la modalidad, dibujados
+   como una línea de tiempo vertical: son secuenciales, y en grilla se
+   perdía el orden.
+
+   Cierra con el remate del documento original y las dos vías de contacto.
+   No hay calendario embebido acá, al revés de la landing del Método
+   INTEGRA: la conversación con Royjo ya está abierta, y meter un widget
+   de reserva convertiría una cotización en una captación.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+import { site } from "../../data/site";
+const { cierre, anclas, whatsapp } = royjo;
+
+const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(whatsapp.mensaje)}`;
+const asunto = encodeURIComponent("Propuesta — Distribuidora Royjo");
+---
+
+<section class="section i-claro fin" id={anclas.proximos} aria-label="Próximos pasos">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{cierre.eyebrow}</span>
+      <h2 class="t-h2">{cierre.titulo}</h2>
+    </header>
+
+    <ol class="fin__pasos i-reveal">
+      {
+        cierre.pasos.map((p, i) => (
+          <li class="fin__paso">
+            <span class="fin__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span class="fin__p">{p}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="fin__cierre i-reveal">
+      <p class="fin__remate">{cierre.remate}</p>
+
+      <div class="fin__cta">
+        <div class="fin__cta-copy">
+          <h3 class="fin__cta-t">{cierre.ctaTitulo}</h3>
+          <p class="fin__cta-p">{cierre.ctaTexto}</p>
+        </div>
+        <div class="fin__botones">
+          <a href={wa} target="_blank" rel="noopener" class="btn btn--primary">
+            {cierre.ctaWhatsapp}
+          </a>
+          <a href={`mailto:${site.email}?subject=${asunto}`} class="btn fin__btn-mail">
+            <Icon name="mail" size={17} />
+            {cierre.ctaEmail}
+          </a>
+        </div>
+      </div>
+
+      <p class="fin__firma">
+        <strong>{cierre.firma}</strong>
+        <span>{cierre.firmaPie}</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---- Línea de tiempo de los ocho pasos ---- */
+  .fin__pasos {
+    position: relative;
+    display: grid;
+    gap: 0;
+    list-style: none;
+    padding-left: 0;
+  }
+  /* El hilo que une los pasos es UNO SOLO, a lo largo de toda la lista, y
+     los círculos lo tapan con su fondo opaco. Dibujarlo por tramos entre
+     paso y paso obligaba a calcular la distancia entre dos centros, y esa
+     cuenta se rompe apenas un renglón se parte en dos líneas — que en
+     mobile pasa con la mitad de los pasos. */
+  .fin__pasos::before {
+    content: "";
+    position: absolute;
+    left: 19px;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    background: var(--borde);
+  }
+  .fin__paso {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 0.85rem 0;
+  }
+  .fin__n {
+    position: relative;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--i-neblina);
+    color: var(--verde-resalte);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    transition: border-color var(--transition), background var(--transition), color var(--transition);
+  }
+  .fin__paso:hover .fin__n {
+    background: var(--i-grad);
+    border-color: transparent;
+    color: #fff;
+  }
+  .fin__p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--azul-pizarra);
+  }
+
+  /* ---- Cierre ---- */
+  .fin__cierre {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  .fin__remate {
+    padding: clamp(1.4rem, 3.5vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-noche);
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1.05rem, 0.92rem + 0.7vw, 1.35rem);
+    line-height: 1.5;
+  }
+
+  .fin__cta {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1.15rem;
+    padding: clamp(1.4rem, 3.5vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .fin__cta-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
+    color: var(--azul-petroleo);
+  }
+  .fin__cta-p {
+    margin-top: 0.55rem;
+    font-size: 0.975rem;
+    line-height: 1.6;
+    color: var(--texto-suave);
+  }
+  .fin__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .fin__btn-mail {
+    background: #fff;
+    border-color: var(--borde-punteado);
+    color: var(--azul-petroleo);
+  }
+  .fin__btn-mail:hover {
+    border-color: var(--i-azul-600);
+    color: var(--verde-resalte);
+  }
+
+  .fin__firma {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--borde);
+    text-align: center;
+  }
+  .fin__firma strong {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    color: var(--azul-petroleo);
+  }
+  .fin__firma span {
+    font-size: var(--fs-caption);
+    letter-spacing: 0.04em;
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 760px) {
+    .fin__pasos {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2.5rem;
+    }
+    /* En dos columnas el hilo uniría pasos que no son consecutivos en
+       pantalla (el 1 con el 3): se saca y quedan los círculos. */
+    .fin__pasos::before {
+      display: none;
+    }
+  }
+  @media (min-width: 900px) {
+    .fin__cta {
+      grid-template-columns: 1.4fr auto;
+      gap: 2.5rem;
+    }
+  }
+</style>

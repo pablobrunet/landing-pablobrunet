@@ -1,0 +1,486 @@
+---
+/* =====================================================================
+   ALTERNATIVAS DE IMPLEMENTACIÓN
+   ---------------------------------------------------------------------
+   El núcleo comercial: tres tarjetas comparables, con la Opción 2
+   destacada porque es la recomendada en el documento original. Las tres
+   muestran los mismos campos y en el mismo orden —duración, objetivo,
+   alcance, inversión— para que se puedan comparar de un vistazo.
+
+   INVERSIÓN. Los tres montos están sin definir. La tarjeta NO inventa un
+   número ni deja un hueco: muestra "A definir" con el mismo peso visual
+   que tendría el precio, así se ve que el campo existe y está pendiente.
+   Cuando se completen en data/royjo.ts, aparecen solos.
+
+   El cronograma de la opción recomendada va aparte, debajo de las
+   tarjetas: dentro de la tarjeta no entraba sin volverla ilegible frente
+   a las otras dos.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+const { alternativas, anclas } = royjo;
+const { cronograma } = alternativas;
+---
+
+<section class="section i-hielo i-claro alt" id={anclas.alternativas} aria-label="Alternativas de implementación">
+  <div class="alt__fondo" aria-hidden="true"></div>
+
+  <div class="container alt__inner">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{alternativas.eyebrow}</span>
+      <h2 class="t-h2">{alternativas.titulo}</h2>
+      <p class="text-muted">{alternativas.subtitulo}</p>
+    </header>
+
+    <div class="alt__grid">
+      {
+        alternativas.opciones.map((o) => (
+          <article class:list={["opcion", "i-reveal", o.recomendada && "opcion--reco"]}>
+            {o.recomendada && (
+              <span class="opcion__cinta">
+                <Icon name="estrella" size={14} />
+                Recomendada
+              </span>
+            )}
+
+            <span class="opcion__codigo">{o.codigo}</span>
+            <h3 class="opcion__nombre">{o.nombre}</h3>
+            <p class="opcion__resumen">{o.resumen}</p>
+
+            <p class="opcion__duracion">
+              <Icon name="clock" size={16} />
+              {o.duracion}
+            </p>
+
+            <div class="opcion__campo">
+              <span class="opcion__campo-t">Objetivo</span>
+              <p>{o.objetivo}</p>
+            </div>
+
+            <div class="opcion__campo opcion__campo--alcance">
+              <span class="opcion__campo-t">Alcance</span>
+              <ul class="opcion__alcance">
+                {o.alcance.map((a) => (
+                  <li>
+                    <span class="opcion__tick" aria-hidden="true">
+                      <Icon name="check" size={13} />
+                    </span>
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {o.consideracion && (
+              <p class="opcion__consideracion">
+                <span class="opcion__cons-t">A tener en cuenta</span>
+                {o.consideracion}
+              </p>
+            )}
+
+            {/* Al pie y siempre presente: es el campo que se busca. */}
+            <div class="opcion__inversion">
+              <span class="opcion__inv-t">Inversión</span>
+              <span class:list={["opcion__inv-v", !o.inversion && "opcion__inv-v--pendiente"]}>
+                {o.inversion || alternativas.inversionPendiente}
+              </span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="alt__nota i-reveal">
+      <Icon name="documento" size={17} />
+      <span>
+        {alternativas.inversionNota} <strong>{alternativas.gastosTitulo}:</strong> {alternativas.gastos}
+      </span>
+    </p>
+
+    {/* ---- Cronograma de la opción recomendada ---- */}
+    <div class="crono i-reveal">
+      <header class="crono__head">
+        <span class="crono__et">{cronograma.etiqueta}</span>
+        <h3 class="crono__t">{cronograma.titulo}</h3>
+        <p class="crono__sub">{cronograma.subtitulo}</p>
+      </header>
+
+      <ol class="crono__pasos">
+        {
+          cronograma.pasos.map((p, i) => (
+            <li class="crono__paso">
+              <span class="crono__n" aria-hidden="true">{i + 1}</span>
+              <span class="crono__et-paso">{p.etiqueta}</span>
+              <p class="crono__paso-t">{p.titulo}</p>
+              {"texto" in p && p.texto && <p class="crono__paso-p">{p.texto}</p>}
+              {p.items.length > 0 && (
+                <ul class="crono__items">
+                  {p.items.map((it) => (
+                    <li>{it}</li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .alt {
+    position: relative;
+    overflow: hidden;
+  }
+  /* Círculos concéntricos muy tenues, el mismo recurso del método. */
+  .alt__fondo {
+    position: absolute;
+    top: -16rem;
+    left: -22rem;
+    width: 56rem;
+    height: 56rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 58%, rgba(30, 92, 242, 0.05) 58.4%, transparent 59%),
+      radial-gradient(circle, transparent 44%, rgba(30, 92, 242, 0.05) 44.4%, transparent 45%),
+      radial-gradient(circle, transparent 30%, rgba(30, 92, 242, 0.05) 30.4%, transparent 31%);
+  }
+  .alt__inner {
+    position: relative;
+  }
+
+  /* ---- Las tres tarjetas ---- */
+  .alt__grid {
+    display: grid;
+    gap: 1.15rem;
+    align-items: stretch;
+  }
+  .opcion {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.5rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .opcion:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+    border-color: var(--i-azul-500);
+  }
+  /* La recomendada: borde azul de dos píxeles y una sombra propia. No
+     cambia de fondo — con las tres en blanco se comparan mejor. */
+  .opcion--reco {
+    border: 2px solid var(--i-azul-600);
+    box-shadow: 0 20px 48px rgba(23, 64, 143, 0.2);
+  }
+  .opcion__cinta {
+    position: absolute;
+    top: 0;
+    left: clamp(1.5rem, 3vw, 1.9rem);
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: var(--i-grad);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 20px rgba(23, 64, 143, 0.28);
+  }
+  .opcion__codigo {
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .opcion__nombre {
+    margin-top: 0.5rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .opcion__resumen {
+    margin-top: 0.6rem;
+    font-size: 0.925rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
+  }
+  .opcion__duracion {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+    padding: 0.5rem 0.95rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.08);
+    border: 1px solid rgba(30, 92, 242, 0.18);
+    font-size: 0.875rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
+  }
+
+  .opcion__campo {
+    margin-top: 1.35rem;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--borde);
+  }
+  /* La lista de alcance absorbe el sobrante: sin esto, las tarjetas con
+     menos ítems dejaban el hueco justo antes de la inversión. */
+  .opcion__campo--alcance {
+    flex: 1;
+  }
+  .opcion__campo-t {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--azul-pizarra);
+  }
+  .opcion__campo > p {
+    font-size: 0.925rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .opcion__alcance {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .opcion__alcance li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--azul-pizarra);
+  }
+  .opcion__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.1rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+  }
+
+  .opcion__consideracion {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--i-hielo);
+    border-left: 3px solid var(--i-denim);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
+  }
+  .opcion__cons-t {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--azul-pizarra);
+  }
+
+  .opcion__inversion {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.35rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--borde);
+  }
+  .opcion__inv-t {
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--azul-pizarra);
+  }
+  .opcion__inv-v {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--azul-petroleo);
+  }
+  /* El monto se define recién cuando Royjo elige la alternativa, así que
+     esto NO es un hueco por completar: es un término de la propuesta. Por
+     eso va en píldora sólida, con el mismo lenguaje que la duración, y no
+     con el borde punteado que se lee como un campo sin terminar. */
+  .opcion__inv-v--pendiente {
+    font-size: 0.9rem;
+    font-weight: var(--w-subheadline);
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.08);
+    border: 1px solid rgba(30, 92, 242, 0.18);
+    color: var(--verde-resalte);
+  }
+
+  .alt__nota {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--borde);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--texto-suave);
+  }
+  .alt__nota :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--i-azul-600);
+  }
+  .alt__nota strong {
+    color: var(--azul-petroleo);
+    font-weight: var(--w-headline);
+  }
+
+  /* ---- Cronograma de la opción recomendada ---- */
+  .crono {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    border-radius: var(--radius-lg);
+    background: var(--i-noche);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  .crono__head {
+    max-width: 46rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+  .crono__et {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    margin-bottom: 0.85rem;
+    border-radius: var(--radius-pill);
+    background: rgba(169, 200, 245, 0.12);
+    border: 1px solid rgba(169, 200, 245, 0.26);
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--i-neblina);
+  }
+  .crono__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.2rem, 1rem + 0.9vw, 1.6rem);
+    line-height: 1.2;
+  }
+  .crono__sub {
+    margin-top: 0.6rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(220, 230, 246, 0.72);
+  }
+  .crono__pasos {
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+  }
+  .crono__paso {
+    position: relative;
+    padding: clamp(1.15rem, 2.5vw, 1.5rem);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .crono__n {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 0.85rem;
+    border-radius: 50%;
+    background: var(--i-grad);
+    color: #fff;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.85rem;
+  }
+  .crono__et-paso {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .crono__paso-t {
+    margin-top: 0.35rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+  .crono__paso-p {
+    margin-top: 0.55rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(220, 230, 246, 0.7);
+  }
+  .crono__items {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 0.85rem;
+  }
+  .crono__items li {
+    position: relative;
+    padding-left: 0.95rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: rgba(220, 230, 246, 0.78);
+  }
+  .crono__items li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--i-celeste);
+  }
+
+  @media (min-width: 720px) {
+    .crono__pasos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1000px) {
+    .alt__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .crono__pasos {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

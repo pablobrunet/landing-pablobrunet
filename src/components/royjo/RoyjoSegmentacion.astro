@@ -1,0 +1,483 @@
+---
+/* =====================================================================
+   SEGMENTACIÓN DE PARTICIPANTES
+   ---------------------------------------------------------------------
+   Cuatro roles, cuatro paneles. Es el mismo mecanismo del selector de
+   fases del Método INTEGRA, y por las mismas razones:
+
+   SIN JAVASCRIPT. Son radios + labels: el estado vive en el :checked y el
+   CSS lo lee con `:has()`. Anda apenas se pinta el HTML y con las flechas
+   del teclado, que es el comportamiento nativo de un grupo de radios.
+
+   EL RADIO VA ADENTRO DE SU TARJETA. Al hacer clic el navegador enfoca el
+   input y, si está fuera de pantalla, lo trae a la vista: con los cuatro
+   apilados arriba del bloque, cada clic pegaba un salto. Además va con
+   `scroll-margin: 0`, porque global.css le pone a todo `[id]` un
+   `scroll-margin-top` de ~120px para las anclas y eso también actúa
+   cuando el foco cambia.
+
+   ALTURA FIJA. Los cuatro paneles se apilan en la misma celda de grid: el
+   bloque mide lo que el más largo (comercial de campo, con trece
+   aplicaciones) y no salta al cambiar de rol.
+
+   Debajo va el criterio B —segmentación por nivel de IA—, que no es un
+   panel más: es un criterio alternativo, así que se dibuja aparte.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+const { segmentacion } = royjo;
+
+const grupos = segmentacion.porRol.grupos;
+const cols = grupos.length;
+---
+
+<section class="section i-hielo i-claro seg" aria-label="Segmentación de participantes">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{segmentacion.eyebrow}</span>
+      <h2 class="t-h2">
+        {segmentacion.titulo} <span class="i-hl">{segmentacion.tituloResalte}</span>
+      </h2>
+      <p class="text-muted">{segmentacion.subtitulo}</p>
+    </header>
+
+    {/* ---------------- Criterio A: por rol ---------------- */}
+    <div class="seg__crit i-reveal">
+      <span class="seg__crit-et">{segmentacion.porRol.etiqueta}</span>
+      <h3 class="seg__crit-t">{segmentacion.porRol.titulo}</h3>
+      <p class="seg__crit-p">{segmentacion.porRol.texto}</p>
+    </div>
+
+    <div class="rt i-reveal" style={`--cols:${cols}`}>
+      <div class="rt__riel" role="radiogroup" aria-label="Grupos por rol">
+        {
+          grupos.map((g, i) => (
+            <label class="rol">
+              <input
+                class="rt__radio"
+                type="radio"
+                name="rol-royjo"
+                id={`rol-${g.clave}`}
+                value={g.clave}
+                checked={i === 0}
+              />
+              <span class="rol__icono" aria-hidden="true">
+                <Icon name={g.icono} size={20} />
+              </span>
+              <span class="rol__nombre">{g.corto}</span>
+              <span class="rol__pico" aria-hidden="true" />
+            </label>
+          ))
+        }
+      </div>
+
+      <div class="rt__paneles">
+        {
+          grupos.map((g) => (
+            <article class="grupo" id={`panel-${g.clave}`}>
+              <div class="grupo__lado">
+                <span class="grupo__et">Grupo</span>
+                <p class="grupo__nombre">{g.nombre}</p>
+                <p class="grupo__lema">{g.lema}</p>
+                <span class="grupo__cuenta">
+                  <Icon name="lista" size={16} />
+                  {g.aplicaciones.length} aplicaciones posibles
+                </span>
+              </div>
+
+              <div class="grupo__medio">
+                <p class="grupo__medio-t">Posibles aplicaciones de IA</p>
+                <ul class="grupo__apps">
+                  {g.aplicaciones.map((a) => (
+                    <li>{a}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+    {/* ---------------- Criterio B: por nivel ---------------- */}
+    <div class="seg__crit seg__crit--b i-reveal">
+      <span class="seg__crit-et">{segmentacion.porNivel.etiqueta}</span>
+      <h3 class="seg__crit-t">{segmentacion.porNivel.titulo}</h3>
+      <p class="seg__crit-p">{segmentacion.porNivel.texto}</p>
+    </div>
+
+    <div class="seg__niveles">
+      {
+        segmentacion.porNivel.niveles.map((n) => (
+          <article class="nivel i-reveal">
+            <span class="nivel__icono" aria-hidden="true">
+              <Icon name={n.icono} size={20} />
+            </span>
+            <h4 class="nivel__t">{n.nombre}</h4>
+            <p class="nivel__p">{n.texto}</p>
+            {n.items.length > 0 && (
+              <ul class="nivel__items">
+                {n.items.map((it) => (
+                  <li>{it}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="seg__nota i-reveal">{segmentacion.nota}</p>
+  </div>
+</section>
+
+<style>
+  /* ---- Encabezados de cada criterio ---- */
+  .seg__crit {
+    max-width: 46rem;
+    margin-bottom: 1.35rem;
+  }
+  .seg__crit--b {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .seg__crit-et {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.09);
+    border: 1px solid rgba(30, 92, 242, 0.18);
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .seg__crit-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
+    line-height: 1.25;
+    color: var(--azul-petroleo);
+  }
+  .seg__crit-p {
+    margin-top: 0.5rem;
+    font-size: 0.975rem;
+    line-height: 1.6;
+    color: var(--texto-suave);
+  }
+
+  /* ======================= SELECTOR DE ROLES ======================== */
+  .rt {
+    position: relative;
+  }
+  /* No van con `display:none`: se enfocan, aunque no se vean. Y sin el
+     `scroll-margin: 0` el navegador desplaza la página al enfocarlos (ver
+     el comentario del encabezado). */
+  .rt__radio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    scroll-margin: 0;
+  }
+  .rt__riel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  .rol {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.55rem;
+    padding: clamp(0.85rem, 1.8vw, 1.15rem) 0.6rem;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition),
+      background var(--transition), border-color var(--transition);
+  }
+  .rol:hover {
+    transform: translateY(-3px);
+    border-color: var(--i-azul-500);
+  }
+  .rol__icono {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--i-hielo);
+    color: var(--i-azul-600);
+    transition: background var(--transition), color var(--transition);
+  }
+  .rol__nombre {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.85rem;
+    line-height: 1.25;
+    text-align: center;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+    transition: color var(--transition);
+  }
+  .rol__pico {
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 3px;
+    background: var(--i-azul-700);
+    transform: rotate(45deg) scale(0);
+    transition: transform var(--transition);
+  }
+
+  /* ============================ PANELES ============================= */
+  .rt__paneles {
+    display: grid;
+    margin-top: 1.15rem;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  /* Los cuatro en la misma celda: el alto lo fija el más largo. */
+  .grupo {
+    grid-area: 1 / 1;
+    display: grid;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 220ms ease, visibility 220ms;
+  }
+
+  .grupo__lado {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.35rem, 2.8vw, 1.85rem);
+    background: linear-gradient(155deg, var(--i-azul-700) 0%, var(--i-navy) 70%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .grupo__lado::after {
+    content: "";
+    position: absolute;
+    right: -9rem;
+    bottom: -12rem;
+    width: 26rem;
+    height: 26rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 62%, rgba(169, 200, 245, 0.16) 62.5%, transparent 63.5%),
+      radial-gradient(circle, transparent 48%, rgba(169, 200, 245, 0.14) 48.5%, transparent 49.5%),
+      radial-gradient(circle, transparent 34%, rgba(169, 200, 245, 0.12) 34.5%, transparent 35.5%);
+  }
+  .grupo__lado > * {
+    position: relative;
+  }
+  .grupo__et {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .grupo__nombre {
+    margin-top: 0.5rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.35rem, 1rem + 1.1vw, 1.75rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  .grupo__lema {
+    margin-top: 0.7rem;
+    margin-bottom: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.45;
+    color: rgba(220, 230, 246, 0.9);
+    max-width: 22rem;
+  }
+  .grupo__cuenta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* `auto` absorbe el sobrante de los paneles más cortos. */
+    margin-top: auto;
+    padding: 0.5rem 0.95rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(169, 200, 245, 0.3);
+    font-size: 0.875rem;
+    font-weight: var(--w-subheadline);
+  }
+
+  .grupo__medio {
+    padding: clamp(1.25rem, 3vw, 1.85rem);
+  }
+  .grupo__medio-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    color: var(--azul-petroleo);
+  }
+  .grupo__medio-t::after {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 3px;
+    margin: 0.9rem 0 1.15rem;
+    border-radius: 2px;
+    background: var(--i-azul-600);
+  }
+  /* Píldoras y no renglones: son etiquetas cortas, y en lista vertical el
+     panel de "comercial de campo" medía trece renglones y le fijaba ese
+     alto a los otros tres. */
+  .grupo__apps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .grupo__apps li {
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    font-size: 0.875rem;
+    line-height: 1.35;
+    color: var(--azul-pizarra);
+  }
+
+  /* ==================== QUÉ PRENDE CADA RADIO ====================== */
+  .rol:has(.rt__radio:checked) {
+    background: linear-gradient(165deg, var(--i-azul-600) 0%, var(--i-azul-800) 100%);
+    border-color: transparent;
+    box-shadow: 0 16px 34px rgba(23, 64, 143, 0.32);
+  }
+  .rol:has(.rt__radio:checked) .rol__nombre {
+    color: #fff;
+  }
+  .rol:has(.rt__radio:checked) .rol__icono {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+  .rol:has(.rt__radio:checked) .rol__pico {
+    transform: rotate(45deg) scale(1);
+  }
+  /* El radio no se ve: el anillo de foco lo dibuja la tarjeta. */
+  .rol:has(.rt__radio:focus-visible) {
+    outline: 3px solid var(--i-azul-600);
+    outline-offset: 3px;
+  }
+  /* Acá sí hace falta nombrar cada clave: la relación es entre un radio y
+     el panel que le corresponde. */
+  .rt:has(#rol-campo:checked) #panel-campo,
+  .rt:has(#rol-admin:checked) #panel-admin,
+  .rt:has(#rol-marketing:checked) #panel-marketing,
+  .rt:has(#rol-gerencia:checked) #panel-gerencia {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* ---- Criterio B: los dos niveles ---- */
+  .seg__niveles {
+    display: grid;
+    gap: 1.15rem;
+  }
+  .nivel {
+    padding: clamp(1.4rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .nivel__icono {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 1rem;
+    border-radius: 13px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .nivel__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+    margin-bottom: 0.5rem;
+  }
+  .nivel__p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .nivel__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1rem;
+  }
+  .nivel__items li {
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-pill);
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    font-size: 0.85rem;
+    color: var(--azul-pizarra);
+  }
+
+  .seg__nota {
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    padding: 1.1rem 1.35rem;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grupo,
+    .rol,
+    .rol__pico {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 720px) {
+    .rt__riel {
+      grid-template-columns: repeat(var(--cols), 1fr);
+    }
+    .seg__niveles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 960px) {
+    .grupo {
+      grid-template-columns: minmax(16.5rem, 0.85fr) 1.15fr;
+    }
+    .grupo__medio {
+      border-left: 1px solid var(--borde);
+    }
+  }
+</style>

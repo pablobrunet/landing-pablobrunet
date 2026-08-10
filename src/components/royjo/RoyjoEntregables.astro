@@ -1,0 +1,81 @@
+---
+/* =====================================================================
+   POSIBLES ENTREGABLES
+   ---------------------------------------------------------------------
+   Trece renglones cortos con tilde, en tres columnas. Van después de las
+   alternativas a propósito: la lista completa sólo se entiende cuando ya
+   se sabe que el alcance depende de la modalidad contratada, y así se lee
+   como "esto es lo que puede quedar" y no como una promesa cerrada.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { royjo } from "../../data/royjo";
+const { entregables } = royjo;
+---
+
+<section class="section i-claro ent" aria-label="Posibles entregables">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{entregables.eyebrow}</span>
+      <h2 class="t-h2">{entregables.titulo}</h2>
+      <p class="text-muted">{entregables.subtitulo}</p>
+    </header>
+
+    <ul class="ent__grid i-reveal">
+      {
+        entregables.items.map((it) => (
+          <li class="ent__item">
+            <span class="ent__tick" aria-hidden="true">
+              <Icon name="check" size={14} />
+            </span>
+            <span>{it}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .ent__grid {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .ent__item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(120deg, var(--i-hielo-2), #fff 55%);
+    border: 1px solid var(--borde);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--azul-pizarra);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+  .ent__item:hover {
+    border-color: var(--i-azul-500);
+    transform: translateY(-2px);
+  }
+  .ent__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+  }
+
+  @media (min-width: 640px) {
+    .ent__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1000px) {
+    .ent__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
