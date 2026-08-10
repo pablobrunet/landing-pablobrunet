@@ -702,11 +702,11 @@ export const royjo = {
     /* Moneda al lado del monto: los dos valores son argentinos y sin la
        aclaración un "$" a secas se puede leer en dólares. */
     moneda: "ARS",
-    /* El título y el texto se dibujan pegados ("Título: texto"), así que
-       no pueden repetir la misma palabra. */
-    gastosTitulo: "Los dos valores no incluyen viáticos",
+    /* Título y texto se dibujan pegados y en ese orden: "Título: texto".
+       La redacción es textual de Pablo — no reescribirla. */
+    gastosTitulo: "Los viáticos no están incluidos",
     gastos:
-      "traslados, alojamiento y estadía se cotizan por separado, sobre la base de dos jornadas presenciales en sus instalaciones.",
+      "el monto se obtiene de un calculador propio, cuyo cálculo será compartido oportunamente a la empresa. Se calcula sobre la base de dos jornadas presenciales en sus oficinas.",
     /* Se usa sólo si algún monto queda vacío: hoy los dos están cargados. */
     inversionPendiente: "A definir",
     inversionNota:

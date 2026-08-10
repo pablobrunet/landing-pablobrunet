@@ -96,12 +96,16 @@ const { cronograma } = alternativas;
       }
     </div>
 
-    <p class="alt__nota i-reveal">
+    {/* Dos renglones y no un párrafo: son dos temas distintos —qué explica
+        la diferencia de precio, y qué queda afuera— y de corrido el
+        segundo se perdía al final de una parrafada. */}
+    <div class="alt__nota i-reveal">
       <Icon name="documento" size={17} />
-      <span>
-        {alternativas.inversionNota} <strong>{alternativas.gastosTitulo}:</strong> {alternativas.gastos}
-      </span>
-    </p>
+      <div class="alt__nota-cuerpo">
+        <p>{alternativas.inversionNota}</p>
+        <p><strong>{alternativas.gastosTitulo}:</strong> {alternativas.gastos}</p>
+      </div>
+    </div>
 
     {/* ---- Cronograma de la opción recomendada ---- */}
     <div class="crono i-reveal">
@@ -371,10 +375,14 @@ const { cronograma } = alternativas;
     line-height: 1.6;
     color: var(--texto-suave);
   }
-  .alt__nota :global(svg) {
+  .alt__nota > :global(svg) {
     flex-shrink: 0;
     margin-top: 0.15rem;
     color: var(--i-azul-600);
+  }
+  .alt__nota-cuerpo {
+    display: grid;
+    gap: 0.5rem;
   }
   .alt__nota strong {
     color: var(--azul-petroleo);
