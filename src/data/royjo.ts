@@ -17,10 +17,9 @@
    18 personas, y así está dicho en `inversionNota`. Si cambia un monto,
    revisar que esa resta siga cerrando.
 
-   ⚠️ NO está definido si los valores llevan IVA: la página no lo dice ni
-   en un sentido ni en el otro. Conviene decidirlo y escribirlo en
-   `gastos` antes de mandar el enlace — en una cotización es de las
-   primeras cosas que se preguntan.
+   La página NO aclara si los valores llevan IVA, y es una decisión de
+   Pablo: no agregar esa línea. Lo único que se dice sobre lo que queda
+   afuera son los viáticos.
 
    Si algún monto se vacía, la tarjeta lo dibuja como "A definir" en vez
    de romperse (ver `inversionPendiente`).
