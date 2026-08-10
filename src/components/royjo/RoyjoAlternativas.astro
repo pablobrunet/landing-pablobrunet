@@ -88,6 +88,7 @@ const { cronograma } = alternativas;
               <span class="opcion__inv-t">Inversión</span>
               <span class:list={["opcion__inv-v", !o.inversion && "opcion__inv-v--pendiente"]}>
                 {o.inversion || alternativas.inversionPendiente}
+                {o.inversion && <em class="opcion__moneda">{alternativas.moneda}</em>}
               </span>
             </div>
           </article>
@@ -327,9 +328,21 @@ const { cronograma } = alternativas;
   .opcion__inv-v {
     font-family: var(--font-title);
     font-weight: var(--w-display);
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     letter-spacing: -0.01em;
     color: var(--azul-petroleo);
+    white-space: nowrap;
+  }
+  /* La moneda, chica y al lado del número: un "$" solo se puede leer en
+     dólares, y los dos montos son argentinos. */
+  .opcion__moneda {
+    margin-left: 0.3rem;
+    font-family: var(--font-base);
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.08em;
+    color: var(--texto-suave);
   }
   /* El monto se define recién cuando Royjo elige la alternativa, así que
      esto NO es un hueco por completar: es un término de la propuesta. Por

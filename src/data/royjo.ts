@@ -8,16 +8,22 @@
    aplicada al proceso comercial — Distribuidora Royjo". Si el documento
    cambia, se corrige acá y se propaga solo.
 
-   TRES CAMPOS QUEDAN ABIERTOS A PROPÓSITO — no son huecos por completar:
-     · `alternativas.opciones[].inversion` — el monto se define recién
-       cuando Royjo elige la alternativa. Vacío se dibuja como "A definir"
-       con el peso visual que tendría el precio.
-     · `alternativas.gastos` — traslados, alojamiento y viáticos se cotizan
-       por separado, sobre la base de dos jornadas presenciales.
-     · `continuidad.plataforma.acceso` — el período lo define Royjo y puede
-       extenderse.
-   Si en algún momento se cierran los montos, se cargan en `inversion` y
-   aparecen solos.
+   VALORES (cerrados el 2026-08-10, en pesos argentinos):
+     · Opción 1 — $ 1.800.000
+     · Opción 2 — $ 2.400.000, con 30 días de acceso al portal al terminar
+     · Ninguno incluye viáticos: se cotizan aparte, sobre la base de dos
+       jornadas presenciales en la empresa.
+   La diferencia de $ 600.000 es exactamente el acceso al portal para las
+   18 personas, y así está dicho en `inversionNota`. Si cambia un monto,
+   revisar que esa resta siga cerrando.
+
+   ⚠️ NO está definido si los valores llevan IVA: la página no lo dice ni
+   en un sentido ni en el otro. Conviene decidirlo y escribirlo en
+   `gastos` antes de mandar el enlace — en una cotización es de las
+   primeras cosas que se preguntan.
+
+   Si algún monto se vacía, la tarjeta lo dibuja como "A definir" en vez
+   de romperse (ver `inversionPendiente`).
 
    NOTA DE INDEXACIÓN: la página va con `noindex` (ver la página en
    /src/pages/cotizacion-distribuidora-royjo). Es una cotización, no
@@ -569,9 +575,9 @@ export const royjo = {
         },
       ],
 
-      /* El período no está cerrado a propósito: lo definen ellos, y puede
-         extenderse más allá de lo que dure el programa. */
-      acceso: "El período de acceso lo definen ustedes — puede extenderse por más tiempo",
+      /* Durante el programa cubre el tramo entre jornadas; los 30 días
+         posteriores son para seguir después de la segunda. */
+      acceso: "Acceso durante todo el programa y 30 días más al terminar",
       remate:
         "El portal no reemplaza los encuentros: los sostiene. Con 18 personas de niveles distintos, es la diferencia entre que el segundo encuentro arranque parejo o que haya que volver a explicar lo básico.",
     },
@@ -618,7 +624,7 @@ export const royjo = {
         ],
         consideracion:
           "Entre jornada y jornada cada persona aplica con el material escrito que le dejamos. Quien arranca desde cero no tiene dónde nivelarse por su cuenta, y con 18 participantes de niveles distintos esa diferencia se nota en el segundo encuentro.",
-        inversion: "",
+        inversion: "$ 1.800.000",
       },
       {
         codigo: "Opción 2",
@@ -635,9 +641,9 @@ export const royjo = {
           "Avance guardado por persona",
           "Comunidad y archivos compartidos",
           "Nuevos contenidos durante la vigencia del acceso",
-          "Período de acceso a definir con ustedes",
+          "30 días de acceso al portal después del programa",
         ],
-        inversion: "",
+        inversion: "$ 2.400.000",
       },
     ] as OpcionRoyjo[],
 
@@ -694,12 +700,18 @@ export const royjo = {
       ],
     },
 
-    gastosTitulo: "Gastos",
+    /* Moneda al lado del monto: los dos valores son argentinos y sin la
+       aclaración un "$" a secas se puede leer en dólares. */
+    moneda: "ARS",
+    /* El título y el texto se dibujan pegados ("Título: texto"), así que
+       no pueden repetir la misma palabra. */
+    gastosTitulo: "Los dos valores no incluyen viáticos",
     gastos:
-      "Traslados, alojamiento y viáticos se cotizan por separado, considerando dos jornadas presenciales en sus instalaciones.",
+      "traslados, alojamiento y estadía se cotizan por separado, sobre la base de dos jornadas presenciales en sus instalaciones.",
+    /* Se usa sólo si algún monto queda vacío: hoy los dos están cargados. */
     inversionPendiente: "A definir",
     inversionNota:
-      "El valor de cada alternativa se confirma junto con la que elijan: el trabajo presencial es el mismo, y lo que suma la Opción 2 es el acceso al portal para las 18 personas.",
+      "El trabajo presencial es idéntico en las dos: la diferencia son los $ 600.000 del acceso al portal para las 18 personas, durante el programa y 30 días más.",
   },
 
   /* =====================================================================
