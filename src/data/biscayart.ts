@@ -636,7 +636,25 @@ export const biscayart = {
      la altura del título y no al pie.
      ===================================================================== */
   hero: {
-    chip: "Propuesta de servicios · Biscayart Semillas",
+    /* Logo del cliente, arriba de todo, a modo de membrete. El archivo lo
+       aporta la empresa y vive en /public/images/biscayart/.
+
+       Va sobre una placa blanca porque el logo es azul marino y rojo, y
+       sobre el fondo oscuro de la portada el isotipo desaparecería.
+
+       Si `src` se vacía, la portada no dibuja el bloque: no queda hueco
+       ni imagen rota. Las medidas son las del archivo original y están
+       para reservar el espacio mientras carga. */
+    logo: {
+      src: "/images/biscayart/biscayart-semillas.png",
+      alt: "Biscayart Semillas",
+      ancho: 1024,
+      alto: 231,
+    },
+    /* No hay rótulo sobre el título: con el logo del cliente encabezando
+       la columna, un chip que repita el nombre debajo suena a etiqueta
+       de más. Qué es el documento lo dice la ficha de al lado, en el
+       campo Cliente, y el <title> de la pestaña. */
     titulo: "Programa de adopción de Inteligencia Artificial",
     tituloResalte: "aplicada por áreas de trabajo.",
     subtitulo:

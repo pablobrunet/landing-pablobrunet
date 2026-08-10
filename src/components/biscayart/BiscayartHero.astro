@@ -37,7 +37,26 @@ const { hero, indice, indiceTitulo } = biscayart;
 
   <div class="container bh__inner">
     <div class="bh__copy">
-      <p class="bh__chip">{hero.chip}</p>
+      {/* Membrete: el logo del cliente encabeza la propuesta. Va DENTRO
+          de la columna de texto y no en un bloque propio arriba de la
+          grilla: así lo único que lo separa del chip es su margen, y no
+          se le suma el aire que meten el contenedor y la grilla.
+
+          Sobre placa blanca, porque el logo es azul marino y rojo y
+          sobre el fondo de la portada el isotipo se perdería. Si no hay
+          archivo cargado, el bloque no se dibuja. */}
+      {
+        hero.logo.src && (
+          <span class="bh__placa">
+            <img
+              src={hero.logo.src}
+              alt={hero.logo.alt}
+              width={hero.logo.ancho}
+              height={hero.logo.alto}
+            />
+          </span>
+        )
+      }
 
       <h1 class="t-display bh__titulo">
         {hero.titulo}
@@ -139,6 +158,28 @@ const { hero, indice, indiceTitulo } = biscayart;
     mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
   }
 
+  /* ---- Membrete ---- */
+  /* Encabeza la columna de texto, arriba del título. Va DENTRO de la
+     columna y no en un bloque propio sobre la grilla: así lo único que
+     lo separa de lo que sigue es este margen, y no se le suma el aire
+     del contenedor ni el arranque de la grilla. Su relleno interno
+     cuenta como parte de esa distancia, así que va corto. */
+  .bh__placa {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(6, 12, 30, 0.35);
+  }
+  /* Alto fijo y ancho automático: el logo es apaisado y lo que tiene que
+     mantenerse constante es su altura, no el ancho de la placa. */
+  .bh__placa img {
+    display: block;
+    width: auto;
+    height: clamp(30px, 4.5vw, 40px);
+  }
+
   .bh__inner {
     position: relative;
     display: grid;
@@ -147,19 +188,6 @@ const { hero, indice, indiceTitulo } = biscayart;
   }
 
   /* ---- Columna de texto ---- */
-  .bh__chip {
-    display: inline-block;
-    padding: 0.45rem 0.95rem;
-    margin-bottom: 1.35rem;
-    border-radius: var(--radius-pill);
-    background: rgba(169, 200, 245, 0.1);
-    border: 1px solid rgba(169, 200, 245, 0.28);
-    color: var(--i-neblina);
-    font-size: 0.8125rem;
-    font-weight: var(--w-subheadline);
-    letter-spacing: 0.04em;
-    line-height: 1.35;
-  }
   .bh__titulo {
     font-size: clamp(1.8rem, 1.1rem + 2.7vw, 2.85rem);
     line-height: 1.12;
