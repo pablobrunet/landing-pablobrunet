@@ -1,24 +1,40 @@
 ---
 /* =====================================================================
-   QUÉ PASA ENTRE ENCUENTROS Y DESPUÉS
+   LO QUE PASA ENTRE UNA JORNADA Y LA OTRA
    ---------------------------------------------------------------------
-   Los tres mecanismos que evitan que el aprendizaje quede atrapado en la
-   jornada presencial, en una sola sección porque responden la misma
-   objeción ("¿y después?"):
+   Esta sección prepara la decisión de la siguiente. Van dos bloques y el
+   orden importa:
 
-     · el ciclo entre encuentros — arriba, a todo el ancho, porque es lo
-       que le toca hacer al participante
-     · la plataforma asincrónica  — abajo a la izquierda
-     · la biblioteca interna      — abajo a la derecha
+     · el ciclo entre jornadas — está en las DOS opciones
+     · el portal con los videos — está en UNA sola
+
+   Por eso el ciclo va primero y sin adorno, y el portal después, con su
+   captura, su etiqueta "Sólo en la Opción 2" y una nota que aclara el
+   punto: cuando alguien lee esto todavía no sabe qué es la Opción 2,
+   porque las alternativas vienen en la sección siguiente.
+
+   Acá vivía además un tercer bloque, "buenas prácticas internas", con la
+   lista de lo que se identifica durante el programa. Se sacó a pedido de
+   Pablo: enumerar lo que iba a aparecer competía con lo único que ya se
+   puede mostrar, que es el portal.
 
    El ciclo se dibuja como una cadena de cinco pasos con flechas: es
    "Aprender → aplicar → compartir → mejorar → incorporar", y en lista
    vertical se perdía justamente el encadenamiento.
+
+   LA CAPTURA DEL PORTAL VA A TODO EL ANCHO. Es el único elemento de
+   prueba de la propuesta entera —el resto es lo que va a pasar, esto ya
+   existe— y en media columna la interfaz quedaba en 45% de escala, o
+   sea ilegible. A ancho completo se leen los títulos de los cursos y la
+   barra de avance, que es exactamente lo que hay que ver.
+
+   Va en marco de navegador (la barrita con tres puntos) para que se lea
+   como una captura de producto y no como una imagen decorativa.
    ===================================================================== */
 import Icon from "../Icon.astro";
 import { royjo } from "../../data/royjo";
-const { continuidad } = royjo;
-const { ciclo, plataforma, practicas } = continuidad;
+const { continuidad, anclas } = royjo;
+const { ciclo, plataforma } = continuidad;
 ---
 
 <section class="section i-claro cont" aria-label="Continuidad del aprendizaje">
@@ -34,6 +50,7 @@ const { ciclo, plataforma, practicas } = continuidad;
     {/* ---- El ciclo entre encuentros ---- */}
     <div class="ciclo i-reveal">
       <div class="ciclo__copy">
+        <span class="ciclo__et">{ciclo.etiqueta}</span>
         <h3 class="ciclo__t">{ciclo.titulo}</h3>
         <p class="ciclo__p">{ciclo.texto}</p>
         <ul class="ciclo__detalle">
@@ -62,36 +79,66 @@ const { ciclo, plataforma, practicas } = continuidad;
       </div>
     </div>
 
-    {/* ---- Plataforma + biblioteca interna ---- */}
-    <div class="cont__grid">
-      <article class="bloque i-reveal">
-        <span class="bloque__icono" aria-hidden="true">
+    {/* ---- El portal, a todo el ancho ---- */}
+    <article class="portal i-reveal">
+      <header class="portal__head">
+        <span class="portal__icono" aria-hidden="true">
           <Icon name={plataforma.icono} size={22} />
         </span>
-        <h3 class="bloque__t">{plataforma.titulo}</h3>
-        <p class="bloque__p">{plataforma.texto}</p>
-        <ul class="bloque__items">
-          {plataforma.items.map((it) => <li>{it}</li>)}
-        </ul>
-        <p class="bloque__acceso">
-          <Icon name="clock" size={16} />
-          {plataforma.acceso}
+        <span class="portal__et">{plataforma.etiqueta}</span>
+        <h3 class="portal__t">{plataforma.titulo}</h3>
+        <p class="portal__p">{plataforma.texto}</p>
+        {/* La etiqueta "Sólo en la Opción 2" aparece antes de que las
+            opciones existan en la página: esto la explica y da el salto. */}
+        <p class="portal__nota">
+          <span>{plataforma.nota}</span>
+          <a href={`#${anclas.alternativas}`}>
+            {plataforma.notaCta}
+            <Icon name="arrow" size={15} />
+          </a>
         </p>
-        <p class="bloque__remate">{plataforma.remate}</p>
-      </article>
+      </header>
 
-      <article class="bloque i-reveal">
-        <span class="bloque__icono" aria-hidden="true">
-          <Icon name={practicas.icono} size={22} />
-        </span>
-        <h3 class="bloque__t">{practicas.titulo}</h3>
-        <p class="bloque__p">{practicas.texto}</p>
-        <ul class="bloque__items">
-          {practicas.items.map((it) => <li>{it}</li>)}
-        </ul>
-        <p class="bloque__remate">{practicas.remate}</p>
-      </article>
-    </div>
+      <figure class="portal__captura">
+        <div class="portal__marco">
+          {/* Barrita de navegador: tres puntos y nada más. Con una barra
+              de direcciones falsa habría que inventar una URL. */}
+          <span class="portal__barra" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+          <img
+            src={plataforma.captura}
+            alt={plataforma.capturaAlt}
+            width="1358"
+            height="594"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <figcaption>{plataforma.capturaPie}</figcaption>
+      </figure>
+
+      <ul class="portal__claves">
+        {
+          plataforma.claves.map((c) => (
+            <li>
+              <span class="portal__clave-ico" aria-hidden="true">
+                <Icon name={c.icono} size={19} />
+              </span>
+              <p class="portal__clave-t">{c.titulo}</p>
+              <p class="portal__clave-p">{c.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="portal__acceso">
+        <Icon name="clock" size={16} />
+        {plataforma.acceso}
+      </p>
+
+      <p class="portal__remate">{plataforma.remate}</p>
+    </article>
   </div>
 </section>
 
@@ -105,6 +152,15 @@ const { ciclo, plataforma, practicas } = continuidad;
     background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
     border: 1px solid var(--borde);
     box-shadow: var(--shadow-sm);
+  }
+  .ciclo__et {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
   }
   .ciclo__t {
     font-family: var(--font-title);
@@ -191,28 +247,145 @@ const { ciclo, plataforma, practicas } = continuidad;
     box-shadow: 0 8px 20px rgba(23, 64, 143, 0.22);
   }
 
-  /* ---- Plataforma y biblioteca ---- */
-  .cont__grid {
-    display: grid;
-    gap: clamp(1.25rem, 3vw, 1.75rem);
+  /* ======================= EL PORTAL ============================== */
+  .portal {
     margin-top: clamp(1.25rem, 3vw, 1.75rem);
-    align-items: stretch;
-  }
-  .bloque {
-    display: flex;
-    flex-direction: column;
-    padding: clamp(1.4rem, 3vw, 1.9rem);
+    padding: clamp(1.4rem, 3vw, 2.1rem);
     border-radius: var(--radius-lg);
     background: #fff;
     border: 1px solid var(--borde);
     box-shadow: var(--shadow-sm);
-    transition: border-color var(--transition), box-shadow var(--transition);
   }
-  .bloque:hover {
-    border-color: var(--i-azul-500);
+  .portal__head {
+    max-width: 46rem;
+    margin-bottom: clamp(1.35rem, 3vw, 1.85rem);
+  }
+  .portal__et {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .portal__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
+    line-height: 1.25;
+    color: var(--azul-petroleo);
+  }
+  .portal__p {
+    margin-top: 0.7rem;
+    font-size: 0.975rem;
+    line-height: 1.65;
+    color: var(--azul-pizarra);
+  }
+  .portal__nota {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-top: 1.1rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+    font-size: 0.925rem;
+    line-height: 1.5;
+    color: var(--azul-petroleo);
+  }
+  .portal__nota a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
+    white-space: nowrap;
+  }
+  .portal__nota a:hover {
+    gap: 0.65rem;
+  }
+  .portal__nota a :global(svg) {
+    transition: transform var(--transition);
+  }
+
+  /* ---- La captura, en marco de navegador ---- */
+  .portal__captura {
+    margin: 0;
+  }
+  .portal__marco {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--borde);
+    background: var(--i-hielo);
     box-shadow: var(--shadow);
   }
-  .bloque__icono {
+  .portal__barra {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.6rem 0.85rem;
+    background: linear-gradient(180deg, #fff, var(--i-hielo));
+    border-bottom: 1px solid var(--borde);
+  }
+  .portal__barra i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--borde-punteado);
+  }
+  .portal__marco img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .portal__captura figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+    text-align: center;
+  }
+
+  /* ---- Las cuatro claves ---- */
+  .portal__claves {
+    display: grid;
+    gap: 1rem;
+    margin-top: clamp(1.35rem, 3vw, 1.85rem);
+  }
+  .portal__claves li {
+    padding: 1.1rem 1.15rem;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(120deg, var(--i-hielo-2), #fff 55%);
+    border: 1px solid var(--borde);
+  }
+  .portal__clave-ico {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0.7rem;
+    border-radius: 11px;
+    background: rgba(30, 92, 242, 0.09);
+    color: var(--i-azul-600);
+  }
+  .portal__clave-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .portal__clave-p {
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
+  }
+
+  .portal__icono {
     display: grid;
     place-items: center;
     width: 46px;
@@ -223,39 +396,11 @@ const { ciclo, plataforma, practicas } = continuidad;
     border: 1px solid var(--borde);
     color: var(--i-azul-600);
   }
-  .bloque__t {
-    font-family: var(--font-title);
-    font-weight: var(--w-headline);
-    font-size: 1.1rem;
-    line-height: 1.3;
-    color: var(--azul-petroleo);
-  }
-  .bloque__p {
-    margin-top: 0.6rem;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--azul-pizarra);
-  }
-  .bloque__items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin-top: 1.1rem;
-  }
-  .bloque__items li {
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-pill);
-    background: var(--i-hielo);
-    border: 1px solid var(--borde);
-    font-size: 0.85rem;
-    color: var(--azul-pizarra);
-  }
-  .bloque__acceso {
+  .portal__acceso {
     display: inline-flex;
     align-items: center;
-    align-self: flex-start;
     gap: 0.5rem;
-    margin-top: 1.1rem;
+    margin-top: clamp(1.35rem, 3vw, 1.85rem);
     padding: 0.5rem 0.9rem;
     border-radius: var(--radius-pill);
     background: rgba(30, 92, 242, 0.08);
@@ -264,10 +409,7 @@ const { ciclo, plataforma, practicas } = continuidad;
     font-weight: var(--w-subheadline);
     color: var(--verde-resalte);
   }
-  .bloque__remate {
-    /* `auto` empuja el remate al pie: las dos tarjetas tienen listas de
-       distinto largo y sin esto las franjas quedaban desalineadas. */
-    margin-top: auto;
+  .portal__remate {
     padding-top: 1.25rem;
     font-family: var(--font-title);
     font-weight: var(--w-subheadline);
@@ -275,7 +417,7 @@ const { ciclo, plataforma, practicas } = continuidad;
     line-height: 1.55;
     color: var(--verde-resalte);
   }
-  .bloque__remate::before {
+  .portal__remate::before {
     content: "";
     display: block;
     width: 100%;
@@ -284,12 +426,19 @@ const { ciclo, plataforma, practicas } = continuidad;
     background: var(--borde);
   }
 
+  @media (min-width: 620px) {
+    .portal__claves {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
   @media (min-width: 900px) {
     .ciclo {
       grid-template-columns: 1.15fr 0.85fr;
     }
-    .cont__grid {
-      grid-template-columns: 1fr 1fr;
+  }
+  @media (min-width: 1100px) {
+    .portal__claves {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 </style>

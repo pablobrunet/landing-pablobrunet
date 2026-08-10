@@ -53,7 +53,7 @@ export const royjo = {
   seo: {
     title: "Propuesta para Distribuidora Royjo — Programa de adopción de IA en el proceso comercial",
     description:
-      "Alcance del programa de adopción de Inteligencia Artificial aplicada a su proceso comercial: relevamiento, segmentación por rol, encuentros presenciales, plataforma de recursos y tres alternativas de implementación.",
+      "Alcance del programa de adopción de Inteligencia Artificial aplicada a su proceso comercial: relevamiento, segmentación por rol, dos jornadas presenciales y dos alternativas de implementación.",
   },
 
   /* ---- Anclas de navegación interna ---- */
@@ -85,7 +85,7 @@ export const royjo = {
       { etiqueta: "Propuesta presentada por", valor: "Pablo Brunet", icono: "estrella" },
       { etiqueta: "Modalidad", valor: "Presencial + recursos digitales de acompañamiento", icono: "flow" },
       { etiqueta: "Participantes estimados", valor: "18 personas", icono: "target" },
-      { etiqueta: "Duración sugerida", valor: "Según la alternativa seleccionada", icono: "calendario" },
+      { etiqueta: "Duración", valor: "Dos jornadas presenciales — ≈ 8 horas", icono: "calendario" },
     ],
   },
 
@@ -480,21 +480,24 @@ export const royjo = {
 
   /* =====================================================================
      8 · QUÉ PASA ENTRE ENCUENTROS Y DESPUÉS
-     Los tres mecanismos que evitan que el aprendizaje quede atrapado en la
-     jornada presencial: el ciclo entre encuentros, la plataforma
-     asincrónica y la biblioteca interna de casos.
+     ---------------------------------------------------------------------
+     Esta sección prepara la decisión de la siguiente: las dos jornadas y
+     el trabajo aplicado entre medio están en las dos alternativas, y el
+     portal está en una sola. Por eso el ciclo va primero (es común) y el
+     portal después, marcado como lo que separa una opción de la otra.
      ===================================================================== */
   continuidad: {
     eyebrow: "Sostenibilidad",
-    titulo: "Que no termine",
-    tituloResalte: "cuando termina la jornada.",
+    titulo: "Lo que pasa",
+    tituloResalte: "entre una jornada y la otra.",
     subtitulo:
-      "Tres mecanismos que trabajan juntos para que lo aprendido se aplique, se comparta y les quede puertas adentro.",
+      "El trabajo real ocurre en ese tramo, no en el aula. Con qué cuentan las personas mientras tanto es, justamente, lo único que separa a las dos alternativas.",
 
     ciclo: {
+      etiqueta: "En las dos opciones",
       titulo: "Dinámica entre encuentros",
       texto:
-        "Entre los encuentros proponemos pequeñas experiencias de aplicación. Cada participante elige uno o más casos reales de su trabajo, y esos casos los usamos como insumo del encuentro siguiente.",
+        "Entre las dos jornadas proponemos pequeñas experiencias de aplicación. Cada participante elige uno o más casos reales de su trabajo, y esos casos los usamos como insumo del segundo encuentro. Se llevan además las guías, las plantillas y la biblioteca de prompts para trabajar con eso.",
       pasosTitulo: "El ciclo",
       pasos: ["Aprender", "Aplicar", "Compartir", "Mejorar", "Incorporar"],
       detalle: [
@@ -505,124 +508,147 @@ export const royjo = {
       ],
     },
 
+    /* La captura del portal es el único elemento de prueba de toda la
+       propuesta: el resto son promesas de lo que va a pasar, y esto ya
+       existe. Por eso va a todo el ancho y no metida en una tarjeta.
+
+       ⚠️ Los textos de acá describen lo que SE VE en la captura y nada
+       más — usuario propio, avance guardado, cursos por nivel, cursos por
+       herramienta, comunidad y archivos. Si se cambia la captura, revisar
+       que sigan siendo ciertos, sobre todo los nombres de los cursos. No
+       agregar cifras de catálogo ni promesas de resultado: el portal
+       acompaña el programa, no lo reemplaza.
+
+       La captura vive en /public/images/integra/ y mide 1358×594. Si se
+       reemplaza por una de otra proporción, actualizar `width`/`height`
+       en RoyjoContinuidad.astro: están ahí para reservar el espacio y
+       evitar que la página salte cuando la imagen termina de cargar. */
     plataforma: {
       icono: "documento",
-      titulo: "Plataforma de recursos y contenidos asincrónicos",
+      etiqueta: "Sólo en la Opción 2",
+      titulo: "El portal con los cursos en video",
       texto:
-        "Su equipo recibe acceso a un espacio digital privado de formación y recursos.",
-      items: [
-        "Cursos introductorios y técnicos",
-        "Tutoriales y guías prácticas",
-        "Materiales complementarios",
-        "Plantillas y ejemplos",
-        "Biblioteca de prompts",
-        "Grabaciones y recursos seleccionados",
-        "Nuevos contenidos durante la vigencia del programa",
+        "Además de las guías, su equipo puede tener acceso a un espacio privado de formación. No es una carpeta con PDFs: cada persona entra con su usuario, ve los cursos en video que le corresponden y retoma donde dejó.",
+      /* La sección va ANTES de las alternativas, así que la etiqueta "Sólo
+         en la Opción 2" todavía no significa nada para quien lee. Esta
+         nota lo aclara y ofrece el salto. */
+      nota: "El portal es lo único que cambia entre las dos alternativas: una lo incluye y la otra no.",
+      notaCta: "Ver las alternativas",
+
+      captura: "/images/integra/portal-integra.png",
+      capturaAlt:
+        "Portal INTEGRA: el panel de un participante, con el curso en progreso y su barra de avance, el resumen de actividad y el catálogo de cursos por nivel",
+      capturaPie: "El portal tal como lo ve cada participante cuando entra.",
+
+      claves: [
+        {
+          icono: "people",
+          titulo: "Un usuario por persona",
+          texto:
+            "El avance queda guardado. Se retoma donde se dejó, sin volver a empezar ni depender de que alguien reenvíe un enlace.",
+        },
+        {
+          icono: "lista",
+          titulo: "Nivelar sin frenar al resto",
+          texto:
+            "Los cursos van por nivel: quien viene desde cero se pone al día solo antes del segundo encuentro, y quien ya sabe saltea. Es lo que las guías por sí solas no resuelven.",
+        },
+        {
+          icono: "chip",
+          titulo: "Cursos por herramienta",
+          /* Los nombres son los que se leen en la captura, textuales. Si
+             cambia el catálogo, cambiar acá también. */
+          texto:
+            "Bases y buenas prácticas de IA, Claude para tu negocio y Gemini para el trabajo — este último conecta directo con el entorno de Google que ya usan.",
+        },
+        {
+          icono: "barras",
+          titulo: "El avance se ve",
+          texto:
+            "Cursos en progreso y completados por persona: su referente interno sabe cómo viene el equipo sin tener que preguntar uno por uno.",
+        },
       ],
+
       /* El período no está cerrado a propósito: lo definen ellos, y puede
          extenderse más allá de lo que dure el programa. */
       acceso: "El período de acceso lo definen ustedes — puede extenderse por más tiempo",
       remate:
-        "Resuelve la principal dificultad de los grupos heterogéneos: quienes recién comienzan se nivelan sin frenar a quienes ya tienen experiencia, y quienes están más avanzados profundizan de manera autónoma.",
-    },
-
-    practicas: {
-      icono: "lista",
-      titulo: "Construcción de buenas prácticas internas",
-      texto:
-        "Además de las capacidades individuales, empiezan a construir una lógica propia de adopción. Durante el programa identificamos:",
-      items: [
-        "Casos de uso relevantes",
-        "Prompts que funcionan particularmente bien",
-        "Procesos susceptibles de ser mejorados",
-        "Herramientas útiles",
-        "Participantes con mayor nivel de adopción",
-        "Oportunidades de estandarización",
-      ],
-      remate: "Empiezan a construir su propia biblioteca interna de casos de uso de IA.",
+        "El portal no reemplaza los encuentros: los sostiene. Con 18 personas de niveles distintos, es la diferencia entre que el segundo encuentro arranque parejo o que haya que volver a explicar lo básico.",
     },
   },
 
   /* =====================================================================
      9 · ALTERNATIVAS DE IMPLEMENTACIÓN
-     El núcleo comercial de la propuesta. La Opción 2 va destacada porque
-     es la recomendada en el documento original.
+     ---------------------------------------------------------------------
+     El núcleo comercial. Las dos tienen EXACTAMENTE la misma estructura
+     presencial —relevamiento, dos jornadas, hasta cuatro talleres, ≈8
+     horas— y difieren en una sola cosa: si entre jornada y jornada hay
+     portal con videos o sólo material escrito.
+
+     Que compartan duración y alcance presencial NO es un descuido: es lo
+     que hace la comparación honesta. La Opción 2 no vende "más horas",
+     vende que 18 personas de niveles distintos lleguen parejas al
+     segundo encuentro. Si alguna vez se agregan opciones, mantener este
+     principio: una sola variable de diferencia por vez.
      ===================================================================== */
   alternativas: {
     eyebrow: "Alternativas",
-    titulo: "Tres formas de implementarlo",
+    titulo: "Dos formas de implementarlo",
     subtitulo:
-      "Las tres comparten el mismo enfoque. Cambian la profundidad, el tiempo presencial y qué tanto los acompañamos en la adopción después de los encuentros.",
+      "Las dos tienen la misma estructura: relevamiento previo, dos jornadas presenciales y trabajo aplicado entre medio. Lo único que cambia es con qué cuenta cada persona entre una jornada y la otra.",
     opciones: [
       {
         codigo: "Opción 1",
-        nombre: "Jornada de introducción y aplicación",
-        resumen: "Una primera experiencia intensiva con todo su equipo junto.",
-        duracion: "3 a 4 horas presenciales",
-        objetivo:
-          "Darles una primera experiencia intensiva que introduzca conceptos, muestre oportunidades y empiece a desarrollar casos de uso.",
-        alcance: [
-          "Relevamiento previo breve",
-          "Una jornada presencial",
-          "Trabajo conjunto con todo su equipo",
-          "Introducción a IA aplicada al trabajo",
-          "Casos comerciales y casos de productividad",
-          "Aplicaciones sobre las herramientas disponibles",
-          "Ejercicios prácticos",
-          "Acceso posterior a recursos digitales",
-        ],
-        consideracion:
-          "Genera sensibilización y aprendizaje inicial, pero ofrece menor profundidad para acompañarlos en la incorporación efectiva de nuevas prácticas.",
-        inversion: "",
-      },
-      {
-        codigo: "Opción 2",
         nombre: "Programa de adopción aplicado por roles",
-        recomendada: true,
-        resumen: "Dos jornadas, hasta cuatro talleres segmentados y trabajo real entre encuentros.",
+        resumen: "Las dos jornadas, con guías y plantillas para el trabajo entre medio.",
         duracion: "≈ 8 horas presenciales, en dos jornadas",
         objetivo:
           "Trabajar con grupos segmentados sobre casos reales de cada rol, con aplicación entre jornadas y una segunda instancia para profundizar sobre lo que efectivamente les pasó al aplicarlo.",
         alcance: [
-          "Relevamiento previo",
+          "Relevamiento previo: diagnóstico individual y reunión con referentes",
           "Diseño personalizado de los contenidos",
           "Dos jornadas presenciales",
-          "Hasta cuatro talleres",
-          "Aproximadamente 8 horas totales de interacción presencial",
-          "Actividades entre encuentros",
-          "Acceso al portal y recursos digitales",
-          "Casos de uso adaptados",
-          "Recomendaciones finales",
+          "Hasta cuatro talleres segmentados por grupo",
+          "Aproximadamente 8 horas totales de trabajo presencial",
+          "Actividades de aplicación entre jornadas",
+          "Guías prácticas y plantillas de trabajo",
+          "Biblioteca de prompts",
+          "Casos de uso adaptados a su operación",
+          "Documento final de buenas prácticas y recomendaciones",
         ],
+        consideracion:
+          "Entre jornada y jornada cada persona aplica con el material escrito que le dejamos. Quien arranca desde cero no tiene dónde nivelarse por su cuenta, y con 18 participantes de niveles distintos esa diferencia se nota en el segundo encuentro.",
         inversion: "",
       },
       {
-        codigo: "Opción 3",
-        nombre: "Programa de adopción + acompañamiento",
-        resumen: "Todo el alcance de la Opción 2 más una instancia posterior de acompañamiento.",
-        duracion: "30 a 60 días",
+        codigo: "Opción 2",
+        nombre: "Programa de adopción + portal de formación",
+        recomendada: true,
+        resumen: "Lo mismo, más el portal con los cursos en video durante todo el programa.",
+        duracion: "≈ 8 horas presenciales, en dos jornadas",
         objetivo:
-          "Trabajar no solamente sobre la capacitación, sino sobre el comienzo de un proceso de adopción más estructurado puertas adentro.",
+          "Lo mismo que la Opción 1, con el portal cubriendo el tramo entre jornadas: cada persona se nivela o profundiza por su cuenta, según de dónde parta.",
         alcance: [
-          "Todo el alcance de la Opción 2",
-          "Reunión remota de seguimiento",
-          "Revisión de casos desarrollados",
-          "Consultas",
-          "Actualización de la biblioteca de casos",
-          "Revisión de buenas prácticas",
-          "Definición de referentes internos",
-          "Recomendaciones para continuar el proceso",
+          "Todo el alcance de la Opción 1",
+          "Acceso al Portal INTEGRA para los 18 participantes",
+          "Cursos en video, ordenados por nivel y por herramienta",
+          "Avance guardado por persona",
+          "Comunidad y archivos compartidos",
+          "Nuevos contenidos durante la vigencia del acceso",
+          "Período de acceso a definir con ustedes",
         ],
         inversion: "",
       },
     ] as OpcionRoyjo[],
 
-    /* Cronograma de la opción recomendada, desplegado aparte: en la tarjeta
-       no entraba sin volverla ilegible frente a las otras dos. */
+    /* El cronograma es el MISMO para las dos opciones: por eso ya no se
+       titula "de la recomendada". La única diferencia vive en el paso
+       "Entre jornadas", y está dicha ahí con todas las letras. */
     cronograma: {
-      etiqueta: "Opción recomendada",
-      titulo: "Cómo se despliega el programa por roles",
-      subtitulo: "Los grupos los definimos en función del diagnóstico previo.",
+      etiqueta: "Las dos opciones",
+      titulo: "Cómo se despliega el programa",
+      subtitulo:
+        "La estructura es idéntica en las dos alternativas. Los grupos los definimos en función del diagnóstico previo.",
       pasos: [
         {
           etiqueta: "Etapa previa",
@@ -644,9 +670,10 @@ export const royjo = {
         {
           etiqueta: "Entre jornadas",
           titulo: "7 a 15 días de aplicación",
+          /* Único punto donde las dos opciones se separan. */
+          texto: "Es el tramo donde se diferencian las dos opciones: con la 2, además, tienen el portal.",
           items: [
-            "Acceden al portal",
-            "Consumen contenidos seleccionados",
+            "Trabajan con las guías y la biblioteca de prompts",
             "Prueban herramientas",
             "Aplican casos reales",
             "Documentan experiencias",
@@ -672,7 +699,7 @@ export const royjo = {
       "Traslados, alojamiento y viáticos se cotizan por separado, considerando dos jornadas presenciales en sus instalaciones.",
     inversionPendiente: "A definir",
     inversionNota:
-      "El valor se define según la alternativa que consideren más conveniente: cada opción tiene un alcance distinto y por lo tanto una inversión distinta.",
+      "El valor de cada alternativa se confirma junto con la que elijan: el trabajo presencial es el mismo, y lo que suma la Opción 2 es el acceso al portal para las 18 personas.",
   },
 
   /* =====================================================================
@@ -681,14 +708,14 @@ export const royjo = {
   entregables: {
     eyebrow: "Entregables",
     titulo: "Qué les queda en la mano",
-    subtitulo: "Según la modalidad que elijan, el programa puede incluir:",
+    subtitulo:
+      "Todo esto va en las dos opciones. El acceso al portal es lo único que depende de cuál elijan.",
     items: [
       "Diagnóstico inicial de su equipo",
       "Mapa de niveles de adopción",
       "Identificación de necesidades por rol",
       "Diseño personalizado de los encuentros",
-      "Encuentros presenciales",
-      "Acceso al portal de formación",
+      "Dos jornadas presenciales",
       "Biblioteca de recursos",
       "Plantillas de trabajo",
       "Ejemplos de prompts",

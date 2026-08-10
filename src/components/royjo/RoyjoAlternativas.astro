@@ -2,19 +2,24 @@
 /* =====================================================================
    ALTERNATIVAS DE IMPLEMENTACIÓN
    ---------------------------------------------------------------------
-   El núcleo comercial: tres tarjetas comparables, con la Opción 2
-   destacada porque es la recomendada en el documento original. Las tres
-   muestran los mismos campos y en el mismo orden —duración, objetivo,
-   alcance, inversión— para que se puedan comparar de un vistazo.
+   El núcleo comercial: dos tarjetas comparables, con la Opción 2
+   destacada por ser la recomendada. Las dos muestran los mismos campos y
+   en el mismo orden —duración, objetivo, alcance, inversión— para que se
+   puedan comparar de un vistazo.
+
+   Las dos declaran la MISMA duración (≈8 horas en dos jornadas), y está
+   bien que así sea: difieren en una sola variable —si hay portal con
+   videos entre jornada y jornada— y repetir la duración es lo que hace
+   evidente que eso es lo único que se está comparando.
 
    INVERSIÓN. Los tres montos están sin definir. La tarjeta NO inventa un
    número ni deja un hueco: muestra "A definir" con el mismo peso visual
    que tendría el precio, así se ve que el campo existe y está pendiente.
    Cuando se completen en data/royjo.ts, aparecen solos.
 
-   El cronograma de la opción recomendada va aparte, debajo de las
-   tarjetas: dentro de la tarjeta no entraba sin volverla ilegible frente
-   a las otras dos.
+   El cronograma va aparte, debajo de las tarjetas. Es el mismo para las
+   dos opciones —por eso no está adentro de ninguna— y el único paso donde
+   se separan, "Entre jornadas", lo dice explícitamente.
    ===================================================================== */
 import Icon from "../Icon.astro";
 import { royjo } from "../../data/royjo";
@@ -475,10 +480,14 @@ const { cronograma } = alternativas;
       grid-template-columns: 1fr 1fr;
     }
   }
-  @media (min-width: 1000px) {
+  @media (min-width: 860px) {
+    /* Dos tarjetas y no tres: entran antes en dos columnas, y a este
+       ancho el alcance de cada una se lee sin renglones de tres palabras. */
     .alt__grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr 1fr;
     }
+  }
+  @media (min-width: 1000px) {
     .crono__pasos {
       grid-template-columns: repeat(4, 1fr);
     }
