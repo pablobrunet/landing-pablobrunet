@@ -1,0 +1,128 @@
+---
+/* =====================================================================
+   /cotizacion-biscayart — PROPUESTA PARA BISCAYART
+   ---------------------------------------------------------------------
+   Propuesta de servicios para un cliente concreto. Se comparte por
+   enlace directo y va con `noindex`: no es contenido del sitio.
+
+   ES UNA PROPUESTA PUBLICADA COMO PÁGINA, NO UN PDF Y NO UNA LANDING.
+   De ahí las dos reglas que la gobiernan:
+
+     · El LENGUAJE es el de un documento: descriptivo, con el alcance y
+       las condiciones definidos punto por punto. Los títulos nombran lo
+       que hay debajo; no hay promesas de resultado ni llamados a la
+       acción. La regla completa está en data/biscayart.ts.
+
+     · La FORMA aprovecha que es HTML: índice navegable, secciones con
+       aire, tarjetas, selector de áreas sin JavaScript y la jornada
+       dibujada como línea de tiempo. Es el sistema visual de la
+       propuesta de Royjo y de la landing del Método INTEGRA —mismos
+       tokens, mismas utilidades (`.i-oscuro`, `.i-head`, `.i-eyebrow`,
+       `.i-hl`, `.i-reveal`), mismo navbar y pie—.
+
+   IDENTIDAD VISUAL. styles/integra.css se importa sólo acá, así que su
+   CSS no viaja en las demás páginas.
+
+   ORDEN DEL DOCUMENTO. Los once puntos salen del array `indice` de los
+   datos, que es también el que dibuja el índice de la portada:
+
+      01 Objeto de la propuesta
+      02 Situación actual y consideraciones previas
+      03 Enfoque de trabajo
+      04 Alcance del servicio                      4.1 a 4.4
+      05 Organización de los participantes
+      06 Contenidos previstos por área
+      07 Programa de la jornada
+      08 Condiciones económicas
+      09 Condiciones generales                     9.1 a 9.6
+      10 Servicios complementarios no comprendidos
+      11 Próximos pasos
+
+   El punto 10 —el portal— va DESPUÉS de las condiciones a propósito.
+   Entre el alcance y el precio competía con ellos; acá se lee como lo
+   que es, una capacidad disponible que no está comprendida.
+
+   ⚠️ Si se agrega, se saca o se reordena una sección hay que tocar tres
+   lugares: el array `indice`, el `n` de la sección en los datos y el
+   orden de los componentes de acá abajo.
+
+   FONDOS. Alternan claro / tenue / oscuro para separar los bloques de
+   lectura. Los dos oscuros son el enfoque y el programa: las dos
+   secciones donde se describe cómo se trabaja.
+   ===================================================================== */
+import "../../styles/integra.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import BiscayartHero from "../../components/biscayart/BiscayartHero.astro";
+import BiscayartObjeto from "../../components/biscayart/BiscayartObjeto.astro";
+import BiscayartEnfoque from "../../components/biscayart/BiscayartEnfoque.astro";
+import BiscayartAlcance from "../../components/biscayart/BiscayartAlcance.astro";
+import BiscayartParticipantes from "../../components/biscayart/BiscayartParticipantes.astro";
+import BiscayartContenidos from "../../components/biscayart/BiscayartContenidos.astro";
+import BiscayartPrograma from "../../components/biscayart/BiscayartPrograma.astro";
+import BiscayartEconomicas from "../../components/biscayart/BiscayartEconomicas.astro";
+import BiscayartGenerales from "../../components/biscayart/BiscayartGenerales.astro";
+import BiscayartComplementarios from "../../components/biscayart/BiscayartComplementarios.astro";
+import BiscayartCierre from "../../components/biscayart/BiscayartCierre.astro";
+import { biscayart } from "../../data/biscayart";
+---
+
+<Base
+  title={biscayart.seo.title}
+  description={biscayart.seo.description}
+  waMensaje={biscayart.whatsapp.mensaje}
+  waEtiqueta={biscayart.whatsapp.etiqueta}
+  noindex
+>
+  <Navbar />
+  <main>
+    <BiscayartHero />
+    <BiscayartObjeto />
+    <BiscayartEnfoque />
+    <BiscayartAlcance />
+    <BiscayartParticipantes />
+    <BiscayartContenidos />
+    <BiscayartPrograma />
+    <BiscayartEconomicas />
+    <BiscayartGenerales />
+    <BiscayartComplementarios />
+    <BiscayartCierre />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  /* ------------------------------------------------------------------
+     Aparición al hacer scroll, igual que en la landing del Método
+     INTEGRA y en la propuesta de Royjo. La clase `is-listo` es la que
+     aplica el estado inicial oculto: sin JS nunca se agrega y el
+     contenido se ve normal.
+
+     El selector de áreas no necesita JavaScript: son radios nativos.
+     ------------------------------------------------------------------ */
+  function initPropuestaBiscayart() {
+    if (!document.querySelector("#condiciones-economicas")) return;
+
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducido || !("IntersectionObserver" in window)) return;
+
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
+    bloques.forEach((b) => b.classList.add("is-listo"));
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).classList.add("is-visible");
+          obs.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+    bloques.forEach((b) => obs.observe(b));
+  }
+
+  initPropuestaBiscayart();
+  document.addEventListener("astro:page-load", initPropuestaBiscayart);
+</script>

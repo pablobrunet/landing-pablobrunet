@@ -1,0 +1,171 @@
+---
+/* =====================================================================
+   01 · OBJETO   ·   02 · SITUACIÓN ACTUAL
+   ---------------------------------------------------------------------
+   Las dos secciones de apertura van en un mismo archivo: comparten
+   estructura —encabezado, texto, un bloque destacado— y separarlas sólo
+   habría duplicado el andamiaje.
+
+   El objeto cierra con la finalidad en una franja: es la frase que
+   define para qué se contrata el servicio, y al final de tres párrafos
+   se perdía.
+
+   La situación actual va en fondo tenue y con las consideraciones
+   numeradas. Cierra declarando que todo eso es preliminar, y esa
+   aclaración no es un formalismo: lo que hoy se sabe salió de una
+   conversación, y el documento no puede presentarlo como diagnóstico
+   cerrado.
+   ===================================================================== */
+import { biscayart } from "../../data/biscayart";
+const { objeto, situacion } = biscayart;
+---
+
+<section class="section i-claro obj" id={objeto.id} aria-label={objeto.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{objeto.eyebrow}</span>
+      <h2 class="t-h2">{objeto.titulo}</h2>
+      {objeto.parrafos.map((p) => <p class="text-muted">{p}</p>)}
+    </header>
+
+    <div class="obj__finalidad i-reveal">
+      <span class="obj__finalidad-t">{objeto.finalidadTitulo}</span>
+      <p>{objeto.finalidad}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section i-hielo i-claro sit" id={situacion.id} aria-label={situacion.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{situacion.eyebrow}</span>
+      <h2 class="t-h2">{situacion.titulo}</h2>
+      <p class="text-muted">{situacion.intro}</p>
+    </header>
+
+    <ol class="sit__lista i-reveal">
+      {
+        situacion.puntos.map((p, i) => (
+          <li>
+            <span class="sit__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span>{p}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="sit__cuenta i-reveal">
+      <h3 class="sit__cuenta-t">{situacion.cuentaTitulo}</h3>
+      <p>{situacion.cuentaTexto}</p>
+    </div>
+
+    <p class="sit__cierre i-reveal">{situacion.cierre}</p>
+  </div>
+</section>
+
+<style>
+  .obj .i-head,
+  .sit .i-head {
+    max-width: 62rem;
+  }
+  .obj .i-head p + p {
+    margin-top: 0.9rem;
+  }
+
+  /* ---- Finalidad ---- */
+  .obj__finalidad {
+    padding: clamp(1.35rem, 3vw, 1.85rem) clamp(1.35rem, 3vw, 1.95rem);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+  }
+  .obj__finalidad-t {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .obj__finalidad p {
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1rem, 0.92rem + 0.5vw, 1.2rem);
+    line-height: 1.55;
+    color: var(--azul-petroleo);
+  }
+
+  /* ---- Consideraciones ---- */
+  .sit__lista {
+    display: grid;
+    gap: 0.7rem;
+    list-style: none;
+  }
+  .sit__lista li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.95rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    border: 1px solid var(--borde);
+    font-size: 0.975rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .sit__n {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--i-neblina);
+    color: var(--verde-resalte);
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.06em;
+  }
+
+  /* ---- El tramo sobre el esquema de cuentas ---- */
+  .sit__cuenta {
+    margin-top: clamp(1.25rem, 3vw, 1.75rem);
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .sit__cuenta-t {
+    margin-bottom: 0.6rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+  }
+  .sit__cuenta p {
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+
+  .sit__cierre {
+    margin-top: clamp(1.25rem, 3vw, 1.5rem);
+    padding: 1rem 1.3rem;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--i-denim);
+    background: rgba(59, 108, 183, 0.07);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 900px) {
+    /* Dos columnas: son cuatro renglones cortos y en una sola columna la
+       sección quedaba como una lista larga de tarjetas casi vacías. */
+    .sit__lista {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

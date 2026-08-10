@@ -1,0 +1,150 @@
+---
+/* =====================================================================
+   03 · ENFOQUE DE TRABAJO
+   ---------------------------------------------------------------------
+   Va sobre fondo oscuro: en este sistema el oscuro marca los tramos
+   donde se explica una decisión de fondo, y acá se explica por qué el
+   programa se organiza por áreas y no por herramientas.
+
+   Los cinco criterios llevan el mismo peso visual —ninguno es el
+   principal— y sus títulos son etiquetas, no argumentos: "Tareas
+   reales", "Grupos reducidos". El desarrollo está en el texto de cada
+   tarjeta, que describe qué se hace y no por qué conviene.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { biscayart } from "../../data/biscayart";
+const { enfoque } = biscayart;
+---
+
+<section class="section i-oscuro enf" id={enfoque.id} aria-label={enfoque.titulo}>
+  <div class="enf__fondo" aria-hidden="true"><span class="trama"></span></div>
+
+  <div class="container enf__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{enfoque.eyebrow}</span>
+      <h2 class="t-h2">{enfoque.titulo}</h2>
+      {enfoque.parrafos.map((p) => <p class="text-muted">{p}</p>)}
+    </header>
+
+    <p class="enf__rotulo i-reveal">{enfoque.criteriosTitulo}</p>
+
+    <div class="enf__grid">
+      {
+        enfoque.criterios.map((c) => (
+          <article class="enf__card i-reveal">
+            <span class="enf__num" aria-hidden="true">{c.numero}</span>
+            <span class="enf__icono" aria-hidden="true">
+              <Icon name={c.icono} size={22} />
+            </span>
+            <h3 class="enf__card-t">{c.titulo}</h3>
+            <p>{c.texto}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .enf {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #0a1430 0%, #0d1b3d 55%, #0a1430 100%);
+  }
+  .enf__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .enf__fondo span {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    -webkit-mask-image: radial-gradient(70% 70% at 80% 15%, #000, transparent 70%);
+    mask-image: radial-gradient(70% 70% at 80% 15%, #000, transparent 70%);
+  }
+  .enf__inner {
+    position: relative;
+  }
+  .enf .i-head {
+    max-width: 62rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .enf__rotulo {
+    margin-bottom: 1.15rem;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+
+  .enf__grid {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .enf__card {
+    position: relative;
+    padding: clamp(1.3rem, 2.6vw, 1.7rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .enf__card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(169, 200, 245, 0.4);
+  }
+  /* El número queda en la esquina, grande y muy bajo de opacidad: ordena
+     la lectura sin pelearle al título. */
+  .enf__num {
+    position: absolute;
+    top: clamp(0.85rem, 2vw, 1.15rem);
+    right: clamp(1rem, 2.5vw, 1.35rem);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 2.1rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: rgba(169, 200, 245, 0.16);
+  }
+  .enf__icono {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 1rem;
+    border-radius: 13px;
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
+  }
+  .enf__card-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .enf__card p {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: rgba(220, 230, 246, 0.75);
+  }
+
+  @media (min-width: 640px) {
+    .enf__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1040px) {
+    /* Cinco criterios en tres columnas: los dos últimos quedan en la
+       fila de abajo, alineados a la izquierda. Con cinco columnas las
+       tarjetas medían cuatro palabras de ancho. */
+    .enf__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,229 @@
+---
+/* =====================================================================
+   07 · PROGRAMA DE LA JORNADA
+   ---------------------------------------------------------------------
+   La grilla horaria completa. Es el dato que la empresa necesita para
+   organizar la operación del día —quién falta de su puesto y en qué
+   franja—, así que va con horarios concretos y no con una descripción
+   de bloques.
+
+   Se dibuja como una línea de tiempo y no como una tabla: en un teléfono
+   una tabla de tres columnas obliga a desplazar en horizontal, y acá
+   cada fila cabe en una tarjeta angosta sin perder ningún dato.
+
+   Las filas sin grupo asignado —preparación, intervalos, intermedio—
+   vienen marcadas con `pausa` en los datos y se dibujan atenuadas y sin
+   punto lleno: son parte del día pero no son actividad de los
+   participantes, y en un listado parejo competían con las que sí lo son.
+
+   Va sobre fondo oscuro, como el enfoque: son las dos secciones donde se
+   describe cómo se trabaja.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { biscayart } from "../../data/biscayart";
+const { programa } = biscayart;
+---
+
+<section class="section i-oscuro prg" id={programa.id} aria-label={programa.titulo}>
+  <div class="prg__fondo" aria-hidden="true"><span class="trama"></span></div>
+
+  <div class="container prg__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{programa.eyebrow}</span>
+      <h2 class="t-h2">{programa.titulo}</h2>
+      <p class="text-muted">{programa.intro}</p>
+    </header>
+
+    <ol class="linea i-reveal">
+      {
+        programa.filas.map((f) => (
+          <li class:list={["linea__fila", f.pausa && "es-pausa"]}>
+            <span class="linea__hora">{f.horario}</span>
+            <span class="linea__punto" aria-hidden="true" />
+            <span class="linea__act">{f.actividad}</span>
+            {f.quienes && <span class="linea__quien">{f.quienes}</span>}
+          </li>
+        ))
+      }
+    </ol>
+
+    <article class="clin i-reveal">
+      <span class="clin__ico" aria-hidden="true">
+        <Icon name="mic" size={20} />
+      </span>
+      <div>
+        <h3 class="clin__t">{programa.clinicaTitulo}</h3>
+        <p class="clin__p">{programa.clinicaTexto}</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .prg {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #0a1430 0%, #0d1b3d 55%, #0a1430 100%);
+  }
+  .prg__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .prg__fondo span {
+    position: absolute;
+    inset: 0;
+    opacity: 0.3;
+    -webkit-mask-image: radial-gradient(70% 70% at 15% 10%, #000, transparent 70%);
+    mask-image: radial-gradient(70% 70% at 15% 10%, #000, transparent 70%);
+  }
+  .prg__inner {
+    position: relative;
+  }
+  .prg .i-head {
+    max-width: 62rem;
+  }
+
+  /* ---- Línea de tiempo ---- */
+  .linea {
+    position: relative;
+    list-style: none;
+  }
+  .linea__fila {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "hora hora"
+      "punto act"
+      "punto quien";
+    align-items: center;
+    gap: 0.15rem 0.9rem;
+    padding: 0.85rem 0;
+  }
+  .linea__fila + .linea__fila {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .linea__hora {
+    grid-area: hora;
+    margin-bottom: 0.35rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    color: var(--i-celeste);
+  }
+  /* El punto marca el tramo; lo que separa una fila de otra es la línea
+     horizontal, no un hilo vertical. Un hilo que uniera los puntos
+     habría que recortarlo en los extremos y se descuadra apenas una fila
+     cambia de alto, que en mobile pasa con la mitad. */
+  .linea__punto {
+    grid-area: punto;
+    position: relative;
+    align-self: start;
+    width: 11px;
+    height: 11px;
+    margin-top: 0.42rem;
+    border-radius: 50%;
+    background: var(--i-azul-500);
+    box-shadow: 0 0 0 4px rgba(76, 134, 245, 0.18);
+  }
+  .linea__act {
+    grid-area: act;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .linea__quien {
+    grid-area: quien;
+    justify-self: start;
+    margin-top: 0.35rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: rgba(169, 200, 245, 0.14);
+    border: 1px solid rgba(169, 200, 245, 0.28);
+    font-size: 0.75rem;
+    font-weight: var(--w-subheadline);
+    letter-spacing: 0.04em;
+    color: var(--i-neblina);
+    white-space: nowrap;
+  }
+
+  /* Pausas y preparación: mismo lugar en la línea, otro peso. */
+  .es-pausa .linea__act {
+    font-size: 0.9375rem;
+    color: rgba(220, 230, 246, 0.55);
+  }
+  .es-pausa .linea__hora {
+    color: rgba(169, 200, 245, 0.6);
+    font-weight: var(--w-subheadline);
+  }
+  .es-pausa .linea__punto {
+    background: transparent;
+    border: 2px solid rgba(169, 200, 245, 0.45);
+    box-shadow: none;
+  }
+
+  /* ---- La clínica ---- */
+  .clin {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(169, 200, 245, 0.28);
+  }
+  .clin__ico {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
+  }
+  .clin__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: #fff;
+  }
+  .clin__p {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(220, 230, 246, 0.78);
+  }
+
+  @media (min-width: 700px) {
+    /* En pantalla ancha la hora vuelve a su columna y la fila se lee como
+       una grilla horaria: hora · punto · actividad · grupo. */
+    .linea__fila {
+      grid-template-columns: 7.5rem auto 1fr auto;
+      grid-template-areas: "hora punto act quien";
+      gap: 1rem;
+      padding: 0.7rem 0;
+    }
+    .linea__hora {
+      margin-bottom: 0;
+      text-align: right;
+    }
+    .linea__punto {
+      align-self: center;
+      margin-top: 0;
+    }
+    .linea__quien {
+      margin-top: 0;
+      justify-self: end;
+    }
+    .clin {
+      grid-template-columns: auto 1fr;
+      gap: 1.35rem;
+    }
+  }
+</style>

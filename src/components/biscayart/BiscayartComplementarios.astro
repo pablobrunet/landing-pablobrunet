@@ -1,0 +1,152 @@
+---
+/* =====================================================================
+   10 · SERVICIOS COMPLEMENTARIOS NO COMPRENDIDOS
+   ---------------------------------------------------------------------
+   ⚠️ ACÁ NO SE OFRECE NADA. El primer elemento de la sección, antes de
+   cualquier descripción y antes de la imagen, es el aviso de que esto no
+   forma parte del alcance del punto 4 ni del importe del punto 8. Ese
+   aviso no se saca ni se ablanda: sin él la sección se convierte en un
+   argumento de venta metido al final de la propuesta, que es exactamente
+   lo que no se quiso.
+
+   Va después de las condiciones y no antes: leído entre el alcance y el
+   precio competía con ellos; leído acá es lo que es —una capacidad
+   disponible, informada para conocimiento de la empresa—.
+
+   LA CAPTURA es la única imagen del documento. Va en marco de navegador
+   sobre tarjeta oscura por dos razones: marca que este bloque es de otra
+   naturaleza que el resto de la sección, y recorta una interfaz casi
+   toda blanca que sobre fondo claro se fundía con la página.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { biscayart } from "../../data/biscayart";
+const { complementarios } = biscayart;
+---
+
+<section
+  class="section i-hielo i-claro cmp"
+  id={complementarios.id}
+  aria-label={complementarios.titulo}
+>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{complementarios.eyebrow}</span>
+      <h2 class="t-h2">{complementarios.titulo}</h2>
+    </header>
+
+    {/* El aviso va antes de la descripción y de la imagen: tiene que
+        leerse sí o sí primero. */}
+    <p class="cmp__aviso i-reveal">
+      <Icon name="shield" size={18} />
+      <span>{complementarios.aviso}</span>
+    </p>
+
+    <div class="cmp__cuerpo i-reveal">
+      <div class="cmp__texto">
+        {complementarios.parrafos.map((p) => <p>{p}</p>)}
+      </div>
+
+      <figure class="cmp__fig">
+        <div class="cmp__marco">
+          {/* Barrita de navegador: tres puntos y nada más. Con una barra
+              de direcciones falsa habría que inventar una URL. */}
+          <span class="cmp__barra" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+          <img
+            src={complementarios.captura}
+            alt={complementarios.capturaAlt}
+            width="1358"
+            height="594"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <figcaption>{complementarios.capturaPie}</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cmp__aviso {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1rem 1.35rem;
+    margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
+  }
+  .cmp__aviso > :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .cmp__cuerpo {
+    display: grid;
+    gap: clamp(1.35rem, 3vw, 2rem);
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .cmp__texto p {
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .cmp__texto p + p {
+    margin-top: 0.9rem;
+  }
+
+  /* ---- La captura ---- */
+  .cmp__fig {
+    margin: 0;
+  }
+  .cmp__marco {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--borde);
+    background: var(--i-hielo);
+    box-shadow: 0 16px 40px rgba(13, 27, 61, 0.14);
+  }
+  .cmp__barra {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.55rem 0.8rem;
+    background: linear-gradient(180deg, #fff, var(--i-hielo));
+    border-bottom: 1px solid var(--borde);
+  }
+  .cmp__barra i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--borde-punteado);
+  }
+  .cmp__marco img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .cmp__fig figcaption {
+    margin-top: 0.65rem;
+    font-size: var(--fs-caption);
+    line-height: 1.5;
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 900px) {
+    .cmp__cuerpo {
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: center;
+    }
+  }
+</style>

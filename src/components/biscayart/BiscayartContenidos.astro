@@ -1,0 +1,411 @@
+---
+/* =====================================================================
+   06 · CONTENIDOS PREVISTOS POR ÁREA
+   ---------------------------------------------------------------------
+   Abre con los contenidos comunes y recién después va el detalle por
+   área. Ese orden dice algo que el texto no necesita repetir: hay un
+   piso igual para los dos grupos, y lo específico se apoya sobre él.
+
+   EL SELECTOR NO USA JAVASCRIPT. Son radios + labels: el estado vive en
+   el :checked y el CSS lo lee con `:has()`. Anda apenas se pinta el HTML
+   y con las flechas del teclado, que es el comportamiento nativo de un
+   grupo de radios.
+
+   EL RADIO VA ADENTRO DE SU TARJETA. Al hacer clic el navegador enfoca
+   el input y, si está fuera de pantalla, lo trae a la vista: con los
+   cinco apilados arriba del bloque, cada clic pegaba un salto. Además va
+   con `scroll-margin: 0`, porque global.css le pone a todo `[id]` un
+   `scroll-margin-top` para las anclas y eso también actúa cuando el foco
+   cambia.
+
+   ALTURA FIJA. Los cinco paneles se apilan en la misma celda de grid: el
+   bloque mide lo que el más largo y no salta al cambiar de área.
+
+   ⚠️ La regla que enciende cada panel nombra las claves UNA POR UNA (en
+   CSS no hay forma de escribirla genérica). Si se agrega o se renombra
+   un área en data/biscayart.ts, hay que tocar también esa regla.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { biscayart } from "../../data/biscayart";
+const { contenidos } = biscayart;
+
+const listado = contenidos.listado;
+const cols = listado.length;
+---
+
+<section class="section i-claro cnt" id={contenidos.id} aria-label={contenidos.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{contenidos.eyebrow}</span>
+      <h2 class="t-h2">{contenidos.titulo}</h2>
+      <p class="text-muted">{contenidos.intro}</p>
+    </header>
+
+    {/* ---- Contenidos comunes ---- */}
+    <div class="comun i-reveal">
+      <div class="comun__copy">
+        <h3 class="comun__t">{contenidos.comunesTitulo}</h3>
+        <p class="comun__p">{contenidos.comunesTexto}</p>
+      </div>
+      <ul class="comun__items">
+        {
+          contenidos.comunes.map((c) => (
+            <li>
+              <span class="comun__tick" aria-hidden="true">
+                <Icon name="check" size={13} />
+              </span>
+              <span>{c}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    {/* ---- Detalle por área ---- */}
+    <div class="at i-reveal" style={`--cols:${cols}`}>
+      <div class="at__riel" role="radiogroup" aria-label="Áreas de trabajo">
+        {
+          listado.map((a, i) => (
+            <label class="area">
+              <input
+                class="at__radio"
+                type="radio"
+                name="area-biscayart"
+                id={`area-${a.clave}`}
+                value={a.clave}
+                checked={i === 0}
+              />
+              <span class="area__icono" aria-hidden="true">
+                <Icon name={a.icono} size={19} />
+              </span>
+              <span class="area__nombre">{a.corto}</span>
+              <span class="area__pico" aria-hidden="true" />
+            </label>
+          ))
+        }
+      </div>
+
+      <div class="at__paneles">
+        {
+          listado.map((a) => (
+            <article class="panel" id={`panel-${a.clave}`}>
+              <div class="panel__lado">
+                <span class="panel__et">Área</span>
+                <p class="panel__nombre">{a.nombre}</p>
+                <span class="panel__cuenta">
+                  <Icon name="lista" size={15} />
+                  {a.aplicaciones.length} aplicaciones previstas
+                </span>
+              </div>
+
+              <div class="panel__medio">
+                <ul class="panel__apps">
+                  {a.aplicaciones.map((ap) => (
+                    <li>{ap}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cnt .i-head {
+    max-width: 62rem;
+  }
+
+  /* ---- Contenidos comunes ---- */
+  .comun {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .comun__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.05rem, 1rem + 0.5vw, 1.25rem);
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+  }
+  .comun__p {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--texto-suave);
+  }
+  .comun__items {
+    display: grid;
+    gap: 0.6rem;
+    align-content: center;
+  }
+  .comun__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--azul-pizarra);
+  }
+  .comun__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.15rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+  }
+
+  /* ======================= SELECTOR DE ÁREAS ======================== */
+  .at {
+    position: relative;
+  }
+  /* No va con `display:none`: se enfoca, aunque no se vea. Y sin el
+     `scroll-margin: 0` el navegador desplaza la página al enfocarlo. */
+  .at__radio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+    scroll-margin: 0;
+  }
+  .at__riel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  .area {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: clamp(0.8rem, 1.8vw, 1.05rem) 0.6rem;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition),
+      background var(--transition), border-color var(--transition);
+  }
+  .area:hover {
+    transform: translateY(-2px);
+    border-color: var(--i-azul-500);
+  }
+  .area__icono {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--i-hielo);
+    color: var(--i-azul-600);
+    transition: background var(--transition), color var(--transition);
+  }
+  .area__nombre {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    text-align: center;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+    transition: color var(--transition);
+  }
+  .area__pico {
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 3px;
+    background: var(--i-azul-700);
+    transform: rotate(45deg) scale(0);
+    transition: transform var(--transition);
+  }
+
+  /* ============================ PANELES ============================= */
+  .at__paneles {
+    display: grid;
+    margin-top: 1.15rem;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  /* Los cinco en la misma celda: el alto lo fija el más largo. */
+  .panel {
+    grid-area: 1 / 1;
+    display: grid;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 220ms ease, visibility 220ms;
+  }
+  .panel__lado {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.3rem, 2.8vw, 1.8rem);
+    background: linear-gradient(155deg, var(--i-azul-700) 0%, var(--i-navy) 70%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .panel__lado::after {
+    content: "";
+    position: absolute;
+    right: -9rem;
+    bottom: -12rem;
+    width: 26rem;
+    height: 26rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 62%, rgba(169, 200, 245, 0.16) 62.5%, transparent 63.5%),
+      radial-gradient(circle, transparent 48%, rgba(169, 200, 245, 0.14) 48.5%, transparent 49.5%),
+      radial-gradient(circle, transparent 34%, rgba(169, 200, 245, 0.12) 34.5%, transparent 35.5%);
+  }
+  .panel__lado > * {
+    position: relative;
+  }
+  .panel__et {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .panel__nombre {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+  }
+  .panel__cuenta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    /* `auto` absorbe el sobrante de los paneles más cortos. */
+    margin-top: auto;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(169, 200, 245, 0.3);
+    font-size: 0.8125rem;
+    font-weight: var(--w-subheadline);
+  }
+
+  .panel__medio {
+    padding: clamp(1.25rem, 3vw, 1.8rem);
+  }
+  .panel__apps {
+    display: grid;
+    gap: 0.55rem;
+    list-style: none;
+  }
+  .panel__apps li {
+    position: relative;
+    padding-left: 1.3rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .panel__apps li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.62rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+  }
+
+  /* ==================== QUÉ PRENDE CADA RADIO ====================== */
+  .area:has(.at__radio:checked) {
+    background: linear-gradient(165deg, var(--i-azul-600) 0%, var(--i-azul-800) 100%);
+    border-color: transparent;
+    box-shadow: 0 14px 30px rgba(23, 64, 143, 0.3);
+  }
+  .area:has(.at__radio:checked) .area__nombre {
+    color: #fff;
+  }
+  .area:has(.at__radio:checked) .area__icono {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+  .area:has(.at__radio:checked) .area__pico {
+    transform: rotate(45deg) scale(1);
+  }
+  /* El radio no se ve: el anillo de foco lo dibuja la tarjeta. */
+  .area:has(.at__radio:focus-visible) {
+    outline: 3px solid var(--i-azul-600);
+    outline-offset: 3px;
+  }
+  /* Acá sí hace falta nombrar cada clave: la relación es entre un radio y
+     el panel que le corresponde. Si se agrega un área, sumar su par. */
+  .at:has(#area-admin:checked) #panel-admin,
+  .at:has(#area-comercial:checked) #panel-comercial,
+  .at:has(#area-marketing:checked) #panel-marketing,
+  .at:has(#area-laboratorio:checked) #panel-laboratorio,
+  .at:has(#area-produccion:checked) #panel-produccion {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel,
+    .area,
+    .area__pico {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 720px) {
+    .at__riel {
+      grid-template-columns: repeat(var(--cols), 1fr);
+    }
+    .comun__items {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.5rem;
+    }
+    /* Dos columnas de aplicaciones: son renglones cortos y en una sola
+       columna el panel medía ocho renglones de alto contra un lateral
+       casi vacío. */
+    .panel__apps {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem 1.75rem;
+    }
+  }
+  @media (min-width: 960px) {
+    .panel {
+      grid-template-columns: minmax(15rem, 0.8fr) 1.2fr;
+    }
+    .comun {
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: center;
+    }
+  }
+</style>

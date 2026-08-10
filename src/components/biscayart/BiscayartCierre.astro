@@ -1,0 +1,215 @@
+---
+/* =====================================================================
+   11 · PRÓXIMOS PASOS + FIRMA
+   ---------------------------------------------------------------------
+   La secuencia prevista, numerada, y el pie con la firma y las vías de
+   contacto.
+
+   NO ES UN LLAMADO A LA ACCIÓN. El bloque de contacto está para
+   consultar sobre el documento, no para cerrar la operación: por eso el
+   título pregunta por dudas, el texto habla de aclaraciones y no hay
+   calendario embebido. Los dos enlaces van con el mismo peso, ninguno
+   destacado como botón principal.
+
+   Los plazos de los pasos son los mismos del punto 4 y del 9.1. Si se
+   cambia uno, hay que cambiar los tres.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { biscayart } from "../../data/biscayart";
+import { site } from "../../data/site";
+const { pasos, whatsapp } = biscayart;
+
+const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(whatsapp.mensaje)}`;
+const asunto = encodeURIComponent("Propuesta — Biscayart Semillas");
+---
+
+<section class="section i-claro fin" id={pasos.id} aria-label={pasos.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{pasos.eyebrow}</span>
+      <h2 class="t-h2">{pasos.titulo}</h2>
+      <p class="text-muted">{pasos.intro}</p>
+    </header>
+
+    <ol class="fin__pasos i-reveal">
+      {
+        pasos.items.map((p, i) => (
+          <li class="fin__paso">
+            <span class="fin__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span class="fin__p">{p}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="fin__cierre i-reveal">{pasos.cierre}</p>
+
+    <div class="fin__contacto i-reveal">
+      <div>
+        <h3 class="fin__contacto-t">{pasos.contactoTitulo}</h3>
+        <p class="fin__contacto-p">{pasos.contactoTexto}</p>
+      </div>
+      <div class="fin__vias">
+        <a href={wa} target="_blank" rel="noopener" class="fin__via">
+          <Icon name="arrowUpRight" size={16} />
+          {pasos.ctaWhatsapp}
+        </a>
+        <a href={`mailto:${site.email}?subject=${asunto}`} class="fin__via">
+          <Icon name="mail" size={16} />
+          {pasos.ctaEmail}
+        </a>
+      </div>
+    </div>
+
+    <p class="fin__firma i-reveal">
+      <strong>{pasos.firma}</strong>
+      <span>{pasos.firmaPie}</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* ---- Los siete pasos ---- */
+  .fin__pasos {
+    position: relative;
+    display: grid;
+    list-style: none;
+  }
+  /* El hilo que une los pasos es UNO SOLO, a lo largo de toda la lista, y
+     los círculos lo tapan con su fondo opaco. Dibujarlo por tramos
+     obligaba a calcular la distancia entre dos centros, y esa cuenta se
+     rompe apenas un renglón se parte en dos líneas. */
+  .fin__pasos::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    background: var(--borde);
+  }
+  .fin__paso {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.05rem;
+    padding: 0.7rem 0;
+  }
+  .fin__n {
+    position: relative;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--i-neblina);
+    color: var(--verde-resalte);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.78rem;
+  }
+  .fin__p {
+    font-size: 0.975rem;
+    line-height: 1.55;
+    color: var(--azul-pizarra);
+  }
+
+  .fin__cierre {
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    padding: 1.1rem 1.35rem;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-petroleo);
+  }
+
+  /* ---- Contacto ---- */
+  .fin__contacto {
+    display: grid;
+    gap: 1.35rem;
+    align-items: center;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
+    border: 1px solid var(--borde);
+  }
+  .fin__contacto-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+  }
+  .fin__contacto-p {
+    margin-top: 0.45rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+  .fin__vias {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  /* Enlaces con marco, no botones de conversión: los dos con el mismo
+     peso, sin degradé ni sombra. */
+  .fin__via {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: var(--radius-pill);
+    background: #fff;
+    border: 1px solid var(--borde-punteado);
+    font-size: 0.9375rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-petroleo);
+    transition: border-color var(--transition), color var(--transition);
+  }
+  .fin__via:hover {
+    border-color: var(--i-azul-600);
+    color: var(--verde-resalte);
+  }
+
+  .fin__firma {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--borde);
+  }
+  .fin__firma strong {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    color: var(--azul-petroleo);
+  }
+  .fin__firma span {
+    font-size: var(--fs-caption);
+    letter-spacing: 0.03em;
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 760px) {
+    .fin__pasos {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2.5rem;
+    }
+    /* En dos columnas el hilo uniría pasos que no son consecutivos en
+       pantalla: se saca y quedan los círculos. */
+    .fin__pasos::before {
+      display: none;
+    }
+  }
+  @media (min-width: 900px) {
+    .fin__contacto {
+      grid-template-columns: 1.4fr auto;
+      gap: 2.5rem;
+    }
+  }
+</style>

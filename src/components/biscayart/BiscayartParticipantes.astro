@@ -1,0 +1,261 @@
+---
+/* =====================================================================
+   05 · ORGANIZACIÓN DE LOS PARTICIPANTES
+   ---------------------------------------------------------------------
+   Los dos grupos van uno al lado del otro, con exactamente los mismos
+   campos y el mismo tratamiento visual. La simetría es intencional:
+   cualquier asimetría —una tarjeta destacada, un campo de más— se leería
+   como que un grupo importa más que el otro.
+
+   El bloque de cierre va debajo y a todo el ancho, con otro tratamiento:
+   no es un tercer grupo, es la instancia conjunta que ocurre cuando los
+   dos ya terminaron.
+
+   ⚠️ Las fichas declaran la duración del bloque y nada más. No dicen
+   cuánta gente tiene cada grupo, porque no se sabe cómo se reparten las
+   treinta personas entre las áreas: el único número de participantes de
+   toda la propuesta es el total de la portada.
+
+   La nota del final es una condición de la organización —que se releva a
+   todos, sea cual sea su grupo— y no un comentario: por eso va destacada
+   y no como un párrafo suelto.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { biscayart } from "../../data/biscayart";
+const { organizacion } = biscayart;
+const { cierre } = organizacion;
+---
+
+<section class="section i-hielo i-claro par" id={organizacion.id} aria-label={organizacion.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{organizacion.eyebrow}</span>
+      <h2 class="t-h2">{organizacion.titulo}</h2>
+      <p class="text-muted">{organizacion.intro}</p>
+    </header>
+
+    <div class="par__grid">
+      {
+        organizacion.grupos.map((g) => (
+          <article class="grupo i-reveal">
+            <span class="grupo__letra" aria-hidden="true">{g.letra}</span>
+            <span class="grupo__icono" aria-hidden="true">
+              <Icon name={g.icono} size={20} />
+            </span>
+            <span class="grupo__et">{g.etiqueta}</span>
+            <h3 class="grupo__nombre">{g.nombre}</h3>
+            <p class="grupo__texto">{g.texto}</p>
+
+            <dl class="grupo__datos">
+              <div>
+                <dt>Duración del bloque</dt>
+                <dd>{g.duracion}</dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+
+    <article class="par__cierre i-reveal">
+      <span class="par__cierre-ico" aria-hidden="true">
+        <Icon name={cierre.icono} size={20} />
+      </span>
+      <div>
+        <span class="grupo__et">{cierre.etiqueta}</span>
+        <h3 class="par__cierre-t">{cierre.nombre}</h3>
+        <p class="par__cierre-p">{cierre.texto}</p>
+      </div>
+      <span class="par__cierre-dur">
+        <Icon name="clock" size={15} />
+        {cierre.duracion}
+      </span>
+    </article>
+
+    <ul class="par__notas i-reveal">
+      {organizacion.notas.map((n) => <li>{n}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .par .i-head {
+    max-width: 62rem;
+  }
+
+  .par__grid {
+    display: grid;
+    gap: 1.15rem;
+    align-items: stretch;
+  }
+  .grupo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .grupo__letra {
+    position: absolute;
+    top: clamp(0.7rem, 2vw, 1rem);
+    right: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--i-neblina);
+  }
+  .grupo__icono {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 0.95rem;
+    border-radius: 12px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .grupo__et {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .grupo__nombre {
+    margin-top: 0.35rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+    line-height: 1.25;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .grupo__texto {
+    margin-top: 0.7rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  /* `auto` empuja los datos al pie: los dos textos tienen distinto largo
+     y sin esto las fichas quedaban a alturas distintas. */
+  .grupo__datos {
+    display: grid;
+    gap: 0.85rem;
+    margin-top: auto;
+    padding-top: 1.15rem;
+  }
+  .grupo__datos > div {
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--borde);
+  }
+  .grupo__datos dt {
+    font-size: 0.68rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--azul-pizarra);
+  }
+  .grupo__datos dd {
+    margin-top: 0.2rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.95rem;
+    color: var(--azul-petroleo);
+  }
+
+  /* ---- Bloque de cierre ---- */
+  .par__cierre {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    margin-top: 1.15rem;
+    padding: clamp(1.35rem, 3vw, 1.75rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
+    border: 1px dashed var(--borde-punteado);
+  }
+  .par__cierre-ico {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .par__cierre-t {
+    margin-top: 0.35rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+  }
+  .par__cierre-p {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .par__cierre-dur {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(30, 92, 242, 0.08);
+    border: 1px solid rgba(30, 92, 242, 0.18);
+    font-size: 0.875rem;
+    font-weight: var(--w-subheadline);
+    color: var(--verde-resalte);
+    white-space: nowrap;
+  }
+
+  /* ---- Notas ---- */
+  .par__notas {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: clamp(1.25rem, 3vw, 1.6rem);
+    padding: 1.1rem 1.35rem;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+    list-style: none;
+  }
+  .par__notas li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+  .par__notas li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.68rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+  }
+
+  @media (min-width: 820px) {
+    .par__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .par__cierre {
+      grid-template-columns: auto 1fr auto;
+      gap: 1.35rem;
+    }
+  }
+</style>
