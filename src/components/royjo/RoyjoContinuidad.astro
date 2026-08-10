@@ -13,6 +13,13 @@
    punto: cuando alguien lee esto todavía no sabe qué es la Opción 2,
    porque las alternativas vienen en la sección siguiente.
 
+   EL PORTAL VA EN TARJETA OSCURA dentro de una sección clara. Marca a
+   simple vista que es un bloque de otra naturaleza —lo opcional frente a
+   lo que está en las dos— y, sobre todo, recorta la captura: la interfaz
+   del portal es casi toda blanca y sobre tarjeta blanca se fundía con el
+   fondo. El marco del navegador conserva su cromo claro, porque es parte
+   de la captura y no de la tarjeta.
+
    Acá vivía además un tercer bloque, "buenas prácticas internas", con la
    lista de lo que se identifica durante el programa. Se sacó a pedido de
    Pablo: enumerar lo que iba a aparecer competía con lo único que ya se
@@ -247,14 +254,43 @@ const { ciclo, plataforma } = continuidad;
     box-shadow: 0 8px 20px rgba(23, 64, 143, 0.22);
   }
 
-  /* ======================= EL PORTAL ============================== */
+  /* ======================= EL PORTAL ==============================
+     Tarjeta OSCURA dentro de una sección clara. Dos razones:
+       · separa lo que está en las dos opciones (el ciclo, arriba, en
+         claro) de lo que está en una sola;
+       · la captura es una interfaz casi toda blanca, y sobre tarjeta
+         blanca se fundía con el fondo. Sobre azul profundo, el marco
+         recorta y la captura se lee como una pantalla encendida.
+     Los colores salen del mismo juego que usan las secciones `.i-oscuro`
+     de la landing: blanco para títulos, Celeste Suave para acentos y
+     velos blancos muy bajos para las superficies. */
   .portal {
+    position: relative;
+    overflow: hidden;
     margin-top: clamp(1.25rem, 3vw, 1.75rem);
     padding: clamp(1.4rem, 3vw, 2.1rem);
     border-radius: var(--radius-lg);
-    background: #fff;
-    border: 1px solid var(--borde);
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(160deg, var(--i-navy) 0%, var(--i-noche) 65%);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  /* Halo tenue en la esquina superior derecha: le da profundidad al azul
+     plano sin competir con la captura. */
+  .portal::before {
+    content: "";
+    position: absolute;
+    top: -18rem;
+    right: -12rem;
+    width: 38rem;
+    height: 38rem;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35;
+    background: radial-gradient(circle, rgba(76, 134, 245, 0.55), transparent 70%);
+    pointer-events: none;
+  }
+  .portal > * {
+    position: relative;
   }
   .portal__head {
     max-width: 46rem;
@@ -267,20 +303,20 @@ const { ciclo, plataforma } = continuidad;
     font-weight: var(--w-headline);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--verde-resalte);
+    color: var(--i-celeste);
   }
   .portal__t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
     font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
     line-height: 1.25;
-    color: var(--azul-petroleo);
+    color: #fff;
   }
   .portal__p {
     margin-top: 0.7rem;
     font-size: 0.975rem;
     line-height: 1.65;
-    color: var(--azul-pizarra);
+    color: rgba(220, 230, 246, 0.8);
   }
   .portal__nota {
     display: flex;
@@ -290,18 +326,18 @@ const { ciclo, plataforma } = continuidad;
     margin-top: 1.1rem;
     padding: 0.85rem 1.1rem;
     border-radius: var(--radius-sm);
-    border-left: 3px solid var(--i-azul-600);
-    background: rgba(30, 92, 242, 0.06);
+    border-left: 3px solid var(--i-azul-500);
+    background: rgba(169, 200, 245, 0.1);
     font-size: 0.925rem;
     line-height: 1.5;
-    color: var(--azul-petroleo);
+    color: var(--i-neblina);
   }
   .portal__nota a {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-resalte);
+    color: var(--i-celeste);
     white-space: nowrap;
   }
   .portal__nota a:hover {
@@ -315,12 +351,14 @@ const { ciclo, plataforma } = continuidad;
   .portal__captura {
     margin: 0;
   }
+  /* El marco conserva su cromo claro: es parte de la captura, no de la
+     tarjeta. El borde translúcido es el que lo despega del azul. */
   .portal__marco {
     border-radius: var(--radius);
     overflow: hidden;
-    border: 1px solid var(--borde);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     background: var(--i-hielo);
-    box-shadow: var(--shadow);
+    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.55);
   }
   .portal__barra {
     display: flex;
@@ -344,7 +382,7 @@ const { ciclo, plataforma } = continuidad;
   .portal__captura figcaption {
     margin-top: 0.75rem;
     font-size: var(--fs-caption);
-    color: var(--texto-suave);
+    color: rgba(220, 230, 246, 0.6);
     text-align: center;
   }
 
@@ -357,8 +395,13 @@ const { ciclo, plataforma } = continuidad;
   .portal__claves li {
     padding: 1.1rem 1.15rem;
     border-radius: var(--radius-sm);
-    background: linear-gradient(120deg, var(--i-hielo-2), #fff 55%);
-    border: 1px solid var(--borde);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .portal__claves li:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(169, 200, 245, 0.4);
   }
   .portal__clave-ico {
     display: grid;
@@ -367,22 +410,23 @@ const { ciclo, plataforma } = continuidad;
     height: 36px;
     margin-bottom: 0.7rem;
     border-radius: 11px;
-    background: rgba(30, 92, 242, 0.09);
-    color: var(--i-azul-600);
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
   }
   .portal__clave-t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
     font-size: 0.95rem;
     line-height: 1.3;
-    color: var(--azul-petroleo);
+    color: #fff;
     text-wrap: balance;
   }
   .portal__clave-p {
     margin-top: 0.4rem;
     font-size: 0.875rem;
     line-height: 1.55;
-    color: var(--texto-suave);
+    color: rgba(220, 230, 246, 0.75);
   }
 
   .portal__icono {
@@ -392,9 +436,9 @@ const { ciclo, plataforma } = continuidad;
     height: 46px;
     margin-bottom: 1rem;
     border-radius: 13px;
-    background: var(--i-hielo);
-    border: 1px solid var(--borde);
-    color: var(--i-azul-600);
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
   }
   .portal__acceso {
     display: inline-flex;
@@ -403,11 +447,11 @@ const { ciclo, plataforma } = continuidad;
     margin-top: clamp(1.35rem, 3vw, 1.85rem);
     padding: 0.5rem 0.9rem;
     border-radius: var(--radius-pill);
-    background: rgba(30, 92, 242, 0.08);
-    border: 1px solid rgba(30, 92, 242, 0.18);
+    background: rgba(169, 200, 245, 0.12);
+    border: 1px solid rgba(169, 200, 245, 0.3);
     font-size: 0.875rem;
     font-weight: var(--w-subheadline);
-    color: var(--verde-resalte);
+    color: var(--i-neblina);
   }
   .portal__remate {
     padding-top: 1.25rem;
@@ -415,7 +459,7 @@ const { ciclo, plataforma } = continuidad;
     font-weight: var(--w-subheadline);
     font-size: 0.95rem;
     line-height: 1.55;
-    color: var(--verde-resalte);
+    color: var(--i-celeste);
   }
   .portal__remate::before {
     content: "";
@@ -423,7 +467,7 @@ const { ciclo, plataforma } = continuidad;
     width: 100%;
     height: 1px;
     margin-bottom: 1.1rem;
-    background: var(--borde);
+    background: rgba(255, 255, 255, 0.12);
   }
 
   @media (min-width: 620px) {
