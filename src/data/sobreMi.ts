@@ -162,7 +162,10 @@ export const sobreMi = {
       ],
       fotos: [
         { img: "/images/speaker/evento-01.jpg", imgLabel: "/images/speaker/evento-01.jpg", alt: "Pablo Brunet dando una charla" },
+        { img: "/images/speaker/evento-07.jpg", imgLabel: "/images/speaker/evento-07.jpg", alt: "Pablo Brunet con el grupo de participantes al cierre de una charla" },
+        { img: "/images/speaker/evento-08.jpg", imgLabel: "/images/speaker/evento-08.jpg", alt: "Pablo Brunet exponiendo en el faro de AgroActiva" },
         { img: "/images/speaker/evento-02.jpg", imgLabel: "/images/speaker/evento-02.jpg", alt: "Pablo Brunet dando una charla" },
+        { img: "/images/speaker/evento-09.webp", imgLabel: "/images/speaker/evento-09.webp", alt: "Pablo Brunet en el escenario de TEDx" },
         { img: "/images/speaker/evento-03.jpg", imgLabel: "/images/speaker/evento-03.jpg", alt: "Pablo Brunet dando una charla" },
         { img: "/images/speaker/evento-04.jpg", imgLabel: "/images/speaker/evento-04.jpg", alt: "Pablo Brunet dando una charla" },
         { img: "/images/speaker/evento-05.jpg", imgLabel: "/images/speaker/evento-05.jpg", alt: "Pablo Brunet dando una charla" },
