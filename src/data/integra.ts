@@ -620,11 +620,11 @@ export const integra = {
       },
       {
         q: "No somos técnicos.",
-        a: "Mejor. El método está diseñado para PyMEs sin área de tecnología. Hablamos de cotizaciones, clientes y horas — no de modelos ni de código.",
+        a: "Mejor. El método está pensado para quienes resuelven el trabajo de todos los días en una PyME, sin ser programadores. Partimos de problemas reales: cotizaciones, clientes y horas — no de modelos ni de código.",
       },
       {
         q: "No tenemos tiempo para esto.",
-        a: "No te pedimos que dejes de trabajar para capacitarte: se aplica sobre lo que ya estás haciendo. Contamos con números: unas 1,5 horas semanales por participante, 3 a 4 horas semanales para el referente interno y 30 minutos cada quince días para dirección.",
+        a: "No te pedimos que dejes de trabajar para capacitarte: se aplica sobre lo que ya estás haciendo. Contamos con números: unas 1,5 horas semanales por participante, 3 a 4 horas semanales para el referente interno y una hora cada quince días para dirección.",
       },
       {
         q: "¿Y si las pruebas no salen bien?",
@@ -636,7 +636,7 @@ export const integra = {
       },
       {
         q: "¿Es presencial?",
-        a: "Es 100% remoto, con encuentros semanales en vivo por videollamada. Presencialidad solo puntual, si se justifica.",
+        a: "Es 100% remoto, con encuentros semanales en vivo por videollamada. Presencialidad solo puntual, en caso de ser acordado con el cliente.",
       },
     ],
   },
