@@ -115,26 +115,17 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
   </section>
 
   {
-    /* Charlas grabadas: la misma grilla del home, para que se pueda ver
-       material sin salir de la página del servicio. */
-    servicio.mostrarCharlas && (
-      <section class="section section--tint">
-        <div class="container">
-          <Videos
-            eyebrow={charlasMeta.eyebrow}
-            titulo={charlasMeta.titulo}
-            subtitulo={charlasMeta.subtitulo}
-            items={charlas}
-          />
-        </div>
-      </section>
-    )
-  }
+    /* Carrusel de capacitaciones. Sin fotos cargadas no se dibuja.
 
-  {
-    /* Carrusel de capacitaciones. Sin fotos cargadas no se dibuja. */
+       Va ANTES de las charlas grabadas: son fotos de trabajo real, con
+       lugar y tema, y prueban el servicio mejor que un video. Los videos
+       quedan después, como material para ver con más tiempo.
+
+       El fondo tenue viaja con el orden: las secciones de la página
+       alternan claro y tinte, así que al cambiar el orden se cambia
+       también dónde va `section--tint`. */
     servicio.galeria && servicio.galeria.fotos.length > 0 && (
-      <section class="section">
+      <section class="section section--tint">
         <div class="container">
           <header class="galeria__head">
             <span class="eyebrow">{servicio.galeria.eyebrow}</span>
@@ -144,6 +135,23 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
             )}
           </header>
           <CarruselFotos fotos={servicio.galeria.fotos} etiqueta={servicio.galeria.titulo} />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    /* Charlas grabadas: la misma grilla del home, para que se pueda ver
+       material sin salir de la página del servicio. */
+    servicio.mostrarCharlas && (
+      <section class="section">
+        <div class="container">
+          <Videos
+            eyebrow={charlasMeta.eyebrow}
+            titulo={charlasMeta.titulo}
+            subtitulo={charlasMeta.subtitulo}
+            items={charlas}
+          />
         </div>
       </section>
     )
