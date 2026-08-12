@@ -156,9 +156,9 @@ export const site = {
     cta: { label: "Quiero una charla", href: "/contacto" },
     fotos: [
       { img: "/images/speaker/evento-01.jpg", imgLabel: "/images/speaker/evento-01.jpg" },
-      { img: "/images/speaker/evento-02.jpg", imgLabel: "/images/speaker/evento-02.jpg" },
+      { img: "/images/speaker/evento-07.jpg", imgLabel: "/images/speaker/evento-07.jpg" },
       { img: "/images/speaker/evento-03.jpg", imgLabel: "/images/speaker/evento-03.jpg" },
-      { img: "/images/speaker/evento-04.jpg", imgLabel: "/images/speaker/evento-04.jpg" },
+      { img: "/images/speaker/evento-08.jpg", imgLabel: "/images/speaker/evento-08.jpg" },
       { img: "/images/speaker/evento-05.jpg", imgLabel: "/images/speaker/evento-05.jpg" },
     ],
   },
