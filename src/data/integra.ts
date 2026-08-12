@@ -466,6 +466,80 @@ export const integra = {
   },
 
   /* =====================================================================
+     5 bis · EL PORTAL DE FORMACIÓN
+     ---------------------------------------------------------------------
+     Va justo después de "qué queda instalado" porque es lo único de toda
+     la landing que YA EXISTE y se puede mostrar: el resto es lo que va a
+     pasar en los 60 días. También aterriza lo que dice la FAQ —"los
+     cursos son un componente, no el producto"—: acá se ve qué son esos
+     cursos y por qué no se venden sueltos.
+
+     ⚠️ Los textos describen lo que SE VE en la captura y nada más:
+     usuario propio, avance guardado, cursos por nivel (A1, A2, B2, B3),
+     cursos por herramienta con sus nombres textuales, comunidad y
+     archivos compartidos. Si se cambia la captura, revisar que sigan
+     siendo ciertos — sobre todo los nombres de los cursos. No agregar
+     cifras de catálogo ni promesas de resultado: el portal acompaña el
+     programa, no lo reemplaza (ver `remate`).
+
+     La captura mide 1358×594. Si se reemplaza por una de otra
+     proporción, actualizar `width`/`height` en IntegraPortal.astro:
+     están ahí para reservar el espacio y evitar que la página salte
+     cuando la imagen termina de cargar.
+     ===================================================================== */
+  portal: {
+    eyebrow: "Portal INTEGRA",
+    titulo: "El acompañamiento es semanal.",
+    tituloResalte: "El portal está todos los días.",
+    subtitulo:
+      "Los encuentros en vivo son una parte. El resto de la semana cada persona avanza por su cuenta, y para eso está el portal: un espacio privado de formación, con los cursos en video, la comunidad y los archivos compartidos del programa.",
+
+    icono: "documento",
+    etiqueta: "Incluido en el programa",
+    titulo2: "Un usuario para cada persona del equipo",
+    texto:
+      "No es una carpeta con PDFs ni una lista de videos sueltos. Cada participante entra con su usuario, ve los cursos que le corresponden según de dónde parte y retoma exactamente donde dejó.",
+
+    captura: "/images/integra/portal-integra.png",
+    capturaAlt:
+      "Portal INTEGRA: el panel de un participante, con el curso en progreso y su barra de avance, el resumen de actividad y el catálogo de cursos por nivel",
+    capturaPie: "El portal tal como lo ve cada participante cuando entra.",
+
+    claves: [
+      {
+        icono: "people",
+        titulo: "El avance queda guardado",
+        texto:
+          "Se retoma donde se dejó, sin volver a empezar ni depender de que alguien reenvíe un enlace o un archivo.",
+      },
+      {
+        icono: "lista",
+        titulo: "Nivelar sin frenar al resto",
+        texto:
+          "Los cursos van por nivel: quien viene desde cero se pone al día solo entre un encuentro y el otro, y quien ya sabe saltea.",
+      },
+      {
+        icono: "chip",
+        titulo: "Cursos por herramienta",
+        /* Los nombres son los que se leen en la captura, textuales. Si
+           cambia el catálogo, cambiar acá también. */
+        texto:
+          "Introducción al Método INTEGRA, Bases y buenas prácticas de IA, Claude para tu negocio y Gemini para el trabajo.",
+      },
+      {
+        icono: "barras",
+        titulo: "Se ve cómo viene el equipo",
+        texto:
+          "Cursos en progreso y completados por persona: el referente interno sabe dónde está cada uno sin tener que preguntar de a uno.",
+      },
+    ],
+
+    acceso: "Acceso durante los 60 días del programa, para todo el equipo que participa",
+    remate:
+      "El portal no reemplaza los encuentros ni el trabajo sobre casos reales: los sostiene. Es lo que hace que gente con niveles muy distintos llegue pareja a la semana siguiente.",
+  },
+
+  /* =====================================================================
      6 · QUIÉN SOY (autoridad)
      ===================================================================== */
   autoridad: {

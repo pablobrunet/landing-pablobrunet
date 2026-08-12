@@ -1,0 +1,286 @@
+---
+/* =====================================================================
+   EL PORTAL DE FORMACIÓN DEL PROGRAMA
+   ---------------------------------------------------------------------
+   Va después de "qué queda instalado": ahí se termina de prometer lo que
+   la PyME se lleva al día 60, y acá se muestra lo único de toda la
+   landing que YA existe y se puede ver funcionando.
+
+   EL PORTAL VA EN TARJETA OSCURA dentro de una sección clara, igual que
+   en la propuesta de Royjo y por la misma razón: la interfaz del portal
+   es casi toda blanca y sobre tarjeta blanca se fundía con el fondo.
+   Sobre azul profundo, el marco recorta y la captura se lee como una
+   pantalla encendida. El marco del navegador conserva su cromo claro,
+   porque es parte de la captura y no de la tarjeta.
+
+   LA CAPTURA VA A TODO EL ANCHO. En media columna la interfaz queda en
+   45% de escala, o sea ilegible; a ancho completo se leen los títulos de
+   los cursos y la barra de avance, que es exactamente lo que hay que
+   ver.
+
+   Sin CTA propio: la sección de arriba ya tiene su botón y el cierre
+   también. Acá el remate alcanza — sumar un tercer botón en el mismo
+   scroll diluía los dos que importan.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { integra } from "../../data/integra";
+const { portal } = integra;
+---
+
+<section class="section i-hielo i-claro" id="portal" aria-label="El portal de formación del programa">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{portal.eyebrow}</span>
+      <h2 class="t-h2">
+        {portal.titulo} <span class="i-hl">{portal.tituloResalte}</span>
+      </h2>
+      <p class="text-muted">{portal.subtitulo}</p>
+    </header>
+
+    <article class="pt i-reveal">
+      <header class="pt__head">
+        <span class="pt__icono" aria-hidden="true">
+          <Icon name={portal.icono} size={22} />
+        </span>
+        <span class="pt__et">{portal.etiqueta}</span>
+        <h3 class="pt__t">{portal.titulo2}</h3>
+        <p class="pt__p">{portal.texto}</p>
+      </header>
+
+      <figure class="pt__captura">
+        <div class="pt__marco">
+          {/* Barrita de navegador: tres puntos y nada más. Con una barra
+              de direcciones falsa habría que inventar una URL. */}
+          <span class="pt__barra" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+          <img
+            src={portal.captura}
+            alt={portal.capturaAlt}
+            width="1358"
+            height="594"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <figcaption>{portal.capturaPie}</figcaption>
+      </figure>
+
+      <ul class="pt__claves">
+        {
+          portal.claves.map((c) => (
+            <li>
+              <span class="pt__clave-ico" aria-hidden="true">
+                <Icon name={c.icono} size={19} />
+              </span>
+              <p class="pt__clave-t">{c.titulo}</p>
+              <p class="pt__clave-p">{c.texto}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="pt__acceso">
+        <Icon name="clock" size={16} />
+        {portal.acceso}
+      </p>
+
+      <p class="pt__remate">{portal.remate}</p>
+    </article>
+  </div>
+</section>
+
+<style>
+  /* Tarjeta oscura sobre sección clara. Los colores salen del mismo juego
+     que usan las secciones `.i-oscuro` de la landing: blanco para
+     títulos, Celeste Suave para acentos y velos blancos muy bajos para
+     las superficies. */
+  .pt {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(1.4rem, 3vw, 2.1rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, var(--i-navy) 0%, var(--i-noche) 65%);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+  }
+  /* Halo tenue en la esquina superior derecha: le da profundidad al azul
+     plano sin competir con la captura. */
+  .pt::before {
+    content: "";
+    position: absolute;
+    top: -18rem;
+    right: -12rem;
+    width: 38rem;
+    height: 38rem;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35;
+    background: radial-gradient(circle, rgba(76, 134, 245, 0.55), transparent 70%);
+    pointer-events: none;
+  }
+  .pt > * {
+    position: relative;
+  }
+
+  .pt__head {
+    max-width: 46rem;
+    margin-bottom: clamp(1.35rem, 3vw, 1.85rem);
+  }
+  .pt__icono {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 1rem;
+    border-radius: 13px;
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
+  }
+  .pt__et {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .pt__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.7vw, 1.45rem);
+    line-height: 1.25;
+    color: #fff;
+  }
+  .pt__p {
+    margin-top: 0.7rem;
+    font-size: 0.975rem;
+    line-height: 1.65;
+    color: rgba(220, 230, 246, 0.8);
+  }
+
+  /* ---- La captura, en marco de navegador ---- */
+  .pt__captura {
+    margin: 0;
+  }
+  /* El marco conserva su cromo claro: es parte de la captura, no de la
+     tarjeta. El borde translúcido es el que lo despega del azul. */
+  .pt__marco {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: var(--i-hielo);
+    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.55);
+  }
+  .pt__barra {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.6rem 0.85rem;
+    background: linear-gradient(180deg, #fff, var(--i-hielo));
+    border-bottom: 1px solid var(--borde);
+  }
+  .pt__barra i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--borde-punteado);
+  }
+  .pt__marco img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pt__captura figcaption {
+    margin-top: 0.75rem;
+    font-size: var(--fs-caption);
+    color: rgba(220, 230, 246, 0.6);
+    text-align: center;
+  }
+
+  /* ---- Las cuatro claves ---- */
+  .pt__claves {
+    display: grid;
+    gap: 1rem;
+    margin-top: clamp(1.35rem, 3vw, 1.85rem);
+  }
+  .pt__claves li {
+    padding: 1.1rem 1.15rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .pt__claves li:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(169, 200, 245, 0.4);
+  }
+  .pt__clave-ico {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0.7rem;
+    border-radius: 11px;
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
+  }
+  .pt__clave-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .pt__clave-p {
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(220, 230, 246, 0.75);
+  }
+
+  .pt__acceso {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: clamp(1.35rem, 3vw, 1.85rem);
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: rgba(169, 200, 245, 0.12);
+    border: 1px solid rgba(169, 200, 245, 0.3);
+    font-size: 0.875rem;
+    font-weight: var(--w-subheadline);
+    color: var(--i-neblina);
+  }
+  .pt__remate {
+    padding-top: 1.25rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--i-celeste);
+  }
+  .pt__remate::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-bottom: 1.1rem;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  @media (min-width: 620px) {
+    .pt__claves {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1100px) {
+    .pt__claves {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
