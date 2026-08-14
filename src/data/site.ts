@@ -192,7 +192,7 @@ export const site = {
         links: [
           { label: "Speaker y capacitador", href: "/servicios/speaker-y-capacitador", externo: false },
           { label: "Método INTEGRA", href: "/programa-integra", externo: false },
-          { label: "Automatización de procesos", href: "https://innerflowai.com", externo: true },
+          { label: "EcomCloser™", href: "https://innerflowai.com", externo: true },
         ],
       },
       {

@@ -14,7 +14,7 @@ hasta que subas tus imágenes.
 /sobre-mi                 Quién soy (bio, valores, recorrido, credenciales)
 /servicios                Índice de servicios
 /servicios/[slug]         Página de cada servicio
-/programa-integra         Landing del Método INTEGRA (programa INTEGRA 60)
+/programa-integra         Landing del Programa INTEGRA
 /programa-integra/gracias Confirmación después de agendar el diagnóstico
 /blog                     Índice del blog
 /blog/[slug]              Cada artículo

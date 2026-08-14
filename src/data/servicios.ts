@@ -208,10 +208,10 @@ export const servicios: Servicio[] = [
        La URL vieja /servicios/estrategia-e-implementacion-de-ia redirige
        a /programa-integra (ver astro.config.mjs). */
     slug: "metodo-integra",
-    titulo: "Método INTEGRA",
+    titulo: "Programa INTEGRA",
     icon: "chip",
     resumen:
-      "INTEGRA 60: en 60 días instalo en tu PyME la capacidad de identificar oportunidades de IA, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Operado por gente de la casa.",
+      "En 60 días instalo en tu PyME la capacidad de identificar oportunidades de IA, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Operado por gente de la casa.",
     ruta: "/programa-integra",
     cta: "Ver el programa",
     // Charla en la Unión Industrial de Santa Fe. Apaisada: va en 4:3.
@@ -219,10 +219,10 @@ export const servicios: Servicio[] = [
   },
   {
     slug: "automatizacion-de-procesos",
-    titulo: "Automatización de procesos",
+    titulo: "EcomCloser™",
     icon: "flow",
     resumen:
-      "Automatizaciones que reducen trabajo manual, conectan herramientas y liberan tiempo del equipo. Lo llevamos adelante desde InnerFlow AI.",
+      "Un sistema de ventas que trabaja en automático: IA y automatizaciones que atienden, hacen seguimiento y cierran, para que tu equipo entre solo donde su tiempo vale la pena. Lo llevamos adelante desde InnerFlow AI.",
     hero: "Menos tareas repetitivas, más foco en lo que importa.",
     paraQuien:
       "Equipos que pierden horas en tareas manuales, repetitivas o propensas a error.",

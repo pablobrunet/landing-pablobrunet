@@ -721,7 +721,7 @@ export const blog: Post[] = [
       {
         tipo: "parrafo",
         texto:
-          "Cuando una empresa arma el hábito de hacer pasar cada idea por estas ocho preguntas, cambia algo más de fondo que la calidad de los proyectos: deja de depender de que aparezca alguien iluminado. Las oportunidades empiezan a salir de donde tienen que salir, que es de la gente que hace el trabajo todos los días. Ese es, exactamente, el sistema que instalo en el [programa INTEGRA 60](/programa-integra).",
+          "Cuando una empresa arma el hábito de hacer pasar cada idea por estas ocho preguntas, cambia algo más de fondo que la calidad de los proyectos: deja de depender de que aparezca alguien iluminado. Las oportunidades empiezan a salir de donde tienen que salir, que es de la gente que hace el trabajo todos los días. Ese es, exactamente, el sistema que instalo en el [Programa INTEGRA](/programa-integra).",
       },
       {
         tipo: "fuentes",
@@ -1736,7 +1736,7 @@ export const blog: Post[] = [
       {
         tipo: "parrafo",
         texto:
-          "Instalar esa cadencia, y dejarla funcionando con gente de la casa, es literalmente el objetivo del [programa INTEGRA 60](/programa-integra). Todo lo demás —el tablero, el protocolo, los roles— existe para darle contenido a esos sesenta minutos.",
+          "Instalar esa cadencia, y dejarla funcionando con gente de la casa, es literalmente el objetivo del [Programa INTEGRA](/programa-integra). Todo lo demás —el tablero, el protocolo, los roles— existe para darle contenido a esos sesenta minutos.",
       },
       {
         tipo: "fuentes",

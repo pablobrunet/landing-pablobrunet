@@ -8,7 +8,7 @@
    Arquitectura de nombres (Brief Maestro del 2026-08-05, confirmado):
      Marca      → Pablo Brunet (creador del Método INTEGRA)
      Método     → Método INTEGRA
-     Programa   → INTEGRA 60   (con espacio, nunca "INTEGRA-60")
+     Programa   → Programa INTEGRA   (sin "60": el número quedó retirado)
      Sistema    → Sistema INTEGRA
      Diagnóstico gratuito → Chequeo INTEGRA (nombre todavía provisorio)
 
@@ -72,7 +72,7 @@ export const integra = {
     persona: "Pablo Brunet",
     firma: "Creador del Método INTEGRA",
     metodo: "Método INTEGRA",
-    programa: "INTEGRA 60",
+    programa: "Programa INTEGRA",
     sistema: "Sistema INTEGRA",
     chequeo: "Chequeo INTEGRA",
     clinica: "Clínica INTEGRA",
@@ -81,9 +81,9 @@ export const integra = {
   },
 
   seo: {
-    title: "Método INTEGRA — Instalá en tu PyME la capacidad de integrar IA con método",
+    title: "Programa INTEGRA",
     description:
-      "INTEGRA 60: en 60 días tu PyME aprende a identificar oportunidades de inteligencia artificial, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Primer paso gratis: el Chequeo INTEGRA.",
+      "INTEGRA: en 60 días tu PyME aprende a identificar oportunidades de inteligencia artificial, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Primer paso gratis: el Chequeo INTEGRA.",
   },
 
   /* ---- Ancla de navegación interna de la propia landing ---- */
@@ -575,7 +575,7 @@ export const integra = {
      escrito en clave de capacidad faltante, nunca de automatización.
      ===================================================================== */
   chequeo: {
-    titulo: "¿Está su PyME lista para integrar IA?",
+    titulo: "¿Está tu PyME lista para integrar IA?",
     subtitulo: "6 preguntas, 2 minutos. Resultado al instante.",
     empezar: "Empezar el chequeo",
     preguntas: [
@@ -651,7 +651,7 @@ export const integra = {
         texto:
           "En tu PyME la IA existe, pero sin dueño ni criterio: cada persona resuelve como puede y lo aprendido no queda en ningún lado. Es el escenario donde más plata se pierde sin que aparezca en ningún informe.",
         recomendacion:
-          "Empezá por ordenar antes de sumar: un punto de partida claro, un responsable con tiempo asignado y una lista corta de oportunidades priorizadas. Eso es exactamente lo que instala INTEGRA 60.",
+          "Empezá por ordenar antes de sumar: un punto de partida claro, un responsable con tiempo asignado y una lista corta de oportunidades priorizadas. Eso es exactamente lo que instala INTEGRA.",
       },
       {
         hasta: 6,
@@ -690,7 +690,7 @@ export const integra = {
       },
       {
         q: "¿Ustedes nos implementan las automatizaciones?",
-        a: "No dentro de este programa, y es a propósito. INTEGRA 60 te ayuda a definir el problema, acotar la solución, preparar una prueba y decidir con evidencia. Si después necesitás desarrollar, automatizar o integrar técnicamente, se cotiza como proyecto independiente.",
+        a: "No dentro de este programa, y es a propósito. INTEGRA te ayuda a definir el problema, acotar la solución, preparar una prueba y decidir con evidencia. Si después necesitás desarrollar, automatizar o integrar técnicamente, se cotiza como proyecto independiente.",
       },
       {
         q: "No somos técnicos.",
