@@ -1,0 +1,185 @@
+---
+/* =====================================================================
+   09 · CONDICIONES GENERALES
+   ---------------------------------------------------------------------
+   Los seis bloques —9.1 a 9.6— son lo que convierte esto en una
+   propuesta y no en un folleto: requisitos, exclusiones, reprogramación,
+   confidencialidad, alcance de los resultados y uso del material.
+
+   TODO VISIBLE, NADA PLEGADO. Un acordeón acá habría quedado más
+   compacto, pero condiciones que hay que abrir para leer son condiciones
+   que se pueden pasar por alto. Se muestran enteras.
+
+   Los bloques de lista larga —lo que el estudio provee y lo que no está
+   comprendido— ocupan el ancho completo: son los que más se consultan y
+   los de listas más extensas. El resto va a dos columnas.
+
+   El 9.2 lleva tratamiento propio: es una lista de exclusiones y se
+   distingue de una lista de prestaciones. Misma estructura, otro color
+   de viñeta y fondo apenas teñido, para que no se confundan de un
+   vistazo.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { milman } from "../../data/milman";
+const { generales } = milman;
+
+/* El bloque de prestaciones no comprendidas se dibuja distinto. Se lo
+   identifica por su número y no por su posición: si algún día se
+   reordenan los bloques, la marca sigue en el correcto. */
+const NO_COMPRENDIDAS = "9.2";
+---
+
+<section class="section i-claro gen" id={generales.id} aria-label={generales.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{generales.eyebrow}</span>
+      <h2 class="t-h2">{generales.titulo}</h2>
+    </header>
+
+    <div class="gen__grid">
+      {
+        generales.bloques.map((b) => (
+          <article
+            class:list={[
+              "cond",
+              "i-reveal",
+              b.items.length > 5 && "cond--ancha",
+              b.n === NO_COMPRENDIDAS && "cond--excluye",
+            ]}
+          >
+            <header class="cond__head">
+              <span class="cond__ico" aria-hidden="true">
+                <Icon name={b.icono} size={18} />
+              </span>
+              <div>
+                <span class="cond__n">{b.n}</span>
+                <h3 class="cond__t">{b.titulo}</h3>
+              </div>
+            </header>
+
+            {b.texto && <p class="cond__p">{b.texto}</p>}
+
+            {b.items.length > 0 && (
+              <ul class="cond__items">
+                {b.items.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .gen__grid {
+    display: grid;
+    gap: 1.15rem;
+  }
+  .cond {
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  /* Las exclusiones no son una lista de prestaciones: mismo esqueleto,
+     otro color de acento y fondo tenue. */
+  .cond--excluye {
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 60%);
+    border-color: var(--borde-punteado);
+  }
+
+  .cond__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 0.9rem;
+  }
+  .cond__ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .cond--excluye .cond__ico {
+    color: var(--i-denim);
+  }
+  .cond__n {
+    display: block;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--verde-resalte);
+  }
+  .cond__t {
+    margin-top: 0.15rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .cond__p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .cond__items {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+    list-style: none;
+  }
+  .cond__items li {
+    position: relative;
+    padding-left: 1.35rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--azul-pizarra);
+  }
+  .cond__items li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.66rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+  }
+  /* Viñeta en raya para lo que queda afuera: la misma forma que la lista
+     de al lado, leída al revés, se presta a confusión. */
+  .cond--excluye .cond__items li::before {
+    top: 0.82rem;
+    width: 9px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--i-denim);
+  }
+
+  @media (min-width: 860px) {
+    .gen__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* Los bloques de lista larga cruzan las dos columnas: son los que más
+       se consultan y en media columna quedaban en una tira de ocho
+       renglones partidos. */
+    .cond--ancha {
+      grid-column: 1 / -1;
+    }
+    .cond--ancha .cond__items {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem 2rem;
+    }
+  }
+</style>

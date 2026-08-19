@@ -1,0 +1,346 @@
+---
+/* =====================================================================
+   PORTADA E ÍNDICE — Propuesta para Estudio Milman
+   ---------------------------------------------------------------------
+   Quien abre esta página pidió una propuesta: la portada no argumenta a
+   favor de contratar nada, ubica. El titular nombra el servicio, la
+   bajada dice qué comprende y la ficha —a la altura del titular, no al
+   pie— tiene los datos que se consultan: fecha, referencia, duración,
+   validez.
+
+   Los dos enlaces del pie de la columna de texto no son llamados a la
+   acción: son atajos de lectura hacia el alcance y las condiciones, los
+   dos puntos que se buscan primero. Por eso van en tono discreto y no
+   como botones de conversión.
+
+   EL MEMBRETE NO SE DIBUJA si `hero.logo.src` está vacío, que es el
+   estado actual: todavía no tenemos el logo del estudio. Sin archivo, el
+   título encabeza la columna y no queda ni hueco ni imagen rota.
+
+   EL ÍNDICE VA ACÁ, dentro de la misma sección oscura. Es una propuesta
+   de diez puntos con referencias cruzadas —"según el punto 8", "descrito
+   en el 4.1"— y sin un índice esas remisiones no se pueden seguir. Se
+   arma con el array `indice` de los datos, que es el mismo del que sale
+   la numeración de cada sección.
+
+   Mismo lenguaje visual que la portada del Método INTEGRA y que la
+   propuesta de Biscayart: azul profundo, dos halos de luz y la trama de
+   puntos, todo detrás del contenido.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { milman } from "../../data/milman";
+const { hero, indice, indiceTitulo } = milman;
+---
+
+<section class="mh" aria-label="Propuesta de servicios para Estudio Milman">
+  <div class="mh__fondo" aria-hidden="true">
+    <span class="mh__halo mh__halo--a"></span>
+    <span class="mh__halo mh__halo--b"></span>
+    <span class="trama mh__trama"></span>
+  </div>
+
+  <div class="container mh__inner">
+    <div class="mh__copy">
+      {/* Membrete: el logo del cliente encabeza la propuesta. Va DENTRO
+          de la columna de texto y no en un bloque propio arriba de la
+          grilla: así lo único que lo separa del título es su margen, y
+          no se le suma el aire que meten el contenedor y la grilla.
+
+          Sobre placa blanca, porque no sabemos con qué colores viene el
+          archivo y sobre el fondo de la portada un logo oscuro se
+          perdería. */}
+      {
+        hero.logo.src && (
+          <span class="mh__placa">
+            <img
+              src={hero.logo.src}
+              alt={hero.logo.alt}
+              width={hero.logo.ancho}
+              height={hero.logo.alto}
+            />
+          </span>
+        )
+      }
+
+      <h1 class="t-display mh__titulo">
+        {hero.titulo}
+        <span class="i-hl">{hero.tituloResalte}</span>
+      </h1>
+
+      <p class="mh__sub">{hero.subtitulo}</p>
+
+      <p class="mh__enlaces">
+        {
+          hero.enlaces.map((e) => (
+            <a href={`#${e.id}`}>
+              {e.etiqueta}
+              <Icon name="arrow" size={15} />
+            </a>
+          ))
+        }
+      </p>
+    </div>
+
+    <aside class="mh__ficha">
+      <p class="mh__ficha-t">{hero.fichaTitulo}</p>
+      <dl class="mh__filas">
+        {
+          hero.fichaFilas.map((f) => (
+            <div class="mh__fila">
+              <span class="mh__fila-ico" aria-hidden="true">
+                <Icon name={f.icono} size={16} />
+              </span>
+              <div>
+                <dt>{f.etiqueta}</dt>
+                <dd>{f.valor}</dd>
+              </div>
+            </div>
+          ))
+        }
+      </dl>
+    </aside>
+  </div>
+
+  {/* ---- Índice ---- */}
+  <nav class="container mh__indice" aria-label={indiceTitulo}>
+    <p class="mh__indice-t">{indiceTitulo}</p>
+    <ol>
+      {
+        indice.map((s) => (
+          <li>
+            <a href={`#${s.id}`}>
+              <span class="mh__indice-n">{s.n}</span>
+              <span class="mh__indice-e">{s.titulo}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</section>
+
+<style>
+  .mh {
+    position: relative;
+    overflow: hidden;
+    background: var(--i-noche);
+    color: #fff;
+    padding-block: clamp(3rem, 7vw, 5rem) clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  /* ---- Fondo ---- */
+  .mh__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .mh__halo {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.55;
+  }
+  .mh__halo--a {
+    width: 44rem;
+    height: 44rem;
+    top: -22rem;
+    right: -14rem;
+    background: radial-gradient(circle, rgba(76, 134, 245, 0.55), transparent 70%);
+  }
+  .mh__halo--b {
+    width: 32rem;
+    height: 32rem;
+    bottom: -18rem;
+    left: -12rem;
+    background: radial-gradient(circle, rgba(30, 92, 242, 0.5), transparent 70%);
+  }
+  .mh__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+  }
+
+  /* ---- Membrete ---- */
+  .mh__placa {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(6, 12, 30, 0.35);
+  }
+  /* Alto fijo y ancho automático: lo que tiene que mantenerse constante
+     es la altura del logo, no el ancho de la placa. */
+  .mh__placa img {
+    display: block;
+    width: auto;
+    height: clamp(30px, 4.5vw, 40px);
+  }
+
+  .mh__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(2.25rem, 5vw, 3.25rem);
+    align-items: center;
+  }
+
+  /* ---- Columna de texto ---- */
+  .mh__titulo {
+    font-size: clamp(1.8rem, 1.1rem + 2.7vw, 2.85rem);
+    line-height: 1.12;
+  }
+  /* Las dos partes corren seguidas: el salto forzado las leería como dos
+     titulares distintos. Quiebra sola donde no entre. */
+  .mh__titulo .i-hl {
+    display: inline;
+  }
+  .mh__sub {
+    max-width: 40rem;
+    margin-top: 1.35rem;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(220, 230, 246, 0.8);
+  }
+  /* Atajos de lectura, no botones: subrayado al pasar y flecha que se
+     despega. Un par de botones sólidos acá convertiría una propuesta en
+     una página de captación. */
+  .mh__enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin-top: 1.85rem;
+  }
+  .mh__enlaces a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(169, 200, 245, 0.45);
+    font-size: 0.95rem;
+    font-weight: var(--w-subheadline);
+    color: var(--i-celeste);
+    transition: gap var(--transition), border-color var(--transition);
+  }
+  .mh__enlaces a:hover {
+    gap: 0.75rem;
+    border-color: var(--i-celeste);
+  }
+
+  /* ---- Ficha ---- */
+  .mh__ficha {
+    padding: clamp(1.35rem, 3vw, 1.8rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.5);
+    backdrop-filter: blur(6px);
+  }
+  .mh__ficha-t {
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(169, 200, 245, 0.2);
+  }
+  .mh__filas {
+    display: grid;
+  }
+  .mh__fila {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 0.75rem 0;
+  }
+  .mh__fila + .mh__fila {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .mh__fila-ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(169, 200, 245, 0.12);
+    color: var(--i-celeste);
+  }
+  .mh__fila dt {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(220, 230, 246, 0.6);
+  }
+  .mh__fila dd {
+    margin-top: 0.15rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.9375rem;
+    line-height: 1.35;
+    color: #fff;
+  }
+
+  /* ---- Índice ---- */
+  .mh__indice {
+    position: relative;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: clamp(1.75rem, 4vw, 2.25rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .mh__indice-t {
+    margin-bottom: 1.1rem;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .mh__indice ol {
+    display: grid;
+    gap: 0.15rem 2rem;
+    list-style: none;
+  }
+  .mh__indice a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    padding: 0.45rem 0.5rem 0.45rem 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: rgba(220, 230, 246, 0.82);
+    transition: color var(--transition);
+  }
+  .mh__indice a:hover {
+    color: #fff;
+  }
+  .mh__indice a:hover .mh__indice-e {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .mh__indice-n {
+    flex-shrink: 0;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8125rem;
+    color: var(--i-celeste);
+  }
+
+  @media (min-width: 640px) {
+    .mh__indice ol {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 980px) {
+    .mh__inner {
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 3.5rem;
+    }
+    .mh__indice ol {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

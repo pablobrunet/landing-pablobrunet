@@ -1,0 +1,273 @@
+---
+/* =====================================================================
+   05 · CALENDARIO DE LAS SIETE FASES
+   ---------------------------------------------------------------------
+   El equivalente al programa de la jornada de una propuesta presencial:
+   acá el eje no son las horas de un día sino los sesenta días del
+   programa. Es el dato que el estudio necesita para saber qué le pasa a
+   su semana en cada tramo.
+
+   Va sobre fondo oscuro, como el enfoque: son las dos secciones donde se
+   describe cómo se trabaja.
+
+   CADA FILA ES UNA FASE, no una tarjeta suelta: la letra a la izquierda,
+   el contenido a la derecha, y una línea horizontal separando. Las siete
+   letras leídas en orden arman INTEGRA, y por eso la columna de letras
+   se mantiene alineada aunque el texto de al lado tenga distinto largo.
+
+   LA FASE TRANSVERSAL (G) va marcada con `transversal` en los datos y se
+   dibuja distinto: fondo apenas teñido, la letra en marco punteado y su
+   rango de días declarado como "Del día 1 al 60". No ocupa un tramo del
+   calendario —corre todo el tiempo— y si se dibujara igual que las otras
+   se leería como una etapa más entre la E y la R.
+
+   ⚠️ Dos pares de fases comparten rango de días (N y T; R y A). Es
+   correcto: se solapan. Si se cambia la duración del programa hay que
+   revisar los siete rangos, la ficha de la portada y el punto 8.
+
+   La nota del cierre es una consideración de calendario —cuándo conviene
+   arrancar— y no una condición del servicio: por eso va acá y no en el
+   punto 8.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { milman } from "../../data/milman";
+const { fases } = milman;
+---
+
+<section class="section i-oscuro fas" id={fases.id} aria-label={fases.titulo}>
+  <div class="fas__fondo" aria-hidden="true"><span class="trama"></span></div>
+
+  <div class="container fas__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{fases.eyebrow}</span>
+      <h2 class="t-h2">{fases.titulo}</h2>
+      <p class="text-muted">{fases.intro}</p>
+    </header>
+
+    <ol class="fas__lista">
+      {
+        fases.listado.map((f) => (
+          <li class:list={["fase", "i-reveal", f.transversal && "es-transversal"]}>
+            <div class="fase__lado">
+              <span class="fase__letra" aria-hidden="true">{f.letra}</span>
+              <div class="fase__rotulo">
+                <h3 class="fase__nombre">{f.nombre}</h3>
+                <span class="fase__dias">
+                  <Icon name="calendario" size={14} />
+                  {f.dias}
+                </span>
+              </div>
+            </div>
+
+            <div class="fase__cuerpo">
+              <p class="fase__pregunta">{f.pregunta}</p>
+              <p class="fase__texto">{f.texto}</p>
+              <span class="fase__entregable">
+                <Icon name="check" size={14} />
+                {f.entregable}
+              </span>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+
+    <article class="fas__nota i-reveal">
+      <span class="fas__nota-ico" aria-hidden="true">
+        <Icon name="clock" size={20} />
+      </span>
+      <div>
+        <h3 class="fas__nota-t">{fases.notaTitulo}</h3>
+        <p class="fas__nota-p">{fases.notaTexto}</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .fas {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #0a1430 0%, #0d1b3d 55%, #0a1430 100%);
+  }
+  .fas__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .fas__fondo span {
+    position: absolute;
+    inset: 0;
+    opacity: 0.3;
+    -webkit-mask-image: radial-gradient(70% 70% at 15% 10%, #000, transparent 70%);
+    mask-image: radial-gradient(70% 70% at 15% 10%, #000, transparent 70%);
+  }
+  .fas__inner {
+    position: relative;
+  }
+  .fas .i-head {
+    max-width: 62rem;
+  }
+
+  /* ---- Las siete fases ---- */
+  .fas__lista {
+    display: grid;
+    list-style: none;
+  }
+  .fase {
+    display: grid;
+    gap: 0.9rem;
+    padding: clamp(1.15rem, 2.5vw, 1.5rem) 0;
+  }
+  .fase + .fase {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  /* La fase transversal no es una etapa más de la secuencia: se despega
+     del listado con fondo propio y marco punteado. */
+  .fase.es-transversal {
+    margin: 0.5rem 0;
+    padding: clamp(1.15rem, 2.5vw, 1.5rem);
+    border-radius: var(--radius-lg);
+    background: rgba(169, 200, 245, 0.06);
+    border: 1px dashed rgba(169, 200, 245, 0.3);
+  }
+  /* Con marco y fondo propios, la fase transversal ya está separada de
+     sus vecinas: las líneas del listado —la suya y la de la fase que le
+     sigue— sobran y quedarían pegadas al borde punteado. */
+  .fase.es-transversal,
+  .fase.es-transversal + .fase {
+    border-top: none;
+  }
+
+  /* ---- Columna de la letra ---- */
+  .fase__lado {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .fase__letra {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--i-grad);
+    box-shadow: 0 12px 26px rgba(23, 64, 143, 0.35);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.4rem;
+    line-height: 1;
+    color: #fff;
+  }
+  .es-transversal .fase__letra {
+    background: transparent;
+    border: 2px dashed rgba(169, 200, 245, 0.55);
+    box-shadow: none;
+    color: var(--i-celeste);
+  }
+  .fase__nombre {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.25;
+    color: #fff;
+  }
+  .fase__dias {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.3rem;
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--i-celeste);
+  }
+
+  /* ---- Cuerpo ---- */
+  .fase__pregunta {
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--i-neblina);
+  }
+  .fase__texto {
+    margin-top: 0.55rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(220, 230, 246, 0.75);
+  }
+  /* El entregable es lo que queda cuando la fase termina: va como chip y
+     no como un renglón más, para que se pueda barrer la columna de
+     entregables sin leer los siete textos. */
+  .fase__entregable {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background: rgba(169, 200, 245, 0.14);
+    border: 1px solid rgba(169, 200, 245, 0.28);
+    font-size: 0.8125rem;
+    font-weight: var(--w-subheadline);
+    color: var(--i-neblina);
+  }
+
+  /* ---- Nota de calendario ---- */
+  .fas__nota {
+    display: grid;
+    gap: 1rem;
+    align-items: start;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding: clamp(1.35rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(169, 200, 245, 0.28);
+  }
+  .fas__nota-ico {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: rgba(169, 200, 245, 0.13);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    color: var(--i-celeste);
+  }
+  .fas__nota-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: #fff;
+  }
+  .fas__nota-p {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: rgba(220, 230, 246, 0.78);
+  }
+
+  @media (min-width: 820px) {
+    /* Letra y rótulo a la izquierda, contenido a la derecha. La columna
+       fija es lo que mantiene las siete letras alineadas: leídas en
+       orden arman INTEGRA. */
+    .fase {
+      grid-template-columns: minmax(13rem, 0.3fr) 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .fase__cuerpo {
+      padding-left: 2rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .es-transversal .fase__cuerpo {
+      border-left-color: rgba(169, 200, 245, 0.28);
+    }
+    .fas__nota {
+      grid-template-columns: auto 1fr;
+      gap: 1.35rem;
+    }
+  }
+</style>

@@ -1,0 +1,275 @@
+---
+/* =====================================================================
+   04 · ALCANCE DEL SERVICIO
+   ---------------------------------------------------------------------
+   La sección que define qué se contrata, y la más detallada de la
+   propuesta. Los siete subpuntos —4.1 a 4.7— se citan desde el punto 2,
+   el 5, el 6, el 8, el 9 y el 11, así que su numeración viene de los
+   datos y no de un contador del navegador: tiene que seguir siendo la
+   misma aunque alguien reordene el array.
+
+   Van como siete tarjetas en columna, con el número, el título y la
+   lista de lo que comprende cada una. En dos columnas los ítems —que son
+   párrafos de dos y tres renglones, no etiquetas— quedaban en tiras
+   angostas ilegibles.
+
+   Los subpuntos que llevan `cierre` cierran con un párrafo destacado
+   después de la lista: es información que no es un ítem más —la
+   dedicación semanal en el 4.2, qué queda en poder del estudio en el
+   4.3, qué NO comprende la ejecución en el 4.5— y de corrido se perdía.
+
+   LA CAPTURA DEL PORTAL va al final de la sección y no adentro de la
+   tarjeta del 4.2. Es la única imagen del documento y, metida en una de
+   las siete tarjetas, desbalanceaba la lista: el 4.2 pasaba a medir tres
+   veces lo que los demás y se leía como el punto principal, que no lo
+   es. Acá abajo funciona como lo que es: la vista de algo que ya se
+   describió.
+
+   La captura mide 1358×594. Si se reemplaza por una de otra proporción,
+   actualizar `width`/`height`.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { milman } from "../../data/milman";
+const { alcance } = milman;
+---
+
+<section class="section i-claro alc" id={alcance.id} aria-label={alcance.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{alcance.eyebrow}</span>
+      <h2 class="t-h2">{alcance.titulo}</h2>
+      <p class="text-muted">{alcance.intro}</p>
+    </header>
+
+    <div class="alc__lista">
+      {
+        alcance.etapas.map((e) => (
+          <article class="etapa i-reveal">
+            <div class="etapa__lado">
+              <span class="etapa__icono" aria-hidden="true">
+                <Icon name={e.icono} size={20} />
+              </span>
+              <span class="etapa__n">{e.n}</span>
+              <h3 class="etapa__t">{e.titulo}</h3>
+            </div>
+
+            <div class="etapa__cuerpo">
+              <p class="etapa__p">{e.texto}</p>
+              {e.items.length > 0 && (
+                <ul class="etapa__items">
+                  {e.items.map((i) => (
+                    <li>{i}</li>
+                  ))}
+                </ul>
+              )}
+              {"cierre" in e && e.cierre && <p class="etapa__cierre">{e.cierre}</p>}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    {/* ---- El portal, en imagen ---- */}
+    <div class="alc__portal i-reveal">
+      <div class="alc__portal-copy">
+        <h3 class="alc__portal-t">{alcance.portalTitulo}</h3>
+        <p class="alc__portal-p">{alcance.portalTexto}</p>
+      </div>
+
+      <figure class="alc__fig">
+        <div class="alc__marco">
+          {/* Barrita de navegador: tres puntos y nada más. Con una barra
+              de direcciones falsa habría que inventar una URL. */}
+          <span class="alc__barra" aria-hidden="true">
+            <i></i><i></i><i></i>
+          </span>
+          <img
+            src={alcance.captura}
+            alt={alcance.capturaAlt}
+            width="1358"
+            height="594"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <figcaption>{alcance.capturaPie}</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .alc .i-head {
+    max-width: 62rem;
+  }
+
+  .alc__lista {
+    display: grid;
+    gap: 1.15rem;
+  }
+  .etapa {
+    display: grid;
+    gap: 1.1rem;
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition);
+  }
+  .etapa:hover {
+    border-color: var(--i-azul-500);
+  }
+
+  /* ---- Columna del rótulo ---- */
+  .etapa__icono {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 0.85rem;
+    border-radius: 12px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .etapa__n {
+    display: block;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    color: var(--verde-resalte);
+  }
+  .etapa__t {
+    margin-top: 0.3rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+    line-height: 1.25;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+
+  /* ---- Cuerpo ---- */
+  .etapa__p {
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .etapa__items {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 0.95rem;
+    list-style: none;
+  }
+  /* Viñeta dibujada: la nativa no se alinea con la primera línea de un
+     ítem de tres renglones ni se puede teñir sin tocar el texto. */
+  .etapa__items li {
+    position: relative;
+    padding-left: 1.35rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--azul-pizarra);
+  }
+  .etapa__items li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.68rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+  }
+  .etapa__cierre {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--i-hielo);
+    border-left: 3px solid var(--i-denim);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+
+  /* ---- El portal ---- */
+  .alc__portal {
+    display: grid;
+    gap: clamp(1.35rem, 3vw, 2rem);
+    margin-top: clamp(1.5rem, 3.5vw, 2.25rem);
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(140deg, var(--i-hielo-2), #fff 55%);
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .alc__portal-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.05rem, 1rem + 0.5vw, 1.25rem);
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+  }
+  .alc__portal-p {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .alc__fig {
+    margin: 0;
+  }
+  .alc__marco {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--borde);
+    background: var(--i-hielo);
+    box-shadow: 0 16px 40px rgba(13, 27, 61, 0.14);
+  }
+  .alc__barra {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.55rem 0.8rem;
+    background: linear-gradient(180deg, #fff, var(--i-hielo));
+    border-bottom: 1px solid var(--borde);
+  }
+  .alc__barra i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--borde-punteado);
+  }
+  .alc__marco img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .alc__fig figcaption {
+    margin-top: 0.65rem;
+    font-size: var(--fs-caption);
+    line-height: 1.5;
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 860px) {
+    /* Rótulo a la izquierda y contenido a la derecha: la columna angosta
+       alcanza para el número y el título, y deja la medida de lectura
+       del cuerpo en un ancho razonable. */
+    .etapa {
+      grid-template-columns: minmax(11rem, 0.28fr) 1fr;
+      gap: 2rem;
+    }
+    .etapa__cuerpo {
+      padding-left: 2rem;
+      border-left: 1px solid var(--borde);
+    }
+  }
+  @media (min-width: 900px) {
+    .alc__portal {
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: center;
+    }
+  }
+</style>
