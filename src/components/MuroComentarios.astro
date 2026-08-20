@@ -1,0 +1,365 @@
+---
+/* =====================================================================
+   MURO DE COMENTARIOS — tres filas infinitas cruzadas
+   ---------------------------------------------------------------------
+   Tres tiras pegadas una encima de la otra que se mueven sin parar y en
+   direcciones contrarias:
+
+     fila 1 →  hacia la derecha
+     fila 2 ←  hacia la izquierda
+     fila 3 →  hacia la derecha
+
+   Ese cruce es lo que da la sensación de movimiento. Las tarjetas son
+   chicas y todas del mismo alto a propósito: el bloque se lee de un
+   vistazo, no comentario por comentario.
+
+   FOTOS INTERCALADAS
+   Cada dos comentarios entra una foto de Pablo, del mismo alto que las
+   tarjetas (`cadaCuantos` cambia el ritmo). Rompe la monotonía de la tira
+   de texto y recuerda de quién se está hablando.
+
+   CÓMO SE ARMA EL LOOP
+   Los items de cada fila se duplican y la pista se desplaza -50%: cuando
+   la segunda copia llega a donde arrancó la primera, el ciclo vuelve a
+   empezar y no se ve la costura. El aire entre tarjetas va como
+   `margin-right` de cada celda y NO como `gap` del flex: con `gap`, la
+   mitad exacta del ancho no coincide con el largo de una copia —queda
+   medio hueco de diferencia— y el loop pega un salto en cada vuelta.
+
+   La duración se calcula con la cantidad de items, así las tres filas se
+   mueven a la misma velocidad aunque una tenga más tarjetas que otra.
+
+   La segunda copia va con `aria-hidden`: el lector de pantalla lee cada
+   comentario una sola vez.
+   ===================================================================== */
+import type { Comentario, FotoMuro } from "../data/testimonios";
+import { sinMarcas } from "../lib/texto";
+
+interface Props {
+  comentarios: Comentario[];
+  fotos?: FotoMuro[];
+  eyebrow?: string;
+  titulo: string;
+  /* Solo tema INTEGRA: el fragmento que va pintado del título. */
+  tituloResalte?: string;
+  subtitulo?: string;
+  /* "sitio" usa el encabezado del home; "integra", el de la landing azul. */
+  tema?: "sitio" | "integra";
+  /* Fondo de la sección. En INTEGRA el muro va después del método, que ya
+     es hielo: ahí conviene "blanco". */
+  fondo?: "blanco" | "tint";
+  filas?: number;
+  /* Cuántos comentarios entre foto y foto. */
+  cadaCuantos?: number;
+  id?: string;
+}
+
+const {
+  comentarios,
+  fotos = [],
+  eyebrow,
+  titulo,
+  tituloResalte,
+  subtitulo,
+  tema = "sitio",
+  fondo = "tint",
+  filas = 3,
+  cadaCuantos = 2,
+  id,
+} = Astro.props;
+
+type Item =
+  | { tipo: "cita"; cita: Comentario }
+  | { tipo: "foto"; foto: FotoMuro };
+
+/* ---- 1. La secuencia: N comentarios, una foto, y de nuevo ---- */
+const secuencia: Item[] = [];
+comentarios.forEach((c, i) => {
+  secuencia.push({ tipo: "cita", cita: c });
+  if (fotos.length > 0 && (i + 1) % cadaCuantos === 0) {
+    secuencia.push({
+      tipo: "foto",
+      foto: fotos[Math.floor(i / cadaCuantos) % fotos.length],
+    });
+  }
+});
+
+/* ---- 2. Se reparte en filas, en tramos seguidos ----
+   Seguidos y no salteados: si se repartiera uno a cada fila, con el patrón
+   "dos citas y una foto" una fila entera terminaría siendo solo fotos. Con
+   tramos, cada fila conserva el ritmo. */
+const porFila = Math.ceil(secuencia.length / filas);
+const tramos = Array.from({ length: filas }, (_, i) =>
+  secuencia.slice(i * porFila, (i + 1) * porFila)
+);
+
+/* ---- 3. Cada fila tiene que sobrar de ancho ----
+   Si un tramo es corto, media pista mide menos que la pantalla y se ve el
+   hueco entre copia y copia. Se repite el tramo hasta un mínimo. */
+const MINIMO = 7;
+const completar = (items: Item[]): Item[] => {
+  if (items.length === 0) return items;
+  /* De a uno y no de a tandas enteras: repetir el tramo completo podía
+     dejar una fila con el doble de items que las otras. */
+  const salida = [...items];
+  while (salida.length < MINIMO) salida.push(items[salida.length % items.length]);
+  return salida;
+};
+
+const carriles = tramos
+  .filter((t) => t.length > 0)
+  .map((items, i) => {
+    const llenos = completar(items);
+    return {
+      items: llenos,
+      /* Impares hacia la izquierda: 1ª →, 2ª ←, 3ª →. */
+      derecha: i % 2 === 0,
+      /* ~6 s por tarjeta: las tres filas van a la misma velocidad. */
+      duracion: llenos.length * 6,
+    };
+  });
+
+const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
+---
+
+<section
+  class:list={[
+    "muro-sec",
+    "section",
+    { "section--tint": fondo === "tint" },
+    /* `i-claro` avisa a integra.css que el fondo es claro: sin eso, el
+       resalte del título sale en degradé para fondo oscuro. */
+    { "i-claro": tema === "integra" },
+  ]}
+  id={id}
+  aria-label="Comentarios y testimonios"
+>
+  <div class="container">
+    {
+      tema === "integra" ? (
+        <header class="i-head i-head--centro i-reveal">
+          {eyebrow && <span class="i-eyebrow">{eyebrow}</span>}
+          <h2 class="t-h2">
+            {sinMarcas(titulo)} {tituloResalte && <span class="i-hl">{tituloResalte}</span>}
+          </h2>
+          {subtitulo && <p class="text-muted">{subtitulo}</p>}
+        </header>
+      ) : (
+        <header class="muro-sec__head">
+          {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+          <h2 class="t-h2">{sinMarcas(titulo)}</h2>
+          {subtitulo && <p class="t-subhead text-muted muro-sec__sub">{subtitulo}</p>}
+        </header>
+      )
+    }
+  </div>
+
+  <div class="muro">
+    {
+      carriles.map((carril) => (
+        <div class:list={["muro__fila", { "muro__fila--der": carril.derecha }]}>
+          <div class="muro__pista" style={`--dur:${carril.duracion}s`}>
+            {[...carril.items, ...carril.items].map((item, idx) => (
+              <div
+                class="muro__celda"
+                aria-hidden={idx >= carril.items.length ? "true" : undefined}
+              >
+                {item.tipo === "foto" ? (
+                  <div class="muro__foto">
+                    <img
+                      src={item.foto.img}
+                      alt={idx >= carril.items.length ? "" : item.foto.alt}
+                      style={item.foto.pos ? `object-position:${item.foto.pos}` : undefined}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ) : (
+                  <figure class="muro__cita">
+                    <blockquote class="muro__texto">{item.cita.texto}</blockquote>
+                    <figcaption class="muro__autor">
+                      <span class="muro__nombre">{item.cita.nombre}</span>
+                      {pie(item.cita) && <span class="muro__rol">{pie(item.cita)}</span>}
+                    </figcaption>
+                  </figure>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  /* El muro sale de la caja: las tiras van de borde a borde, si no el
+     movimiento parece empezar y terminar contra un margen. */
+  .muro-sec {
+    overflow: hidden;
+  }
+  .muro-sec__head {
+    max-width: 720px;
+    margin-inline: auto;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+    text-align: center;
+  }
+  .muro-sec__sub {
+    margin-top: 0.75rem;
+  }
+  .muro-sec :global(.i-head) {
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .muro {
+    /* Alto de la tira y ancho de la tarjeta: de acá sale todo el tamaño.
+       Chicas a propósito — son un pulso, no una sección de lectura. */
+    --muro-alto: clamp(126px, 13.5vw, 138px);
+    --muro-ancho: clamp(248px, 72vw, 348px);
+    /* Pegadas: el mismo aire entre filas y entre tarjetas. */
+    --muro-aire: 0.7rem;
+    /* Aire que cada fila reserva adentro para su propia sombra: la fila
+       recorta lo que se sale (`overflow: hidden`) y sin este colchón la
+       sombra de las tarjetas quedaba cortada al ras. Se descuenta del
+       hueco entre filas, así el aire que se ve sigue siendo el mismo. */
+    --muro-sombra: 5px;
+
+    display: grid;
+    gap: max(0px, calc(var(--muro-aire) - var(--muro-sombra) * 2));
+    /* Los bordes se desvanecen: las tarjetas entran y salen en vez de
+       cortarse contra el filo de la pantalla. */
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+  .muro__fila {
+    overflow: hidden;
+    padding-block: var(--muro-sombra);
+  }
+  .muro__pista {
+    display: flex;
+    width: max-content;
+    animation: muro-scroll var(--dur, 60s) linear infinite;
+    will-change: transform;
+  }
+  /* Hacia la derecha = el mismo recorrido al revés. */
+  .muro__fila--der .muro__pista {
+    animation-direction: reverse;
+  }
+  /* Se frena todo el muro, no solo la fila de abajo del mouse: parar una
+     sola mientras las otras dos siguen se lee como un error. */
+  .muro:hover .muro__pista {
+    animation-play-state: paused;
+  }
+  @keyframes muro-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* -50% porque el contenido está duplicado → loop sin costura */
+      transform: translateX(-50%);
+    }
+  }
+
+  /* El aire va como margen de cada celda y no como `gap` de la pista: ver
+     la nota del encabezado del archivo. */
+  .muro__celda {
+    flex: 0 0 auto;
+    height: var(--muro-alto);
+    margin-right: var(--muro-aire);
+  }
+
+  .muro__cita {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: var(--muro-ancho);
+    height: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+  /* Cuatro líneas como máximo: sin el recorte, un comentario largo
+     estiraría su tarjeta y rompería la línea de la tira. El ancho y el alto
+     de arriba están calculados para que el mensaje más largo de los que hay
+     hoy entre entero; si suma uno bastante más largo, se corta con puntos
+     suspensivos en vez de desarmar la fila. */
+  .muro__texto {
+    flex: 1 1 auto;
+    min-height: 0;
+    font-size: 0.845rem;
+    line-height: 1.42;
+    color: var(--azul-petroleo);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+  }
+  /* Las comillas las pone el diseño, no el texto del comentario. */
+  .muro__texto::before {
+    content: "\201C";
+  }
+  .muro__texto::after {
+    content: "\201D";
+  }
+  .muro__autor {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    /* Filete de color: ata el pie de la tarjeta a la paleta de la página
+       (verde en el sitio, azul en INTEGRA, sin tocar nada). */
+    padding-left: 0.55rem;
+    border-left: 2px solid var(--verde-acento);
+  }
+  .muro__nombre {
+    font-size: 0.82rem;
+    font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .muro__rol {
+    font-size: 0.72rem;
+    color: var(--texto-suave);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* La foto ocupa un bloque de la tira: mismo alto que las tarjetas y el
+     ancho que le da su proporción. */
+  .muro__foto {
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--gris-claro);
+    box-shadow: var(--shadow-sm);
+  }
+  .muro__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Sin movimiento: las filas quedan quietas y se recorren con el dedo. */
+  @media (prefers-reduced-motion: reduce) {
+    .muro {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .muro__fila {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .muro__fila::-webkit-scrollbar {
+      display: none;
+    }
+    .muro__pista {
+      animation: none;
+    }
+  }
+</style>

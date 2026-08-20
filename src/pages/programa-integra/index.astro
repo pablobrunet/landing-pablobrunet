@@ -14,6 +14,7 @@
      2 Espejo              "esto me pasa a mí"
      3 Costo               el dolor difuso se vuelve urgencia concreta
      4 Método              las siete fases: el mecanismo creíble
+     4b Comentarios        el muro en movimiento: alguien ya lo atravesó
      5 Qué queda           artefactos + capacidades, siempre juntos
      5b Portal             la única prueba que ya existe: se ve funcionando
      6 Quién soy           autoridad: en tráfico frío es lo que habilita
@@ -30,6 +31,7 @@ import IntegraHero from "../../components/integra/IntegraHero.astro";
 import IntegraEspejo from "../../components/integra/IntegraEspejo.astro";
 import IntegraCosto from "../../components/integra/IntegraCosto.astro";
 import IntegraFases from "../../components/integra/IntegraFases.astro";
+import MuroComentarios from "../../components/MuroComentarios.astro";
 import IntegraInstalado from "../../components/integra/IntegraInstalado.astro";
 import IntegraPortal from "../../components/integra/IntegraPortal.astro";
 import IntegraAutoridad from "../../components/integra/IntegraAutoridad.astro";
@@ -38,6 +40,7 @@ import IntegraFaq from "../../components/integra/IntegraFaq.astro";
 import IntegraDisponibilidad from "../../components/integra/IntegraDisponibilidad.astro";
 import IntegraCierre from "../../components/integra/IntegraCierre.astro";
 import { integra } from "../../data/integra";
+import { comentarios, fotosMuro, muroIntegra } from "../../data/testimonios";
 ---
 
 <Base
@@ -52,6 +55,18 @@ import { integra } from "../../data/integra";
     <IntegraEspejo />
     <IntegraCosto />
     <IntegraFases />
+    {/* Pegado al método: recién explicado el mecanismo, la prueba de que
+        alguien ya lo atravesó. Fondo blanco porque las fases van en hielo. */}
+    <MuroComentarios
+      tema="integra"
+      fondo="blanco"
+      eyebrow={muroIntegra.eyebrow}
+      titulo={muroIntegra.titulo}
+      tituloResalte={muroIntegra.tituloResalte}
+      subtitulo={muroIntegra.subtitulo}
+      comentarios={comentarios}
+      fotos={fotosMuro}
+    />
     <IntegraInstalado />
     <IntegraPortal />
     <IntegraAutoridad />
