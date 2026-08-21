@@ -41,10 +41,9 @@
    ---------------------------------------------------------------------
    ⚠️ LO QUE HAY QUE DEFINIR ANTES DE ENVIAR
 
-   · `economicas.importe` está VACÍO y la banda dibuja "A definir". En la
-     reunión no se habló de valores: no hay ningún número que se pueda
-     poner sin inventarlo. Cuando Pablo lo cierre, se completa acá y
-     aparece solo. Mismo criterio que se usó en la propuesta de Royjo.
+   · `economicas.importe` ya está cerrado en $ 1.400.000 ARS por el
+     programa completo. `pendiente` queda como estaba: sólo se dibuja si
+     el importe vuelve a vaciarse.
 
    · `economicas.detalles` — la FORMA DE PAGO (dos pagos, uno a la
      confirmación y otro al inicio del segundo mes) y la VALIDEZ de 30
@@ -634,8 +633,7 @@ const economicas = {
     "Documentación, biblioteca de instrucciones e informe final (4.7)",
   ],
   importeTitulo: "Honorarios",
-  /* ⚠️ VACÍO A PROPÓSITO. Ver el encabezado del archivo. */
-  importe: "",
+  importe: "$ 1.400.000",
   moneda: "ARS",
   monedaNota: "Por el programa de trabajo consensuado",
   pendiente: "A definir",
