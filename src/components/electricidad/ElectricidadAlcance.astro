@@ -1,0 +1,234 @@
+---
+/* =====================================================================
+   02 · ALCANCE
+   ---------------------------------------------------------------------
+   El corazón del documento: los cuatro frentes de trabajo, numerados, en
+   tarjetas iguales. Ninguno es "el principal" —el bot es lo más visible,
+   pero sin la infraestructura y sin Google Cloud no funciona— y por eso
+   las cuatro tarjetas pesan lo mismo.
+
+   VA EN OSCURO porque es la sección que se lee entera y la que hay que
+   poder distinguir de un scrolleo. Es también el recurso que usan las
+   otras propuestas para marcar dónde se describe el trabajo.
+
+   CADA TARJETA ES UNA LISTA, no un párrafo. La regla de escritura está
+   en el encabezado de data/electricidad.ts: una idea por línea.
+
+   EL BLOQUE DE FUERA DE ALCANCE CIERRA LA SECCIÓN, no tiene sección
+   propia. Es la contracara de la lista de arriba y se lee en el mismo
+   movimiento; separarlo alargaría el documento sin agregar nada.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { electricidad } from "../../data/electricidad";
+const { alcance } = electricidad;
+---
+
+<section class="section i-oscuro alc" id={alcance.id} aria-label={alcance.titulo}>
+  <div class="alc__fondo" aria-hidden="true">
+    <span class="trama alc__trama"></span>
+  </div>
+
+  <div class="container alc__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{alcance.eyebrow}</span>
+      <h2 class="t-h2">{alcance.titulo}</h2>
+      <p class="text-muted">{alcance.intro}</p>
+    </header>
+
+    <div class="alc__grid">
+      {
+        alcance.bloques.map((b) => (
+          <article class="blq i-reveal">
+            <div class="blq__top">
+              <span class="blq__ico" aria-hidden="true">
+                <Icon name={b.icono} size={19} />
+              </span>
+              <span class="blq__n" aria-hidden="true">{b.n}</span>
+            </div>
+            <h3 class="blq__t">{b.titulo}</h3>
+            <p class="blq__pie">{b.pie}</p>
+            <ul class="blq__items">
+              {b.items.map((i) => (
+                <li>
+                  <span class="blq__punto" aria-hidden="true" />
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+
+    {/* ---- Fuera de alcance ---- */}
+    <aside class="fuera i-reveal">
+      <h3 class="fuera__t">{alcance.fueraTitulo}</h3>
+      <ul class="fuera__items">
+        {
+          alcance.fuera.map((f) => (
+            <li>
+              <span class="fuera__x" aria-hidden="true">
+                <Icon name="arrow" size={13} />
+              </span>
+              <span>{f}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .alc {
+    position: relative;
+    overflow: hidden;
+  }
+  .alc__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .alc__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+  }
+  .alc__inner {
+    position: relative;
+  }
+
+  /* ---- Los cuatro frentes ---- */
+  .alc__grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .blq {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.35rem, 3vw, 1.75rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(169, 200, 245, 0.2);
+  }
+  .blq__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .blq__ico {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: rgba(169, 200, 245, 0.14);
+    color: var(--i-celeste);
+  }
+  /* El número va grande y translúcido, como marca de agua del bloque:
+     ordena la lectura sin competir con el título. */
+  .blq__n {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 2.25rem;
+    line-height: 1;
+    color: rgba(169, 200, 245, 0.28);
+  }
+  .blq__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: #fff;
+  }
+  .blq__pie {
+    margin-top: 0.3rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .blq__items {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    list-style: none;
+  }
+  .blq__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(220, 230, 246, 0.85);
+  }
+  .blq__punto {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.6rem;
+    border-radius: 50%;
+    background: var(--i-celeste);
+  }
+
+  /* ---- Fuera de alcance ----
+     Sin marco propio y con la barra al costado: es una salvedad, no un
+     quinto frente de trabajo. */
+  .fuera {
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    padding: 1.15rem 1.35rem;
+    border-radius: var(--radius);
+    border-left: 3px solid rgba(169, 200, 245, 0.5);
+    background: rgba(255, 255, 255, 0.035);
+  }
+  .fuera__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.98rem;
+    color: #fff;
+  }
+  .fuera__items {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    list-style: none;
+  }
+  .fuera__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(220, 230, 246, 0.78);
+  }
+  .fuera__x {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.2rem;
+    color: rgba(169, 200, 245, 0.7);
+  }
+
+  @media (min-width: 720px) {
+    .alc__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .fuera__items {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 2rem;
+    }
+  }
+  @media (min-width: 1040px) {
+    /* Cuatro en fila: el alcance completo entra en una pantalla. */
+    .alc__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

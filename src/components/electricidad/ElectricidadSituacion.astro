@@ -1,0 +1,116 @@
+---
+/* =====================================================================
+   01 · SITUACIÓN ACTUAL
+   ---------------------------------------------------------------------
+   Tres filas, y la primera columna de cada una es el estado: "Ya está" o
+   "No existe". Es el punto que ordena todo lo que sigue —Chatwoot está
+   desplegado, el bot y el seguimiento se construyen desde cero— y por
+   eso el estado tiene que leerse antes que el texto, no después.
+
+   El contraste no es decoración: lo que ya existe va en el azul de
+   marca y lo que falta va en gris. Si se agrega una fila, `hay` define de
+   qué lado cae.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { electricidad } from "../../data/electricidad";
+const { situacion } = electricidad;
+---
+
+<section class="section i-claro" id={situacion.id} aria-label={situacion.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{situacion.eyebrow}</span>
+      <h2 class="t-h2">{situacion.titulo}</h2>
+    </header>
+
+    <ul class="sit i-reveal">
+      {
+        situacion.puntos.map((p) => (
+          <li class:list={["sit__fila", p.hay && "sit__fila--hay"]}>
+            <span class="sit__ico" aria-hidden="true">
+              <Icon name={p.icono} size={17} />
+            </span>
+            <span class="sit__estado">{p.estado}</span>
+            <span class="sit__texto">{p.texto}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .sit {
+    display: grid;
+    gap: 0.75rem;
+    list-style: none;
+  }
+  .sit__fila {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0.65rem 0.85rem;
+    padding: clamp(1rem, 2.4vw, 1.35rem);
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .sit__ico {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--texto-suave);
+  }
+  .sit__fila--hay .sit__ico {
+    background: rgba(30, 92, 242, 0.09);
+    border-color: rgba(30, 92, 242, 0.2);
+    color: var(--i-azul-600);
+  }
+  /* Píldora de estado. Va en el mismo renglón que el ícono en pantallas
+     chicas y el texto pasa abajo, ocupando las dos columnas. */
+  .sit__estado {
+    justify-self: start;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--azul-pizarra);
+  }
+  .sit__fila--hay .sit__estado {
+    background: rgba(30, 92, 242, 0.07);
+    border-color: rgba(30, 92, 242, 0.24);
+    color: var(--verde-resalte);
+  }
+  .sit__texto {
+    grid-column: 1 / -1;
+    font-size: 0.975rem;
+    line-height: 1.6;
+    color: var(--azul-petroleo);
+  }
+
+  @media (min-width: 720px) {
+    /* Ícono, estado y texto en una sola línea. El ancho del estado queda
+       fijo para que las tres píldoras se alineen entre sí. */
+    .sit__fila {
+      grid-template-columns: auto 7.5rem 1fr;
+      gap: 1rem;
+    }
+    .sit__estado {
+      justify-self: stretch;
+      text-align: center;
+    }
+    .sit__texto {
+      grid-column: auto;
+    }
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+/* =====================================================================
+   /cotizacion-der-electricidad — COTIZACIÓN PARA DER ELECTRICIDAD
+   ---------------------------------------------------------------------
+   Puesta en marcha de un chatbot de derivación y de un seguimiento
+   automático de conversaciones por WhatsApp, sobre el Chatwoot que la
+   empresa ya tiene. Se comparte por enlace directo y va con `noindex`:
+   no es contenido del sitio.
+
+   ES LA MÁS CORTA DE LAS COTIZACIONES DEL SITIO, y es a propósito.
+   Cuatro puntos, sin relato:
+
+      01 Situación actual        qué hay y qué no
+      02 Alcance                 los cuatro frentes + fuera de alcance
+      03 Dinámica de trabajo     las cuatro fases de los treinta días
+      04 Condiciones económicas  el importe y sus dos condiciones
+
+   NO HAY SECCIÓN DE PRÓXIMOS PASOS NI FIRMA, a diferencia de las
+   propuestas de Milman y Biscayart: el documento cierra en el importe y
+   la conversación sigue por donde ya venía. El contacto queda en el
+   botón flotante de WhatsApp y en el pie del sitio.
+
+   El lenguaje es el del documento original: frases cortas, una idea por
+   línea, sin promesas de resultado. La regla completa está en el
+   encabezado de data/electricidad.ts, y conviene leerla antes de agregar
+   texto: lo que arruina esta página es alargarla.
+
+   IDENTIDAD VISUAL. El mismo sistema de las propuestas de Milman,
+   Biscayart y Royjo y de la landing del Método INTEGRA: mismos tokens,
+   mismas utilidades (`.i-oscuro`, `.i-head`, `.i-eyebrow`, `.i-hl`,
+   `.i-reveal`) y el mismo navbar, pie y tipografías. styles/integra.css
+   se importa sólo acá, así que su CSS no viaja en las demás páginas.
+
+   FONDOS. Claro, oscuro, claro, tenue. El único oscuro es el alcance: es
+   la sección que hay que poder encontrar de un scrolleo.
+
+   ⚠️ Si se agrega, se saca o se reordena una sección hay que tocar tres
+   lugares: el array `indice` de los datos, el `n` de la sección y el
+   orden de los componentes de acá abajo.
+
+   ⚠️ ANTES DE ENVIAR: confirmar la moneda del importe, la forma de pago
+   y la validez. Están las tres listadas en el encabezado de los datos.
+   ===================================================================== */
+import "../../styles/integra.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import ElectricidadHero from "../../components/electricidad/ElectricidadHero.astro";
+import ElectricidadSituacion from "../../components/electricidad/ElectricidadSituacion.astro";
+import ElectricidadAlcance from "../../components/electricidad/ElectricidadAlcance.astro";
+import ElectricidadDinamica from "../../components/electricidad/ElectricidadDinamica.astro";
+import ElectricidadEconomicas from "../../components/electricidad/ElectricidadEconomicas.astro";
+import { electricidad } from "../../data/electricidad";
+---
+
+<Base
+  title={electricidad.seo.title}
+  description={electricidad.seo.description}
+  waMensaje={electricidad.whatsapp.mensaje}
+  waEtiqueta={electricidad.whatsapp.etiqueta}
+  noindex
+>
+  <Navbar />
+  <main>
+    <ElectricidadHero />
+    <ElectricidadSituacion />
+    <ElectricidadAlcance />
+    <ElectricidadDinamica />
+    <ElectricidadEconomicas />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  /* ------------------------------------------------------------------
+     Aparición al hacer scroll, igual que en la landing del Método
+     INTEGRA y en las otras cotizaciones. La clase `is-listo` es la que
+     aplica el estado inicial oculto: sin JS nunca se agrega y el
+     contenido se ve normal.
+
+     La página no tiene ninguna otra interacción: es un documento.
+     ------------------------------------------------------------------ */
+  function initCotizacionElectricidad() {
+    /* `.eh` es la portada de ESTA cotización: con las transiciones de
+       vista el script sobrevive al cambio de página, así que el guardia
+       tiene que ser un selector propio y no un id que otras propuestas
+       también usan. */
+    if (!document.querySelector(".eh")) return;
+
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducido || !("IntersectionObserver" in window)) return;
+
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
+    bloques.forEach((b) => b.classList.add("is-listo"));
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).classList.add("is-visible");
+          obs.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+    bloques.forEach((b) => obs.observe(b));
+  }
+
+  initCotizacionElectricidad();
+  document.addEventListener("astro:page-load", initCotizacionElectricidad);
+</script>

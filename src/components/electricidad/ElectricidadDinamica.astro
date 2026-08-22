@@ -1,0 +1,227 @@
+---
+/* =====================================================================
+   03 · DINÁMICA DE TRABAJO
+   ---------------------------------------------------------------------
+   Las cuatro fases de los treinta días, en línea de tiempo horizontal.
+   Es una línea y no cuatro tarjetas sueltas porque acá lo que importa no
+   es cada fase sino el orden: primero se releva, después se arma, y
+   recién ahí se testea con el equipo interno.
+
+   EL RIEL QUE UNE LAS FASES es uno solo, detrás de los números, y los
+   círculos lo tapan con su fondo opaco. Dibujarlo por tramos obligaba a
+   calcular la distancia entre dos centros, y esa cuenta se rompe apenas
+   una fase tenga un renglón más que la otra.
+
+   EN PANTALLA CHICA el riel se vuelve vertical y las fases se apilan: la
+   secuencia se sigue leyendo como secuencia.
+
+   El bloque del plazo cierra la sección con la barra al costado, igual
+   que el de fuera de alcance en el punto 2: es una salvedad sobre lo de
+   arriba, no una quinta fase.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { electricidad } from "../../data/electricidad";
+const { dinamica } = electricidad;
+---
+
+<section class="section i-claro" id={dinamica.id} aria-label={dinamica.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{dinamica.eyebrow}</span>
+      <h2 class="t-h2">{dinamica.titulo}</h2>
+      <p class="text-muted">{dinamica.intro}</p>
+    </header>
+
+    <ol class="din i-reveal">
+      {
+        dinamica.fases.map((f) => (
+          <li class="fase">
+            <span class="fase__n" aria-hidden="true">{f.n}</span>
+            <span class="fase__dias">{f.dias}</span>
+            <h3 class="fase__t">
+              <span class="fase__ico" aria-hidden="true">
+                <Icon name={f.icono} size={16} />
+              </span>
+              {f.titulo}
+            </h3>
+            <ul class="fase__items">
+              {f.items.map((i) => (
+                <li>
+                  <span class="fase__punto" aria-hidden="true" />
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+
+    <aside class="plazo i-reveal">
+      <h3 class="plazo__t">{dinamica.condicionesTitulo}</h3>
+      <ul class="plazo__items">
+        {
+          dinamica.condiciones.map((c) => (
+            <li>
+              <span class="plazo__tick" aria-hidden="true">
+                <Icon name="check" size={13} />
+              </span>
+              <span>{c}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<style>
+  /* ---- Las cuatro fases ---- */
+  .din {
+    position: relative;
+    display: grid;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  /* Riel vertical en pantalla chica: pasa por el centro de los números. */
+  .din::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    width: 2px;
+    background: var(--borde);
+  }
+  .fase {
+    position: relative;
+    padding-left: 3rem;
+  }
+  .fase__n {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--i-neblina);
+    color: var(--verde-resalte);
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.8125rem;
+  }
+  .fase__dias {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--i-azul-600);
+  }
+  .fase__t {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+  }
+  .fase__ico {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .fase__items {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+    list-style: none;
+  }
+  .fase__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .fase__punto {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.6rem;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+    opacity: 0.55;
+  }
+
+  /* ---- Sobre el plazo ---- */
+  .plazo {
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding: 1.15rem 1.35rem;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
+  }
+  .plazo__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.98rem;
+    color: var(--azul-petroleo);
+  }
+  .plazo__items {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    list-style: none;
+  }
+  .plazo__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--azul-pizarra);
+  }
+  .plazo__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.2rem;
+    color: var(--verde-resalte);
+  }
+
+  @media (min-width: 900px) {
+    /* Cuatro columnas y el riel se acuesta: la secuencia se lee de
+       izquierda a derecha, que es como se lee un calendario. */
+    .din {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .din::before {
+      left: 16px;
+      right: 16px;
+      top: 15px;
+      bottom: auto;
+      width: auto;
+      height: 2px;
+    }
+    .fase {
+      padding-left: 0;
+      padding-top: 3rem;
+    }
+  }
+</style>

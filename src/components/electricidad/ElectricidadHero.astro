@@ -1,0 +1,332 @@
+---
+/* =====================================================================
+   PORTADA E ÍNDICE — Cotización para DER Electricidad
+   ---------------------------------------------------------------------
+   Quien abre esta página pidió una cotización: la portada no argumenta a
+   favor de contratar nada, ubica. El titular nombra el servicio en una
+   línea, la bajada dice qué comprende y la ficha —a la altura del
+   titular, no al pie— tiene los datos que se consultan: alcance, qué no
+   incluye, validez.
+
+   EL MEMBRETE NO SE DIBUJA si `hero.logo.src` está vacío, que es el
+   estado actual. Sin archivo, el título encabeza la columna y no queda
+   ni hueco ni imagen rota.
+
+   EL ÍNDICE VA ACÁ, dentro de la misma sección oscura, y es de cuatro
+   entradas: en un documento corto sirve menos para navegar que para
+   mostrar de un vistazo que son cuatro puntos y se termina.
+
+   Mismo lenguaje visual que las propuestas de Milman, Biscayart y Royjo:
+   azul profundo, dos halos de luz y la trama de puntos, todo detrás del
+   contenido.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { electricidad } from "../../data/electricidad";
+const { hero, indice, indiceTitulo } = electricidad;
+---
+
+<section class="eh" aria-label="Cotización de atención y seguimiento automático por WhatsApp">
+  <div class="eh__fondo" aria-hidden="true">
+    <span class="eh__halo eh__halo--a"></span>
+    <span class="eh__halo eh__halo--b"></span>
+    <span class="trama eh__trama"></span>
+  </div>
+
+  <div class="container eh__inner">
+    <div class="eh__copy">
+      {
+        hero.logo.src && (
+          <span class="eh__placa">
+            <img
+              src={hero.logo.src}
+              alt={hero.logo.alt}
+              width={hero.logo.ancho}
+              height={hero.logo.alto}
+            />
+          </span>
+        )
+      }
+
+      <h1 class="t-display eh__titulo">
+        {hero.titulo}
+        <span class="i-hl">{hero.tituloResalte}</span>
+      </h1>
+
+      <p class="eh__sub">{hero.subtitulo}</p>
+
+      <p class="eh__enlaces">
+        {
+          hero.enlaces.map((e) => (
+            <a href={`#${e.id}`}>
+              {e.etiqueta}
+              <Icon name="arrow" size={15} />
+            </a>
+          ))
+        }
+      </p>
+    </div>
+
+    <aside class="eh__ficha">
+      <p class="eh__ficha-t">{hero.fichaTitulo}</p>
+      <dl class="eh__filas">
+        {
+          hero.fichaFilas.map((f) => (
+            <div class="eh__fila">
+              <span class="eh__fila-ico" aria-hidden="true">
+                <Icon name={f.icono} size={16} />
+              </span>
+              <div>
+                <dt>{f.etiqueta}</dt>
+                <dd>{f.valor}</dd>
+              </div>
+            </div>
+          ))
+        }
+      </dl>
+    </aside>
+  </div>
+
+  {/* ---- Índice ---- */}
+  <nav class="container eh__indice" aria-label={indiceTitulo}>
+    <p class="eh__indice-t">{indiceTitulo}</p>
+    <ol>
+      {
+        indice.map((s) => (
+          <li>
+            <a href={`#${s.id}`}>
+              <span class="eh__indice-n">{s.n}</span>
+              <span class="eh__indice-e">{s.titulo}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</section>
+
+<style>
+  .eh {
+    position: relative;
+    overflow: hidden;
+    background: var(--i-noche);
+    color: #fff;
+    padding-block: clamp(3rem, 7vw, 5rem) clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  /* ---- Fondo ---- */
+  .eh__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .eh__halo {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.55;
+  }
+  .eh__halo--a {
+    width: 44rem;
+    height: 44rem;
+    top: -22rem;
+    right: -14rem;
+    background: radial-gradient(circle, rgba(76, 134, 245, 0.55), transparent 70%);
+  }
+  .eh__halo--b {
+    width: 32rem;
+    height: 32rem;
+    bottom: -18rem;
+    left: -12rem;
+    background: radial-gradient(circle, rgba(30, 92, 242, 0.5), transparent 70%);
+  }
+  .eh__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+  }
+
+  /* ---- Membrete ---- */
+  .eh__placa {
+    display: inline-flex;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(6, 12, 30, 0.35);
+  }
+  /* Alto fijo y ancho automático: lo que tiene que mantenerse constante
+     es la altura del logo, no el ancho de la placa. */
+  .eh__placa img {
+    display: block;
+    width: auto;
+    height: clamp(30px, 4.5vw, 40px);
+  }
+
+  .eh__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(2.25rem, 5vw, 3.25rem);
+    align-items: center;
+  }
+
+  /* ---- Columna de texto ---- */
+  .eh__titulo {
+    font-size: clamp(1.8rem, 1.1rem + 2.7vw, 2.85rem);
+    line-height: 1.12;
+  }
+  /* Las dos partes corren seguidas: el salto forzado las leería como dos
+     titulares distintos. Quiebra sola donde no entre. */
+  .eh__titulo .i-hl {
+    display: inline;
+  }
+  .eh__sub {
+    max-width: 40rem;
+    margin-top: 1.35rem;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(220, 230, 246, 0.8);
+  }
+  /* Atajos de lectura, no botones: un par de botones sólidos acá
+     convertiría una cotización en una página de captación. */
+  .eh__enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin-top: 1.85rem;
+  }
+  .eh__enlaces a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(169, 200, 245, 0.45);
+    font-size: 0.95rem;
+    font-weight: var(--w-subheadline);
+    color: var(--i-celeste);
+    transition: gap var(--transition), border-color var(--transition);
+  }
+  .eh__enlaces a:hover {
+    gap: 0.75rem;
+    border-color: var(--i-celeste);
+  }
+
+  /* ---- Ficha ---- */
+  .eh__ficha {
+    padding: clamp(1.35rem, 3vw, 1.8rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.055);
+    border: 1px solid rgba(169, 200, 245, 0.24);
+    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.5);
+    backdrop-filter: blur(6px);
+  }
+  .eh__ficha-t {
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(169, 200, 245, 0.2);
+  }
+  .eh__filas {
+    display: grid;
+  }
+  .eh__fila {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 0.75rem 0;
+  }
+  .eh__fila + .eh__fila {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .eh__fila-ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(169, 200, 245, 0.12);
+    color: var(--i-celeste);
+  }
+  .eh__fila dt {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(220, 230, 246, 0.6);
+  }
+  .eh__fila dd {
+    margin-top: 0.15rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.9375rem;
+    line-height: 1.35;
+    color: #fff;
+  }
+
+  /* ---- Índice ---- */
+  .eh__indice {
+    position: relative;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: clamp(1.75rem, 4vw, 2.25rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .eh__indice-t {
+    margin-bottom: 1.1rem;
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .eh__indice ol {
+    display: grid;
+    gap: 0.15rem 2rem;
+    list-style: none;
+  }
+  .eh__indice a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    padding: 0.45rem 0.5rem 0.45rem 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: rgba(220, 230, 246, 0.82);
+    transition: color var(--transition);
+  }
+  .eh__indice a:hover {
+    color: #fff;
+  }
+  .eh__indice a:hover .eh__indice-e {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .eh__indice-n {
+    flex-shrink: 0;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8125rem;
+    color: var(--i-celeste);
+  }
+
+  @media (min-width: 640px) {
+    .eh__indice ol {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 980px) {
+    .eh__inner {
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 3.5rem;
+    }
+    /* Los cuatro puntos en una sola fila: el documento entero se ve de un
+       vistazo, que es justamente lo que se quiere mostrar. */
+    .eh__indice ol {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>
