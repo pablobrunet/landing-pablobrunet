@@ -19,15 +19,20 @@
    de texto y recuerda de quién se está hablando.
 
    CÓMO SE ARMA EL LOOP
-   Los items de cada fila se duplican y la pista se desplaza -50%: cuando
-   la segunda copia llega a donde arrancó la primera, el ciclo vuelve a
-   empezar y no se ve la costura. El aire entre tarjetas va como
-   `margin-right` de cada celda y NO como `gap` del flex: con `gap`, la
-   mitad exacta del ancho no coincide con el largo de una copia —queda
-   medio hueco de diferencia— y el loop pega un salto en cada vuelta.
+   Los items de cada fila se duplican. Cada fila es un `overflow-x: auto`
+   de verdad (no una animación de `transform`), y un script mueve su
+   `scrollLeft` con requestAnimationFrame: cuando llega al ancho de una
+   copia, se resetea a 0 y no se ve la costura. Al ser scroll nativo, el
+   dedo la mueve solo (touch-action: pan-x) y el mouse la arrastra con los
+   handlers de pointer del script — sin el enganche que daba el `:hover`
+   de CSS, que en celular quedaba trabado al tocar. El aire entre tarjetas
+   va como `margin-right` de cada celda y NO como `gap` del flex: con
+   `gap`, la mitad exacta del ancho no coincide con el largo de una copia
+   —queda medio hueco de diferencia— y el loop pega un salto en cada vuelta.
 
-   La duración se calcula con la cantidad de items, así las tres filas se
-   mueven a la misma velocidad aunque una tenga más tarjetas que otra.
+   La duración (script) se calcula con la cantidad de items, así las tres
+   filas se mueven a la misma velocidad aunque una tenga más tarjetas que
+   otra.
 
    La segunda copia va con `aria-hidden`: el lector de pantalla lee cada
    comentario una sola vez.
@@ -154,11 +159,16 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     }
   </div>
 
-  <div class="muro">
+  <div class="muro" data-muro>
     {
       carriles.map((carril) => (
-        <div class:list={["muro__fila", { "muro__fila--der": carril.derecha }]}>
-          <div class="muro__pista" style={`--dur:${carril.duracion}s`}>
+        <div
+          class="muro__fila"
+          data-fila
+          data-dir={carril.derecha ? "der" : "izq"}
+          data-duracion={carril.duracion}
+        >
+          <div class="muro__pista">
             {[...carril.items, ...carril.items].map((item, idx) => (
               <div
                 class="muro__celda"
@@ -177,10 +187,19 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
                 ) : (
                   <figure class="muro__cita">
                     <blockquote class="muro__texto">{item.cita.texto}</blockquote>
-                    <figcaption class="muro__autor">
-                      <span class="muro__nombre">{item.cita.nombre}</span>
-                      {pie(item.cita) && <span class="muro__rol">{pie(item.cita)}</span>}
-                    </figcaption>
+                    <div class="muro__pie">
+                      <figcaption class="muro__autor">
+                        <span class="muro__nombre">{item.cita.nombre}</span>
+                        {pie(item.cita) && <span class="muro__rol">{pie(item.cita)}</span>}
+                      </figcaption>
+                      <div class="muro__estrellas" aria-hidden="true">
+                        {Array.from({ length: 5 }).map(() => (
+                          <svg class="muro__estrella" viewBox="0 0 24 24">
+                            <path d="M12 4l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8z" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
                   </figure>
                 )}
               </div>
@@ -191,6 +210,144 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     }
   </div>
 </section>
+
+<script>
+  /* Arrastre con mouse + scroll nativo con el dedo, en vez de la animación
+     CSS de antes. Con :hover se paraba TODO el muro al tocar en celular,
+     porque el navegador aplica :hover a lo que tocaste y no lo saca hasta
+     que tocás otra cosa: quedaba trabado. Acá el scroll es real
+     (`overflow-x: auto` en cada fila) y el auto-scroll es JS con
+     `scrollLeft`, así que tocar y arrastrar simplemente mueve la fila,
+     sin ese enganche. */
+  function initMuros() {
+    document.querySelectorAll<HTMLElement>("[data-muro]").forEach((muro) => {
+      if (muro.dataset.listo) return;
+      muro.dataset.listo = "1";
+
+      const filas = Array.from(muro.querySelectorAll<HTMLElement>("[data-fila]"));
+      if (!filas.length) return;
+
+      const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const carriles = filas.map((fila) => {
+        const pista = fila.querySelector<HTMLElement>(".muro__pista");
+        /* dir: -1 recorre la fila de derecha a izquierda descontando
+           scrollLeft; +1 la recorre sumando. `mitad` es el ancho de una
+           sola copia (el contenido va duplicado): al llegar a ese punto
+           se ve idéntico al arranque, así que ahí se reinicia el conteo
+           sin que se note la costura. */
+        const dir = fila.dataset.dir === "der" ? -1 : 1;
+        const duracion = parseFloat(fila.dataset.duracion || "60");
+        let mitad = pista ? pista.scrollWidth / 2 : 0;
+        if (dir === -1) fila.scrollLeft = mitad;
+
+        let arrastrando = false;
+        let punteroId: number | null = null;
+        let inicioX = 0;
+        let inicioScroll = 0;
+        /* Cuánto se frena el auto-scroll después de tocar/arrastrar: da
+           tiempo a que termine el "momentum" del scroll táctil antes de
+           que el JS retome el control. */
+        let pausadoHasta = 0;
+        const marcarInteraccion = () => {
+          pausadoHasta = performance.now() + 900;
+        };
+
+        window.addEventListener("resize", () => {
+          if (pista) mitad = pista.scrollWidth / 2;
+        });
+
+        /* El arrastre con mouse hay que armarlo a mano: el navegador no
+           deja "clickear y arrastrar" un div con overflow, a diferencia
+           del dedo en celular que sí scrollea nativo. */
+        fila.addEventListener("pointerdown", (e) => {
+          if (e.pointerType !== "mouse") return;
+          arrastrando = true;
+          punteroId = e.pointerId;
+          fila.setPointerCapture(punteroId);
+          inicioX = e.clientX;
+          inicioScroll = fila.scrollLeft;
+          fila.classList.add("muro__fila--arrastrando");
+        });
+        fila.addEventListener("pointermove", (e) => {
+          if (!arrastrando || e.pointerId !== punteroId || !mitad) return;
+          const delta = e.clientX - inicioX;
+          const next = ((inicioScroll - delta) % mitad + mitad) % mitad;
+          fila.scrollLeft = next;
+          marcarInteraccion();
+        });
+        const soltar = (e: PointerEvent) => {
+          if (punteroId !== null && e.pointerId !== punteroId) return;
+          arrastrando = false;
+          punteroId = null;
+          fila.classList.remove("muro__fila--arrastrando");
+          marcarInteraccion();
+        };
+        fila.addEventListener("pointerup", soltar);
+        fila.addEventListener("pointercancel", soltar);
+        /* El dedo ya scrollea solo (overflow-x + touch-action: pan-x):
+           acá solo se anota que hubo interacción, para frenar el
+           auto-scroll mientras dura. */
+        fila.addEventListener("touchstart", marcarInteraccion, { passive: true });
+        fila.addEventListener("touchmove", marcarInteraccion, { passive: true });
+        /* Solo un gesto horizontal de verdad (trackpad): un scroll vertical
+           de la página pasando por acá no tiene por qué frenar el muro. */
+        fila.addEventListener(
+          "wheel",
+          (e) => {
+            if (Math.abs(e.deltaX) > 0) marcarInteraccion();
+          },
+          { passive: true }
+        );
+
+        return {
+          fila,
+          dir,
+          duracion,
+          get mitad() {
+            return mitad;
+          },
+          estaArrastrando: () => arrastrando,
+          pausadoHasta: () => pausadoHasta,
+        };
+      });
+
+      /* Con motion reducido no hay auto-scroll: la fila queda quieta y se
+         recorre solo a mano (arrastre o dedo). */
+      if (reducido) return;
+
+      let sobreMouse = false;
+      muro.addEventListener("pointerenter", (e) => {
+        if (e.pointerType === "mouse") sobreMouse = true;
+      });
+      muro.addEventListener("pointerleave", (e) => {
+        if (e.pointerType === "mouse") sobreMouse = false;
+      });
+
+      let anterior: number | null = null;
+      const paso = (t: number) => {
+        if (anterior === null) anterior = t;
+        const dt = (t - anterior) / 1000;
+        anterior = t;
+        const ahora = performance.now();
+        for (const carril of carriles) {
+          if (sobreMouse || carril.estaArrastrando() || ahora < carril.pausadoHasta()) continue;
+          const mitad = carril.mitad;
+          if (!mitad) continue;
+          const velocidad = mitad / carril.duracion;
+          const next =
+            ((carril.fila.scrollLeft + carril.dir * velocidad * dt) % mitad + mitad) % mitad;
+          carril.fila.scrollLeft = next;
+        }
+        requestAnimationFrame(paso);
+      };
+      requestAnimationFrame(paso);
+    });
+  }
+
+  initMuros();
+  document.addEventListener("astro:page-load", initMuros);
+</script>
 
 <style>
   /* El muro sale de la caja: las tiras van de borde a borde, si no el
@@ -212,12 +369,11 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
   }
 
   .muro {
-    /* Alto de la tira y ancho de la tarjeta: de acá sale todo el tamaño.
-       Chicas a propósito — son un pulso, no una sección de lectura. */
-    --muro-alto: clamp(126px, 13.5vw, 138px);
-    --muro-ancho: clamp(248px, 72vw, 348px);
+    /* Alto de la tira y ancho de la tarjeta: de acá sale todo el tamaño. */
+    --muro-alto: clamp(154px, 16.5vw, 172px);
+    --muro-ancho: clamp(296px, 82vw, 410px);
     /* Pegadas: el mismo aire entre filas y entre tarjetas. */
-    --muro-aire: 0.7rem;
+    --muro-aire: 0.85rem;
     /* Aire que cada fila reserva adentro para su propia sombra: la fila
        recorta lo que se sale (`overflow: hidden`) y sin este colchón la
        sombra de las tarjetas quedaba cortada al ras. Se descuenta del
@@ -232,32 +388,30 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   }
   .muro__fila {
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding-block: var(--muro-sombra);
+    /* El auto-scroll lo mueve JS con `scrollLeft`; esto habilita que el
+       dedo también lo mueva con scroll nativo, sin bloquear el scroll
+       vertical de la página al pasar por acá. */
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    scrollbar-width: none;
+  }
+  .muro__fila::-webkit-scrollbar {
+    display: none;
+  }
+  .muro__fila--arrastrando {
+    cursor: grabbing;
+  }
+  .muro__fila--arrastrando,
+  .muro__fila--arrastrando * {
+    user-select: none;
   }
   .muro__pista {
     display: flex;
     width: max-content;
-    animation: muro-scroll var(--dur, 60s) linear infinite;
-    will-change: transform;
-  }
-  /* Hacia la derecha = el mismo recorrido al revés. */
-  .muro__fila--der .muro__pista {
-    animation-direction: reverse;
-  }
-  /* Se frena todo el muro, no solo la fila de abajo del mouse: parar una
-     sola mientras las otras dos siguen se lee como un error. */
-  .muro:hover .muro__pista {
-    animation-play-state: paused;
-  }
-  @keyframes muro-scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      /* -50% porque el contenido está duplicado → loop sin costura */
-      transform: translateX(-50%);
-    }
   }
 
   /* El aire va como margen de cada celda y no como `gap` de la pista: ver
@@ -271,10 +425,10 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
   .muro__cita {
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
+    gap: 0.55rem;
     width: var(--muro-ancho);
     height: 100%;
-    padding: 0.85rem 1rem;
+    padding: 1rem 1.15rem;
     background: var(--blanco);
     border: 1px solid var(--borde);
     border-radius: var(--radius);
@@ -288,7 +442,7 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
   .muro__texto {
     flex: 1 1 auto;
     min-height: 0;
-    font-size: 0.845rem;
+    font-size: 0.9rem;
     line-height: 1.42;
     color: var(--azul-petroleo);
     display: -webkit-box;
@@ -304,17 +458,26 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
   .muro__texto::after {
     content: "\201D";
   }
+  /* Autor a la izquierda, calificación a la derecha: mismo renglón, sin
+     sumarle alto a la tarjeta. */
+  .muro__pie {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
   .muro__autor {
     display: flex;
     flex-direction: column;
     line-height: 1.25;
+    min-width: 0;
     /* Filete de color: ata el pie de la tarjeta a la paleta de la página
        (verde en el sitio, azul en INTEGRA, sin tocar nada). */
     padding-left: 0.55rem;
     border-left: 2px solid var(--verde-acento);
   }
   .muro__nombre {
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     font-weight: var(--w-headline);
     color: var(--azul-petroleo);
     white-space: nowrap;
@@ -322,11 +485,23 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     text-overflow: ellipsis;
   }
   .muro__rol {
-    font-size: 0.72rem;
+    font-size: 0.76rem;
     color: var(--texto-suave);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  /* Decorativas: no son una calificación real que haya puesto la persona,
+     así que van con aria-hidden y no reemplazan el texto del comentario. */
+  .muro__estrellas {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 0.1rem;
+  }
+  .muro__estrella {
+    width: 12px;
+    height: 12px;
+    fill: #f4b400;
   }
 
   /* La foto ocupa un bloque de la tira: mismo alto que las tarjetas y el
@@ -345,21 +520,12 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     object-fit: cover;
   }
 
-  /* Sin movimiento: las filas quedan quietas y se recorren con el dedo. */
+  /* Sin auto-scroll (lo frena el script): el degradé de los bordes deja de
+     tener sentido si la fila queda quieta, se ve como contenido cortado. */
   @media (prefers-reduced-motion: reduce) {
     .muro {
       -webkit-mask-image: none;
       mask-image: none;
-    }
-    .muro__fila {
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .muro__fila::-webkit-scrollbar {
-      display: none;
-    }
-    .muro__pista {
-      animation: none;
     }
   }
 </style>
