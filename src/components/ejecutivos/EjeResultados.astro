@@ -1,0 +1,197 @@
+---
+/* =====================================================================
+   QUÉ DEJAMOS EN CADA EMPRESA — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Cuatro tarjetas. El gesto es el del original: un círculo chico en la
+   esquina superior derecha que al pasar el mouse crece hasta cubrir toda
+   la tarjeta, y el texto pasa a blanco encima.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { resultados } = ejecutivos.home;
+
+/* Tres tonos que se alternan, como los tres colores del original. */
+const tonos = ["azul", "navy", "denim", "azul"];
+---
+
+<section class="ej-sec ej-sup-baja er">
+  <div class="ej-wrap">
+    <header class="er__head ej-reveal">
+      <h2 class="ej-h2">{resultados.titulo}</h2>
+      <p class="ej-lead">{resultados.subtitulo}</p>
+    </header>
+
+    <div class="er__grid">
+      {
+        resultados.items.map((res, i) => (
+          <article class="er__card ej-reveal" data-tono={tonos[i]}>
+            <span class="er__circulo" aria-hidden="true" />
+            <span class="er__esquina" aria-hidden="true">
+              <EjeIcon name="flecha" size={16} />
+            </span>
+
+            <div class="er__cuerpo">
+              <span class="er__ico">
+                <EjeIcon name={res.icono} size={24} />
+              </span>
+              <div class="er__texto">
+                <h3 class="ej-h4 er__titulo">{res.titulo}</h3>
+                <p class="er__desc">{res.desc}</p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .er__head {
+    max-width: 52rem;
+    margin: 0 auto clamp(3rem, 6vw, 5rem);
+    text-align: center;
+    display: grid;
+    gap: 1rem;
+  }
+  .er__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .er__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .er__card {
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    padding: clamp(2rem, 4vw, 3rem);
+    border-radius: var(--e-r-2xl);
+    border: 1px solid var(--e-linea);
+    background: #ffffff;
+    box-shadow: 0 18px 40px -28px rgba(13, 27, 61, 0.18);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .er__card:nth-child(2) {
+    background: var(--e-sup-baja);
+  }
+  .er__card:nth-child(3) {
+    background: var(--e-sup-alta);
+  }
+  .er__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+
+  /* El círculo que se expande. La escala grande es la que llena la
+     tarjeta entera desde una semilla de 96px. */
+  .er__circulo,
+  .er__esquina {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .er__circulo {
+    width: 6rem;
+    height: 6rem;
+    margin: -2rem -2rem 0 0;
+    border-radius: 50%;
+    transition: transform 500ms ease-out;
+  }
+  .er__card:hover .er__circulo {
+    transform: scale(14);
+  }
+  .er__esquina {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 4rem;
+    height: 4rem;
+    padding: 0.75rem 1rem;
+    border-bottom-left-radius: 1.75rem;
+    color: #ffffff;
+    transition: width 500ms ease, height 500ms ease;
+  }
+  .er__card:hover .er__esquina {
+    width: 5rem;
+    height: 5rem;
+  }
+  .er__esquina :global(svg) {
+    transition: transform 500ms ease;
+  }
+  .er__card:hover .er__esquina :global(svg) {
+    transform: translate(2px, -2px);
+  }
+
+  /* Tonos de cada tarjeta */
+  .er__card[data-tono="azul"] .er__circulo,
+  .er__card[data-tono="azul"] .er__esquina {
+    background: var(--e-azul-700);
+  }
+  .er__card[data-tono="navy"] .er__circulo,
+  .er__card[data-tono="navy"] .er__esquina {
+    background: var(--e-navy);
+  }
+  .er__card[data-tono="denim"] .er__circulo,
+  .er__card[data-tono="denim"] .er__esquina {
+    background: var(--e-denim);
+  }
+
+  .er__cuerpo {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3rem;
+    height: 100%;
+  }
+  .er__ico {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--e-r-xl);
+    background: rgba(30, 92, 242, 0.12);
+    color: var(--e-acento);
+    transition: background 500ms ease, color 500ms ease, transform 500ms ease;
+  }
+  .er__card:hover .er__ico {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+  .er__texto {
+    max-width: 30rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .er__desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--e-texto-var);
+    transition: color 300ms ease;
+  }
+  .er__titulo {
+    transition: color 300ms ease;
+  }
+  .er__card:hover .er__titulo {
+    color: #ffffff;
+  }
+  .er__card:hover .er__desc {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .er__card,
+    .er__card:hover,
+    .er__circulo,
+    .er__card:hover .er__circulo {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

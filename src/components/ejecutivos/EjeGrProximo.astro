@@ -1,0 +1,93 @@
+---
+/* =====================================================================
+   POR QUÉ VALE / CÓMO LLEGAR — /programa-ejecutivos/agenda-confirmada
+   ---------------------------------------------------------------------
+   Dos bloques: uno claro con el sentido de la reunión y uno oscuro con la
+   preparación. El oscuro es el que hace el trabajo: pide tres cosas
+   concretas para que la conversación arranque más arriba.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { proximo } = ejecutivos.gracias;
+---
+
+<section class="ej-sec ej-sec--corta ej-sup egp">
+  <div class="ej-wrap egp__grid">
+    <article class="egp__claro ej-reveal">
+      <p class="ej-eyebrow">{proximo.izquierda.eyebrow}</p>
+      <h2 class="ej-h3">{proximo.izquierda.titulo}</h2>
+      <p class="ej-lead">{proximo.izquierda.desc}</p>
+    </article>
+
+    <article class="egp__oscuro ej-reveal">
+      <p class="egp__eyebrow">{proximo.derecha.eyebrow}</p>
+      <ul class="egp__items">
+        {
+          proximo.derecha.items.map((item) => (
+            <li>
+              <EjeIcon name="cheque" size={20} />
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+  </div>
+</section>
+
+<style>
+  .egp__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .egp__claro,
+  .egp__oscuro {
+    height: 100%;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border-radius: var(--e-r-3xl);
+  }
+  .egp__claro {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    border: 1px solid var(--e-linea);
+    background: var(--e-sup-baja);
+    box-shadow: var(--e-sombra-del);
+  }
+  .egp__oscuro {
+    background: var(--e-navy);
+    color: #ffffff;
+    box-shadow: var(--e-sombra-prem);
+  }
+  .egp__eyebrow {
+    margin-bottom: 1.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .egp__items {
+    display: grid;
+    gap: 1rem;
+  }
+  .egp__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .egp__items li :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--e-azul-500);
+  }
+
+  @media (min-width: 1024px) {
+    .egp__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

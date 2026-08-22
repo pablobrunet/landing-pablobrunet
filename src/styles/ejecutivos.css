@@ -1,0 +1,386 @@
+/* =====================================================================
+   /programa-ejecutivos — TEMA AZUL DEL ANEXO
+   ---------------------------------------------------------------------
+   El anexo reproduce, sección por sección, la landing del repo
+   ai-first-landing: mismo orden, mismos bloques, mismos elementos.
+   Lo único que cambia es la paleta, que pasa de la familia verde original
+   a la familia azul corporativa (los mismos siete colores que usa el otro
+   anexo del sitio, ver styles/integra.css).
+
+   CÓMO FUNCIONA
+   Este archivo se importa SOLO desde las páginas de /programa-ejecutivos,
+   así que su CSS viaja únicamente ahí. Hace dos cosas:
+
+     1. Redefine los tokens verdes de la marca personal con sus
+        equivalentes azules. Por eso el navbar, el footer y el botón
+        flotante de WhatsApp —que son los componentes compartidos del
+        sitio— se tiñen solos, sin duplicar nada.
+     2. Define la paleta y las utilidades propias del anexo (prefijo
+        --e- / .ej-), que son la traducción de los tokens de Tailwind
+        que usaba el repo original.
+
+   Los selectores van con especificidad doble (:root:root, .btn.btn--…)
+   para ganarle a tokens.css / global.css sin depender del orden en que el
+   bundler los concatene.
+
+   EQUIVALENCIAS con el repo original (verde → azul):
+     brand-deep      #1F4F3F → #0d1b3d  fondos oscuros y bloques sólidos
+     brand-medium    #2A7A58 → #17408f  escalón intermedio de los degradés
+     brand-teal      #2E8C6F → #1747c2  texto de acento sobre claro (AA)
+     brand-bright    #2ED19A → #4c86f5  acento sobre oscuro, glows, puntos
+     brand-turquoise #3CC7A4 → #1e5cf2  color principal, CTAs
+     brand-aqua      #48CBB6 → #3b6cb7  tercer acento, tarjetas
+     light-aqua / soft-cyan / cool-cyan → #a9c8f5  contraste sobre oscuro
+
+   CONTRASTE (WCAG AA sobre sus fondos reales):
+     #1747c2 sobre blanco = 7,7:1 · sobre #f4f6fa = 7,2:1
+     #1e5cf2 sobre blanco = 5,4:1
+     #3b6cb7 sobre blanco = 5,2:1
+     #a9c8f5 sobre #0a1430 = 10,4:1 · blanco sobre #0a1430 = 17,6:1
+   Por eso el texto de acento sobre fondos claros usa #1747c2 y no el azul
+   intenso: en cuerpos chicos el intenso queda justo.
+   ===================================================================== */
+
+:root:root {
+  /* ---- 1. Reasignación de los tokens de marca (verde → azul) ---- */
+  --azul-petroleo: #0d1b3d;
+  --azul-pizarra: #3b6cb7;
+  --verde-azulado: #3b6cb7;
+  --verde-acento: #1e5cf2;
+  --verde-acento-oscuro: #1747c2;
+  --verde-resalte: #1747c2;
+  --verde-resalte-claro: #a9c8f5;
+  --gris-claro: #f4f6fa;
+  --texto-suave: #4c5d80;
+  --borde: #d8e3f5;
+  --borde-punteado: #b9cdeb;
+
+  --shadow-sm: 0 2px 8px rgba(13, 27, 61, 0.06);
+  --shadow: 0 12px 32px rgba(13, 27, 61, 0.1);
+  --shadow-lg: 0 24px 60px rgba(13, 27, 61, 0.18);
+
+  /* ---- 2. Paleta propia del anexo ---- */
+  --e-noche: #0a1430;      /* el fondo oscuro más profundo: hero y cierres */
+  --e-navy: #0d1b3d;       /* bloques sólidos oscuros                      */
+  --e-azul-900: #12306b;
+  --e-azul-800: #17408f;
+  --e-azul-700: #1b4ec0;
+  --e-azul-600: #1e5cf2;   /* color principal                              */
+  --e-azul-500: #4c86f5;   /* acento sobre oscuro                          */
+  --e-denim: #3b6cb7;
+  --e-celeste: #a9c8f5;
+  --e-neblina: #dce6f6;
+
+  /* Superficies: la escala de grises del original, teñida de azul. */
+  --e-sup: #ffffff;
+  --e-sup-baja: #fafcfe;
+  --e-sup-media: #f4f6fa;
+  --e-sup-alta: #eef2fa;
+  --e-sup-max: #dce6f6;
+
+  --e-texto: #0d1b3d;      /* on-surface          */
+  --e-texto-var: #4c5d80;  /* on-surface-variant  */
+  --e-acento: #1747c2;     /* acento sobre claro (era brand-teal) */
+  --e-linea: #e4ecf8;      /* outline-variant     */
+
+  --e-grad: linear-gradient(135deg, #4c86f5 0%, #1e5cf2 55%, #17408f 100%);
+  --e-grad-marca: linear-gradient(135deg, #0d1b3d 0%, #1747c2 45%, #3b6cb7 100%);
+  --e-glow: 0 18px 44px rgba(30, 92, 242, 0.32);
+
+  /* Radios y sombras del original (utilidades de Tailwind → valores reales) */
+  --e-r-xl: 1.25rem;
+  --e-r-2xl: 2rem;
+  --e-r-3xl: 2.25rem;
+  --e-r-4xl: 2.5rem;
+  --e-sombra-amb: 0 4px 20px -5px rgba(13, 27, 61, 0.07);
+  --e-sombra-prem: 0 15px 40px -10px rgba(13, 27, 61, 0.16);
+  --e-sombra-del: 0 2px 15px -3px rgba(13, 27, 61, 0.06),
+    0 4px 6px -2px rgba(13, 27, 61, 0.03);
+
+  /* Alto de sección: el original usa 8rem fijos arriba y abajo; acá baja
+     en pantallas chicas para que el scroll no se haga eterno en celular. */
+  --e-sec-y: clamp(4.5rem, 7vw, 8rem);
+  --e-sec-y-corta: clamp(3.5rem, 5.5vw, 6rem);
+}
+
+/* ---- Componentes compartidos del sitio, teñidos ---- */
+.btn.btn--primary {
+  background: var(--e-grad);
+  color: #ffffff;
+  box-shadow: var(--e-glow);
+}
+.btn.btn--primary:hover {
+  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+}
+
+/* Trama de puntos del sistema gráfico, en azul */
+.trama.trama {
+  background-image: radial-gradient(
+    circle at 1.5px 1.5px,
+    rgba(169, 200, 245, 0.35) 1.5px,
+    transparent 0
+  );
+}
+
+/* =====================================================================
+   UTILIDADES DEL ANEXO
+   Traducción de las clases de Tailwind que usaba el repo original.
+   ===================================================================== */
+
+/* ---- Layout ---- */
+.ej-sec {
+  padding-block: var(--e-sec-y);
+  position: relative;
+}
+.ej-sec--corta {
+  padding-block: var(--e-sec-y-corta);
+}
+/* El original trabaja sobre max-w-7xl (1280px), más ancho que el
+   contenedor del sitio (1160px). Se respeta para no reencuadrar todas
+   las grillas. */
+.ej-wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1.15rem, 4.5vw, 1.5rem);
+}
+.ej-wrap--angosto {
+  max-width: 768px;
+}
+.ej-centro {
+  text-align: center;
+}
+
+/* ---- Fondos ---- */
+.ej-sup {
+  background: var(--e-sup);
+}
+.ej-sup-baja {
+  background: var(--e-sup-baja);
+}
+.ej-oscuro {
+  background: var(--e-navy);
+  color: #ffffff;
+}
+.ej-noche {
+  background: var(--e-noche);
+  color: #ffffff;
+}
+/* Los cuatro halos de color en las esquinas del hero y del calendario. */
+.ej-aurora {
+  background-image: radial-gradient(circle at 0% 0%, rgba(30, 92, 242, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 100% 0%, rgba(76, 134, 245, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(169, 200, 245, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(13, 27, 61, 0.04) 0%, transparent 50%);
+}
+
+/* ---- Tipografía ----
+   El repo original va en Montserrat; acá se usan las tipografías del
+   sitio (Sora en títulos, DM Sans en cuerpo) porque el navbar y el footer
+   son los del sitio y mezclarlas se notaría. Los pesos y las escalas sí
+   son los del original. */
+.ej-h1 {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 1.4rem + 4.2vw, 4.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--e-texto);
+}
+.ej-h2 {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: clamp(1.85rem, 1.2rem + 2.5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--e-texto);
+}
+.ej-h3 {
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: clamp(1.4rem, 1.15rem + 1vw, 1.875rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--e-texto);
+}
+.ej-h4 {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--e-texto);
+}
+.ej-lead {
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  line-height: 1.65;
+  color: var(--e-texto-var);
+}
+.ej-p {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--e-texto-var);
+}
+/* Fragmento resaltado dentro de un título: en el original es un degradé
+   en itálica de peso normal, y acá se conserva igual. */
+.ej-hl {
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(100deg, #1747c2, #1e5cf2 45%, #3b6cb7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ej-oscuro .ej-hl,
+.ej-noche .ej-hl {
+  background: none;
+  color: var(--e-celeste);
+}
+
+/* Etiqueta pequeña sobre el título de cada sección */
+.ej-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--e-acento);
+}
+/* Píldora del hero (bg-tertiary-container del original) */
+.ej-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: var(--e-sup-max);
+  color: var(--e-azul-900);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ---- Botones ---- */
+.ej-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  text-align: center;
+  transition: background 300ms ease, box-shadow 300ms ease, color 300ms ease,
+    border-color 300ms ease, transform 150ms ease;
+}
+.ej-btn:active {
+  transform: scale(0.96);
+}
+.ej-btn--primary {
+  background: var(--e-grad);
+  color: #ffffff;
+  box-shadow: var(--e-glow);
+}
+.ej-btn--primary:hover {
+  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+  box-shadow: var(--e-sombra-prem);
+}
+.ej-btn--outline {
+  border-color: var(--borde);
+  color: var(--e-texto);
+}
+.ej-btn--outline:hover {
+  background: var(--e-sup-baja);
+  border-color: rgba(30, 92, 242, 0.35);
+}
+.ej-btn--blanco {
+  background: #ffffff;
+  color: var(--e-azul-900);
+}
+.ej-btn--blanco:hover {
+  box-shadow: var(--e-sombra-prem);
+  color: var(--e-azul-600);
+}
+.ej-btn--fantasma {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+.ej-btn--fantasma:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(169, 200, 245, 0.5);
+}
+.ej-btn--grande {
+  font-size: 1.125rem;
+  padding: 1.15rem 2.5rem;
+}
+
+/* ---- Recursos gráficos sueltos ---- */
+/* El puntito luminoso que acompaña al isotipo y a los números del método */
+.ej-punto {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--e-azul-500);
+  box-shadow: 0 0 10px rgba(76, 134, 245, 0.85);
+}
+/* Vidrio esmerilado de la cita del hero */
+.ej-glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: var(--e-sombra-del);
+}
+/* Borde fino que se enciende al pasar el mouse */
+.ej-filete {
+  border: 1px solid rgba(30, 92, 242, 0.1);
+  transition: border-color 500ms ease;
+}
+.ej-filete:hover {
+  border-color: rgba(30, 92, 242, 0.3);
+}
+.ej-sin-barra {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.ej-sin-barra::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- Aparición al hacer scroll ----
+   Mismo mecanismo que el otro anexo: el estado inicial oculto sólo se
+   aplica si el script agrega is-listo, así que sin JS (o con motion
+   reducido) el contenido se ve igual. */
+.ej-reveal.is-listo {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms cubic-bezier(0.2, 0.7, 0.3, 1),
+    transform 700ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.ej-reveal.is-listo.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ej-reveal.is-listo {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .ej-btn:active {
+    transform: none;
+  }
+}
+
+/* El reproductor de Wistia tarda en definirse como custom element: hasta
+   que ocurre, este fondo evita el salto de layout. */
+wistia-player:not(:defined) {
+  display: block;
+  min-height: 320px;
+  background: radial-gradient(circle at top, rgba(76, 134, 245, 0.18) 0%, transparent 42%),
+    linear-gradient(145deg, #0a1430 0%, #17408f 45%, #eef2fa 45%, #ffffff 100%);
+}

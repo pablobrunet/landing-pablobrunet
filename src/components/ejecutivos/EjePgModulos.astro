@@ -1,0 +1,229 @@
+---
+/* =====================================================================
+   LOS CUATRO MÓDULOS — /programa-ejecutivos/programa
+   ---------------------------------------------------------------------
+   Mismo gesto que las tarjetas de resultados de la landing, pero el relleno
+   entra con un `clip-path` circular desde la esquina superior derecha en
+   vez de un círculo que escala: con tanto texto adentro se lee mejor.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { modulos } = ejecutivos.programa;
+
+const tonos = ["azul", "navy", "denim", "azul"];
+---
+
+<section class="ej-sec ej-sec--corta ej-sup-baja epm">
+  <div class="ej-wrap">
+    <header class="epm__head ej-reveal">
+      <p class="ej-eyebrow">{modulos.eyebrow}</p>
+      <h2 class="ej-h2">{modulos.titulo}</h2>
+      <p class="ej-lead">{modulos.subtitulo}</p>
+    </header>
+
+    <div class="epm__grid">
+      {
+        modulos.items.map((mod, i) => (
+          <article class="epm__card ej-reveal" data-tono={tonos[i]}>
+            <span class="epm__relleno" aria-hidden="true" />
+            <span class="epm__esquina" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+
+            <div class="epm__cuerpo">
+              <span class="epm__ico">
+                <EjeIcon name={mod.icono} size={24} />
+              </span>
+
+              <div class="epm__texto">
+                <p class="epm__paso">{mod.paso}</p>
+                <h3 class="ej-h4 epm__titulo">{mod.titulo}</h3>
+                <ul class="epm__bullets">
+                  {mod.bullets.map((b) => (
+                    <li>
+                      <EjeIcon name="cheque" size={18} />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .epm__head {
+    max-width: 48rem;
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .epm__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .epm__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .epm__card {
+    position: relative;
+    overflow: hidden;
+    min-height: 430px;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border-radius: var(--e-r-2xl);
+    border: 1px solid var(--e-linea);
+    background: #ffffff;
+    box-shadow: 0 18px 40px -28px rgba(13, 27, 61, 0.18);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .epm__card:nth-child(2) {
+    background: var(--e-sup-baja);
+  }
+  .epm__card:nth-child(3) {
+    background: var(--e-sup-alta);
+  }
+  .epm__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+
+  .epm__relleno {
+    position: absolute;
+    inset: 0;
+    clip-path: circle(0% at 100% 0%);
+    transition: clip-path 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .epm__card:hover .epm__relleno {
+    clip-path: circle(160% at 100% 0%);
+  }
+  .epm__esquina {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    width: 4rem;
+    height: 4rem;
+    padding: 0.75rem 1rem;
+    border-bottom-left-radius: 1.75rem;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    transition: width 500ms ease, height 500ms ease;
+  }
+  .epm__card:hover .epm__esquina {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .epm__card[data-tono="azul"] .epm__relleno,
+  .epm__card[data-tono="azul"] .epm__esquina {
+    background: var(--e-azul-700);
+  }
+  .epm__card[data-tono="navy"] .epm__relleno,
+  .epm__card[data-tono="navy"] .epm__esquina {
+    background: var(--e-navy);
+  }
+  .epm__card[data-tono="denim"] .epm__relleno,
+  .epm__card[data-tono="denim"] .epm__esquina {
+    background: var(--e-denim);
+  }
+
+  .epm__cuerpo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+    height: 100%;
+  }
+  .epm__ico {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--e-r-xl);
+    background: rgba(30, 92, 242, 0.12);
+    color: var(--e-acento);
+    transition: background 500ms ease, color 500ms ease, transform 500ms ease;
+  }
+  .epm__card:hover .epm__ico {
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+  .epm__texto {
+    max-width: 30rem;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .epm__paso {
+    justify-self: start;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--e-linea);
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--e-texto);
+    transition: background 300ms ease, color 300ms ease, border-color 300ms ease;
+  }
+  .epm__card:hover .epm__paso {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+  .epm__titulo {
+    transition: color 300ms ease;
+  }
+  .epm__card:hover .epm__titulo {
+    color: #ffffff;
+  }
+  .epm__bullets {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .epm__bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--e-texto-var);
+    transition: color 300ms ease;
+  }
+  .epm__bullets li :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+    color: var(--e-acento);
+    transition: color 300ms ease;
+  }
+  .epm__card:hover .epm__bullets li {
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .epm__card:hover .epm__bullets li :global(svg) {
+    color: #ffffff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epm__card,
+    .epm__card:hover,
+    .epm__relleno {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,295 @@
+---
+/* =====================================================================
+   LOS TRES PATRONES — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Las tarjetas del original: una grilla invisible de 5×5 "sensores"
+   encima de cada tarjeta; según en qué celda esté el puntero, la tarjeta
+   se inclina hacia ese lado y gira para mostrar el texto del dorso.
+   Es sólo CSS —selector de hermano general (`~`)— y por eso los sensores
+   van ANTES de la tarjeta en el HTML.
+
+   En pantallas táctiles no hay hover y el dorso nunca aparecería: ahí los
+   sensores se apagan y la tarjeta muestra las dos caras apiladas, así el
+   texto no queda inaccesible.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { dolores } = ejecutivos.home;
+
+/* Los 25 sensores son sólo estructura: se generan acá para no escribir
+   veinticinco divs a mano en cada tarjeta. */
+const sensores = Array.from({ length: 25 }, (_, i) => i);
+---
+
+<section class="ej-sec ej-sup ed">
+  <span class="ed__hilo" aria-hidden="true"></span>
+
+  <div class="ej-wrap">
+    <header class="ed__head ej-reveal">
+      <h2 class="ej-h2">
+        {dolores.titulo}<br />{dolores.tituloLinea2}
+      </h2>
+      <p class="ej-lead">{dolores.subtitulo}</p>
+    </header>
+
+    <div class="ed__grid">
+      {
+        dolores.items.map((item) => (
+          <div class="ed__item ej-reveal" style={`--ed-color: ${item.color}`}>
+            <div class="ed__canvas">
+              {sensores.map(() => <span class="ed__tr" aria-hidden="true" />)}
+
+              <article class="ed__card">
+                <div class="ed__cara ed__cara--frente">
+                  <span class="ed__ico">
+                    <EjeIcon name={item.icono} size={36} stroke={1.75} />
+                  </span>
+                  <p class="ed__titulo">{item.titulo}</p>
+                </div>
+                <div class="ed__cara ed__cara--dorso">
+                  <p class="ed__desc">{item.desc}</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hilo vertical que baja desde el borde superior de la sección */
+  .ed__hilo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 6rem;
+    background: linear-gradient(to bottom, rgba(30, 92, 242, 0.3), transparent);
+  }
+  .ed__head {
+    max-width: 52rem;
+    margin: 0 auto clamp(2rem, 4vw, 3rem);
+    text-align: center;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .ed__grid {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .ed__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ---- Tarjeta ---- */
+  .ed__item {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    transition: transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .ed__item:hover {
+    transform: scale(1.04) translateY(-8px);
+    z-index: 30;
+  }
+  .ed__canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    perspective: 1000px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+  .ed__tr {
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .ed__card {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--e-r-2xl);
+    background: var(--e-noche);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px -10px rgba(10, 20, 48, 0.5);
+    transform: rotateY(0deg) rotateX(0deg);
+    transition: 700ms;
+  }
+  /* Halo de color detrás del vidrio: es el único lugar donde cada tarjeta
+     tiene su propio tono. */
+  .ed__card::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: var(--e-r-2xl);
+    background: var(--ed-color);
+    opacity: 0;
+    filter: blur(20px);
+    transition: 500ms ease-in-out;
+  }
+  .ed__item:hover .ed__card::before {
+    opacity: 0.7;
+    filter: blur(40px);
+    transform: scale(1.15);
+  }
+  .ed__item:hover .ed__card {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(10, 20, 48, 0.8);
+  }
+
+  .ed__cara {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    transition: 400ms ease-in-out;
+  }
+  .ed__cara--frente {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .ed__cara--dorso {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .ed__ico {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    transition: 400ms ease-out;
+  }
+  .ed__item:hover .ed__ico {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+  }
+  .ed__titulo {
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+  .ed__desc {
+    padding-inline: 1rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.65;
+    color: #ffffff;
+  }
+
+  /* Al tocar cualquier sensor se da vuelta la tarjeta */
+  .ed__tr:hover ~ .ed__card .ed__cara--frente {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .ed__tr:hover ~ .ed__card .ed__cara--dorso {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .ed__tr:hover ~ .ed__card {
+    transition: 300ms;
+    filter: brightness(1.1);
+  }
+
+  /* ---- Inclinación por celda ----
+     Fila (de arriba a abajo): +20 +10 0 -10 -20 grados en X.
+     Columna (de izquierda a derecha): -20 -10 0 +10 +20 grados en Y.
+     Son las 25 combinaciones del original, escritas una por una porque el
+     CSS no tiene manera de calcularlas. */
+  .ed__tr:nth-child(1):hover ~ .ed__card { transform: rotateX(20deg) rotateY(-20deg); }
+  .ed__tr:nth-child(2):hover ~ .ed__card { transform: rotateX(20deg) rotateY(-10deg); }
+  .ed__tr:nth-child(3):hover ~ .ed__card { transform: rotateX(20deg) rotateY(0deg); }
+  .ed__tr:nth-child(4):hover ~ .ed__card { transform: rotateX(20deg) rotateY(10deg); }
+  .ed__tr:nth-child(5):hover ~ .ed__card { transform: rotateX(20deg) rotateY(20deg); }
+  .ed__tr:nth-child(6):hover ~ .ed__card { transform: rotateX(10deg) rotateY(-20deg); }
+  .ed__tr:nth-child(7):hover ~ .ed__card { transform: rotateX(10deg) rotateY(-10deg); }
+  .ed__tr:nth-child(8):hover ~ .ed__card { transform: rotateX(10deg) rotateY(0deg); }
+  .ed__tr:nth-child(9):hover ~ .ed__card { transform: rotateX(10deg) rotateY(10deg); }
+  .ed__tr:nth-child(10):hover ~ .ed__card { transform: rotateX(10deg) rotateY(20deg); }
+  .ed__tr:nth-child(11):hover ~ .ed__card { transform: rotateX(0deg) rotateY(-20deg); }
+  .ed__tr:nth-child(12):hover ~ .ed__card { transform: rotateX(0deg) rotateY(-10deg); }
+  .ed__tr:nth-child(13):hover ~ .ed__card { transform: rotateX(0deg) rotateY(0deg); }
+  .ed__tr:nth-child(14):hover ~ .ed__card { transform: rotateX(0deg) rotateY(10deg); }
+  .ed__tr:nth-child(15):hover ~ .ed__card { transform: rotateX(0deg) rotateY(20deg); }
+  .ed__tr:nth-child(16):hover ~ .ed__card { transform: rotateX(-10deg) rotateY(-20deg); }
+  .ed__tr:nth-child(17):hover ~ .ed__card { transform: rotateX(-10deg) rotateY(-10deg); }
+  .ed__tr:nth-child(18):hover ~ .ed__card { transform: rotateX(-10deg) rotateY(0deg); }
+  .ed__tr:nth-child(19):hover ~ .ed__card { transform: rotateX(-10deg) rotateY(10deg); }
+  .ed__tr:nth-child(20):hover ~ .ed__card { transform: rotateX(-10deg) rotateY(20deg); }
+  .ed__tr:nth-child(21):hover ~ .ed__card { transform: rotateX(-20deg) rotateY(-20deg); }
+  .ed__tr:nth-child(22):hover ~ .ed__card { transform: rotateX(-20deg) rotateY(-10deg); }
+  .ed__tr:nth-child(23):hover ~ .ed__card { transform: rotateX(-20deg) rotateY(0deg); }
+  .ed__tr:nth-child(24):hover ~ .ed__card { transform: rotateX(-20deg) rotateY(10deg); }
+  .ed__tr:nth-child(25):hover ~ .ed__card { transform: rotateX(-20deg) rotateY(20deg); }
+
+  /* ---- Sin hover (táctil): las dos caras, apiladas ---- */
+  @media (hover: none) {
+    .ed__item {
+      height: auto;
+      transition: none;
+    }
+    .ed__canvas {
+      position: static;
+      display: block;
+      perspective: none;
+    }
+    .ed__tr {
+      display: none;
+    }
+    .ed__card {
+      position: static;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 2rem;
+      transform: none;
+    }
+    .ed__card::before {
+      opacity: 0.35;
+      filter: blur(30px);
+    }
+    .ed__cara {
+      position: static;
+      align-items: flex-start;
+      text-align: left;
+      padding: 0;
+      opacity: 1;
+      transform: none;
+    }
+    .ed__ico {
+      margin-bottom: 0.75rem;
+    }
+    .ed__desc {
+      padding-inline: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ed__item,
+    .ed__item:hover,
+    .ed__card,
+    .ed__tr:hover ~ .ed__card {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

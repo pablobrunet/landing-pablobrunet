@@ -1,0 +1,175 @@
+---
+/* =====================================================================
+   CÓMO TRABAJAMOS — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Los cuatro pasos numerados a la izquierda; a la derecha la pieza de
+   degradé y el cierre sobre capacidad instalada. En pantallas chicas los
+   pasos van primero, que es el contenido.
+   ===================================================================== */
+import { ejecutivos } from "../../data/ejecutivos";
+const { metodo } = ejecutivos.home;
+---
+
+<section class="ej-sec ej-sup em" id="metodologia">
+  <div class="ej-wrap em__grid">
+    <div class="em__pasos ej-reveal">
+      <span class="em__halo" aria-hidden="true"></span>
+      {
+        metodo.pasos.map((paso, i) => (
+          <div class="em__paso">
+            <span class="em__num">
+              {String(i + 1).padStart(2, "0")}
+              <span class="ej-punto em__punto" aria-hidden="true" />
+            </span>
+            <div class="em__texto">
+              <h3 class="ej-h4 em__titulo">{paso.titulo}</h3>
+              <p class="ej-p">{paso.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="em__copy ej-reveal">
+      <div class="em__pieza" aria-hidden="true">
+        <span class="em__pieza-luz"></span>
+        <span class="em__pieza-linea"></span>
+        <span class="em__pieza-cuadro"></span>
+      </div>
+      <h2 class="ej-h2">
+        {metodo.titulo}<br />{metodo.tituloLinea2}
+      </h2>
+      <p class="ej-lead">{metodo.subtitulo}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .em {
+    overflow: hidden;
+  }
+  .em__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  /* ---- Pasos ---- */
+  .em__pasos {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+  }
+  .em__halo {
+    position: absolute;
+    top: -5rem;
+    left: -5rem;
+    width: 16rem;
+    height: 16rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.06);
+    filter: blur(48px);
+  }
+  .em__paso {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+  }
+  .em__num {
+    position: relative;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--e-r-xl);
+    background: var(--e-sup-alta);
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--e-acento);
+    transition: background 500ms ease, color 500ms ease;
+  }
+  .em__paso:hover .em__num {
+    background: var(--e-azul-600);
+    color: #ffffff;
+  }
+  .em__punto {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .em__paso:hover .em__punto {
+    opacity: 1;
+  }
+  .em__texto {
+    padding-top: 0.5rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .em__titulo {
+    transition: color var(--transition);
+  }
+  .em__paso:hover .em__titulo {
+    color: var(--e-azul-600);
+  }
+
+  /* ---- Columna de cierre ---- */
+  .em__copy {
+    display: grid;
+    gap: 2rem;
+  }
+  .em__pieza {
+    position: relative;
+    height: 13rem;
+    max-width: 28rem;
+    border-radius: 2.75rem;
+    overflow: hidden;
+    background: var(--e-grad-marca);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .em__pieza-luz {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at top left,
+        rgba(255, 255, 255, 0.28),
+        transparent 48%
+      ),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 60%);
+  }
+  .em__pieza-linea {
+    position: absolute;
+    left: 2rem;
+    right: 2rem;
+    bottom: 2rem;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.35);
+  }
+  .em__pieza-cuadro {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+  }
+  .em__copy .ej-h2 {
+    max-width: 36rem;
+  }
+  .em__copy .ej-lead {
+    max-width: 42rem;
+  }
+
+  @media (min-width: 1024px) {
+    .em__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+  }
+</style>

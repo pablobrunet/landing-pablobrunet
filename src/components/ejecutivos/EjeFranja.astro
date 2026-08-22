@@ -1,0 +1,84 @@
+---
+/* =====================================================================
+   FRANJA DE CIFRAS — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Banda oscura entre dos secciones claras. Cada cifra va en un tono
+   distinto de la familia azul, de más claro a más suave, igual que en el
+   original.
+   ===================================================================== */
+import { ejecutivos } from "../../data/ejecutivos";
+const { franja } = ejecutivos.home;
+---
+
+<section class="ej-oscuro ef">
+  <span class="ef__halo" aria-hidden="true"></span>
+  <div class="ej-wrap ef__inner">
+    {
+      franja.map((item, i) => (
+        <div class="ef__item">
+          <p class="ef__valor" data-tono={i}>
+            {item.valor}
+          </p>
+          <p class="ef__label">{item.label}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ef {
+    position: relative;
+    overflow: hidden;
+    padding-block: 4rem;
+  }
+  .ef__halo {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background: radial-gradient(circle at center, var(--e-azul-500) 0%, transparent 70%);
+  }
+  .ef__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    text-align: center;
+  }
+  .ef__valor {
+    font-family: var(--font-title);
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .ef__valor[data-tono="0"] {
+    color: var(--e-azul-500);
+  }
+  .ef__valor[data-tono="1"] {
+    color: #6fa0f8;
+  }
+  .ef__valor[data-tono="2"] {
+    color: #8bb4f9;
+  }
+  .ef__valor[data-tono="3"] {
+    color: var(--e-celeste);
+  }
+  .ef__label {
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  @media (min-width: 768px) {
+    .ef__inner {
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+</style>

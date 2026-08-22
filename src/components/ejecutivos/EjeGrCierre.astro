@@ -1,0 +1,103 @@
+---
+/* =====================================================================
+   CIERRE — /programa-ejecutivos/agenda-confirmada
+   ---------------------------------------------------------------------
+   Dos salidas: escribir por WhatsApp (la que queremos) y volver al
+   calendario, por si necesita cambiar el horario.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import RedLogo from "../RedLogo.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { cierre } = ejecutivos.gracias;
+const { agenda, whatsapp } = ejecutivos.enlaces;
+---
+
+<section class="ej-oscuro ej-sec ej-sec--corta egc">
+  <span class="egc__halo egc__halo--a" aria-hidden="true"></span>
+  <span class="egc__halo egc__halo--b" aria-hidden="true"></span>
+
+  <div class="ej-wrap egc__inner">
+    <p class="egc__eyebrow">{cierre.eyebrow}</p>
+    <h2 class="ej-h2 egc__titulo">{cierre.titulo}</h2>
+    <p class="egc__sub">{cierre.subtitulo}</p>
+
+    <div class="egc__ctas">
+      <a
+        class="ej-btn ej-btn--blanco"
+        href={whatsapp}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <RedLogo name="whatsapp" size={18} />
+        {cierre.ctaPrimario}
+      </a>
+      <a
+        class="ej-btn ej-btn--fantasma"
+        href={agenda}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <EjeIcon name="calendario" size={20} />
+        {cierre.ctaSecundario}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .egc {
+    position: relative;
+    overflow: hidden;
+  }
+  .egc__halo {
+    position: absolute;
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+    filter: blur(64px);
+  }
+  .egc__halo--a {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    background: rgba(76, 134, 245, 0.14);
+  }
+  .egc__halo--b {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+    background: rgba(59, 108, 183, 0.14);
+  }
+  .egc__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 56rem;
+    text-align: center;
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  .egc__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .egc__titulo {
+    color: #ffffff;
+  }
+  .egc__sub {
+    max-width: 44rem;
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .egc__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+  }
+</style>

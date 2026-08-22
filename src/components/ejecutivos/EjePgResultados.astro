@@ -1,0 +1,123 @@
+---
+/* =====================================================================
+   QUÉ SE LLEVA EL PARTICIPANTE — /programa-ejecutivos/programa
+   ---------------------------------------------------------------------
+   Cuatro fichas a la izquierda y, a la derecha, el certificado, que en
+   escritorio queda pegado al scroll mientras se recorren las fichas.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import EjeTarjetaVisual from "./EjeTarjetaVisual.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { resultados } = ejecutivos.programa;
+---
+
+<section class="ej-sec ej-sec--corta ej-sup-baja epr">
+  <div class="ej-wrap">
+    <header class="epr__head ej-reveal">
+      <p class="ej-eyebrow">{resultados.eyebrow}</p>
+      <h2 class="ej-h2">{resultados.titulo}</h2>
+      <p class="ej-lead">{resultados.subtitulo}</p>
+    </header>
+
+    <div class="epr__grid">
+      <ul class="epr__items">
+        {
+          resultados.items.map((item, i) => (
+            <li class="epr__item ej-reveal">
+              <span class="epr__ico">
+                <EjeIcon name={i === 0 ? "escudo" : "cheque"} size={20} />
+              </span>
+              <p class="ej-lead">{item}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="epr__cert">
+        <EjeTarjetaVisual
+          class="ej-reveal"
+          src={resultados.tarjeta.src}
+          alt={resultados.tarjeta.alt}
+          eyebrow={resultados.tarjeta.eyebrow}
+          titulo={resultados.tarjeta.titulo}
+          detalle={resultados.tarjeta.detalle}
+          ajuste="contain"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .epr__head {
+    max-width: 48rem;
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .epr__grid {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+  .epr__items {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .epr__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    min-height: 210px;
+    padding: 1.75rem;
+    border-radius: var(--e-r-2xl);
+    border: 1px solid var(--e-linea);
+    background: #ffffff;
+    box-shadow: var(--e-sombra-del);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .epr__item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .epr__ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--e-r-xl);
+    background: var(--e-navy);
+    color: #ffffff;
+    transition: background 500ms ease;
+  }
+  .epr__item:hover .epr__ico {
+    background: var(--e-azul-600);
+  }
+
+  @media (min-width: 768px) {
+    .epr__items {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1024px) {
+    .epr__grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 2.5rem;
+    }
+    /* El certificado acompaña el scroll de las fichas. El desplazamiento
+       superior deja libre la barra fija del sitio. */
+    .epr__cert {
+      position: sticky;
+      top: calc(var(--nav-alto) + 2rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epr__item,
+    .epr__item:hover {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

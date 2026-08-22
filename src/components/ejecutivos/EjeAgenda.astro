@@ -1,0 +1,117 @@
+---
+/* =====================================================================
+   CALENDARIO — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   El calendario embebido de LeadConnector. El script `form_embed.js` es
+   el que le ajusta el alto al iframe: se carga una sola vez desde la
+   página (ver programa-ejecutivos/index.astro) y necesita que el iframe
+   conserve el id exacto que le asignó el widget.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { agenda } = ejecutivos.home;
+---
+
+<section class="ej-sec ej-aurora ea" id="agendar">
+  <div class="ej-wrap ea__inner">
+    <header class="ea__head ej-reveal">
+      <h2 class="ej-h2">{agenda.titulo}</h2>
+      <p class="ej-lead">{agenda.subtitulo}</p>
+
+      <ul class="ea__garantias">
+        {
+          agenda.garantias.map((g) => (
+            <li>
+              <span class="ea__ico">
+                <EjeIcon name={g.icono} size={24} />
+              </span>
+              <span class="ea__texto">{g.texto}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </header>
+
+    <div class="ea__marco ej-reveal">
+      <iframe
+        src={agenda.calendarioSrc}
+        id={agenda.calendarioId}
+        title="Calendario de reserva"
+        scrolling="no"
+        referrerpolicy="no-referrer"
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ea {
+    background-color: var(--e-sup-baja);
+  }
+  .ea__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+  }
+  .ea__head {
+    max-width: 48rem;
+    text-align: center;
+    display: grid;
+    gap: 2rem;
+    justify-items: center;
+  }
+  .ea__garantias {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .ea__garantias li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+  }
+  .ea__ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--e-r-xl);
+    background: #ffffff;
+    color: var(--e-acento);
+    box-shadow: var(--e-sombra-amb);
+  }
+  .ea__texto {
+    font-weight: 700;
+    color: var(--e-texto);
+  }
+
+  .ea__marco {
+    width: 100%;
+    max-width: 64rem;
+    padding: 4px;
+    border-radius: var(--e-r-4xl);
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    box-shadow: var(--e-sombra-prem);
+    overflow: hidden;
+  }
+  .ea__marco iframe {
+    display: block;
+    width: 100%;
+    min-height: 600px;
+    border: 0;
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .ea__garantias {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+</style>

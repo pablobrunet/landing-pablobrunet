@@ -1,0 +1,72 @@
+---
+/* =====================================================================
+   VIDEO — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   El reproductor de Wistia es un custom element: el script se carga una
+   sola vez desde la página (ver programa-ejecutivos/index.astro) y acá
+   sólo va la etiqueta. Hasta que el elemento se define, el fondo que le
+   pone ejecutivos.css evita el salto de layout.
+   ===================================================================== */
+import { ejecutivos } from "../../data/ejecutivos";
+const { video } = ejecutivos.home;
+---
+
+<section class="ej-sec ej-sec--corta ej-sup-baja ev">
+  <div class="ej-wrap">
+    <header class="ev__head ej-reveal">
+      <h2 class="ej-h2">{video.titulo}</h2>
+      <p class="ej-lead">{video.subtitulo}</p>
+    </header>
+
+    <div class="ev__marco ej-reveal">
+      <div class="ev__player ej-glass">
+        <wistia-player media-id={video.wistiaId} aspect={video.aspecto}></wistia-player>
+      </div>
+      <span class="ev__halo ev__halo--a" aria-hidden="true"></span>
+      <span class="ev__halo ev__halo--b" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ev {
+    overflow: hidden;
+  }
+  .ev__head {
+    max-width: 48rem;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    text-align: center;
+    display: grid;
+    gap: 1rem;
+  }
+  .ev__marco {
+    position: relative;
+    max-width: 64rem;
+    margin-inline: auto;
+  }
+  .ev__player {
+    position: relative;
+    z-index: 1;
+    border-radius: var(--e-r-4xl);
+    overflow: hidden;
+    box-shadow: var(--e-sombra-prem);
+    background: var(--e-sup-alta);
+  }
+  .ev__halo {
+    position: absolute;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.12);
+    filter: blur(48px);
+    z-index: 0;
+  }
+  .ev__halo--a {
+    right: -2.5rem;
+    bottom: -2.5rem;
+  }
+  .ev__halo--b {
+    left: -2.5rem;
+    top: -2.5rem;
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+/* =====================================================================
+   BARRA DE SECCIONES DEL ANEXO
+   ---------------------------------------------------------------------
+   El repo original trae su propio navbar fijo, con las anclas de la
+   landing y el botón de agendar. Acá arriba va el navbar del sitio, así
+   que ese elemento se conserva como una segunda barra —más baja y más
+   fina— pegada debajo: mantiene las anclas y el CTA sin duplicar la
+   navegación general ni competir con ella.
+
+   Se pega a `top: var(--nav-alto)` porque el navbar del sitio es sticky y
+   mide exactamente eso.
+   ===================================================================== */
+import { ejecutivos } from "../../data/ejecutivos";
+const { anclas } = ejecutivos.home;
+const { agenda } = ejecutivos.enlaces;
+---
+
+<div class="ejnav">
+  <div class="ej-wrap ejnav__inner">
+    <nav class="ejnav__links" aria-label="Secciones de la página">
+      {anclas.map((a) => <a href={a.href}>{a.label}</a>)}
+    </nav>
+
+    <a
+      class="ej-btn ej-btn--primary ejnav__cta"
+      href={agenda}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Agendar Reunión
+    </a>
+  </div>
+</div>
+
+<style>
+  .ejnav {
+    position: sticky;
+    top: var(--nav-alto);
+    z-index: 90;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--e-linea);
+  }
+  .ejnav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 56px;
+  }
+  /* En celular las anclas se desplazan de costado en vez de apilarse:
+     así la barra sigue midiendo una línea. */
+  .ejnav__links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-block: 0.5rem;
+  }
+  .ejnav__links::-webkit-scrollbar {
+    display: none;
+  }
+  .ejnav__links a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--e-texto-var);
+    white-space: nowrap;
+    transition: color var(--transition);
+  }
+  .ejnav__links a:hover {
+    color: var(--e-azul-600);
+  }
+  .ejnav__cta {
+    padding: 0.6rem 1.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .ejnav__cta {
+      display: inline-flex;
+    }
+  }
+</style>

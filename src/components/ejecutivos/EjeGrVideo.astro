@@ -1,0 +1,143 @@
+---
+/* =====================================================================
+   VIDEO DE BIENVENIDA — /programa-ejecutivos/agenda-confirmada
+   ---------------------------------------------------------------------
+   Mientras no haya video cargado, el bloque muestra un marcador con la
+   instrucción de dónde ponerlo. En el repo original eso venía por
+   variables de entorno de Vite; acá, siendo un sitio estático, alcanza
+   con completar `gracias.video` en data/ejecutivos.ts.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { video } = ejecutivos.gracias;
+
+const hayVideo = Boolean(video.wistiaId || video.embedUrl);
+---
+
+<section class="ej-sec ej-sec--corta ej-sup-baja egv" id="video">
+  <div class="ej-wrap egv__grid">
+    <header class="egv__copy ej-reveal">
+      <p class="ej-eyebrow">{video.eyebrow}</p>
+      <h2 class="ej-h2">{video.titulo}</h2>
+      <p class="ej-lead">{video.subtitulo}</p>
+    </header>
+
+    <div class="egv__marco ej-reveal">
+      {
+        video.wistiaId ? (
+          <wistia-player media-id={video.wistiaId} aspect="1.7777777777777777"></wistia-player>
+        ) : video.embedUrl ? (
+          <div class="egv__embed">
+            <iframe
+              src={video.embedUrl}
+              title="Video de bienvenida"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+              allowfullscreen
+              referrerpolicy="no-referrer"
+            />
+          </div>
+        ) : (
+          <div class="egv__vacio">
+            <div class="egv__ficha">
+              <span class="egv__ico">
+                <EjeIcon name="play" size={22} />
+              </span>
+              <h3 class="ej-h4">{video.placeholder.titulo}</h3>
+              <p class="ej-p">{video.placeholder.desc}</p>
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    !hayVideo && (
+      <div class="ej-wrap">
+        <p class="egv__nota">
+          Sugerencia: si el video está en Loom, YouTube o Vimeo, usá el campo
+          <code>embedUrl</code>; si está en Wistia, <code>wistiaId</code>.
+        </p>
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .egv__grid {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  .egv__copy {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 36rem;
+  }
+  .egv__marco {
+    overflow: hidden;
+    border-radius: var(--e-r-3xl);
+    border: 1px solid var(--e-linea);
+    background: var(--e-sup-alta);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .egv__embed {
+    position: relative;
+    aspect-ratio: 16 / 9;
+  }
+  .egv__embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ---- Marcador mientras no hay video ---- */
+  .egv__vacio {
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: 16 / 9;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: radial-gradient(circle at top, rgba(76, 134, 245, 0.2), transparent 42%),
+      linear-gradient(145deg, #0a1430 0%, #17408f 45%, #eef2fa 45%, #ffffff 100%);
+  }
+  .egv__ficha {
+    width: 100%;
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border-radius: 1.75rem;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: var(--e-sombra-del);
+  }
+  .egv__ico {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--e-r-xl);
+    background: var(--e-navy);
+    color: #ffffff;
+  }
+  .egv__nota {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--e-texto-var);
+  }
+  .egv__nota code {
+    padding: 0.1rem 0.35rem;
+    border-radius: 6px;
+    background: var(--e-sup-max);
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 1024px) {
+    .egv__grid {
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 3rem;
+    }
+  }
+</style>

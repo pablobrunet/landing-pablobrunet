@@ -1,0 +1,102 @@
+---
+/* =====================================================================
+   TARJETA VISUAL — imagen arriba, texto abajo
+   ---------------------------------------------------------------------
+   Es la `VisualImageCard` del repo original: la usan la sección de
+   plataforma y la del certificado, con imágenes de proporciones muy
+   distintas. Por eso el alto y el encuadre de la imagen se pasan desde
+   afuera (`alto`, `ajuste`) en vez de fijarse acá.
+   ===================================================================== */
+interface Props {
+  src: string;
+  alt: string;
+  eyebrow: string;
+  titulo: string;
+  detalle: string;
+  /* Alto fijo de la imagen. Si no se pasa, la imagen va a su proporción. */
+  alto?: string;
+  /* `contain` cuando la imagen no se puede recortar (una captura, un
+     certificado); `cover` cuando es una foto. */
+  ajuste?: "cover" | "contain";
+  class?: string;
+}
+const {
+  src,
+  alt,
+  eyebrow,
+  titulo,
+  detalle,
+  alto,
+  ajuste = "cover",
+  class: clase = "",
+} = Astro.props;
+---
+
+<figure class={`etv ${clase}`}>
+  <div class="etv__marco">
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      referrerpolicy="no-referrer"
+      style={`object-fit:${ajuste};${alto ? `height:${alto};` : ""}`}
+    />
+  </div>
+  <figcaption class="etv__pie">
+    <p class="ej-eyebrow">{eyebrow}</p>
+    <h3 class="ej-h3">{titulo}</h3>
+    <p class="ej-p">{detalle}</p>
+  </figcaption>
+</figure>
+
+<style>
+  .etv {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--e-r-2xl);
+    border: 1px solid var(--e-linea);
+    background: #ffffff;
+    box-shadow: var(--e-sombra-del);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .etv:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .etv__marco {
+    overflow: hidden;
+    background: var(--e-sup-baja);
+  }
+  .etv__marco img {
+    width: 100%;
+    transition: transform 700ms ease;
+  }
+  .etv:hover .etv__marco img {
+    transform: scale(1.05);
+  }
+  .etv__pie {
+    display: grid;
+    gap: 0.5rem;
+    align-content: end;
+    margin-top: auto;
+    min-height: 148px;
+    padding: 1.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .etv__pie {
+      min-height: 164px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .etv,
+    .etv:hover,
+    .etv__marco img,
+    .etv:hover .etv__marco img {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

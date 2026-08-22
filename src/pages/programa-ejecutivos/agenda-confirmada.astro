@@ -1,0 +1,52 @@
+---
+/* =====================================================================
+   /programa-ejecutivos/agenda-confirmada — PÁGINA DE GRACIAS
+   ---------------------------------------------------------------------
+   A esta página cae quien ya reservó su reunión: es el destino de
+   confirmación del calendario. No es contenido del sitio, así que va con
+   `noindex` —igual que las cotizaciones— para no competir en buscadores
+   con la landing.
+
+     1  Hero      confirmación + qué se lleva de la reunión
+     2  Video     mensaje de bienvenida
+     3  Próximo   por qué vale y cómo llegar preparado
+     4  Cierre    adelantar contexto o revisar la reserva
+   ===================================================================== */
+import "../../styles/ejecutivos.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import EjeGrHero from "../../components/ejecutivos/EjeGrHero.astro";
+import EjeGrVideo from "../../components/ejecutivos/EjeGrVideo.astro";
+import EjeGrProximo from "../../components/ejecutivos/EjeGrProximo.astro";
+import EjeGrCierre from "../../components/ejecutivos/EjeGrCierre.astro";
+import EjeReveal from "../../components/ejecutivos/EjeReveal.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+
+const { gracias, whatsapp } = ejecutivos;
+
+/* El script de Wistia sólo hace falta si hay un video cargado. */
+const hayWistia = Boolean(gracias.video.wistiaId);
+---
+
+<Base
+  title={gracias.seo.title}
+  description={gracias.seo.description}
+  waMensaje={whatsapp.mensaje}
+  waEtiqueta={whatsapp.etiqueta}
+  noindex
+>
+  {hayWistia && (
+    <script is:inline async src="https://fast.wistia.com/assets/external/E-v1.js"></script>
+  )}
+
+  <Navbar />
+  <main>
+    <EjeGrHero />
+    <EjeGrVideo />
+    <EjeGrProximo />
+    <EjeGrCierre />
+  </main>
+  <Footer />
+  <EjeReveal />
+</Base>

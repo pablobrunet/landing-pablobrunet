@@ -1,0 +1,94 @@
+---
+/* =====================================================================
+   PARA QUIÉN ESTÁ PENSADO — /programa-ejecutivos/programa
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { audiencia } = ejecutivos.programa;
+---
+
+<section class="ej-sec ej-sec--corta ej-sup epa">
+  <div class="ej-wrap epa__grid">
+    <header class="epa__copy ej-reveal">
+      <p class="ej-eyebrow">{audiencia.eyebrow}</p>
+      <h2 class="ej-h2">
+        {audiencia.titulo} <span class="ej-hl">{audiencia.tituloResalte}</span>
+      </h2>
+      <p class="ej-lead">{audiencia.subtitulo}</p>
+    </header>
+
+    <ul class="epa__items">
+      {
+        audiencia.items.map((item, i) => (
+          <li class="epa__item ej-reveal">
+            <span class="epa__ico">
+              <EjeIcon name={i === 0 ? "personas" : "cheque"} size={20} />
+            </span>
+            <p class="ej-lead">{item}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .epa__grid {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+  .epa__copy {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 36rem;
+  }
+  .epa__items {
+    display: grid;
+    gap: 1rem;
+  }
+  .epa__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    border-radius: var(--e-r-2xl);
+    border: 1px solid var(--e-linea);
+    background: var(--e-sup-baja);
+    box-shadow: var(--e-sombra-del);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .epa__item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .epa__ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--e-r-xl);
+    background: var(--e-navy);
+    color: #ffffff;
+    transition: background 500ms ease;
+  }
+  .epa__item:hover .epa__ico {
+    background: var(--e-azul-600);
+  }
+
+  @media (min-width: 1024px) {
+    .epa__grid {
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 3rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epa__item,
+    .epa__item:hover {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

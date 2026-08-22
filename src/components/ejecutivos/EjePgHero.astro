@@ -1,0 +1,239 @@
+---
+/* =====================================================================
+   HERO — /programa-ejecutivos/programa
+   ---------------------------------------------------------------------
+   Izquierda: título, bajada y las tres fichas de formato.
+   Derecha: el bloque oscuro con el objetivo y la foto de una sesión.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { hero } = ejecutivos.programa;
+---
+
+<section class="ej-sec ej-aurora eph">
+  <div class="ej-wrap eph__grid">
+    <div class="eph__copy">
+      <p class="ej-chip">
+        <EjeIcon name="maletin" size={14} />
+        {hero.chip}
+      </p>
+
+      <h1 class="ej-h1 eph__titulo">{hero.titulo}</h1>
+      <p class="eph__bajada">{hero.bajada}</p>
+      <p class="ej-lead eph__sub">{hero.subtitulo}</p>
+
+      <div class="eph__datos">
+        {
+          hero.datos.map((d) => (
+            <div class="eph__dato">
+              <p class="ej-eyebrow">{d.label}</p>
+              <p class="eph__dato-valor">{d.valor}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="eph__visual">
+      <div class="eph__objetivo">
+        <span class="eph__objetivo-luz" aria-hidden="true"></span>
+        <div class="eph__objetivo-cuerpo">
+          <span class="eph__objetivo-ico">
+            <EjeIcon name="diana" size={28} />
+          </span>
+          <p class="eph__objetivo-eyebrow">{hero.objetivo.eyebrow}</p>
+          <h2 class="eph__objetivo-titulo">{hero.objetivo.titulo}</h2>
+          <p class="eph__objetivo-desc">{hero.objetivo.desc}</p>
+        </div>
+      </div>
+
+      <figure class="eph__foto">
+        <img src={hero.imagen} alt={hero.imagenAlt} loading="eager" referrerpolicy="no-referrer" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .eph__grid {
+    display: grid;
+    gap: 2rem;
+    align-items: stretch;
+  }
+  .eph__copy {
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+    justify-items: start;
+  }
+  .eph__titulo {
+    line-height: 1.02;
+  }
+  .eph__bajada {
+    font-family: var(--font-title);
+    font-size: clamp(1.4rem, 1rem + 1.8vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--e-navy);
+    max-width: 24ch;
+  }
+  .eph__sub {
+    max-width: 36rem;
+  }
+
+  .eph__datos {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .eph__dato {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 164px;
+    padding: 1.5rem 1.25rem;
+    border-radius: var(--e-r-xl);
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: var(--e-sombra-del);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .eph__dato:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .eph__dato-valor {
+    font-family: var(--font-title);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--e-texto);
+    transition: color var(--transition);
+  }
+  .eph__dato:hover .eph__dato-valor {
+    color: var(--e-azul-800);
+  }
+
+  /* ---- Columna derecha ---- */
+  .eph__visual {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  .eph__objetivo {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--e-r-3xl);
+    background: var(--e-navy);
+    color: #ffffff;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    box-shadow: var(--e-sombra-prem);
+    transition: transform 500ms ease;
+  }
+  .eph__objetivo:hover {
+    transform: translateY(-4px);
+  }
+  .eph__objetivo-luz {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at top right,
+      rgba(76, 134, 245, 0.22),
+      transparent 35%
+    );
+  }
+  .eph__objetivo-cuerpo {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1rem;
+  }
+  .eph__objetivo-ico {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--e-azul-500);
+    transition: background 500ms ease, transform 500ms ease;
+  }
+  .eph__objetivo:hover .eph__objetivo-ico {
+    background: rgba(255, 255, 255, 0.16);
+    transform: scale(1.1);
+  }
+  .eph__objetivo-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .eph__objetivo-titulo {
+    font-family: var(--font-title);
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.875rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .eph__objetivo-desc {
+    font-size: 1.0625rem;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .eph__foto {
+    overflow: hidden;
+    border-radius: var(--e-r-2xl);
+    border: 1px solid var(--e-linea);
+    background: #ffffff;
+    box-shadow: var(--e-sombra-del);
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .eph__foto:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .eph__foto img {
+    width: 100%;
+    height: 100%;
+    min-height: 340px;
+    object-fit: cover;
+    transition: transform 700ms ease;
+  }
+  .eph__foto:hover img {
+    transform: scale(1.05);
+  }
+
+  @media (min-width: 640px) {
+    .eph__datos {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 1024px) {
+    .eph__grid {
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 3rem;
+    }
+    .eph__foto img {
+      min-height: 393px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eph__dato,
+    .eph__dato:hover,
+    .eph__objetivo,
+    .eph__objetivo:hover,
+    .eph__foto,
+    .eph__foto:hover,
+    .eph__foto img,
+    .eph__foto:hover img {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

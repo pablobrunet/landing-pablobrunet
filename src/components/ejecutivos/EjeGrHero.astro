@@ -1,0 +1,172 @@
+---
+/* =====================================================================
+   HERO — /programa-ejecutivos/agenda-confirmada
+   ---------------------------------------------------------------------
+   Confirma que la reserva salió bien y baja la ansiedad: a la derecha,
+   qué se lleva de la reunión. Los dos CTAs son de bajo compromiso —ver el
+   video y adelantar contexto—: quien llega acá ya agendó.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { hero } = ejecutivos.gracias;
+const { whatsapp } = ejecutivos.enlaces;
+---
+
+<section class="ej-sec ej-aurora egh" id="inicio">
+  <div class="ej-wrap egh__grid">
+    <div class="egh__copy">
+      <p class="ej-chip">
+        <EjeIcon name="calendario" size={14} />
+        {hero.chip}
+      </p>
+
+      <h1 class="ej-h1 egh__titulo">
+        {hero.titulo}
+        <span class="ej-hl egh__resalte">{hero.tituloResalte}</span>
+      </h1>
+      <p class="ej-lead egh__sub">{hero.subtitulo}</p>
+
+      <div class="egh__ctas">
+        <a class="ej-btn ej-btn--primary" href="#video">
+          {hero.ctaPrimario}
+          <EjeIcon name="flecha" size={20} />
+        </a>
+        <a
+          class="ej-btn ej-btn--outline"
+          href={whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <EjeIcon name="mensaje" size={20} />
+          {hero.ctaSecundario}
+        </a>
+      </div>
+    </div>
+
+    <div class="egh__panel">
+      <span class="egh__luz" aria-hidden="true"></span>
+      <div class="egh__panel-cuerpo">
+        <span class="egh__ico">
+          <EjeIcon name="escudo" size={28} />
+        </span>
+        <p class="egh__eyebrow">{hero.beneficios.eyebrow}</p>
+        <h2 class="egh__panel-titulo">{hero.beneficios.titulo}</h2>
+
+        <ul class="egh__items">
+          {
+            hero.beneficios.items.map((item) => (
+              <li>
+                <EjeIcon name="cheque" size={20} />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .egh__grid {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+  .egh__copy {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .egh__titulo {
+    line-height: 1.02;
+  }
+  .egh__resalte {
+    display: block;
+  }
+  .egh__sub {
+    max-width: 36rem;
+  }
+  .egh__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .egh__panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--e-r-3xl);
+    background: var(--e-navy);
+    color: #ffffff;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .egh__luz {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at top right,
+      rgba(76, 134, 245, 0.22),
+      transparent 35%
+    );
+  }
+  .egh__panel-cuerpo {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .egh__ico {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--e-azul-500);
+  }
+  .egh__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .egh__panel-titulo {
+    font-family: var(--font-title);
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.875rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .egh__items {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .egh__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .egh__items li :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--e-azul-500);
+  }
+
+  @media (min-width: 1024px) {
+    .egh__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+    }
+  }
+</style>

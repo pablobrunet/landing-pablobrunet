@@ -1,0 +1,267 @@
+---
+/* =====================================================================
+   DE LA CONFUSIÓN A LA HOJA DE RUTA — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Grilla de doce columnas con cuatro bloques: 8+4 arriba, 4+8 abajo. En
+   pantallas chicas se apilan en el mismo orden.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { transformacion } = ejecutivos.home;
+const { agenda } = ejecutivos.enlaces;
+const { roadmap, adopcion, mentalidad, cierre } = transformacion;
+---
+
+<section class="ej-sec ej-sup-baja et">
+  <div class="ej-wrap">
+    <header class="et__head ej-reveal">
+      <h2 class="ej-h2">
+        {transformacion.titulo}<br />
+        <span class="ej-hl">{transformacion.tituloResalte}</span>
+      </h2>
+    </header>
+
+    <div class="et__grid">
+      <!-- 1. Roadmap de 90 días -->
+      <article class="et__caja et__caja--roadmap ej-filete ej-reveal">
+        <img
+          class="et__fondo"
+          src={roadmap.imagen}
+          alt={roadmap.imagenAlt}
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+        <span class="et__velo" aria-hidden="true"></span>
+        <span class="et__ico-grande" aria-hidden="true">
+          <EjeIcon name="tendencia" size={64} stroke={1.5} />
+        </span>
+        <div class="et__cuerpo">
+          <h3 class="ej-h3">{roadmap.titulo}</h3>
+          <p class="ej-p">{roadmap.desc}</p>
+          <a
+            class="et__enlace"
+            href={agenda}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {roadmap.cta}
+            <EjeIcon name="flecha" size={20} />
+          </a>
+        </div>
+      </article>
+
+      <!-- 2. Adopción que se sostiene -->
+      <article class="et__caja et__caja--adopcion ej-filete ej-reveal">
+        <span class="et__ico-grande" aria-hidden="true">
+          <EjeIcon name="rayo" size={64} stroke={1.5} />
+        </span>
+        <div class="et__cuerpo">
+          <h3 class="ej-h3">{adopcion.titulo}</h3>
+          <p class="ej-p">{adopcion.desc}</p>
+        </div>
+      </article>
+
+      <!-- 3. Mentalidad de transformación -->
+      <article class="et__caja et__caja--mentalidad ej-reveal">
+        <span class="et__ico-chico" aria-hidden="true">
+          <EjeIcon name="personas" size={48} stroke={1.5} />
+        </span>
+        <div class="et__cuerpo">
+          <h3 class="ej-h4">{mentalidad.titulo}</h3>
+          <p class="ej-p">{mentalidad.desc}</p>
+        </div>
+      </article>
+
+      <!-- 4. Foto con la frase de cierre -->
+      <article class="et__caja et__caja--cierre ej-reveal">
+        <img
+          class="et__foto"
+          src={cierre.imagen}
+          alt={cierre.imagenAlt}
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+        <div class="et__frase">
+          <p>
+            {cierre.texto}<strong>{cierre.textoFuerte}</strong>
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .et__head {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .et__grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  /* ---- Caja base ---- */
+  .et__caja {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--e-r-3xl);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    transition: transform 300ms ease, box-shadow 300ms ease, filter 300ms ease;
+  }
+  .et__caja:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .et__cuerpo {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 1rem;
+    max-width: 34rem;
+  }
+
+  .et__caja--roadmap,
+  .et__caja--adopcion {
+    background: #ffffff;
+  }
+  .et__caja--mentalidad {
+    background: var(--e-sup-alta);
+    justify-content: space-between;
+  }
+  .et__caja--mentalidad:hover {
+    filter: brightness(0.97);
+  }
+  .et__caja--cierre {
+    background: var(--e-sup-max);
+    padding: 0;
+  }
+
+  /* Foto de fondo del bloque del roadmap: se ve apenas y se agranda al
+     pasar el mouse. */
+  .et__fondo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.18;
+    transition: transform 700ms ease, opacity 700ms ease;
+  }
+  .et__caja--roadmap:hover .et__fondo {
+    transform: scale(1.05);
+    opacity: 0.24;
+  }
+  .et__velo {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom right,
+      #ffffff,
+      rgba(255, 255, 255, 0.94) 55%,
+      rgba(30, 92, 242, 0.12)
+    );
+  }
+
+  .et__ico-grande,
+  .et__ico-chico {
+    position: relative;
+    z-index: 2;
+    color: var(--e-acento);
+    transition: transform 500ms ease, opacity 500ms ease;
+  }
+  .et__ico-grande {
+    position: absolute;
+    top: clamp(1.75rem, 4vw, 3rem);
+    left: clamp(1.75rem, 4vw, 3rem);
+    opacity: 0.2;
+  }
+  .et__caja:hover .et__ico-grande {
+    opacity: 0.35;
+    transform: scale(1.1);
+  }
+  .et__ico-chico {
+    color: rgba(13, 27, 61, 0.7);
+  }
+  .et__caja:hover .et__ico-chico {
+    transform: scale(1.1);
+  }
+
+  .et__enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: var(--e-azul-900);
+    transition: gap var(--transition), color var(--transition);
+  }
+  .et__caja--roadmap:hover .et__enlace {
+    gap: 1rem;
+    color: var(--e-azul-600);
+  }
+
+  /* ---- Bloque de cierre: foto a sangre con la frase encima ---- */
+  .et__foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms ease;
+  }
+  .et__caja--cierre:hover .et__foto {
+    transform: scale(1.05);
+  }
+  .et__frase {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    background: linear-gradient(
+      to top,
+      rgba(13, 27, 61, 0.95),
+      rgba(13, 27, 61, 0.55) 45%,
+      rgba(13, 27, 61, 0.1)
+    );
+  }
+  .et__frase p {
+    font-family: var(--font-title);
+    font-size: clamp(1.15rem, 0.95rem + 0.8vw, 1.5rem);
+    line-height: 1.4;
+    color: #ffffff;
+    max-width: 56rem;
+  }
+  .et__frase strong {
+    font-weight: 700;
+  }
+
+  @media (min-width: 768px) {
+    .et__grid {
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .et__caja--roadmap {
+      grid-column: span 8;
+    }
+    .et__caja--adopcion {
+      grid-column: span 4;
+    }
+    .et__caja--mentalidad {
+      grid-column: span 4;
+    }
+    .et__caja--cierre {
+      grid-column: span 8;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .et__caja,
+    .et__caja:hover,
+    .et__fondo,
+    .et__foto {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

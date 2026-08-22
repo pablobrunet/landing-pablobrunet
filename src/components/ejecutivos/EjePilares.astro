@@ -1,0 +1,221 @@
+---
+/* =====================================================================
+   QUÉ NOS DIFERENCIA — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Texto y los cuatro pilares a la izquierda; a la derecha un mosaico de
+   dos columnas desfasadas: dos fotos en blanco y negro que recuperan el
+   color al pasar el mouse, alternadas con dos bloques sólidos de color.
+
+   Lleva el id `diferencia` porque es el destino del segundo CTA del hero.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { pilares } = ejecutivos.home;
+---
+
+<section class="ej-sec ej-sup ep" id="diferencia">
+  <div class="ej-wrap ep__grid">
+    <div class="ep__copy ej-reveal">
+      <h2 class="ej-h2">
+        {pilares.titulo}<br />{pilares.tituloLinea2}
+      </h2>
+      <p class="ej-lead">{pilares.subtitulo}</p>
+
+      <div class="ep__items">
+        {
+          pilares.items.map((p) => (
+            <div class="ep__item">
+              <span class="ep__ico">
+                <EjeIcon name="cheque" size={24} />
+              </span>
+              <h3 class="ep__item-titulo">{p.titulo}</h3>
+              <p class="ep__item-desc">{p.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="ep__mosaico ej-reveal">
+      <div class="ep__col ep__col--desfasada">
+        <figure class="ep__foto ej-filete">
+          <img
+            src={pilares.fotos[0].src}
+            alt={pilares.fotos[0].alt}
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+        </figure>
+        <div class="ep__bloque ep__bloque--navy">
+          <EjeIcon name="cerebro" size={80} stroke={1.25} />
+          <span class="ej-punto ep__punto ep__punto--arriba" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <div class="ep__col">
+        <div class="ep__bloque ep__bloque--azul">
+          <EjeIcon name="diana" size={80} stroke={1.25} />
+          <span class="ej-punto ep__punto ep__punto--abajo" aria-hidden="true"></span>
+        </div>
+        <figure class="ep__foto ej-filete">
+          <img
+            src={pilares.fotos[1].src}
+            alt={pilares.fotos[1].alt}
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ep__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .ep__copy {
+    display: grid;
+    gap: 2rem;
+  }
+  .ep__copy .ej-lead {
+    max-width: 42rem;
+  }
+  .ep__items {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .ep__item {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  .ep__ico {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.625rem;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--e-acento);
+  }
+  .ep__item-titulo {
+    font-family: var(--font-title);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--e-texto);
+  }
+  .ep__item-desc {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--e-texto-var);
+  }
+
+  /* ---- Mosaico ---- */
+  .ep__mosaico {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .ep__col {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+  .ep__col--desfasada {
+    padding-top: 3rem;
+  }
+  .ep__foto,
+  .ep__bloque {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--e-r-3xl);
+    overflow: hidden;
+    box-shadow: var(--e-sombra-prem);
+    transition: transform 300ms ease, box-shadow 300ms ease, filter 300ms ease;
+  }
+  .ep__foto:hover,
+  .ep__bloque:hover {
+    transform: translateY(-4px);
+  }
+  .ep__foto {
+    background: var(--e-sup-alta);
+  }
+  .ep__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1);
+    transition: transform 700ms ease, filter 700ms ease;
+  }
+  .ep__foto:hover img {
+    transform: scale(1.05);
+    filter: grayscale(0);
+  }
+
+  .ep__bloque {
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+  }
+  .ep__bloque--navy {
+    background: var(--e-navy);
+    color: var(--e-azul-500);
+  }
+  .ep__bloque--navy:hover {
+    filter: brightness(1.25);
+  }
+  .ep__bloque--azul {
+    background: var(--e-azul-800);
+    color: var(--e-celeste);
+  }
+  .ep__bloque--azul:hover {
+    filter: brightness(1.1);
+  }
+  .ep__bloque :global(svg) {
+    opacity: 0.2;
+    transition: opacity 500ms ease, transform 500ms ease;
+  }
+  .ep__bloque:hover :global(svg) {
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
+  .ep__punto {
+    position: absolute;
+  }
+  .ep__punto--arriba {
+    top: 1rem;
+    right: 1rem;
+  }
+  .ep__punto--abajo {
+    bottom: 1rem;
+    left: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .ep__items {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .ep__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ep__foto,
+    .ep__bloque,
+    .ep__foto img,
+    .ep__foto:hover,
+    .ep__bloque:hover,
+    .ep__foto:hover img {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

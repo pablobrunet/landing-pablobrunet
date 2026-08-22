@@ -1,0 +1,220 @@
+---
+/* =====================================================================
+   IMPACTO EN ACCIÓN — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Carrusel horizontal de fotos con arrastre nativo (scroll-snap) y dos
+   botones que lo mueven de a 400px, como en el original. El único JS es
+   el de los botones: sin él el carrusel sigue funcionando con el dedo o
+   con la rueda del mouse.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { carrusel } = ejecutivos.home;
+---
+
+<section class="ej-sec ec">
+  <div class="ej-wrap ec__head ej-reveal">
+    <div>
+      <h2 class="ej-h2">{carrusel.titulo}</h2>
+      <p class="ej-p ec__sub">{carrusel.subtitulo}</p>
+    </div>
+
+    <div class="ec__botones">
+      <button type="button" class="ec__btn" data-carrusel="atras" aria-label="Ver la foto anterior">
+        <span class="ec__flecha-atras">
+          <EjeIcon name="flecha" size={20} />
+        </span>
+      </button>
+      <button type="button" class="ec__btn" data-carrusel="adelante" aria-label="Ver la foto siguiente">
+        <EjeIcon name="flecha" size={20} />
+      </button>
+    </div>
+  </div>
+
+  <div class="ec__pista ej-sin-barra" data-carrusel-pista>
+    {
+      carrusel.fotos.map((foto) => (
+        <figure class="ec__foto">
+          <img src={foto.src} alt={foto.alt} loading="lazy" referrerpolicy="no-referrer" />
+          <figcaption class="ec__pie">
+            <p class="ec__foto-titulo">{foto.titulo}</p>
+            <p class="ec__foto-sub">{foto.subtitulo}</p>
+          </figcaption>
+        </figure>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ec {
+    background: var(--e-sup-baja);
+    overflow: hidden;
+  }
+  .ec__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+  }
+  .ec__sub {
+    margin-top: 0.5rem;
+  }
+  .ec__botones {
+    display: flex;
+    gap: 1rem;
+  }
+  .ec__btn {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid var(--e-linea);
+    background: transparent;
+    color: var(--e-texto);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition),
+      border-color var(--transition), box-shadow var(--transition), transform 120ms ease;
+  }
+  .ec__btn:hover {
+    background: #ffffff;
+    color: var(--e-azul-600);
+    border-color: rgba(30, 92, 242, 0.35);
+    box-shadow: var(--e-sombra-del);
+  }
+  .ec__btn:active {
+    transform: scale(0.9);
+  }
+  .ec__flecha-atras {
+    display: grid;
+    place-items: center;
+    transform: rotate(180deg);
+  }
+
+  /* La pista se alinea con el contenedor pero sangra hasta el borde de la
+     pantalla, para que la última foto no quede cortada de golpe. */
+  .ec__pista {
+    display: flex;
+    gap: 1.5rem;
+    padding-inline: clamp(1.15rem, 4.5vw, 1.5rem);
+    padding-bottom: 3rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+  @media (min-width: 1328px) {
+    .ec__pista {
+      padding-inline: calc((100vw - 1280px) / 2 + 1.5rem);
+    }
+  }
+
+  .ec__foto {
+    position: relative;
+    flex-shrink: 0;
+    width: 85vw;
+    aspect-ratio: 16 / 9;
+    scroll-snap-align: start;
+    border-radius: var(--e-r-4xl);
+    overflow: hidden;
+    border: 1px solid var(--e-linea);
+    box-shadow: var(--e-sombra-del);
+  }
+  @media (min-width: 768px) {
+    .ec__foto {
+      width: 45vw;
+    }
+  }
+  @media (min-width: 1024px) {
+    .ec__foto {
+      width: 38vw;
+    }
+  }
+  .ec__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1000ms ease;
+  }
+  .ec__foto:hover img {
+    transform: scale(1.1);
+  }
+  .ec__pie {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    background: linear-gradient(
+      to top,
+      rgba(10, 20, 48, 0.85),
+      rgba(10, 20, 48, 0.2) 45%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+  .ec__foto:hover .ec__pie,
+  .ec__foto:focus-within .ec__pie {
+    opacity: 1;
+  }
+  .ec__foto-titulo {
+    font-family: var(--font-title);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .ec__foto-sub {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* En táctil no hay hover: el pie se muestra siempre. */
+  @media (hover: none) {
+    .ec__pie {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ec__pista {
+      scroll-behavior: auto;
+    }
+    .ec__foto img,
+    .ec__foto:hover img {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  /* Los dos botones del carrusel. Se registra por delegación en el
+     documento y con una bandera, igual que el navbar del sitio: el router
+     de View Transitions re-ejecuta los scripts al navegar y sin la
+     bandera se acumularían listeners (cada clic movería el doble). */
+  function initCarruselEjecutivos() {
+    if ((window as any).__ejeCarruselListo) return;
+    (window as any).__ejeCarruselListo = true;
+
+    document.addEventListener("click", (e) => {
+      const destino = e.target as HTMLElement | null;
+      if (!destino || typeof destino.closest !== "function") return;
+
+      const boton = destino.closest<HTMLElement>("[data-carrusel]");
+      if (!boton) return;
+
+      const pista = boton
+        .closest("section")
+        ?.querySelector<HTMLElement>("[data-carrusel-pista]");
+      if (!pista) return;
+
+      const paso = boton.dataset.carrusel === "atras" ? -400 : 400;
+      pista.scrollBy({ left: paso, behavior: "smooth" });
+    });
+  }
+
+  initCarruselEjecutivos();
+</script>

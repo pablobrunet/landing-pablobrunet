@@ -1,0 +1,75 @@
+---
+/* =====================================================================
+   CIERRE — /programa-ejecutivos/programa
+   ---------------------------------------------------------------------
+   Un solo CTA: escribir por WhatsApp. La página es informativa, no un
+   embudo de captación, así que no compite con el calendario de la landing.
+   ===================================================================== */
+import RedLogo from "../RedLogo.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { cierre } = ejecutivos.programa;
+const { whatsapp } = ejecutivos.enlaces;
+---
+
+<section class="ej-oscuro ej-sec ej-sec--corta epc">
+  <span class="epc__halo epc__halo--a" aria-hidden="true"></span>
+  <span class="epc__halo epc__halo--b" aria-hidden="true"></span>
+
+  <div class="ej-wrap epc__inner">
+    <h2 class="ej-h2 epc__titulo">{cierre.titulo}</h2>
+    <p class="epc__sub">{cierre.subtitulo}</p>
+    <a
+      class="ej-btn ej-btn--blanco"
+      href={whatsapp}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <RedLogo name="whatsapp" size={18} />
+      {cierre.cta}
+    </a>
+  </div>
+</section>
+
+<style>
+  .epc {
+    position: relative;
+    overflow: hidden;
+  }
+  .epc__halo {
+    position: absolute;
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+    filter: blur(64px);
+  }
+  .epc__halo--a {
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    background: rgba(76, 134, 245, 0.14);
+  }
+  .epc__halo--b {
+    bottom: 0;
+    left: 0;
+    transform: translate(-50%, 50%);
+    background: rgba(59, 108, 183, 0.14);
+  }
+  .epc__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 56rem;
+    text-align: center;
+    display: grid;
+    gap: 1.5rem;
+    justify-items: center;
+  }
+  .epc__titulo {
+    color: #ffffff;
+  }
+  .epc__sub {
+    max-width: 44rem;
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.78);
+  }
+</style>

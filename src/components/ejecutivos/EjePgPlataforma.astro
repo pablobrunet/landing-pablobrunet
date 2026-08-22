@@ -1,0 +1,159 @@
+---
+/* =====================================================================
+   TRABAJO ENTRE SESIONES — /programa-ejecutivos/programa
+   ---------------------------------------------------------------------
+   Bloque oscuro a la izquierda con los tres recursos; a la derecha la
+   captura de la plataforma. La captura va con `contain`: es una imagen de
+   pantalla y recortarla la arruinaría.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import EjeTarjetaVisual from "./EjeTarjetaVisual.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { plataforma } = ejecutivos.programa;
+---
+
+<section class="ej-sec ej-sec--corta ej-sup epp">
+  <div class="ej-wrap epp__grid">
+    <div class="epp__panel ej-reveal">
+      <span class="epp__luz" aria-hidden="true"></span>
+      <div class="epp__cuerpo">
+        <span class="epp__ico">
+          <EjeIcon name="panel" size={28} />
+        </span>
+        <p class="epp__eyebrow">{plataforma.eyebrow}</p>
+        <h2 class="epp__titulo">{plataforma.titulo}</h2>
+        <p class="epp__desc">{plataforma.desc}</p>
+
+        <ul class="epp__items">
+          {
+            plataforma.items.map((item) => (
+              <li>
+                <EjeIcon name={item.icono} size={20} />
+                <span>{item.texto}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <EjeTarjetaVisual
+      class="ej-reveal"
+      src={plataforma.tarjeta.src}
+      alt={plataforma.tarjeta.alt}
+      eyebrow={plataforma.tarjeta.eyebrow}
+      titulo={plataforma.tarjeta.titulo}
+      detalle={plataforma.tarjeta.detalle}
+      ajuste="contain"
+      alto="clamp(320px, 42vw, 560px)"
+    />
+  </div>
+</section>
+
+<style>
+  .epp__grid {
+    display: grid;
+    gap: 2rem;
+    align-items: stretch;
+  }
+  .epp__panel {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    border-radius: var(--e-r-3xl);
+    background: var(--e-navy);
+    color: #ffffff;
+    box-shadow: var(--e-sombra-prem);
+    transition: transform 500ms ease;
+  }
+  .epp__panel:hover {
+    transform: translateY(-4px);
+  }
+  .epp__luz {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at top right,
+      rgba(76, 134, 245, 0.24),
+      transparent 35%
+    );
+  }
+  .epp__cuerpo {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .epp__ico {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--e-azul-500);
+    transition: background 500ms ease, transform 500ms ease;
+  }
+  .epp__panel:hover .epp__ico {
+    background: rgba(255, 255, 255, 0.16);
+    transform: scale(1.1);
+  }
+  .epp__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .epp__titulo {
+    font-family: var(--font-title);
+    font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .epp__desc {
+    font-size: 1.0625rem;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .epp__items {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+  .epp__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .epp__items li :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--e-azul-500);
+  }
+
+  @media (min-width: 1024px) {
+    .epp__grid {
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 2.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epp__panel,
+    .epp__panel:hover {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

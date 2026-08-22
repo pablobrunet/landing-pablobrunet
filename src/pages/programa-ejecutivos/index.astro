@@ -1,0 +1,134 @@
+---
+/* =====================================================================
+   /programa-ejecutivos — LANDING DE LOS PROGRAMAS PARA EMPRESAS
+   ---------------------------------------------------------------------
+   Anexo de pablobrunet.com. Comparte navbar, footer, tipografías y botón
+   flotante con el resto del sitio, pero cambia la paleta a la familia
+   azul (styles/ejecutivos.css, que se importa sólo acá).
+
+   La página es el port de la landing del repo ai-first-landing: mismo
+   orden de secciones, mismos bloques y mismos textos. El recorrido va de
+   la promesa al calendario, sumando una cosa por scroll:
+
+     1  Hero            la promesa y los dos CTAs desde el primer pantallazo
+     2  Video           la propuesta contada en voz propia
+     3  Los patrones    "esto me está pasando": los tres modos de trabarse
+     4  Transformación  a dónde se llega: roadmap, adopción, mentalidad
+     5  Diferencia      por qué no es una capacitación más
+     6  Cifras          la franja que ordena formato y alcance
+     7  Programas       las tres puertas de entrada
+     8  Metodología     el mecanismo: cuatro pasos y capacidad instalada
+     9  Resultados      qué queda instalado en la empresa
+    10  Equipo          quiénes están atrás
+    11  Carrusel        prueba: ya pasó con otras empresas
+    12  Calendario      el CTA principal, sin salir de la página
+    13  Preguntas       los frenos reales, antes del cierre
+    14  Cierre          último llamado
+   ===================================================================== */
+import "../../styles/ejecutivos.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import EjeSubnav from "../../components/ejecutivos/EjeSubnav.astro";
+import EjeHero from "../../components/ejecutivos/EjeHero.astro";
+import EjeVideo from "../../components/ejecutivos/EjeVideo.astro";
+import EjeDolores from "../../components/ejecutivos/EjeDolores.astro";
+import EjeTransformacion from "../../components/ejecutivos/EjeTransformacion.astro";
+import EjePilares from "../../components/ejecutivos/EjePilares.astro";
+import EjeFranja from "../../components/ejecutivos/EjeFranja.astro";
+import EjeProgramas from "../../components/ejecutivos/EjeProgramas.astro";
+import EjeMetodo from "../../components/ejecutivos/EjeMetodo.astro";
+import EjeResultados from "../../components/ejecutivos/EjeResultados.astro";
+import EjeEquipo from "../../components/ejecutivos/EjeEquipo.astro";
+import EjeCarrusel from "../../components/ejecutivos/EjeCarrusel.astro";
+import EjeAgenda from "../../components/ejecutivos/EjeAgenda.astro";
+import EjeFaq from "../../components/ejecutivos/EjeFaq.astro";
+import EjeCierre from "../../components/ejecutivos/EjeCierre.astro";
+import EjeReveal from "../../components/ejecutivos/EjeReveal.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+
+const { home, whatsapp } = ejecutivos;
+---
+
+<Base
+  title={home.seo.title}
+  description={home.seo.description}
+  waMensaje={whatsapp.mensaje}
+  waEtiqueta={whatsapp.etiqueta}
+>
+  {/* Los dos scripts de terceros que necesita la página. Van `is:inline` y
+      `async` para que Astro no intente empaquetarlos ni bloqueen el
+      pintado: los dos son de otro dominio y ninguno necesita estar en el
+      <head> —se enganchan solos cuando cargan—.
+        · Wistia        → define el custom element <wistia-player>
+        · LeadConnector → ajusta el alto del iframe del calendario */}
+  <script is:inline async src="https://fast.wistia.com/assets/external/E-v1.js"></script>
+  <script is:inline async src="https://api.leadconnectorhq.com/js/form_embed.js"></script>
+
+  <Navbar />
+  <EjeSubnav />
+  <main>
+    <EjeHero />
+    <EjeVideo />
+    <EjeDolores />
+    <EjeTransformacion />
+    <EjePilares />
+    <EjeFranja />
+    <EjeProgramas />
+    <EjeMetodo />
+    <EjeResultados />
+    <EjeEquipo />
+    <EjeCarrusel />
+    <EjeAgenda />
+    <EjeFaq />
+    <EjeCierre />
+  </main>
+  <Footer />
+  <EjeReveal />
+</Base>
+
+<style is:global>
+  /* Esta página tiene DOS barras pegadas arriba —la del sitio y la de
+     secciones del anexo—, así que el desplazamiento que global.css reserva
+     para los saltos de ancla se queda corto y el título del bloque queda
+     tapado. Acá se suma el alto de la segunda barra. */
+  [id] {
+    scroll-margin-top: calc(var(--nav-alto) + 56px + 1.5rem);
+  }
+
+  /* El botón flotante de WhatsApp se aparta cuando el calendario está en
+     pantalla: ahí el CTA principal es agendar y no queremos competencia.
+     Mismo criterio que en el otro anexo del sitio. */
+  .wa {
+    transition: transform var(--transition), box-shadow var(--transition),
+      opacity var(--transition);
+  }
+  body.eje-calendario-visible .wa {
+    opacity: 0;
+    transform: translateY(120%);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  /* El botón flotante de WhatsApp se esconde mientras el calendario está a
+     la vista, para no competir con el CTA principal. La aparición al hacer
+     scroll la resuelve <EjeReveal />, que va en las tres páginas. */
+  function initCalendarioEjecutivos() {
+    const calendario = document.getElementById("agendar");
+    if (!calendario || !("IntersectionObserver" in window)) return;
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          document.body.classList.toggle("eje-calendario-visible", e.isIntersecting);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(calendario);
+  }
+
+  initCalendarioEjecutivos();
+  document.addEventListener("astro:page-load", initCalendarioEjecutivos);
+</script>

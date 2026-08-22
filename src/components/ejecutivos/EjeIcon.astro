@@ -1,0 +1,110 @@
+---
+/* =====================================================================
+   ÍCONOS DEL ANEXO /programa-ejecutivos
+   ---------------------------------------------------------------------
+   El repo original usa lucide-react. Acá los glifos van dibujados a mano
+   con el mismo trazo (24×24, stroke 2, puntas y uniones redondeadas), así
+   el anexo no arrastra una dependencia de React ni un paquete de íconos
+   entero para veinte formas.
+
+   El Icon.astro del sitio tiene otro set y otro criterio de nombres: se
+   deja intacto a propósito para no mezclar los dos vocabularios.
+
+   Uso: <EjeIcon name="rayo" size={24} />
+   Los logos de LinkedIn y WhatsApp NO están acá: para esos ya existe
+   RedLogo.astro, con las siluetas macizas oficiales.
+   ===================================================================== */
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+  /* Ancho de trazo: los íconos grandes decorativos se ven mejor finos. */
+  stroke?: number;
+}
+const { name, size = 24, class: clase = "", stroke = 2 } = Astro.props;
+
+/* Cada entrada es una lista de subtrazos que se dibujan como <path>. */
+const glifos: Record<string, string[]> = {
+  alerta: ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z", "M12 8v5", "M12 16.5h.01"],
+  tendencia: ["M22 7l-8.5 8.5-5-5L2 17", "M16 7h6v6"],
+  cerebro: [
+    "M12 5a3 3 0 0 0-3 3v8a3 3 0 0 0 5.12 2.12",
+    "M12 5a3 3 0 0 1 3 3v1",
+    "M9 9H6.5a2.5 2.5 0 0 0 0 5H9",
+    "M15 9h1.5a2.5 2.5 0 0 1 0 5H15",
+    "M18 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z",
+    "M18 17.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z",
+    "M15 9v5",
+  ],
+  rayo: ["M13 2 4 14h7l-1 8 9-12h-7l1-8Z"],
+  diana: [
+    "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z",
+    "M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z",
+    "M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+  ],
+  escudo: ["M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z", "M9 12l2 2 4-4"],
+  barras: ["M3 3v18h18", "M18 17V9", "M13 17V5", "M8 17v-3"],
+  calendario: [
+    "M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z",
+    "M16 2v4",
+    "M8 2v4",
+    "M4 10h16",
+  ],
+  personas: [
+    "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
+    "M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z",
+    "M22 21v-2a4 4 0 0 0-3-3.87",
+    "M16 3.13a4 4 0 0 1 0 7.75",
+  ],
+  cheque: ["M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z", "M8.5 12.5l2.5 2.5 4.5-5"],
+  flecha: ["M5 12h14", "M13 6l6 6-6 6"],
+  chevron: ["M6 9l6 6 6-6"],
+  chispa: [
+    "M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9L12 3Z",
+    "M19 3v3",
+    "M20.5 4.5h-3",
+  ],
+  maletin: [
+    "M4 7h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z",
+    "M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2",
+    "M3 13h18",
+  ],
+  panel: [
+    "M4 3h16a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z",
+    "M4 14h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Z",
+    "M15 14h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Z",
+  ],
+  red: [
+    "M9.5 2h5a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z",
+    "M2.5 16h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1Z",
+    "M17.5 16h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1Z",
+    "M4.5 16v-3h15v3",
+    "M12 8v5",
+  ],
+  imagen: [
+    "M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z",
+    "M9 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+    "M21 15l-4.35-4.35a2 2 0 0 0-2.83 0L3.5 20.5",
+  ],
+  mensaje: ["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z"],
+  play: ["M6 3.5v17l14-8.5-14-8.5Z"],
+};
+
+const trazos = glifos[name] ?? [];
+---
+
+<svg
+  class={clase}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {trazos.map((d) => <path d={d} />)}
+</svg>

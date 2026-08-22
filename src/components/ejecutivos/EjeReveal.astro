@@ -1,0 +1,44 @@
+---
+/* =====================================================================
+   APARICIÓN AL HACER SCROLL — anexo /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Reemplaza al <ScrollReveal> de framer-motion del repo original: mismo
+   efecto (opacidad + 24px hacia arriba, una sola vez por bloque) con un
+   IntersectionObserver y sin dependencias.
+
+   Va como componente y no suelto en cada página para que las tres del
+   anexo compartan exactamente el mismo comportamiento. Se incluye una vez
+   por página; los bloques se marcan con la clase `.ej-reveal`.
+
+   El estado inicial oculto lo aplica la clase `is-listo`, que sólo agrega
+   este script: sin JS, o con motion reducido, el contenido se ve normal.
+   ===================================================================== */
+---
+
+<script>
+  function initRevealEjecutivos() {
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".ej-reveal"));
+    if (!bloques.length) return;
+
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducido || !("IntersectionObserver" in window)) return;
+
+    bloques.forEach((b) => b.classList.add("is-listo"));
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).classList.add("is-visible");
+          obs.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+
+    bloques.forEach((b) => obs.observe(b));
+  }
+
+  initRevealEjecutivos();
+  document.addEventListener("astro:page-load", initRevealEjecutivos);
+</script>

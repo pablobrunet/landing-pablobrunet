@@ -1,0 +1,75 @@
+---
+/* =====================================================================
+   /programa-ejecutivos/programa — RESUMEN DEL PROGRAMA PARA EJECUTIVOS
+   ---------------------------------------------------------------------
+   Segunda página del anexo. En el repo original esta página vivía en la
+   raíz (/programa-ejecutivos); acá cuelga del índice del anexo, que es el
+   que ocupa esa dirección.
+
+   No es una página de venta: es la que se comparte cuando alguien pide
+   "mandame el detalle". Por eso el único CTA es escribir, y va al final.
+
+     1  Hero          qué es, para qué es y en cuánto tiempo
+     2  Audiencia     para quién está pensado
+     3  Módulos       los cuatro pasos del recorrido
+     4  Plataforma    qué pasa entre encuentro y encuentro
+     5  Resultados    qué se lleva el participante + certificado
+     6  Cierre        contacto
+   ===================================================================== */
+import "../../styles/ejecutivos.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import EjePgHero from "../../components/ejecutivos/EjePgHero.astro";
+import EjePgAudiencia from "../../components/ejecutivos/EjePgAudiencia.astro";
+import EjePgModulos from "../../components/ejecutivos/EjePgModulos.astro";
+import EjePgPlataforma from "../../components/ejecutivos/EjePgPlataforma.astro";
+import EjePgResultados from "../../components/ejecutivos/EjePgResultados.astro";
+import EjePgCierre from "../../components/ejecutivos/EjePgCierre.astro";
+import EjeReveal from "../../components/ejecutivos/EjeReveal.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+
+const { programa, whatsapp, rutas } = ejecutivos;
+---
+
+<Base
+  title={programa.seo.title}
+  description={programa.seo.description}
+  waMensaje={whatsapp.mensaje}
+  waEtiqueta={whatsapp.etiqueta}
+>
+  <Navbar />
+  <main>
+    <EjePgHero />
+    <EjePgAudiencia />
+    <EjePgModulos />
+    <EjePgPlataforma />
+    <EjePgResultados />
+    <EjePgCierre />
+
+    {/* Vuelta al índice del anexo: esta página se comparte por enlace
+        directo y quien llega así no tiene de dónde agarrarse. */}
+    <nav class="epvolver">
+      <a href={rutas.inicio}>← Ver todos los programas</a>
+    </nav>
+  </main>
+  <Footer />
+  <EjeReveal />
+</Base>
+
+<style>
+  .epvolver {
+    padding-block: 2.5rem;
+    text-align: center;
+    background: var(--e-sup-baja);
+    border-top: 1px solid var(--e-linea);
+  }
+  .epvolver a {
+    font-weight: 600;
+    color: var(--e-acento);
+    transition: color var(--transition);
+  }
+  .epvolver a:hover {
+    color: var(--e-azul-600);
+  }
+</style>

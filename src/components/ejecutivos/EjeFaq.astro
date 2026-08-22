@@ -1,0 +1,105 @@
+---
+/* =====================================================================
+   PREGUNTAS FRECUENTES — /programa-ejecutivos
+   ---------------------------------------------------------------------
+   El original resuelve el acordeón con estado de React. Acá va con
+   <details>: mismo comportamiento, cero JavaScript, y de yapa funciona
+   con teclado y con la búsqueda del navegador. La primera viene abierta,
+   como en el original.
+
+   El atributo `name` agrupa los <details>: al abrir uno se cierra el
+   anterior, que es exactamente lo que hacía el estado de React. Donde el
+   navegador todavía no lo soporta simplemente quedan varios abiertos.
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+const { faq } = ejecutivos.home;
+---
+
+<section class="ej-sec ej-sup efq">
+  <div class="ej-wrap ej-wrap--angosto">
+    <h2 class="ej-h2 efq__titulo">{faq.titulo}</h2>
+
+    <div class="efq__lista">
+      {
+        faq.items.map((item, i) => (
+          <details class="efq__item" name="faq-ejecutivos" open={i === 0}>
+            <summary class="efq__pregunta">
+              <span>{item.q}</span>
+              <span class="efq__chev">
+                <EjeIcon name="chevron" size={24} />
+              </span>
+            </summary>
+            <div class="efq__respuesta">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .efq__titulo {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .efq__lista {
+    display: grid;
+    gap: 1rem;
+  }
+  .efq__item {
+    border: 1px solid var(--e-linea);
+    border-radius: var(--e-r-2xl);
+    overflow: hidden;
+    background: #ffffff;
+  }
+  .efq__pregunta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--e-sup-baja);
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-title);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--e-texto);
+    transition: background var(--transition), color var(--transition);
+  }
+  .efq__pregunta::-webkit-details-marker {
+    display: none;
+  }
+  .efq__pregunta:hover {
+    background: var(--e-sup-media);
+  }
+  .efq__item[open] .efq__pregunta {
+    color: var(--e-azul-600);
+  }
+  .efq__chev {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    color: var(--e-texto-var);
+    transition: transform var(--transition), color var(--transition);
+  }
+  .efq__item[open] .efq__chev {
+    transform: rotate(180deg);
+    color: var(--e-azul-600);
+  }
+  .efq__respuesta {
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--e-texto-var);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .efq__chev {
+      transition: none;
+    }
+  }
+</style>
