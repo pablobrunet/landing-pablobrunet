@@ -18,8 +18,8 @@
    ===================================================================== */
 import "../../styles/ejecutivos.css";
 import Base from "../../layouts/Base.astro";
-import Navbar from "../../components/Navbar.astro";
-import Footer from "../../components/Footer.astro";
+import EjeNavbar from "../../components/ejecutivos/EjeNavbar.astro";
+import EjeFooter from "../../components/ejecutivos/EjeFooter.astro";
 import EjePgHero from "../../components/ejecutivos/EjePgHero.astro";
 import EjePgAudiencia from "../../components/ejecutivos/EjePgAudiencia.astro";
 import EjePgModulos from "../../components/ejecutivos/EjePgModulos.astro";
@@ -38,7 +38,7 @@ const { programa, whatsapp, rutas } = ejecutivos;
   waMensaje={whatsapp.mensaje}
   waEtiqueta={whatsapp.etiqueta}
 >
-  <Navbar />
+  <EjeNavbar />
   <main>
     <EjePgHero />
     <EjePgAudiencia />
@@ -53,7 +53,7 @@ const { programa, whatsapp, rutas } = ejecutivos;
       <a href={rutas.inicio}>← Ver todos los programas</a>
     </nav>
   </main>
-  <Footer />
+  <EjeFooter />
   <EjeReveal />
 </Base>
 

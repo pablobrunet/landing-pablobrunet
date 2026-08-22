@@ -1,0 +1,85 @@
+---
+/* =====================================================================
+   NAVBAR PROPIO DEL ANEXO /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Esta vertical se comparte solo por link directo y no cuelga del menú
+   general del sitio: quien entra viene con contexto (una reunión, una
+   propuesta), no buscando "Pablo Brunet" en Google. Por eso este navbar
+   NO es el <Navbar /> del resto del sitio —que trae los desplegables de
+   Servicios/Recursos con el Método INTEGRA y la automatización— sino uno
+   propio, sin salida hacia esas otras verticales. La marca sigue siendo
+   la misma persona, pero el único click posible desde acá es quedarse
+   adentro del anexo.
+   ===================================================================== */
+import { site } from "../../data/site";
+import { ejecutivos } from "../../data/ejecutivos";
+const { inicio } = ejecutivos.rutas;
+---
+
+<header class="ejn">
+  <div class="ej-wrap ejn__inner">
+    <a href={inicio} class="ejn__marca" aria-label={`${site.nombre} — Programas para empresas`}>
+      <span class="ejn__mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="32" height="32">
+          <rect width="40" height="40" rx="11" fill="var(--e-azul-900, var(--azul-petroleo))" />
+          <text
+            x="50%"
+            y="53%"
+            text-anchor="middle"
+            dominant-baseline="central"
+            font-family="var(--font-base)"
+            font-weight="700"
+            font-size="18"
+            letter-spacing="-0.5"
+            fill="var(--verde-acento)">PB</text
+          >
+        </svg>
+      </span>
+      <span class="ejn__texto">
+        <span class="ejn__nombre">{site.nombre}</span>
+        <span class="ejn__tag">Programas para empresas</span>
+      </span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .ejn {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--borde);
+  }
+  .ejn__inner {
+    display: flex;
+    align-items: center;
+    height: var(--nav-alto);
+  }
+  .ejn__marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .ejn__mark svg {
+    display: block;
+  }
+  .ejn__texto {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  .ejn__nombre {
+    font-weight: var(--w-headline);
+    font-size: 1.15rem;
+    color: var(--azul-petroleo);
+    letter-spacing: -0.01em;
+  }
+  .ejn__tag {
+    font-size: 0.7rem;
+    font-weight: var(--w-body);
+    color: var(--verde-azulado);
+    letter-spacing: 0.01em;
+  }
+</style>

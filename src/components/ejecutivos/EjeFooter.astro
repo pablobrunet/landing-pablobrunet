@@ -1,0 +1,130 @@
+---
+/* =====================================================================
+   FOOTER PROPIO DEL ANEXO /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Mismo motivo que <EjeNavbar />: el <Footer /> del sitio trae columnas
+   que enlazan a Servicios (Método INTEGRA, EcomCloser) y a Explorar
+   (Sobre mí, Blog), que son las otras verticales de negocio. Acá se
+   mantiene el contacto y lo legal —necesario en cualquier página— pero
+   sin esas columnas.
+   ===================================================================== */
+import { site } from "../../data/site";
+import Icon from "../Icon.astro";
+import RedLogo from "../RedLogo.astro";
+const { footer } = site;
+const year = 2026; // actualizá si corresponde
+---
+
+<footer class="ejf" aria-label="Pie de página">
+  <div class="ej-wrap ejf__top">
+    <p class="ejf__nombre">{site.nombre}</p>
+    <p class="ejf__mision">
+      Estrategia, formación y adopción práctica de inteligencia artificial para equipos directivos.
+    </p>
+    <ul class="ejf__contacto">
+      <li>
+        <Icon name="mail" size={16} />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </li>
+      <li>
+        <Icon name="location" size={16} />
+        <span>{site.ubicacion}</span>
+      </li>
+    </ul>
+    <ul class="ejf__social">
+      {
+        site.redes.map((r) => (
+          <li>
+            <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
+              <RedLogo name={r.icon} size={18} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="ej-wrap ejf__bottom">
+    <p class="t-caption">© {year} {site.nombre}. Todos los derechos reservados.</p>
+    <ul class="ejf__legal">
+      {footer.legales.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .ejf {
+    background: var(--azul-petroleo);
+    color: rgba(255, 255, 255, 0.85);
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+  .ejf__top {
+    padding-bottom: 2.5rem;
+  }
+  .ejf__nombre {
+    font-weight: var(--w-headline);
+    font-size: 1.15rem;
+    color: var(--blanco);
+  }
+  .ejf__mision {
+    margin: 1rem 0 1.25rem;
+    max-width: 42ch;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .ejf__contacto {
+    display: grid;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .ejf__contacto li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .ejf__contacto a:hover {
+    color: var(--verde-acento);
+  }
+  .ejf__social {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .ejf__social a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--blanco);
+    transition: background var(--transition), color var(--transition);
+  }
+  .ejf__social a:hover {
+    background: var(--verde-acento);
+    color: var(--azul-petroleo);
+  }
+  .ejf__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .ejf__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  .ejf__legal a:hover {
+    color: var(--verde-acento);
+  }
+
+  @media (min-width: 720px) {
+    .ejf__bottom {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+</style>

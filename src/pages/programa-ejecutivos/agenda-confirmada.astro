@@ -14,8 +14,8 @@
    ===================================================================== */
 import "../../styles/ejecutivos.css";
 import Base from "../../layouts/Base.astro";
-import Navbar from "../../components/Navbar.astro";
-import Footer from "../../components/Footer.astro";
+import EjeNavbar from "../../components/ejecutivos/EjeNavbar.astro";
+import EjeFooter from "../../components/ejecutivos/EjeFooter.astro";
 import EjeGrHero from "../../components/ejecutivos/EjeGrHero.astro";
 import EjeGrVideo from "../../components/ejecutivos/EjeGrVideo.astro";
 import EjeGrProximo from "../../components/ejecutivos/EjeGrProximo.astro";
@@ -40,13 +40,13 @@ const hayWistia = Boolean(gracias.video.wistiaId);
     <script is:inline async src="https://fast.wistia.com/assets/external/E-v1.js"></script>
   )}
 
-  <Navbar />
+  <EjeNavbar />
   <main>
     <EjeGrHero />
     <EjeGrVideo />
     <EjeGrProximo />
     <EjeGrCierre />
   </main>
-  <Footer />
+  <EjeFooter />
   <EjeReveal />
 </Base>

@@ -2,9 +2,12 @@
 /* =====================================================================
    /programa-ejecutivos — LANDING DE LOS PROGRAMAS PARA EMPRESAS
    ---------------------------------------------------------------------
-   Anexo de pablobrunet.com. Comparte navbar, footer, tipografías y botón
-   flotante con el resto del sitio, pero cambia la paleta a la familia
-   azul (styles/ejecutivos.css, que se importa sólo acá).
+   Anexo de pablobrunet.com. Es otra vertical de negocio, sin acceso desde
+   el menú general: se accede solo por link directo. Por eso tiene su
+   propio navbar y footer (EjeNavbar / EjeFooter, sin salida hacia el
+   Método INTEGRA ni la automatización), y comparte con el resto del sitio
+   solo tipografías y botón flotante. La paleta cambia a la familia azul
+   (styles/ejecutivos.css, que se importa sólo acá).
 
    La página es el port de la landing del repo ai-first-landing: mismo
    orden de secciones, mismos bloques y mismos textos. El recorrido va de
@@ -27,8 +30,8 @@
    ===================================================================== */
 import "../../styles/ejecutivos.css";
 import Base from "../../layouts/Base.astro";
-import Navbar from "../../components/Navbar.astro";
-import Footer from "../../components/Footer.astro";
+import EjeNavbar from "../../components/ejecutivos/EjeNavbar.astro";
+import EjeFooter from "../../components/ejecutivos/EjeFooter.astro";
 import EjeSubnav from "../../components/ejecutivos/EjeSubnav.astro";
 import EjeHero from "../../components/ejecutivos/EjeHero.astro";
 import EjeVideo from "../../components/ejecutivos/EjeVideo.astro";
@@ -65,7 +68,7 @@ const { home, whatsapp } = ejecutivos;
   <script is:inline async src="https://fast.wistia.com/assets/external/E-v1.js"></script>
   <script is:inline async src="https://api.leadconnectorhq.com/js/form_embed.js"></script>
 
-  <Navbar />
+  <EjeNavbar />
   <EjeSubnav />
   <main>
     <EjeHero />
@@ -83,7 +86,7 @@ const { home, whatsapp } = ejecutivos;
     <EjeFaq />
     <EjeCierre />
   </main>
-  <Footer />
+  <EjeFooter />
   <EjeReveal />
 </Base>
 

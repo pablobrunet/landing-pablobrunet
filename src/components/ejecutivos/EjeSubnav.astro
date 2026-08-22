@@ -3,13 +3,12 @@
    BARRA DE SECCIONES DEL ANEXO
    ---------------------------------------------------------------------
    El repo original trae su propio navbar fijo, con las anclas de la
-   landing y el botón de agendar. Acá arriba va el navbar del sitio, así
-   que ese elemento se conserva como una segunda barra —más baja y más
-   fina— pegada debajo: mantiene las anclas y el CTA sin duplicar la
-   navegación general ni competir con ella.
+   landing y el botón de agendar. Acá arriba va <EjeNavbar />, así que ese
+   elemento se conserva como una segunda barra —más baja y más fina—
+   pegada debajo: mantiene las anclas y el CTA propios del anexo.
 
-   Se pega a `top: var(--nav-alto)` porque el navbar del sitio es sticky y
-   mide exactamente eso.
+   Se pega a `top: var(--nav-alto)` porque <EjeNavbar /> es sticky y mide
+   exactamente eso.
    ===================================================================== */
 import { ejecutivos } from "../../data/ejecutivos";
 const { anclas } = ejecutivos.home;
