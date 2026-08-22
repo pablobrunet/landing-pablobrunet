@@ -18,7 +18,12 @@
 export const site = {
   /* ---- Datos generales / SEO ---- */
   nombre: "Pablo Brunet",
-  tagline: "IA aplicada a negocios",
+  /* Es lo que arma el título de la home: `nombre — tagline`. Eso es lo que
+     muestra Google como encabezado del resultado y lo que aparece en la
+     pestaña del navegador y en las previsualizaciones al compartir el
+     enlace (og:title). Cambiarlo acá lo cambia en los tres lados.
+     Las páginas internas arman su propio título y no lo usan. */
+  tagline: "IA para PyMEs",
   rol: "Speaker y capacitador en inteligencia artificial",
   // Chips del hero: son la oferta, no capacidades abstractas.
   disciplinas: ["Charlas y keynotes", "Capacitación de equipos", "Método INTEGRA"],
