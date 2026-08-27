@@ -171,6 +171,16 @@ export const television: Video[] = [
     contexto: "Recreo Diario",
     youtube: "https://www.youtube.com/watch?v=cNaCgPu1KdY",
   },
+  {
+    titulo: "Cómo va a cambiar el mundo del trabajo con la inteligencia artificial",
+    contexto: "Recreo Diario",
+    youtube: "https://youtu.be/c4Y8nv1-Y5w",
+  },
+  {
+    titulo: "Tendencias en robótica y el avance de los robots inteligentes",
+    contexto: "Recreo Diario",
+    youtube: "https://youtu.be/hhqI6e5Elpw",
+  },
 ];
 
 /* =====================================================================

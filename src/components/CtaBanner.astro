@@ -17,10 +17,6 @@ const {
 ---
 
 <section class="cta section section--dark">
-  <svg class="cta__lines" viewBox="0 0 800 300" fill="none" aria-hidden="true">
-    <path d="M-20 200 C 200 200 240 90 460 90 S 760 40 840 40" />
-    <circle cx="460" cy="90" r="5" />
-  </svg>
   <div class="container cta__inner">
     <h2 class="t-h2 cta__title">{sinMarcas(title)}</h2>
     <p class="t-subhead cta__sub">{subtitle}</p>
@@ -46,19 +42,6 @@ const {
     position: relative;
     overflow: hidden;
     text-align: center;
-  }
-  .cta__lines {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    stroke: var(--verde-azulado);
-    stroke-width: 1.5;
-    opacity: 0.25;
-    pointer-events: none;
-  }
-  .cta__lines circle {
-    fill: var(--verde-acento);
   }
   .cta__inner {
     position: relative;
