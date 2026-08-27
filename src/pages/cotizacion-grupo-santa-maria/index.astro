@@ -1,0 +1,115 @@
+---
+/* =====================================================================
+   /cotizacion-grupo-santa-maria — PROPUESTA PARA GRUPO SANTA MARÍA
+   ---------------------------------------------------------------------
+   Propuesta de servicios para un cliente concreto. Se comparte por
+   enlace directo y va con `noindex`: no es contenido del sitio.
+
+   ORIGEN: ajuste de una cotización preliminar de dos encuentros. El
+   taller general original se divide en dos instancias por audiencia
+   —un taller avanzado de agentes de IA para oficina y un taller de
+   sensibilización de una hora para personal en territorio— y se
+   mantiene el encuentro estratégico con la dirección, que pasa a ser el
+   PRIMERO de los tres. El orden de ejecución confirmado es: 1) dirección,
+   2) sensibilización en territorio, 3) taller avanzado de oficina. Ver el
+   detalle completo de la decisión en el encabezado de data/santaMaria.ts.
+
+   ES UNA PROPUESTA PUBLICADA COMO PÁGINA, NO UN PDF Y NO UNA LANDING.
+   De ahí las dos reglas que la gobiernan:
+
+     · El LENGUAJE es el de un documento: descriptivo, con el alcance y
+       las condiciones definidos punto por punto. Los títulos nombran lo
+       que hay debajo; no hay promesas de resultado ni llamados a la
+       acción.
+
+     · La FORMA aprovecha que es HTML: índice navegable, secciones con
+       aire, tarjetas por encuentro. Es el sistema visual de las demás
+       propuestas del sitio y de la landing del Método INTEGRA —mismos
+       tokens, mismas utilidades (`.i-oscuro`, `.i-head`, `.i-eyebrow`,
+       `.i-hl`, `.i-reveal`), mismo navbar y pie—.
+
+   IDENTIDAD VISUAL. styles/integra.css se importa sólo acá, así que su
+   CSS no viaja en las demás páginas.
+
+   ORDEN DEL DOCUMENTO. Los seis puntos salen del array `indice` de los
+   datos, que es también el que dibuja el índice de la portada:
+
+      01 Diagnóstico y consideraciones previas
+      02 Objeto de la propuesta
+      03 Encuentros del programa               en su orden de ejecución
+      04 Plan de trabajo y metodología
+      05 Condiciones económicas
+      06 Próximos pasos
+
+   ⚠️ Si se agrega, se saca o se reordena una sección hay que tocar tres
+   lugares: el array `indice` en data/santaMaria.ts, el `n` de la sección
+   y el orden de los componentes de acá abajo.
+
+   FONDOS. Alternan tenue / claro / claro / tenue / tenue / claro, para
+   separar los bloques de lectura sin que dos secciones seguidas queden
+   iguales.
+   ===================================================================== */
+import "../../styles/integra.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import SantaMariaHero from "../../components/santaMaria/SantaMariaHero.astro";
+import SantaMariaApertura from "../../components/santaMaria/SantaMariaApertura.astro";
+import SantaMariaEncuentros from "../../components/santaMaria/SantaMariaEncuentros.astro";
+import SantaMariaMetodologia from "../../components/santaMaria/SantaMariaMetodologia.astro";
+import SantaMariaEconomicas from "../../components/santaMaria/SantaMariaEconomicas.astro";
+import SantaMariaCierre from "../../components/santaMaria/SantaMariaCierre.astro";
+import { santaMaria } from "../../data/santaMaria";
+---
+
+<Base
+  title={santaMaria.seo.title}
+  description={santaMaria.seo.description}
+  waMensaje={santaMaria.whatsapp.mensaje}
+  waEtiqueta={santaMaria.whatsapp.etiqueta}
+  noindex
+>
+  <Navbar />
+  <main>
+    <SantaMariaHero />
+    <SantaMariaApertura />
+    <SantaMariaEncuentros />
+    <SantaMariaMetodologia />
+    <SantaMariaEconomicas />
+    <SantaMariaCierre />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  /* ------------------------------------------------------------------
+     Aparición al hacer scroll, igual que en la landing del Método
+     INTEGRA y en las demás propuestas. La clase `is-listo` es la que
+     aplica el estado inicial oculto: sin JS nunca se agrega y el
+     contenido se ve normal.
+     ------------------------------------------------------------------ */
+  function initPropuestaSantaMaria() {
+    if (!document.querySelector("#condiciones-economicas")) return;
+
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducido || !("IntersectionObserver" in window)) return;
+
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
+    bloques.forEach((b) => b.classList.add("is-listo"));
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).classList.add("is-visible");
+          obs.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+    bloques.forEach((b) => obs.observe(b));
+  }
+
+  initPropuestaSantaMaria();
+  document.addEventListener("astro:page-load", initPropuestaSantaMaria);
+</script>

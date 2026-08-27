@@ -1,0 +1,237 @@
+---
+/* =====================================================================
+   05 · CONDICIONES ECONÓMICAS
+   ---------------------------------------------------------------------
+   Es el punto que se busca primero, así que va limpio: a la izquierda el
+   concepto con lo que comprende —los tres encuentros del punto 03— y a
+   la derecha el importe, en banda oscura. Debajo, las cuatro condiciones
+   que acompañan al importe en tarjetas separadas.
+
+   Mismo componente que BiscayartEconomicas.astro. La moneda se declara
+   al lado del número: un "$" a secas se puede leer en dólares.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { santaMaria } from "../../data/santaMaria";
+const { economicas } = santaMaria;
+---
+
+<section class="section i-hielo i-claro eco" id={economicas.id} aria-label={economicas.titulo}>
+  <div class="eco__fondo" aria-hidden="true"></div>
+
+  <div class="container eco__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{economicas.eyebrow}</span>
+      <h2 class="t-h2">{economicas.titulo}</h2>
+    </header>
+
+    <article class="carta i-reveal">
+      <div class="carta__concepto">
+        <span class="carta__et">{economicas.conceptoTitulo}</span>
+        <p class="carta__p">{economicas.concepto}</p>
+        <ul class="carta__incluye">
+          {
+            economicas.incluye.map((i) => (
+              <li>
+                <span class="carta__tick" aria-hidden="true">
+                  <Icon name="check" size={13} />
+                </span>
+                <span>{i}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="carta__importe">
+        <span class="carta__importe-t">{economicas.importeTitulo}</span>
+        <span class:list={["carta__v", !economicas.importe && "carta__v--pendiente"]}>
+          {economicas.importe || economicas.pendiente}
+          {economicas.importe && <em class="carta__moneda">{economicas.moneda}</em>}
+        </span>
+        <span class="carta__moneda-nota">{economicas.monedaNota}</span>
+      </div>
+    </article>
+
+    <div class="eco__detalles">
+      {
+        economicas.detalles.map((d) => (
+          <article class="det i-reveal">
+            <span class="det__ico" aria-hidden="true">
+              <Icon name={d.icono} size={18} />
+            </span>
+            <h3 class="det__t">{d.titulo}</h3>
+            <p class="det__p">{d.texto}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .eco {
+    position: relative;
+    overflow: hidden;
+  }
+  .eco__fondo {
+    position: absolute;
+    top: -16rem;
+    left: -22rem;
+    width: 56rem;
+    height: 56rem;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 58%, rgba(30, 92, 242, 0.05) 58.4%, transparent 59%),
+      radial-gradient(circle, transparent 44%, rgba(30, 92, 242, 0.05) 44.4%, transparent 45%),
+      radial-gradient(circle, transparent 30%, rgba(30, 92, 242, 0.05) 30.4%, transparent 31%);
+  }
+  .eco__inner {
+    position: relative;
+  }
+
+  /* ---- Concepto e importe ---- */
+  .carta {
+    display: grid;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow);
+  }
+  .carta__concepto {
+    padding: clamp(1.5rem, 3.5vw, 2.1rem);
+  }
+  .carta__et {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--azul-pizarra);
+  }
+  .carta__p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--azul-petroleo);
+  }
+  .carta__incluye {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 1.15rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--borde);
+  }
+  .carta__incluye li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--azul-pizarra);
+  }
+  .carta__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.15rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--verde-resalte);
+  }
+
+  .carta__importe {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1.5rem, 3.5vw, 2.1rem);
+    background: var(--i-noche);
+    color: #fff;
+  }
+  .carta__importe-t {
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .carta__v {
+    margin-top: 0.5rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.85rem, 1.4rem + 1.9vw, 2.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .carta__moneda {
+    margin-left: 0.4rem;
+    font-family: var(--font-base);
+    font-size: 0.78rem;
+    font-style: normal;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.08em;
+    color: rgba(220, 230, 246, 0.7);
+  }
+  .carta__v--pendiente {
+    font-size: 1.15rem;
+    color: var(--i-celeste);
+  }
+  .carta__moneda-nota {
+    margin-top: 0.6rem;
+    font-size: 0.8125rem;
+    color: rgba(220, 230, 246, 0.6);
+  }
+
+  /* ---- Las cuatro condiciones ---- */
+  .eco__detalles {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.15rem;
+  }
+  .det {
+    padding: clamp(1.25rem, 2.6vw, 1.6rem);
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .det__ico {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 0.85rem;
+    border-radius: 11px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .det__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+    margin-bottom: 0.45rem;
+  }
+  .det__p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+
+  @media (min-width: 760px) {
+    .eco__detalles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 940px) {
+    .carta {
+      grid-template-columns: 1.35fr 0.65fr;
+    }
+  }
+</style>

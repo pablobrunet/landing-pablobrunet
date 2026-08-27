@@ -1,0 +1,85 @@
+---
+/* =====================================================================
+   04 · PLAN DE TRABAJO Y METODOLOGÍA
+   ---------------------------------------------------------------------
+   Cuatro tarjetas parejas —plazo, personalización, coordinación,
+   material—, sin jerarquía entre ellas. Reutiliza el patrón de tarjeta
+   de detalle de BiscayartEconomicas.astro (`.det`), sin la banda de
+   importe: acá no hay un número que deba dominar la sección.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { santaMaria } from "../../data/santaMaria";
+const { metodologia } = santaMaria;
+---
+
+<section class="section i-hielo i-claro met" id={metodologia.id} aria-label={metodologia.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{metodologia.eyebrow}</span>
+      <h2 class="t-h2">{metodologia.titulo}</h2>
+      <p class="text-muted">{metodologia.intro}</p>
+    </header>
+
+    <div class="met__detalles">
+      {
+        metodologia.detalles.map((d) => (
+          <article class="det i-reveal">
+            <span class="det__ico" aria-hidden="true">
+              <Icon name={d.icono} size={18} />
+            </span>
+            <h3 class="det__t">{d.titulo}</h3>
+            <p class="det__p">{d.texto}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .met .i-head {
+    max-width: 62rem;
+  }
+
+  .met__detalles {
+    display: grid;
+    gap: 1rem;
+  }
+  .det {
+    padding: clamp(1.25rem, 2.6vw, 1.6rem);
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .det__ico {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 0.85rem;
+    border-radius: 11px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .det__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1rem;
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+    margin-bottom: 0.45rem;
+  }
+  .det__p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+
+  @media (min-width: 760px) {
+    .met__detalles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

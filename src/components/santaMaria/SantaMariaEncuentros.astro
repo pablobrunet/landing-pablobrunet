@@ -1,0 +1,162 @@
+---
+/* =====================================================================
+   03 · ENCUENTROS DEL PROGRAMA
+   ---------------------------------------------------------------------
+   La sección más detallada de la propuesta: los tres encuentros, como
+   tarjetas en columna, con el número, el título, el texto (que incluye
+   destinatarios y duración), el recorrido de contenidos y el resultado
+   esperado. Mismo patrón que BiscayartAlcance.astro para sus cuatro
+   etapas, reutilizado acá para los tres encuentros.
+
+   En dos columnas los ítems del recorrido —párrafos de dos y tres
+   renglones, no etiquetas— quedaban en tiras angostas ilegibles: van en
+   columna, con el rótulo a la izquierda y el cuerpo a la derecha desde
+   el ancho de escritorio.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { santaMaria } from "../../data/santaMaria";
+const { encuentros } = santaMaria;
+---
+
+<section class="section i-claro enc" id={encuentros.id} aria-label={encuentros.titulo}>
+  <div class="container">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{encuentros.eyebrow}</span>
+      <h2 class="t-h2">{encuentros.titulo}</h2>
+      <p class="text-muted">{encuentros.intro}</p>
+    </header>
+
+    <div class="enc__lista">
+      {
+        encuentros.etapas.map((e) => (
+          <article class="etapa i-reveal">
+            <div class="etapa__lado">
+              <span class="etapa__icono" aria-hidden="true">
+                <Icon name={e.icono} size={20} />
+              </span>
+              <span class="etapa__n">Encuentro {e.n}</span>
+              <h3 class="etapa__t">{e.titulo}</h3>
+            </div>
+
+            <div class="etapa__cuerpo">
+              <p class="etapa__p">{e.texto}</p>
+              {e.items.length > 0 && (
+                <ul class="etapa__items">
+                  {e.items.map((i) => (
+                    <li>{i}</li>
+                  ))}
+                </ul>
+              )}
+              {e.cierre && <p class="etapa__cierre">{e.cierre}</p>}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .enc .i-head {
+    max-width: 62rem;
+  }
+
+  .enc__lista {
+    display: grid;
+    gap: 1.15rem;
+  }
+  .etapa {
+    display: grid;
+    gap: 1.1rem;
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition);
+  }
+  .etapa:hover {
+    border-color: var(--i-azul-500);
+  }
+
+  /* ---- Columna del rótulo ---- */
+  .etapa__icono {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 0.85rem;
+    border-radius: 12px;
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
+  }
+  .etapa__n {
+    display: block;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    color: var(--verde-resalte);
+  }
+  .etapa__t {
+    margin-top: 0.3rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+    line-height: 1.25;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+
+  /* ---- Cuerpo ---- */
+  .etapa__p {
+    font-size: 0.975rem;
+    line-height: 1.7;
+    color: var(--azul-pizarra);
+  }
+  .etapa__items {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 0.95rem;
+    list-style: none;
+  }
+  .etapa__items li {
+    position: relative;
+    padding-left: 1.35rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--azul-pizarra);
+  }
+  .etapa__items li::before {
+    content: "";
+    position: absolute;
+    left: 0.15rem;
+    top: 0.68rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+  }
+  .etapa__cierre {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--i-hielo);
+    border-left: 3px solid var(--i-denim);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+
+  @media (min-width: 860px) {
+    .etapa {
+      grid-template-columns: minmax(11rem, 0.28fr) 1fr;
+      gap: 2rem;
+    }
+    .etapa__cuerpo {
+      padding-left: 2rem;
+      border-left: 1px solid var(--borde);
+    }
+  }
+</style>
