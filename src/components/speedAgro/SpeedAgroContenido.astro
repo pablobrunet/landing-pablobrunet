@@ -1,11 +1,15 @@
 ---
 /* =====================================================================
-   02 · CONTENIDO DE LA CHARLA
+   01 · CONTENIDO DE LA CHARLA
    ---------------------------------------------------------------------
-   Tres bloques parejos —marco teórico, prácticas en vivo, datos—, mismo
-   patrón de tarjeta oscura que ElectricidadAlcance.astro. Sin bloque de
-   "fuera de alcance": acá no hace falta, es una charla única y no un
-   proyecto con límites que aclarar.
+   Tres bloques parejos —marco teórico, prácticas en vivo, datos—, con el
+   patrón de tarjeta de ElectricidadAlcance.astro pero EN CLARO. Sin
+   bloque de "fuera de alcance": acá no hace falta, es una charla única y
+   no un proyecto con límites que aclarar.
+
+   ⚠️ VA EN CLARO, no en oscuro, porque abre el documento: pegada a la
+   portada, una sección oscura se fundía con ella en una sola mancha. El
+   contraste del documento lo aporta el objetivo, que sí va en oscuro.
 
    Los bloques describen el TIPO de contenido, no las herramientas ni las
    prácticas puntuales que se muestran en vivo: eso se define más cerca
@@ -16,11 +20,7 @@ import { speedAgro } from "../../data/speedAgro";
 const { contenido } = speedAgro;
 ---
 
-<section class="section i-oscuro con" id={contenido.id} aria-label={contenido.titulo}>
-  <div class="con__fondo" aria-hidden="true">
-    <span class="trama con__trama"></span>
-  </div>
-
+<section class="section i-hielo i-claro con" id={contenido.id} aria-label={contenido.titulo}>
   <div class="container con__inner">
     <header class="i-head i-reveal">
       <span class="i-eyebrow">{contenido.eyebrow}</span>
@@ -56,24 +56,8 @@ const { contenido } = speedAgro;
 </section>
 
 <style>
-  .con {
-    position: relative;
-    overflow: hidden;
-  }
-  .con__fondo {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-  .con__trama {
-    position: absolute;
-    inset: 0;
-    opacity: 0.35;
-    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
-    mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
-  }
-  .con__inner {
-    position: relative;
+  .con .i-head {
+    max-width: 62rem;
   }
 
   .con__grid {
@@ -85,8 +69,9 @@ const { contenido } = speedAgro;
     flex-direction: column;
     padding: clamp(1.35rem, 3vw, 1.75rem);
     border-radius: var(--radius-lg);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(169, 200, 245, 0.2);
+    background: #fff;
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
   }
   .blq__top {
     display: flex;
@@ -100,36 +85,39 @@ const { contenido } = speedAgro;
     width: 40px;
     height: 40px;
     border-radius: 11px;
-    background: rgba(169, 200, 245, 0.14);
-    color: var(--i-celeste);
+    background: var(--i-hielo);
+    border: 1px solid var(--borde);
+    color: var(--i-azul-600);
   }
+  /* El número va grande y translúcido, como marca de agua del bloque:
+     ordena la lectura sin competir con el título. */
   .blq__n {
     font-family: var(--font-title);
     font-weight: var(--w-display);
     font-size: 2.25rem;
     line-height: 1;
-    color: rgba(169, 200, 245, 0.28);
+    color: rgba(30, 92, 242, 0.16);
   }
   .blq__t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
     font-size: 1.05rem;
     line-height: 1.3;
-    color: #fff;
+    color: var(--azul-petroleo);
   }
   .blq__pie {
     margin-top: 0.3rem;
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--i-celeste);
+    color: var(--i-azul-600);
   }
   .blq__items {
     display: grid;
     gap: 0.6rem;
     margin-top: 1.1rem;
     padding-top: 1.1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--borde);
     list-style: none;
   }
   .blq__items li {
@@ -138,7 +126,7 @@ const { contenido } = speedAgro;
     gap: 0.7rem;
     font-size: 0.9375rem;
     line-height: 1.6;
-    color: rgba(220, 230, 246, 0.85);
+    color: var(--azul-pizarra);
   }
   .blq__punto {
     flex-shrink: 0;
@@ -146,7 +134,8 @@ const { contenido } = speedAgro;
     height: 5px;
     margin-top: 0.6rem;
     border-radius: 50%;
-    background: var(--i-celeste);
+    background: var(--i-azul-600);
+    opacity: 0.55;
   }
 
   @media (min-width: 720px) {

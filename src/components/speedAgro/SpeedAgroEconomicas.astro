@@ -3,16 +3,19 @@
    04 · CONDICIONES ECONÓMICAS
    ---------------------------------------------------------------------
    Mismo patrón que ElectricidadEconomicas.astro: concepto a la izquierda,
-   importe en banda oscura a la derecha, y las condiciones que lo
-   acompañan en tarjetas separadas debajo. Acá son tres —forma de pago,
-   viáticos y validez— en vez de dos.
+   importe en banda oscura a la derecha.
+
+   ⚠️ UNA SOLA CONDICIÓN. No hay viáticos —el evento es cerca— ni validez
+   —la charla es la semana que viene—, así que la forma de pago va como
+   franja al pie del importe y no como grilla de tarjetas: una tarjeta
+   sola en una grilla de tres se lee como si faltaran las otras dos.
    ===================================================================== */
 import Icon from "../Icon.astro";
 import { speedAgro } from "../../data/speedAgro";
 const { economicas } = speedAgro;
 ---
 
-<section class="section i-hielo i-claro eco" id={economicas.id} aria-label={economicas.titulo}>
+<section class="section i-claro eco" id={economicas.id} aria-label={economicas.titulo}>
   <div class="eco__fondo" aria-hidden="true"></div>
 
   <div class="container eco__inner">
@@ -48,29 +51,15 @@ const { economicas } = speedAgro;
       </div>
     </article>
 
-    <div class="eco__detalles">
-      {
-        economicas.detalles.map((d) => (
-          <article class="det i-reveal">
-            <span class="det__ico" aria-hidden="true">
-              <Icon name={d.icono} size={18} />
-            </span>
-            <h3 class="det__t">{d.titulo}</h3>
-            {d.texto && <p class="det__p">{d.texto}</p>}
-            {d.items.length > 0 && (
-              <ul class="det__items">
-                {d.items.map((i) => (
-                  <li>
-                    <span class="det__punto" aria-hidden="true" />
-                    <span>{i}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </article>
-        ))
-      }
-    </div>
+    <aside class="pago i-reveal">
+      <span class="pago__ico" aria-hidden="true">
+        <Icon name={economicas.pago.icono} size={18} />
+      </span>
+      <div>
+        <h3 class="pago__t">{economicas.pago.titulo}</h3>
+        <p class="pago__p">{economicas.pago.texto}</p>
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -182,74 +171,47 @@ const { economicas } = speedAgro;
     color: rgba(220, 230, 246, 0.6);
   }
 
-  .eco__detalles {
-    display: grid;
-    gap: 1rem;
+  /* ---- Forma de pago ----
+     Franja al costado, no tarjeta: es la única condición del importe y
+     se lee en el mismo movimiento que el número de arriba. */
+  .pago {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
     margin-top: 1.15rem;
-  }
-  .det {
-    padding: clamp(1.25rem, 2.6vw, 1.6rem);
+    padding: 1.15rem 1.35rem;
     border-radius: var(--radius);
-    background: #fff;
-    border: 1px solid var(--borde);
-    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.06);
   }
-  .det__ico {
+  .pago__ico {
+    flex-shrink: 0;
     display: grid;
     place-items: center;
     width: 38px;
     height: 38px;
-    margin-bottom: 0.85rem;
     border-radius: 11px;
-    background: var(--i-hielo);
+    background: #fff;
     border: 1px solid var(--borde);
     color: var(--i-azul-600);
   }
-  .det__t {
+  .pago__t {
     font-family: var(--font-title);
     font-weight: var(--w-headline);
     font-size: 1rem;
     line-height: 1.3;
     color: var(--azul-petroleo);
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.25rem;
   }
-  .det__p {
+  .pago__p {
     font-size: 0.9375rem;
     line-height: 1.7;
     color: var(--azul-pizarra);
-  }
-  .det__items {
-    display: grid;
-    gap: 0.45rem;
-    list-style: none;
-  }
-  .det__items li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    color: var(--azul-pizarra);
-  }
-  .det__punto {
-    flex-shrink: 0;
-    width: 5px;
-    height: 5px;
-    margin-top: 0.6rem;
-    border-radius: 50%;
-    background: var(--i-azul-600);
-    opacity: 0.55;
   }
 
   @media (min-width: 940px) {
     .carta {
       grid-template-columns: 1.35fr 0.65fr;
-    }
-  }
-  @media (min-width: 700px) {
-    /* Tres tarjetas, tres columnas: una fila exacta. */
-    .eco__detalles {
-      grid-template-columns: repeat(3, 1fr);
     }
   }
 </style>

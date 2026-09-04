@@ -2,48 +2,51 @@
    SPEEDAGRO — contenido de /cotizacion-speedagro
    ---------------------------------------------------------------------
    Cotización para UN cliente concreto: una charla de una hora sobre
-   Inteligencia Artificial aplicada al agro, para el grupo de productores
-   agropecuarios del Uruguay que visita la planta de la empresa junto a
-   Agrofuturo, su distribuidor allá. Todo el texto vive acá; los
-   componentes de /src/components/speedAgro sólo lo dibujan.
+   Inteligencia Artificial aplicada al agro, para un grupo de productores
+   agropecuarios del Uruguay que visita la empresa. Todo el texto vive
+   acá; los componentes de /src/components/speedAgro sólo lo dibujan.
 
    ⚠️ ESTA COTIZACIÓN ES CORTA A PROPÓSITO, sobre el mismo patrón que
-   /cotizacion-der-electricidad: cuatro puntos, sin relato, frases cortas.
+   /cotizacion-der-electricidad: cinco puntos, sin relato, frases cortas.
    No es un programa de varios encuentros como Santa María: es una charla
    única de una hora.
 
+   ⚠️ QUÉ NO VA EN ESTE DOCUMENTO — decisión de Pablo, no es un olvido:
+
+     · NO hay sección de contexto NI de audiencia. La primera versión
+       abría con la agenda de la visita —el hotel, la recorrida por
+       planta, el viaje a Corrientes, la charla de la edición anterior— y
+       la segunda dejaba una sección sólo para la audiencia. Se sacaron
+       las dos: el cliente conoce su propio evento, y a quién se le habla
+       ya está dicho en la ficha de la portada, en una línea y sin número
+       de asistentes. El documento arranca directo en el contenido.
+     · NO se listan temas de interés tentativos ni las prácticas puntuales
+       que se muestran en vivo. El documento dice que son tres prácticas
+       adaptadas a la realidad del campo, y eso es todo: cuáles, se define
+       más cerca de la fecha.
+     · NO hay número de referencia en la ficha: es una charla que se
+       acuerda por WhatsApp, no un expediente.
+     · NO hay viáticos: el evento es cerca y no se contemplan.
+     · NO hay validez de la propuesta: la charla es la semana que viene,
+       así que una vigencia de treinta días no significaría nada.
+
    ⚠️ ORIGEN. Surge de la llamada del 3/9/2026 con Emanuel Cimolini
-   (SpeedAgro). Puntos que definen el contenido:
+   (SpeedAgro). Lo que define el contenido:
 
-     · La empresa fabrica coadyuvantes —productos que mejoran la
-       aplicación de fitosanitarios (herbicida, fungicida, insecticida)—
-       y recibe cada año a un grupo de productores agropecuarios del
-       Uruguay, clientes vía Agrofuturo, su distribuidor allá.
-     · El grupo (~50 personas) llega el miércoles por la noche, se aloja
-       en el Hotel Los Silos y al otro día recorre planta, laboratorio y
-       depósito automatizado. La charla cierra esa jornada, antes de que
-       el grupo siga viaje a Corrientes a pescar.
-     · En la edición anterior, una charla técnica más extensa (mezclas de
-       fitosanitarios) se hizo pesada y generó quejas: de ahí la duración
-       acotada de una hora y el pedido explícito de un formato práctico.
-     · Pablo propuso un formato con demostraciones en vivo —comparte
-       pantalla y resuelve tareas reales sobre la marcha— con un mínimo de
-       marco teórico para que el por qué de la práctica se entienda, y no
-       sólo la herramienta. Tres prácticas adaptadas a la realidad del
-       campo: cuáles, se define más cerca de la fecha y no es parte de
-       esta cotización.
+     · Pedido explícito de un formato práctico y de una hora, no más.
+     · Pablo propuso demostraciones en vivo —comparte pantalla y resuelve
+       tareas reales sobre la marcha— con un mínimo de marco teórico para
+       que se entienda el por qué de la práctica, y no sólo la
+       herramienta.
+     · El bloque de datos —gobernanza y estructuración de la información
+       propia de la explotación— es parte del contenido desde el arranque:
+       sin datos cuidados, el resto no rinde.
 
-   ⚠️ QUÉ SE COTIZA (a confirmar antes de enviar):
+   ⚠️ QUÉ SE COTIZA:
      · Honorarios — $ 500.000, por la charla completa de una hora.
-     · Moneda interpretada en pesos argentinos, por tratarse de un
-       trabajo facturado en Argentina. Confirmar antes de enviar.
-     · FORMA DE PAGO y VALIDEZ son redacciones propuestas, no discutidas
-       en la llamada: mismo esquema de 50/50 que usan las demás
-       cotizaciones del sitio. La validez se fija hasta la fecha del
-       evento, porque una vigencia de treinta días no tiene sentido para
-       una charla que se da en una semana.
-     · VIÁTICOS: no surgieron en la conversación. Quedan "a definir, en
-       caso de corresponder", igual que en la propuesta de Santa María.
+     · Moneda en pesos argentinos.
+     · FORMA DE PAGO — 100 % hasta 48 horas antes de la charla. Definida
+       por Pablo; no es el 50/50 de las demás cotizaciones del sitio.
 
    ⚠️ FECHA DEL EVENTO: jueves 10 de septiembre de 2026 ("el jueves de la
    semana que viene" respecto de la llamada del 3/9/2026, un jueves).
@@ -56,33 +59,15 @@
    ===================================================================== */
 
 /* ---------------------------------------------------------------------
-   01 · CONTEXTO Y AUDIENCIA
-   ------------------------------------------------------------------- */
-const contexto = {
-  n: "01",
-  id: "contexto",
-  eyebrow: "01 · Contexto",
-  titulo: "Contexto y audiencia",
-  intro:
-    "La charla se da en el marco de la visita anual de un grupo de productores agropecuarios del Uruguay a la planta de la empresa, junto a Agrofuturo, su distribuidor allá:",
-  puntos: [
-    "El grupo está formado por aproximadamente 50 productores agropecuarios del Uruguay, clientes de la empresa a través de Agrofuturo.",
-    "Llegan el miércoles por la noche y se alojan en el Hotel Los Silos. Al día siguiente recorren la planta, el laboratorio y el depósito automatizado, y reciben charlas sobre los productos de la empresa.",
-    "La charla sobre Inteligencia Artificial cierra esa jornada en la empresa, antes de que el grupo continúe viaje hacia Corrientes para una actividad de pesca.",
-    "En la edición anterior, una charla técnica más extensa generó cansancio en el grupo. El formato de esta edición se ajusta a esa experiencia: una hora, con foco práctico.",
-  ],
-} as const;
-
-/* ---------------------------------------------------------------------
-   02 · CONTENIDO DE LA CHARLA
-   Tres bloques: el marco, la parte práctica y los datos. Ninguno
-   describe QUÉ prácticas puntuales se muestran: eso se define más cerca
-   de la fecha y no es parte de esta cotización.
+   01 · CONTENIDO DE LA CHARLA
+   Abre el documento: la audiencia quedó en la ficha de la portada y no
+   tiene sección propia. Tres bloques —el marco, la parte práctica y los
+   datos—, y ninguno describe QUÉ prácticas puntuales se muestran en vivo.
    ------------------------------------------------------------------- */
 const contenido = {
-  n: "02",
+  n: "01",
   id: "contenido",
-  eyebrow: "02 · Contenido",
+  eyebrow: "01 · Contenido",
   titulo: "Contenido de la charla",
   intro:
     "Una hora de formato teórico-práctico. El marco teórico es breve, y está para que se entienda el por qué de cada práctica, no como un fin en sí mismo:",
@@ -123,16 +108,42 @@ const contenido = {
 } as const;
 
 /* ---------------------------------------------------------------------
+   02 · OBJETIVO
+   Va DESPUÉS del contenido y ANTES de la dinámica: primero qué se dice,
+   después para qué, y recién ahí cómo se da. Son tres líneas de "qué se
+   lleva el que escucha", más la frase que cierra la sección.
+
+   Es la única sección oscura del documento: con la portada arriba y el
+   contenido en fondo tenue, el objetivo es lo que conviene que salte al
+   scrollear.
+   ------------------------------------------------------------------- */
+const objetivo = {
+  n: "02",
+  id: "objetivo",
+  eyebrow: "02 · Objetivo",
+  titulo: "Qué buscamos con la charla",
+  intro: "Lo que los participantes se llevan del encuentro:",
+  items: [
+    "Entender, sin tecnicismos, qué puede y qué no puede hacer hoy la Inteligencia Artificial en la actividad agropecuaria.",
+    "Salir con al menos una aplicación concreta identificada para la propia explotación, y saber por dónde empezar.",
+    "Dimensionar el valor de los datos propios del establecimiento, y qué hace falta para poder aprovecharlos.",
+  ],
+  finalidadTitulo: "En una frase",
+  finalidad:
+    "En una hora nadie se vuelve experto en una herramienta. Lo que se busca es que cada productor salga con criterio propio para decidir por dónde empezar en su explotación.",
+} as const;
+
+/* ---------------------------------------------------------------------
    03 · DINÁMICA
    Cuatro tarjetas parejas, sin timeline: no hay fases, es un único
-   encuentro de una hora.
+   encuentro de una hora. Sin bajada: el título alcanza y las cuatro
+   tarjetas se explican solas.
    ------------------------------------------------------------------- */
 const dinamica = {
   n: "03",
   id: "dinamica",
   eyebrow: "03 · Dinámica",
   titulo: "Cómo se da la charla",
-  intro: "Un único encuentro, a continuación de la recorrida que organiza la empresa:",
   detalles: [
     {
       icono: "play",
@@ -149,7 +160,7 @@ const dinamica = {
     {
       icono: "clock",
       titulo: "Duración",
-      texto: "Una hora, a continuación de la recorrida por planta, laboratorio y depósito.",
+      texto: "Una hora.",
     },
     {
       icono: "intercambio",
@@ -162,7 +173,9 @@ const dinamica = {
 
 /* ---------------------------------------------------------------------
    04 · CONDICIONES ECONÓMICAS
-   Un solo valor, igual que en la cotización de DER Electricidad.
+   Un solo valor y una sola condición: la forma de pago. Sin viáticos y
+   sin validez —ver la nota del encabezado—, así que la condición va como
+   franja al pie del importe y no como grilla de tarjetas.
    ------------------------------------------------------------------- */
 const economicas = {
   n: "04",
@@ -181,26 +194,11 @@ const economicas = {
   importe: "$ 500.000",
   monedaNota: "Pesos argentinos, pago único",
   pendiente: "A definir",
-  detalles: [
-    {
-      icono: "documento",
-      titulo: "Forma de pago",
-      texto: "",
-      items: ["50% a la confirmación de la fecha.", "50% el día de la charla."],
-    },
-    {
-      icono: "location",
-      titulo: "Viáticos",
-      texto: "A definir, en caso de corresponder según la sede final del evento.",
-      items: [],
-    },
-    {
-      icono: "clock",
-      titulo: "Validez",
-      texto: "Esta propuesta mantiene su vigencia hasta la fecha del evento, el 10 de septiembre de 2026.",
-      items: [],
-    },
-  ],
+  pago: {
+    icono: "documento",
+    titulo: "Forma de pago",
+    texto: "100 % del valor hasta 48 horas antes de la charla.",
+  },
 } as const;
 
 /* =====================================================================
@@ -210,7 +208,7 @@ export const speedAgro = {
   seo: {
     title: "Cotización para SpeedAgro — Charla de Inteligencia Artificial aplicada al agro",
     description:
-      "Alcance, dinámica y condiciones de una charla de una hora sobre Inteligencia Artificial aplicada al agro, para el grupo de productores agropecuarios del Uruguay que visita SpeedAgro.",
+      "Alcance, objetivo, dinámica y condiciones de una charla de una hora sobre Inteligencia Artificial aplicada al agro, para productores agropecuarios del Uruguay.",
   },
 
   hero: {
@@ -226,34 +224,36 @@ export const speedAgro = {
     titulo: "Charla sobre Inteligencia Artificial",
     tituloResalte: "aplicada al agro.",
     subtitulo:
-      "Una hora de contenido teórico-práctico para el grupo de productores agropecuarios del Uruguay que visita la planta de la empresa, con demostraciones en vivo adaptadas a la realidad del campo. Este documento detalla el alcance, la dinámica y las condiciones del servicio.",
+      "Una hora de contenido teórico-práctico para productores agropecuarios del Uruguay, con demostraciones en vivo adaptadas a la realidad del campo. Este documento detalla el contenido, el objetivo, la dinámica y las condiciones del servicio.",
     enlaces: [
       { etiqueta: "Ir al contenido", id: "contenido" },
       { etiqueta: "Ir a las condiciones", id: "condiciones-economicas" },
     ],
+    /* La AUDIENCIA vive acá y en ningún otro lado: no tiene sección
+       propia. Es la fila que dice a quién se le habla, en una línea y sin
+       número de asistentes. */
     fichaTitulo: "Datos de la cotización",
     fichaFilas: [
       { etiqueta: "Cliente", valor: "SpeedAgro", icono: "people" },
       { etiqueta: "Presentada por", valor: "Pablo Brunet", icono: "estrella" },
       { etiqueta: "Fecha de emisión", valor: "3 de septiembre de 2026", icono: "documento" },
-      { etiqueta: "Referencia", valor: "PB-2026-09-SPA", icono: "documento" },
-      { etiqueta: "Audiencia", valor: "~50 productores agropecuarios del Uruguay", icono: "people" },
+      { etiqueta: "Audiencia", valor: "Productores agropecuarios del Uruguay, de distintos grupos", icono: "people" },
       { etiqueta: "Fecha del evento", valor: "10 de septiembre de 2026", icono: "calendario" },
       { etiqueta: "Duración", valor: "Una hora", icono: "clock" },
-      { etiqueta: "Validez", valor: "Hasta el 10 de septiembre de 2026", icono: "shield" },
+      { etiqueta: "Modalidad", valor: "Presencial, con demostraciones en vivo", icono: "location" },
     ],
   },
 
   indiceTitulo: "Contenido",
 
-  contexto,
   contenido,
+  objetivo,
   dinamica,
   economicas,
 
   /* Orden del documento y fuente del índice. Debe coincidir con el orden
      de los componentes en la página. */
-  indice: [contexto, contenido, dinamica, economicas],
+  indice: [contenido, objetivo, dinamica, economicas],
 
   /* ---- WhatsApp: mensaje propio de esta cotización ---- */
   whatsapp: {

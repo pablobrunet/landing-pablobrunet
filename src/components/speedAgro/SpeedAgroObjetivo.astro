@@ -1,0 +1,140 @@
+---
+/* =====================================================================
+   02 · OBJETIVO
+   ---------------------------------------------------------------------
+   Qué se lleva el que escucha. Va entre el contenido y la dinámica:
+   primero qué se dice, después para qué, y recién ahí cómo se da.
+
+   ES LA ÚNICA SECCIÓN OSCURA DEL DOCUMENTO. El contenido, que en las
+   otras cotizaciones se lleva ese lugar, acá abre la página y quedaba
+   pegado a la portada: dos bloques oscuros seguidos se leían como uno
+   solo. El para qué de la charla es lo que conviene que salte al
+   scrollear.
+
+   Tres tarjetas con tilde —no numeradas: no es una secuencia, son tres
+   resultados parejos— y la frase de cierre en franja destacada.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { speedAgro } from "../../data/speedAgro";
+const { objetivo } = speedAgro;
+---
+
+<section class="section i-oscuro obj" id={objetivo.id} aria-label={objetivo.titulo}>
+  <div class="obj__fondo" aria-hidden="true">
+    <span class="trama obj__trama"></span>
+  </div>
+
+  <div class="container obj__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{objetivo.eyebrow}</span>
+      <h2 class="t-h2">{objetivo.titulo}</h2>
+      <p class="text-muted">{objetivo.intro}</p>
+    </header>
+
+    <ul class="obj__lista i-reveal">
+      {
+        objetivo.items.map((i) => (
+          <li>
+            <span class="obj__tick" aria-hidden="true">
+              <Icon name="check" size={14} />
+            </span>
+            <span>{i}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="obj__finalidad i-reveal">
+      <span class="obj__finalidad-t">{objetivo.finalidadTitulo}</span>
+      <p>{objetivo.finalidad}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .obj {
+    position: relative;
+    overflow: hidden;
+  }
+  .obj__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .obj__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+  }
+  .obj__inner {
+    position: relative;
+  }
+  .obj .i-head {
+    max-width: 62rem;
+  }
+
+  /* ---- Lo que se lleva el que escucha ---- */
+  .obj__lista {
+    display: grid;
+    gap: 0.7rem;
+    list-style: none;
+  }
+  .obj__lista li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: clamp(1.1rem, 2.4vw, 1.35rem);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(169, 200, 245, 0.2);
+    font-size: 0.975rem;
+    line-height: 1.6;
+    color: rgba(220, 230, 246, 0.85);
+  }
+  .obj__tick {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(169, 200, 245, 0.14);
+    color: var(--i-celeste);
+  }
+
+  /* ---- La frase que cierra ----
+     Sin marco propio y con la barra al costado: remata la sección, no es
+     un cuarto resultado. */
+  .obj__finalidad {
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    padding: clamp(1.35rem, 3vw, 1.85rem) clamp(1.35rem, 3vw, 1.95rem);
+    border-radius: var(--radius);
+    border-left: 3px solid rgba(169, 200, 245, 0.5);
+    background: rgba(255, 255, 255, 0.035);
+  }
+  .obj__finalidad-t {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .obj__finalidad p {
+    font-family: var(--font-title);
+    font-weight: var(--w-subheadline);
+    font-size: clamp(1rem, 0.92rem + 0.5vw, 1.2rem);
+    line-height: 1.55;
+    color: #fff;
+  }
+
+  @media (min-width: 900px) {
+    /* Tres en fila: los tres resultados se leen de un vistazo. */
+    .obj__lista {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -5,18 +5,20 @@
    Cuatro tarjetas parejas, sin jerarquía entre ellas. Mismo patrón que
    SantaMariaMetodologia.astro: no hay timeline de fases porque no hay
    varias etapas que ordenar, es un único encuentro de una hora.
+
+   Sin bajada bajo el título: las cuatro tarjetas se explican solas y la
+   línea que había ("un único encuentro, presencial") no agregaba nada.
    ===================================================================== */
 import Icon from "../Icon.astro";
 import { speedAgro } from "../../data/speedAgro";
 const { dinamica } = speedAgro;
 ---
 
-<section class="section i-claro din" id={dinamica.id} aria-label={dinamica.titulo}>
+<section class="section i-hielo i-claro din" id={dinamica.id} aria-label={dinamica.titulo}>
   <div class="container">
     <header class="i-head i-reveal">
       <span class="i-eyebrow">{dinamica.eyebrow}</span>
       <h2 class="t-h2">{dinamica.titulo}</h2>
-      <p class="text-muted">{dinamica.intro}</p>
     </header>
 
     <div class="din__detalles">

@@ -9,16 +9,23 @@
 
    CORTA A PROPÓSITO, mismo patrón que /cotizacion-der-electricidad:
 
-      01 Contexto                quién es la audiencia y por qué el
-                                  formato es acotado a una hora
-      02 Contenido de la charla  marco teórico + prácticas en vivo + datos
+      01 Contenido de la charla  marco teórico + prácticas en vivo + datos
+      02 Objetivo                qué se lleva el que escucha
       03 Dinámica                formato, fecha, lugar y duración
-      04 Condiciones económicas  el importe y sus tres condiciones
+      04 Condiciones económicas  el importe y la forma de pago
+
+   NO HAY SECCIÓN DE AUDIENCIA: a quién se le habla es una fila de la
+   ficha de la portada y con eso alcanza. El documento arranca directo en
+   el contenido.
+
+   EL OBJETIVO VA ENTRE EL CONTENIDO Y LA DINÁMICA: primero qué se dice,
+   después para qué, y recién ahí cómo se da.
 
    NO HAY SECCIÓN DE PRÓXIMOS PASOS NI FIRMA: el documento cierra en el
    importe y la conversación sigue por WhatsApp, igual que en DER
-   Electricidad. Ver el detalle completo del origen y las decisiones de
-   contenido en el encabezado de data/speedAgro.ts.
+   Electricidad. Ver el detalle completo del origen y de lo que se decidió
+   DEJAR AFUERA —contexto del evento, viáticos, validez— en el encabezado
+   de data/speedAgro.ts.
 
    IDENTIDAD VISUAL. El mismo sistema que las demás cotizaciones del
    sitio y la landing del Método INTEGRA: mismos tokens, mismas
@@ -26,25 +33,24 @@
    `.i-reveal`), mismo navbar y pie. styles/integra.css se importa sólo
    acá, así que su CSS no viaja en las demás páginas.
 
-   FONDOS. Claro, oscuro, claro, tenue. El único oscuro es el contenido
-   de la charla: es la sección que hay que poder encontrar de un
-   scrolleo.
+   FONDOS. Tenue, oscuro, tenue, claro. El único oscuro es el objetivo:
+   el contenido, que en las otras cotizaciones se lleva ese lugar, acá
+   abre la página y pegado a la portada oscura se fundía con ella.
 
    ⚠️ Si se agrega, se saca o se reordena una sección hay que tocar tres
    lugares: el array `indice` de los datos, el `n` de la sección y el
    orden de los componentes de acá abajo.
 
-   ⚠️ ANTES DE ENVIAR: confirmar moneda del importe, forma de pago,
-   viáticos y la sede final (Sala Zoom del parque industrial o predio
-   propio de la empresa). Todo listado en el encabezado de los datos.
+   ⚠️ ANTES DE ENVIAR: confirmar la sede final (Sala Zoom del parque
+   industrial o predio propio de la empresa).
    ===================================================================== */
 import "../../styles/integra.css";
 import Base from "../../layouts/Base.astro";
 import Navbar from "../../components/Navbar.astro";
 import Footer from "../../components/Footer.astro";
 import SpeedAgroHero from "../../components/speedAgro/SpeedAgroHero.astro";
-import SpeedAgroContexto from "../../components/speedAgro/SpeedAgroContexto.astro";
 import SpeedAgroContenido from "../../components/speedAgro/SpeedAgroContenido.astro";
+import SpeedAgroObjetivo from "../../components/speedAgro/SpeedAgroObjetivo.astro";
 import SpeedAgroDinamica from "../../components/speedAgro/SpeedAgroDinamica.astro";
 import SpeedAgroEconomicas from "../../components/speedAgro/SpeedAgroEconomicas.astro";
 import { speedAgro } from "../../data/speedAgro";
@@ -60,8 +66,8 @@ import { speedAgro } from "../../data/speedAgro";
   <Navbar />
   <main>
     <SpeedAgroHero />
-    <SpeedAgroContexto />
     <SpeedAgroContenido />
+    <SpeedAgroObjetivo />
     <SpeedAgroDinamica />
     <SpeedAgroEconomicas />
   </main>
