@@ -1,0 +1,163 @@
+---
+/* =====================================================================
+   02 · CONTENIDO DE LA CHARLA
+   ---------------------------------------------------------------------
+   Tres bloques parejos —marco teórico, prácticas en vivo, datos—, mismo
+   patrón de tarjeta oscura que ElectricidadAlcance.astro. Sin bloque de
+   "fuera de alcance": acá no hace falta, es una charla única y no un
+   proyecto con límites que aclarar.
+
+   Los bloques describen el TIPO de contenido, no las herramientas ni las
+   prácticas puntuales que se muestran en vivo: eso se define más cerca
+   de la fecha.
+   ===================================================================== */
+import Icon from "../Icon.astro";
+import { speedAgro } from "../../data/speedAgro";
+const { contenido } = speedAgro;
+---
+
+<section class="section i-oscuro con" id={contenido.id} aria-label={contenido.titulo}>
+  <div class="con__fondo" aria-hidden="true">
+    <span class="trama con__trama"></span>
+  </div>
+
+  <div class="container con__inner">
+    <header class="i-head i-reveal">
+      <span class="i-eyebrow">{contenido.eyebrow}</span>
+      <h2 class="t-h2">{contenido.titulo}</h2>
+      <p class="text-muted">{contenido.intro}</p>
+    </header>
+
+    <div class="con__grid">
+      {
+        contenido.bloques.map((b) => (
+          <article class="blq i-reveal">
+            <div class="blq__top">
+              <span class="blq__ico" aria-hidden="true">
+                <Icon name={b.icono} size={19} />
+              </span>
+              <span class="blq__n" aria-hidden="true">{b.n}</span>
+            </div>
+            <h3 class="blq__t">{b.titulo}</h3>
+            <p class="blq__pie">{b.pie}</p>
+            <ul class="blq__items">
+              {b.items.map((i) => (
+                <li>
+                  <span class="blq__punto" aria-hidden="true" />
+                  <span>{i}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .con {
+    position: relative;
+    overflow: hidden;
+  }
+  .con__fondo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .con__trama {
+    position: absolute;
+    inset: 0;
+    opacity: 0.35;
+    -webkit-mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 0%, transparent 80%);
+  }
+  .con__inner {
+    position: relative;
+  }
+
+  .con__grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .blq {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.35rem, 3vw, 1.75rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(169, 200, 245, 0.2);
+  }
+  .blq__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .blq__ico {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: rgba(169, 200, 245, 0.14);
+    color: var(--i-celeste);
+  }
+  .blq__n {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 2.25rem;
+    line-height: 1;
+    color: rgba(169, 200, 245, 0.28);
+  }
+  .blq__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    color: #fff;
+  }
+  .blq__pie {
+    margin-top: 0.3rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .blq__items {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.1rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    list-style: none;
+  }
+  .blq__items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(220, 230, 246, 0.85);
+  }
+  .blq__punto {
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.6rem;
+    border-radius: 50%;
+    background: var(--i-celeste);
+  }
+
+  @media (min-width: 720px) {
+    .con__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 1040px) {
+    /* Tres en fila: el contenido completo entra en una pantalla. */
+    .con__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

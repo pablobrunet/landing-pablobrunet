@@ -1,0 +1,101 @@
+---
+/* =====================================================================
+   /cotizacion-speedagro — COTIZACIÓN PARA SPEEDAGRO
+   ---------------------------------------------------------------------
+   Charla de una hora sobre Inteligencia Artificial aplicada al agro,
+   para el grupo de productores agropecuarios del Uruguay que visita la
+   planta de la empresa junto a Agrofuturo. Se comparte por enlace
+   directo y va con `noindex`: no es contenido del sitio.
+
+   CORTA A PROPÓSITO, mismo patrón que /cotizacion-der-electricidad:
+
+      01 Contexto                quién es la audiencia y por qué el
+                                  formato es acotado a una hora
+      02 Contenido de la charla  marco teórico + prácticas en vivo + datos
+      03 Dinámica                formato, fecha, lugar y duración
+      04 Condiciones económicas  el importe y sus tres condiciones
+
+   NO HAY SECCIÓN DE PRÓXIMOS PASOS NI FIRMA: el documento cierra en el
+   importe y la conversación sigue por WhatsApp, igual que en DER
+   Electricidad. Ver el detalle completo del origen y las decisiones de
+   contenido en el encabezado de data/speedAgro.ts.
+
+   IDENTIDAD VISUAL. El mismo sistema que las demás cotizaciones del
+   sitio y la landing del Método INTEGRA: mismos tokens, mismas
+   utilidades (`.i-oscuro`, `.i-head`, `.i-eyebrow`, `.i-hl`,
+   `.i-reveal`), mismo navbar y pie. styles/integra.css se importa sólo
+   acá, así que su CSS no viaja en las demás páginas.
+
+   FONDOS. Claro, oscuro, claro, tenue. El único oscuro es el contenido
+   de la charla: es la sección que hay que poder encontrar de un
+   scrolleo.
+
+   ⚠️ Si se agrega, se saca o se reordena una sección hay que tocar tres
+   lugares: el array `indice` de los datos, el `n` de la sección y el
+   orden de los componentes de acá abajo.
+
+   ⚠️ ANTES DE ENVIAR: confirmar moneda del importe, forma de pago,
+   viáticos y la sede final (Sala Zoom del parque industrial o predio
+   propio de la empresa). Todo listado en el encabezado de los datos.
+   ===================================================================== */
+import "../../styles/integra.css";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import SpeedAgroHero from "../../components/speedAgro/SpeedAgroHero.astro";
+import SpeedAgroContexto from "../../components/speedAgro/SpeedAgroContexto.astro";
+import SpeedAgroContenido from "../../components/speedAgro/SpeedAgroContenido.astro";
+import SpeedAgroDinamica from "../../components/speedAgro/SpeedAgroDinamica.astro";
+import SpeedAgroEconomicas from "../../components/speedAgro/SpeedAgroEconomicas.astro";
+import { speedAgro } from "../../data/speedAgro";
+---
+
+<Base
+  title={speedAgro.seo.title}
+  description={speedAgro.seo.description}
+  waMensaje={speedAgro.whatsapp.mensaje}
+  waEtiqueta={speedAgro.whatsapp.etiqueta}
+  noindex
+>
+  <Navbar />
+  <main>
+    <SpeedAgroHero />
+    <SpeedAgroContexto />
+    <SpeedAgroContenido />
+    <SpeedAgroDinamica />
+    <SpeedAgroEconomicas />
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  /* ------------------------------------------------------------------
+     Aparición al hacer scroll, igual que en las demás cotizaciones. La
+     clase `is-listo` es la que aplica el estado inicial oculto: sin JS
+     nunca se agrega y el contenido se ve normal.
+     ------------------------------------------------------------------ */
+  function initCotizacionSpeedAgro() {
+    if (!document.querySelector(".sah")) return;
+
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducido || !("IntersectionObserver" in window)) return;
+
+    const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
+    bloques.forEach((b) => b.classList.add("is-listo"));
+
+    const obs = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          (e.target as HTMLElement).classList.add("is-visible");
+          obs.unobserve(e.target);
+        });
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+    bloques.forEach((b) => obs.observe(b));
+  }
+
+  initCotizacionSpeedAgro();
+  document.addEventListener("astro:page-load", initCotizacionSpeedAgro);
+</script>
