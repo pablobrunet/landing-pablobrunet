@@ -177,6 +177,11 @@ export const television: Video[] = [
     youtube: "https://youtu.be/c4Y8nv1-Y5w",
   },
   {
+    titulo: "El impacto de la IA en el mundo del trabajo y en las pymes",
+    contexto: "Recreo Diario",
+    youtube: "https://youtu.be/i-7jWUv2fts?si=5zN-P2_ruWDrPPRn",
+  },
+  {
     titulo: "Tendencias en robótica y el avance de los robots inteligentes",
     contexto: "Recreo Diario",
     youtube: "https://youtu.be/hhqI6e5Elpw",
