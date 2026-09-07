@@ -3,8 +3,30 @@ import Page from "../../layouts/Page.astro";
 import PageHero from "../../components/PageHero.astro";
 import Frame from "../../components/Frame.astro";
 import Icon from "../../components/Icon.astro";
-import { blogMeta, blog } from "../../data/blog";
+import { blogMeta, blog, destacados, textoPlano } from "../../data/blog";
 import { sinMarcas } from "../../lib/texto";
+
+/* Sin acentos y en minúscula, para que buscar "chatgpt" encuentre
+   "ChatGPT" y buscar "administracion" encuentre "administración". */
+const normalizar = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
+const LIMITE_INICIAL = 6;
+
+const masLeidos = destacados
+  .map((slug) => blog.find((p) => p.slug === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+/* Meta corta para la tarjeta chica del "Más leídos": "23 ago 2026 · 7 min". */
+const MESES_CORTO = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+const fechaCorta = (iso: string) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return `${d} ${MESES_CORTO[m - 1]} ${y}`;
+};
+const lecturaCorta = (s: string) => s.replace(" de lectura", "");
 ---
 
 <Page title={`Blog — ${sinMarcas(blogMeta.titulo)}`}>
@@ -16,35 +38,129 @@ import { sinMarcas } from "../../lib/texto";
   />
 
   <section class="section">
-    <div class="container">
-      <div class="grid">
-        {
-          blog.map((p) => (
-            <a href={`/blog/${p.slug}`} class="card post">
-              <Frame src={p.img} label={p.imgLabel} alt={p.titulo} ratio="16/9" rounded={false} />
-              <div class="post__body">
-                <span class="post__cat">{p.categoria}</span>
-                <h2 class="t-h3">{p.titulo}</h2>
-                <p class="text-muted post__ex">{p.resumen}</p>
-                <p class="post__meta t-caption text-muted">
-                  <time datetime={p.fecha}>{p.fechaLabel}</time>
-                  <span aria-hidden="true">·</span>
-                  <span>{p.lectura}</span>
-                </p>
-                <span class="post__cta">
-                  Leer artículo
-                  <Icon name="arrowUpRight" size={15} />
-                </span>
-              </div>
-            </a>
-          ))
-        }
+    <div class="container layout">
+      <div class="layout__principal">
+        <div class="buscador">
+          <Icon name="lupa" size={18} class="buscador__icono" />
+          <input
+            type="search"
+            class="buscador__input"
+            placeholder="Buscar por tema — ej: ChatGPT, capacitación, costos…"
+            aria-label="Buscar artículos del blog"
+            data-blog-buscador
+          />
+        </div>
+        <p class="sin-resultados t-subhead text-muted" data-blog-sin-resultados hidden>
+          No encontramos artículos con esa búsqueda. Probá con otra palabra.
+        </p>
+        <div class="grid" data-blog-grid data-limite={LIMITE_INICIAL}>
+          {
+            blog.map((p) => (
+              <a
+                href={`/blog/${p.slug}`}
+                class="card post"
+                data-blog-post
+                data-titulo={normalizar(p.titulo)}
+                data-contenido={normalizar(textoPlano(p))}
+              >
+                <Frame src={p.img} label={p.imgLabel} alt={p.titulo} ratio="16/9" rounded={false} />
+                <div class="post__body">
+                  <span class="post__cat">{p.categoria}</span>
+                  <h2 class="t-h3">{p.titulo}</h2>
+                  <p class="text-muted post__ex">{p.resumen}</p>
+                  <p class="post__meta t-caption text-muted">
+                    <time datetime={p.fecha}>{p.fechaLabel}</time>
+                    <span aria-hidden="true">·</span>
+                    <span>{p.lectura}</span>
+                  </p>
+                  <span class="post__cta">
+                    Leer artículo
+                    <Icon name="arrowUpRight" size={15} />
+                  </span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+        <button type="button" class="btn btn--outline vermas" data-blog-vermas hidden>
+          Ver más artículos
+        </button>
       </div>
+
+      <aside class="layout__lateral" aria-label="Artículos más leídos">
+        <div class="masleidos">
+          <h2 class="eyebrow masleidos__eyebrow">Más leídos</h2>
+          <ul class="masleidos__lista" data-masleidos>
+            {
+              masLeidos.map((p, i) => (
+                <li data-masleido>
+                  <a href={`/blog/${p.slug}`}>
+                    <span class="masleidos__num" data-masleido-num>
+                      {i + 1}
+                    </span>
+                    <Frame
+                      src={p.img}
+                      label={p.imgLabel}
+                      alt=""
+                      ratio="4/3"
+                      hover={false}
+                      class="masleidos__foto"
+                    />
+                    <span class="masleidos__texto">
+                      <span class="masleidos__titulo">{p.titulo}</span>
+                      <span class="masleidos__meta">
+                        {fechaCorta(p.fecha)} · {lecturaCorta(p.lectura)}
+                      </span>
+                    </span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </aside>
     </div>
   </section>
 </Page>
 
 <style>
+  .layout {
+    display: grid;
+    gap: clamp(2rem, 4vw, 2.75rem);
+    align-items: start;
+  }
+  .layout__principal {
+    min-width: 0;
+  }
+
+  /* ---- Buscador: mismo ancho que la grilla, justo arriba ---- */
+  .buscador {
+    position: relative;
+    margin-bottom: 1.75rem;
+  }
+  .buscador__icono {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--texto-suave);
+    pointer-events: none;
+  }
+  .buscador__input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.8rem 1.1rem 0.8rem 2.65rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--borde);
+    background: var(--blanco);
+  }
+  .buscador__input:focus {
+    outline: none;
+    border-color: var(--verde-acento);
+  }
+
+  /* ---- Grilla de artículos ---- */
   .grid {
     display: grid;
     gap: 1.25rem;
@@ -87,9 +203,196 @@ import { sinMarcas } from "../../lib/texto";
     color: var(--verde-resalte);
   }
 
-  @media (min-width: 720px) {
+  .sin-resultados {
+    text-align: center;
+    padding: 3rem 0;
+  }
+  .vermas {
+    display: flex;
+    margin: 2.25rem auto 0;
+  }
+
+  /* ---- Más leídos ---- */
+  .masleidos {
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    box-shadow: var(--shadow-sm);
+  }
+  .masleidos__eyebrow {
+    margin-bottom: 0;
+  }
+  .masleidos__lista {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.15rem;
+  }
+  .masleidos__lista li + li {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--borde);
+  }
+  .masleidos__lista a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+  .masleidos__num {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gris-claro);
+    color: var(--texto-suave);
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+  }
+  .masleidos__foto {
+    flex: 0 0 auto;
+    width: 64px;
+    border-radius: var(--radius-sm);
+  }
+  .masleidos__texto {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+  .masleidos__titulo {
+    font-size: 0.88rem;
+    font-weight: var(--w-subheadline);
+    line-height: 1.3;
+    color: var(--azul-petroleo);
+    transition: color var(--transition);
+    /* Máximo dos líneas: si el título es largo, se corta prolijo. */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+  .masleidos__meta {
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+  }
+  .masleidos__lista a:hover .masleidos__titulo {
+    color: var(--verde-resalte);
+  }
+
+  @media (min-width: 560px) {
     .grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr 300px;
+    }
+    .masleidos {
+      position: sticky;
+      top: calc(var(--nav-alto) + 1.5rem);
     }
   }
 </style>
+
+<script>
+  function initMasLeidos() {
+    const lista = document.querySelector<HTMLElement>("[data-masleidos]");
+    if (!lista || lista.dataset.listo) return;
+    lista.dataset.listo = "1";
+
+    const MOSTRAR = 5;
+    const items = Array.from(lista.querySelectorAll<HTMLElement>("[data-masleido]"));
+
+    /* Fisher–Yates: un orden distinto en cada carga de página. */
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    let visible = 0;
+    items.forEach((li) => {
+      if (visible < MOSTRAR) {
+        lista.appendChild(li);
+        const num = li.querySelector<HTMLElement>("[data-masleido-num]");
+        if (num) num.textContent = String(++visible);
+      } else {
+        li.remove();
+      }
+    });
+  }
+
+  function initBlogLista() {
+    const grid = document.querySelector<HTMLElement>("[data-blog-grid]");
+    if (!grid || grid.dataset.listo) return;
+    grid.dataset.listo = "1";
+
+    const buscador = document.querySelector<HTMLInputElement>("[data-blog-buscador]");
+    const boton = document.querySelector<HTMLButtonElement>("[data-blog-vermas]");
+    const sinResultados = document.querySelector<HTMLElement>("[data-blog-sin-resultados]");
+    const posts = Array.from(grid.querySelectorAll<HTMLAnchorElement>("[data-blog-post]"));
+    const limite = parseInt(grid.dataset.limite || "6", 10);
+    let expandido = false;
+
+    const normalizar = (s: string) =>
+      s
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+
+    /* Sin búsqueda activa: se respeta el límite inicial + botón "ver más". */
+    const aplicarColapso = () => {
+      posts.forEach((post, i) => {
+        post.hidden = !expandido && i >= limite;
+        post.style.order = "";
+      });
+      if (boton) boton.hidden = expandido || posts.length <= limite;
+      if (sinResultados) sinResultados.hidden = true;
+    };
+
+    /* Con búsqueda activa: se ignora el límite, se ordenan primero los que
+       matchean por título y después los que matchean por contenido. */
+    const aplicarBusqueda = (query: string) => {
+      const q = normalizar(query.trim());
+      if (!q) {
+        aplicarColapso();
+        return;
+      }
+      let visibles = 0;
+      posts.forEach((post) => {
+        const titulo = post.dataset.titulo || "";
+        const contenido = post.dataset.contenido || "";
+        if (titulo.includes(q)) {
+          post.hidden = false;
+          post.style.order = "0";
+          visibles++;
+        } else if (contenido.includes(q)) {
+          post.hidden = false;
+          post.style.order = "1";
+          visibles++;
+        } else {
+          post.hidden = true;
+        }
+      });
+      if (boton) boton.hidden = true;
+      if (sinResultados) sinResultados.hidden = visibles > 0;
+    };
+
+    aplicarColapso();
+    boton?.addEventListener("click", () => {
+      expandido = true;
+      aplicarColapso();
+    });
+    buscador?.addEventListener("input", () => aplicarBusqueda(buscador.value));
+  }
+
+  initBlogLista();
+  initMasLeidos();
+  document.addEventListener("astro:page-load", () => {
+    initBlogLista();
+    initMasLeidos();
+  });
+</script>

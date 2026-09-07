@@ -71,7 +71,751 @@ export const blogMeta = {
     "Datos, lecturas y aprendizajes sobre cómo la inteligencia artificial está cambiando el trabajo y los negocios.",
 };
 
+/* =====================================================================
+   DESTACADOS — pool para el bloque "Más leídos" de /blog
+   ---------------------------------------------------------------------
+   Todavía no hay analítica real conectada, así que esta lista es una
+   curaduría manual: los seis artículos con mejor combinación de
+   potencial SEO (título con intención de búsqueda clara: "cómo
+   implementar", "por dónde empezar", "ChatGPT", "ejemplos") y de interés
+   general para el lector típico de una PyME (guías accionables, no
+   ensayos de opinión). /blog/index.astro elige 4 al azar de esta lista
+   en cada carga. Cuando haya datos reales de lectura, reemplazar por un
+   ranking basado en analítica.
+   ===================================================================== */
+export const destacados: string[] = [
+  "como-implementar-inteligencia-artificial-en-una-pyme",
+  "por-donde-empezar-a-implementar-ia-en-una-empresa",
+  "chatgpt-para-empresas-que-se-puede-y-que-no",
+  "15-ejemplos-reales-de-ia-aplicada-a-pymes",
+  "auditar-suscripciones-de-ia-pyme",
+  "capacitacion-de-ia-no-alcanza",
+];
+
+/* ---------------------------------------------------------------------
+   Texto plano de un artículo, para el buscador de /blog.
+   Concatena todos los bloques del cuerpo y descarta las marcas de
+   markdown (**negrita**, [links](url)) para que la búsqueda no tenga
+   que lidiar con símbolos sueltos.
+   --------------------------------------------------------------------- */
+const textoDeBloque = (b: Bloque): string => {
+  switch (b.tipo) {
+    case "parrafo":
+    case "subtitulo":
+    case "cita":
+      return b.texto;
+    case "lista":
+      return b.items.join(" ");
+    case "dato":
+      return `${b.valor} ${b.texto}`;
+    case "tabla":
+      return [b.titulo ?? "", ...b.columnas, ...b.filas.flat(), b.fuente ?? ""].join(" ");
+    case "grafico":
+      return [
+        b.titulo,
+        b.bajada ?? "",
+        ...b.barras.map((x) => `${x.label} ${x.texto ?? ""}`),
+        b.nota ?? "",
+        b.fuente ?? "",
+      ].join(" ");
+    case "apilado":
+      return [b.titulo, b.bajada ?? "", ...b.partes.map((x) => x.label), b.nota ?? "", b.fuente ?? ""].join(
+        " "
+      );
+    case "fuentes":
+      return b.items.map((x) => x.label).join(" ");
+    default:
+      return "";
+  }
+};
+
+export const textoPlano = (post: Post): string =>
+  `${post.resumen} ${post.cuerpo.map(textoDeBloque).join(" ")}`
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/[*_[\]()]/g, " ");
+
 export const blog: Post[] = [
+  /* =================================================================
+     00a — POR DÓNDE EMPEZAR A IMPLEMENTAR IA
+     ================================================================= */
+  {
+    slug: "por-donde-empezar-a-implementar-ia-en-una-empresa",
+    titulo: "Por dónde empezar a implementar IA en una empresa",
+    categoria: "Método",
+    fecha: "2026-08-23",
+    fechaLabel: "23 de agosto de 2026",
+    lectura: "7 min de lectura",
+    resumen:
+      "La pregunta que más me hacen no es qué herramienta usar, sino por dónde arrancar. Un método de tres pasos para elegir el primer proyecto sin quedarte paralizado en el menú de opciones.",
+    img: "/images/blog/11-por-donde-empezar-a-implementar-ia-en-una-empresa.png",
+    imgLabel: "/images/blog/11-por-donde-empezar-a-implementar-ia-en-una-empresa.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "La pregunta que más escucho no es «¿qué herramienta de IA deberíamos usar?». Es otra, más incómoda: «tenemos ganas, tenemos algo de presupuesto y hasta tenemos a alguien con tiempo, pero no sabemos por dónde arrancar». La hacen dueños de empresas de treinta personas y gerentes de compañías de quinientas. El tamaño cambia; la parálisis, no.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Tiene sentido que pase. Todos los días aparece una herramienta nueva, un caso de éxito ajeno que no se parece en nada al tuyo, un conocido que «ya lo está usando para todo» sin que quede claro para qué. Con tanto ruido, la reacción más común es no moverse, o peor: moverse en cinco direcciones a la vez, que en la práctica es lo mismo que no moverse.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "El error más común: empezar por la herramienta",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Casi todas las implementaciones que terminan estancadas arrancaron de la misma manera: alguien vio un producto, se entusiasmó y salió a buscar dónde meterlo. El orden correcto es el inverso. Primero el problema, después el proceso, recién al final la herramienta. Cuando se invierte ese orden, la empresa termina con una licencia cara y nadie que sepa bien para qué la compraron.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Tres preguntas antes de mirar cualquier producto",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Antes de agendar una demo con nadie, valen la pena tres preguntas. No hacen falta consultores ni comités: las contesta cualquiera que conozca la operación de cerca.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "El filtro de las tres preguntas",
+        columnas: ["Pregunta", "Qué buscás"],
+        filas: [
+          [
+            "¿Qué tarea nos consume tiempo o plata de forma repetida?",
+            "Un dolor operativo real, no una intuición sobre el futuro",
+          ],
+          [
+            "¿Ese dolor se puede medir hoy, con los datos que ya tenemos?",
+            "Una línea de base. Sin número de partida no hay forma de saber después si algo mejoró",
+          ],
+          [
+            "¿Quién en la empresa quiere de verdad resolver esto?",
+            "Un dueño dispuesto a cambiar su proceso, no solo a aprobarlo desde afuera",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si las tres preguntas tienen respuesta, ya tenés más información que la mayoría de las empresas que arrancan con IA. Si alguna queda en blanco, ese es el trabajo de esta semana — antes de mirar una sola herramienta.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "El mapa de una tarde: impacto contra facilidad",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con una lista de candidatos —y casi toda empresa tiene entre cinco y diez dolores dando vueltas apenas se los pregunta— el siguiente paso es ordenarlos en un cuadro de dos ejes: cuánto impacto tendría resolverlos y cuán fácil es probarlos ya, con lo que hay hoy.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Dónde conviene mirar primero",
+        columnas: ["Cuadrante", "Qué hacer"],
+        filas: [
+          [
+            "Alto impacto y fácil de probar",
+            "Acá arranca el primer proyecto. No hay razón para esperar",
+          ],
+          [
+            "Alto impacto y difícil de probar",
+            "Se anota y se prioriza para más adelante, cuando ya haya una victoria que sostenga la siguiente inversión",
+          ],
+          [
+            "Bajo impacto y fácil de probar",
+            "Se prueba si sobra tiempo, pero nunca compite por el primer lugar",
+          ],
+          [
+            "Bajo impacto y difícil de probar",
+            "Se descarta sin culpa. Es el cuadrante que más energía consume por menos motivo",
+          ],
+        ],
+      },
+      {
+        tipo: "cita",
+        texto: "El primer proyecto no tiene que ser el más ambicioso. Tiene que ser el que se pueda cerrar antes.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Facilidad no es la herramienta. Son los datos y el permiso",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un error frecuente es confundir «fácil» con «hay una app para eso». Lo que realmente determina la facilidad de un proyecto es si los datos que necesita ya existen en un formato utilizable, y si la persona dueña del proceso puede decidir sin pedir permiso a media empresa. Un caso de uso brillante que depende de datos que están en la cabeza de alguien, o de una aprobación de cuatro áreas, es un caso de uso difícil, por más simple que parezca la tecnología detrás.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La primera semana, en concreto",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Día 1 y 2 — listar y medir.** Juntá a dos o tres personas que conocen la operación y armen la lista de dolores con su línea de base. No hace falta precisión: alcanza con un número aproximado.",
+          "**Día 3 — ubicar en el cuadro.** Con la lista armada, el mapa de impacto contra facilidad sale en media hora de conversación.",
+          "**Día 4 — elegir uno solo.** El del cuadrante de alto impacto y fácil de probar. Si hay dos empatados, gana el que tenga un dueño más entusiasmado.",
+          "**Día 5 — escribir qué significa terminar.** Una línea: qué se va a medir y en cuánto tiempo. Sin esto, la prueba puede estirarse para siempre.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Por qué conviene resistir la tentación de arrancar por todos lados",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El [State of AI 2025 de McKinsey](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai) encontró que el 88 % de las organizaciones ya usa IA en al menos una función. La cifra suena a que el «por dónde empezar» ya dejó de ser un problema. Pero el mismo informe encontró que solo alrededor de un tercio logró escalar esa adopción más allá de un experimento aislado. La diferencia no está en cuántos frentes abrieron: está en si el primero se resolvió de punta a punta antes de abrir el segundo.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Elegir bien el primer proyecto no es el paso previo al método. Es el método. Todo lo que sigue —medir, decidir, escalar— se apoya en haber arrancado por el lugar correcto. Es exactamente la primera etapa de lo que trabajamos en el [Método INTEGRA](/programa-integra): antes de sumar una herramienta, ordenar por dónde entra.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "McKinsey — The State of AI, 2025",
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+          },
+          {
+            label: "BCG — The Widening AI Value Gap, septiembre de 2025",
+            url: "https://media-publications.bcg.com/The-Widening-AI-Value-Gap-Sept-2025.pdf",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     00b — CÓMO IMPLEMENTAR IA EN UNA PYME (HOJA DE RUTA COMPLETA)
+     ================================================================= */
+  {
+    slug: "como-implementar-inteligencia-artificial-en-una-pyme",
+    titulo: "Cómo implementar inteligencia artificial en una PyME",
+    categoria: "Método",
+    fecha: "2026-08-19",
+    fechaLabel: "19 de agosto de 2026",
+    lectura: "9 min de lectura",
+    resumen:
+      "No es un proyecto de sistemas ni un curso de dos días. Es un proceso de cinco etapas que convierte el entusiasmo inicial en una capacidad que la empresa conserva. La hoja de ruta completa, con lo que corresponde a cada etapa.",
+    img: "/images/blog/14-como-implementar-ia-en-una-pyme.png",
+    imgLabel: "/images/blog/14-como-implementar-ia-en-una-pyme.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "«¿Cómo implementamos IA?» se pregunta casi siempre como si tuviera una única respuesta correcta: un software para comprar, un proveedor para contratar. No la tiene. Implementar IA en una PyME es un proceso de cinco etapas, y la mayoría de las empresas que quedan a mitad de camino se saltearon alguna sin darse cuenta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Hay dos modelos mentales que llevan directo al estancamiento. El primero trata la IA como un proyecto de sistemas: se compra la licencia, se hace un anuncio interno y se espera que el uso aparezca solo. El segundo la trata como un tema de capacitación: se forma a la gente y se da por hecho que el cambio en el proceso va a seguir por su cuenta — algo que [ya vimos que casi nunca pasa](/blog/capacitacion-de-ia-no-alcanza). Ninguno de los dos es un método completo. Son, a lo sumo, una etapa de cinco.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Las cinco etapas, de punta a punta",
+      },
+      {
+        tipo: "tabla",
+        titulo: "La hoja de ruta completa",
+        columnas: ["Etapa", "Qué produce"],
+        filas: [
+          ["1. Diagnóstico", "Un mapa honesto de qué hace la empresa hoy, con o sin IA"],
+          ["2. Priorización", "Un único primer proyecto, elegido con criterio y no por entusiasmo"],
+          ["3. Piloto", "Una prueba chica, con plazo y con criterio de éxito escrito antes de empezar"],
+          ["4. Medición y decisión", "Una decisión tomada con datos: adoptar, ajustar o cortar"],
+          ["5. Escalamiento y gobierno", "Un sistema que sigue funcionando aunque la persona que lo armó esté de vacaciones"],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Etapa 1 — Diagnóstico: dónde está la empresa hoy",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Antes de decidir hacia dónde ir hace falta saber desde dónde se sale, y en la mayoría de las PyMEs ese punto de partida es más avanzado de lo que dirección cree. Casi siempre ya hay uso de IA dentro de la empresa — informal, disperso, sin que nadie lo haya autorizado ni lo esté midiendo.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Qué procesos existen hoy** y cuáles son manuales, repetitivos y de alto volumen.",
+          "**En qué estado están los datos** que esos procesos usan: si están en un sistema, en una planilla o en la cabeza de alguien.",
+          "**Qué se usa ya, sin permiso formal.** Casi siempre hay alguien redactando con IA o armando reportes con ella por su cuenta.",
+          "**Cuánto se involucra la dirección.** El compromiso de quien lidera es, en la práctica, la variable que más pesa en si el proceso avanza o se apaga.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Etapa 2 — Priorización: elegir sin comité eterno",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con el diagnóstico hecho, aparece la tentación de atacar todo a la vez. El [mapa de impacto contra facilidad de probar](/blog/por-donde-empezar-a-implementar-ia-en-una-empresa) resuelve esto en una tarde: se ordenan los candidatos en un cuadro de dos ejes y se elige uno solo, el de mayor impacto entre los que ya se pueden probar con lo que hay hoy.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Etapa 3 — Piloto: probar chico, medir en serio",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un piloto bien armado tiene tres características que casi nunca aparecen juntas cuando una empresa arranca por su cuenta: alcance acotado, plazo corto y un criterio de abandono escrito antes de empezar, no inventado después con el resultado ya sobre la mesa.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Lo que no puede faltar en un piloto",
+        columnas: ["Elemento", "Por qué"],
+        filas: [
+          [
+            "Alcance acotado a un proceso, no a un área entera",
+            "Un piloto que abarca demasiado no termina nunca, y lo que no termina no se puede evaluar",
+          ],
+          [
+            "Plazo de tres a cuatro semanas",
+            "Suficiente para ver una señal real, corto como para no perder la atención de dirección",
+          ],
+          [
+            "Criterio de éxito y de abandono, [escritos antes de empezar](/blog/cuando-abandonar-una-prueba-de-ia)",
+            "Es la única forma de que la decisión final no dependa del humor de la reunión",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Etapa 4 — Medición y decisión: adoptar, ajustar o cortar",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Al cierre del plazo hay solo tres decisiones posibles, y las tres son válidas: adoptar el cambio porque cruzó el umbral que se había definido, ajustarlo porque quedó en la zona gris y todavía no está claro, o cortarlo porque no llegó al mínimo. Lo que no es una decisión válida es «sigamos probando un poco más» sin haber cambiado nada del criterio original.",
+      },
+      {
+        tipo: "cita",
+        texto: "Una PyME no necesita más pilotos. Necesita que los pilotos que ya tiene terminen en una decisión.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Etapa 5 — Escalamiento y gobierno: que no dependa de una persona",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un piloto exitoso que vive en la cabeza de quien lo armó no es una capacidad instalada: es [un riesgo con fecha de vencimiento](/blog/adopcion-de-ia-sin-depender-de-una-persona). Escalar significa documentar lo mínimo indispensable y repartir tres roles entre personas distintas.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Referente de adopción**, que sostiene el método: convoca, hace seguimiento, no ejecuta todo solo.",
+          "**Dueño de cada proceso**, que decide si el cambio se adopta en su área porque después va a convivir con él todos los días.",
+          "**Dirección**, que prioriza entre áreas y ratifica los cierres cada quince días.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cuánto tarda todo esto en una PyME real",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Un cronograma realista para el primer ciclo completo",
+        columnas: ["Semanas", "Etapa"],
+        filas: [
+          ["1 y 2", "Diagnóstico"],
+          ["3", "Priorización"],
+          ["4 a 7", "Piloto"],
+          ["8", "Medición y decisión"],
+          ["9 a 12", "Primer escalamiento y arranque del segundo piloto"],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Tres meses para el primer ciclo completo es un plazo exigente pero real, siempre que las cinco etapas se respeten en orden. El atajo más tentador —y el más caro— es saltar de la etapa 1 directo a comprar una herramienta en la etapa 3. Ahí es donde el [60 % de las organizaciones del mundo](https://media-publications.bcg.com/The-Widening-AI-Value-Gap-Sept-2025.pdf) queda estancado, según BCG: pagando la tecnología, sin haber construido nada del proceso que la sostiene.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Este recorrido de cinco etapas, con sus roles y su cadencia, es exactamente lo que estructura el [Método INTEGRA](/programa-integra): no un curso ni un software, sino el sistema que hace que la primera prueba no sea también la última.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "McKinsey — The State of AI, 2025",
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+          },
+          {
+            label: "BCG — The Widening AI Value Gap, septiembre de 2025",
+            url: "https://media-publications.bcg.com/The-Widening-AI-Value-Gap-Sept-2025.pdf",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     00c — CHATGPT PARA EMPRESAS: QUÉ SE PUEDE Y QUÉ NO
+     ================================================================= */
+  {
+    slug: "chatgpt-para-empresas-que-se-puede-y-que-no",
+    titulo: "ChatGPT para empresas: qué se puede hacer y qué no",
+    categoria: "Herramientas",
+    fecha: "2026-08-14",
+    fechaLabel: "14 de agosto de 2026",
+    lectura: "8 min de lectura",
+    resumen:
+      "La pregunta no es si ChatGPT sirve para tu empresa. Es para qué sirve y dónde empieza a fallar sin avisar. Un mapa práctico de lo que funciona casi solo, lo que funciona con supervisión y lo que todavía no conviene delegarle.",
+    img: "/images/blog/13-chatgpt-para-empresas-que-se-puede-y-que-no.png",
+    imgLabel: "/images/blog/13-chatgpt-para-empresas-que-se-puede-y-que-no.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "En casi todas las reuniones aparece la misma pregunta, formulada distinto: «¿ChatGPT sirve para nuestra empresa?». Es la pregunta equivocada, aunque entiendo por qué se hace: ChatGPT se convirtió en el nombre genérico con el que se habla de toda la IA generativa, del mismo modo en que durante años «Google» significó buscar en internet.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La pregunta correcta tiene dos partes: para qué sirve muy bien, y dónde empieza a fallar de una manera que no se nota a simple vista. La segunda parte es la que casi nadie se hace, y es la que termina costando más cara.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La frontera irregular: por qué funciona espectacular acá y falla feo allá",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El experimento [Navigating the Jagged Technological Frontier](https://aiinstitute.hbs.edu/navigating-the-jagged-technological-frontier/), de Harvard Business School junto con BCG, le puso nombre a este fenómeno: la capacidad de estos modelos no crece de forma pareja. Hay tareas que quedan muy adentro de lo que resuelven bien, y otras —a veces con un aire de familia engañoso— que quedan apenas afuera. En esas últimas, los consultores que usaron IA en el experimento fueron 19 puntos porcentuales más propensos a entregar respuestas incorrectas que los que no la usaron.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "El riesgo más caro de ChatGPT en una empresa no es que se equivoque en lo difícil. Es que se equivoque con la misma confianza con la que acierta en lo fácil.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que hace bien, casi sin supervisión",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Tarea", "Por qué funciona bien"],
+        filas: [
+          [
+            "Redactar borradores de textos internos",
+            "El costo de un error es bajo y se corrige leyendo una vez antes de enviar",
+          ],
+          [
+            "Resumir documentos largos",
+            "Comprimir información existente es justo lo que estos modelos hacen mejor",
+          ],
+          [
+            "Adaptar el tono de un mismo texto a distintos públicos",
+            "Es una tarea de forma, no de contenido nuevo: no hay dato que pueda inventarse",
+          ],
+          [
+            "Generar variantes de una idea para elegir entre varias",
+            "El humano sigue siendo quien decide; la IA solo amplía las opciones sobre la mesa",
+          ],
+          [
+            "Programar y depurar código, o explicar un concepto técnico en lenguaje simple",
+            "Son dominios con reglas explícitas donde el modelo entrenó con enorme volumen de ejemplos correctos",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que hace, pero necesita revisión humana siempre",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Tarea", "Qué revisar antes de usarlo"],
+        filas: [
+          [
+            "Análisis de datos propios de la empresa",
+            "Que las cifras de origen sean correctas y que la interpretación no dé por sentado algo que el dato no dice",
+          ],
+          [
+            "Respuestas a clientes reales",
+            "Que el tono y la información sean exactos para ese cliente puntual, no una generalización razonable",
+          ],
+          [
+            "Contenido que sale a nombre de la empresa",
+            "Que no haya afirmaciones que la marca no pueda sostener si alguien las cuestiona",
+          ],
+          [
+            "Cálculos financieros o cuentas con varios pasos",
+            "El resultado numérico, siempre, con una calculadora o una planilla — no a ojo",
+          ],
+          [
+            "Resúmenes de reuniones con decisiones tomadas",
+            "Que las decisiones que quedaron registradas sean las que realmente se tomaron, no una versión plausible",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que todavía no conviene delegarle",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Decisiones legales o regulatorias sin que las revise un abogado.** El modelo puede redactar un borrador razonable y estar completamente desactualizado o equivocado sobre la normativa que aplica a tu caso.",
+          "**Datos sensibles o confidenciales en una cuenta personal gratuita.** No se trata de prohibir el uso, sino de resolver primero el plan y la configuración correctos para la empresa — es una decisión de gobierno de datos, no de entusiasmo individual.",
+          "**Cualquier tarea donde un error no se note a tiempo.** Si el resultado se usa varios pasos después, sin control intermedio, un error queda enterrado hasta que explota en otro lado.",
+          "**Tareas que dependen de información interna actualizada que el modelo no tiene.** Precios vigentes, stock real, el estado de una cuenta con un cliente: si esa información no se le da explícitamente, el modelo puede completar el vacío con algo verosímil pero falso.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "El error que más veo: tratarlo como un buscador de verdades",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "ChatGPT no busca información y la reporta: genera la respuesta más probable dada la pregunta, y esa respuesta puede sonar completamente segura de sí misma incluso cuando está mal. Para uso personal, el costo de esa confusión suele ser bajo. Para una decisión de negocio, no. La regla que uso con los equipos que capacito es simple: cualquier dato que vaya a sostener una decisión —un precio, una fecha, una cifra, una cita— se verifica en la fuente original antes de usarse, sin excepción.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Una regla simple para decidir caso por caso",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Antes de soltarle una tarea nueva sin supervisión, una sola pregunta ordena casi todos los casos: si esta tarea sale mal y nadie lo nota a tiempo, ¿cuánto cuesta? Si el costo es bajo y el error se nota rápido —un borrador con un tono raro, una variante de texto floja—, se puede avanzar con confianza. Si el costo es alto o el error tarda en notarse —una cifra mal calculada que llega a un cliente, una cláusula legal mal redactada—, la supervisión humana no es opcional.",
+      },
+      {
+        tipo: "cita",
+        texto: "No hay que preguntarse si la tarea es fácil para la IA. Hay que preguntarse qué pasa si se equivoca.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Antes de invertir tiempo real en una tarea nueva, vale la pena aplicar la [prueba del sobre cerrado](/blog/de-la-idea-al-proyecto-de-ia): probarla a mano diez veces y ver si el resultado es consistente. Si en esos diez intentos aparecen errores erráticos que no podés explicar, probablemente estés parado sobre uno de esos salientes de la frontera irregular, y conviene recortar la tarea a la parte que sí funciona de manera confiable.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Harvard Business School / BCG — Navigating the Jagged Technological Frontier",
+            url: "https://aiinstitute.hbs.edu/navigating-the-jagged-technological-frontier/",
+          },
+          {
+            label: "McKinsey — The State of AI, 2025",
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     00d — QUINCE EJEMPLOS REALES DE IA EN PYMES
+     ================================================================= */
+  {
+    slug: "15-ejemplos-reales-de-ia-aplicada-a-pymes",
+    titulo: "15 ejemplos reales de inteligencia artificial aplicada a PyMEs",
+    categoria: "Casos",
+    fecha: "2026-08-09",
+    fechaLabel: "9 de agosto de 2026",
+    lectura: "10 min de lectura",
+    resumen:
+      "Nada de casos de Silicon Valley. Quince ejemplos concretos, agrupados por área, de cómo empresas de veinte a quinientas personas ya usan IA en el día a día — con el problema que resolvían y el resultado que buscaban.",
+    img: "/images/blog/12-quince-ejemplos-reales-de-ia-en-pymes.png",
+    imgLabel: "/images/blog/12-quince-ejemplos-reales-de-ia-en-pymes.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "Cuando pido ejemplos concretos de IA aplicada, la mayoría de la gente piensa en casos que no tienen nada que ver con su empresa: un modelo que diagnostica enfermedades, un auto que se maneja solo. Son notables, pero no sirven de referencia para una empresa de cincuenta personas que factura, atiende clientes y compra insumos todos los días.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los quince que siguen son distintos: son composiciones armadas a partir de casos reales anonimizados, del tipo de trabajo que acompaño habitualmente. Ninguno es glamoroso. Todos son tareas repetitivas, de alto volumen, que hoy hace una persona a mano — y esa es exactamente la razón por la que funcionan.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Atención al cliente",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Qué hace", "Cómo se ve en el día a día", "Qué resultado busca"],
+        filas: [
+          [
+            "Borrador de respuestas a consultas frecuentes",
+            "La IA redacta una primera versión de la respuesta; una persona la revisa y la envía",
+            "Bajar el tiempo medio de respuesta sin perder precisión",
+          ],
+          [
+            "Clasificación de tickets por urgencia y área",
+            "Cada consulta que entra se etiqueta sola y llega directo a quien corresponde",
+            "Que nada quede esperando en una bandeja general sin dueño",
+          ],
+          [
+            "Resumen de conversaciones largas para el pase de turno",
+            "Un chat de quince mensajes con un cliente queda resumido en tres líneas para quien sigue el caso",
+            "Que el siguiente turno no tenga que releer todo desde cero",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Administración y finanzas",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Qué hace", "Cómo se ve en el día a día", "Qué resultado busca"],
+        filas: [
+          [
+            "Lectura y carga de facturas de proveedores",
+            "El PDF que llega por mail se procesa solo y carga los datos en el sistema contable",
+            "Bajar las horas-persona dedicadas a tipeo manual, dejando las excepciones para revisión",
+          ],
+          [
+            "Conciliación de pagos contra el resumen bancario",
+            "Se cruzan automáticamente los movimientos del banco contra lo registrado en el sistema",
+            "Detectar diferencias el mismo día, no al cierre del mes",
+          ],
+          [
+            "Borrador de reportes mensuales para dirección",
+            "Los números del mes se convierten en un resumen narrativo, no solo una planilla",
+            "Que dirección entienda el número sin depender de que alguien se lo explique en una reunión",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Ventas y marketing",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Qué hace", "Cómo se ve en el día a día", "Qué resultado busca"],
+        filas: [
+          [
+            "Borrador de propuestas comerciales personalizadas",
+            "El vendedor arma la propuesta a partir de una plantilla con los datos del cliente y la IA completa el resto",
+            "Bajar el tiempo entre la reunión y el envío de la propuesta",
+          ],
+          [
+            "Calificación de leads entrantes",
+            "Cada consulta nueva se ordena según qué tan cerca está del perfil que más convierte",
+            "Que el equipo comercial priorice a quién llamar primero",
+          ],
+          [
+            "Generación de variantes de contenido para redes",
+            "A partir de una idea, se arman varias versiones para elegir y ajustar antes de publicar",
+            "Sostener una frecuencia de publicación sin sumar horas",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Operaciones y logística",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Qué hace", "Cómo se ve en el día a día", "Qué resultado busca"],
+        filas: [
+          [
+            "Planificación de rutas de entrega",
+            "Las entregas del día se ordenan solas según cercanía y ventana horaria",
+            "Menos kilómetros recorridos y entregas más puntuales",
+          ],
+          [
+            "Previsión simple de demanda para compras",
+            "A partir del historial de ventas, se sugiere cuánto reponer de cada producto",
+            "Reducir el quiebre de stock y el sobrestock al mismo tiempo",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Recursos humanos",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Qué hace", "Cómo se ve en el día a día", "Qué resultado busca"],
+        filas: [
+          [
+            "Primer filtro de CVs contra el perfil buscado",
+            "De cien postulaciones, la IA arma una preselección para que RR. HH. revise",
+            "Que el tiempo de RR. HH. se concentre en entrevistar, no en leer CVs uno por uno",
+          ],
+          [
+            "Borrador de respuestas a consultas frecuentes de empleados",
+            "Preguntas repetidas sobre licencias, vacaciones o beneficios se resuelven con una respuesta clara al toque",
+            "Bajar la carga de consultas repetidas sobre el equipo de RR. HH.",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Compras",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Qué hace", "Cómo se ve en el día a día", "Qué resultado busca"],
+        filas: [
+          [
+            "Comparación automática de cotizaciones de proveedores",
+            "Los mails con presupuestos se convierten en un cuadro comparable de precio y condiciones",
+            "Que armar el comparativo deje de llevar horas cada vez que se pide una cotización",
+          ],
+          [
+            "Seguimiento de vencimientos de contratos",
+            "El sistema avisa con anticipación cuándo vence cada acuerdo con un proveedor",
+            "Que ningún contrato se renueve solo, sin que nadie lo haya revisado antes",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que tienen en común los quince",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Todos son repetitivos y de alto volumen.** Ninguno es una tarea que alguien hace una vez al mes: son tareas diarias o semanales, que es justo lo que vuelve rentable automatizarlas.",
+          "**Todos tienen hoy a una persona haciéndolos a mano.** No inventan trabajo nuevo: le sacan la parte mecánica a un trabajo que ya existe.",
+          "**Todos se miden con un número simple.** Tiempo, errores, horas-persona. Ninguno necesita un tablero sofisticado para saber si funcionó.",
+          "**Ninguno reemplaza a una persona.** Reduce el tiempo que esa persona dedica a la parte mecánica de su trabajo, para que quede más tiempo para lo que sí necesita criterio humano.",
+        ],
+      },
+      {
+        tipo: "cita",
+        texto: "Ningún ejemplo de esta lista es una revolución por sí solo. Juntos, son la diferencia entre una empresa que decide con datos y una que decide a las apuradas.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cómo elegir cuál probar primero en tu empresa",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Ninguno de estos quince es «el correcto» para empezar: el correcto es el que aparece en el cruce entre un dolor real de tu operación y datos que ya tenés disponibles. El [mapa de impacto contra facilidad de probar](/blog/por-donde-empezar-a-implementar-ia-en-una-empresa) es la forma más rápida de encontrarlo sin dar vueltas.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si al leer la lista pensaste «nosotros hacemos tres de estas cosas a mano todavía», esa reacción es exactamente el punto de partida del [Método INTEGRA](/programa-integra): convertir esa lista mental en una prueba concreta, con fecha y con resultado.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "McKinsey — The State of AI, 2025",
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+          },
+        ],
+      },
+    ],
+  },
+
   /* =================================================================
      01 — AUDITAR LAS SUSCRIPCIONES DE IA
      ================================================================= */
