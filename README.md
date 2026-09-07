@@ -35,6 +35,20 @@ como página nueva automáticamente.
 (el servicio que la landing reemplazó, y la ruta corta que usaron los primeros
 enlaces y tres artículos del blog): redirigen en vez de dar 404.
 
+**Sitemap y páginas privadas.** El sitio publica `/sitemap-index.xml` (integración
+`@astrojs/sitemap`) y un `robots.txt` que lo referencia. El sitemap lista **sólo
+el contenido público**: quedan afuera las páginas marcadas con `noindex` y las
+URLs que sólo redirigen. Las **cotizaciones** se excluyen por prefijo
+(`/cotizacion-*`) en el filtro de `astro.config.mjs`, así que cada propuesta
+nueva queda fuera sola, sin tocar la config.
+
+Las cotizaciones son páginas **no listadas**: no hay link interno hacia ellas, no
+están en el sitemap y llevan `noindex`. Como el sitio es estático y no tiene
+control de acceso, las nuevas se crean con un **sufijo aleatorio de 4 caracteres**
+(`/cotizacion-<empresa>-<4 chars>`, ej. `/cotizacion-acme-t0zj`) para que no se
+puedan adivinar probando nombres de empresa. Nunca listarlas en el `robots.txt`:
+ese archivo es público.
+
 ## La landing del Método INTEGRA
 
 Es un **anexo** del sitio: comparte navbar, footer, tipografías y componentes,

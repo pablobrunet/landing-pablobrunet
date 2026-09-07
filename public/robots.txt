@@ -1,0 +1,12 @@
+# Sitio abierto a los buscadores. El sitemap lista sólo el contenido público:
+# las cotizaciones y las páginas de embudo se excluyen desde
+# `astro.config.mjs` (ver el filtro del sitemap) y además llevan `noindex`.
+#
+# IMPORTANTE: no agregar acá un `Disallow: /cotizacion-*`. Este archivo es
+# público: escribir las rutas privadas sería publicar exactamente el listado
+# que se quiere mantener fuera del alcance de cualquiera.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://pablobrunet.com/sitemap-index.xml

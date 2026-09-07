@@ -9,6 +9,11 @@
 
    Pide una sola acción: sumar al referente interno a la invitación. Es lo
    que más mejora la reunión y no compite con nada más.
+
+   NOTA DE INDEXACIÓN: va con `noindex` —igual que /programa-ejecutivos/
+   agenda-confirmada y las cotizaciones— y queda fuera del sitemap (ver el
+   filtro en astro.config.mjs). No es contenido del sitio: es el final de un
+   embudo, y nadie debería caer acá desde una búsqueda.
    ===================================================================== */
 import "../../styles/integra.css";
 import { Image } from "astro:assets";
@@ -30,6 +35,7 @@ const wa = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(
   description="Tu reunión de diagnóstico quedó agendada."
   waMensaje={whatsapp.mensaje}
   waEtiqueta={whatsapp.etiqueta}
+  noindex
 >
   <Navbar />
   <main>
