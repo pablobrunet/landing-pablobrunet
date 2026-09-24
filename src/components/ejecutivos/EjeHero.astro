@@ -2,32 +2,34 @@
 /* =====================================================================
    HERO — /programa-ejecutivos
    ---------------------------------------------------------------------
-   Dos columnas: a la izquierda la promesa y los dos CTAs, a la derecha la
-   foto cuadrada apenas rotada con la cita flotando sobre el ángulo
-   inferior izquierdo. La rotación se endereza al pasar el mouse: es el
-   único gesto del bloque y conviene que se note.
+   Foto a sangre de fondo con un velo azul noche que va de opaco (donde
+   está el texto) a transparente (donde se ve la sala). Encima, la promesa
+   y los dos CTAs a la izquierda.
    ===================================================================== */
 import EjeIcon from "./EjeIcon.astro";
+import EjeFondoHero from "./EjeFondoHero.astro";
 import { ejecutivos } from "../../data/ejecutivos";
 const { hero } = ejecutivos.home;
 const { agenda } = ejecutivos.enlaces;
 ---
 
-<section class="ej-sec ej-aurora eh" id="inicio">
+<section class="ej-noche eh" id="inicio">
+  {/* El orador y la pantalla están a la derecha de la foto: se ancla ahí
+      para que en pantallas angostas no se pierdan. */}
+  <EjeFondoHero src={hero.imagen} alt={hero.imagenAlt} posicion="70% 55%" />
+
   <div class="ej-wrap eh__grid">
     <div class="eh__copy">
-      <p class="ej-chip">
+      <p class="eh__chip">
         <EjeIcon name="rayo" size={14} />
         {hero.chip}
       </p>
 
-      <h1 class="ej-h1 eh__titulo">
-        {hero.titulo}<span class="ej-hl">{hero.tituloResalte}</span>{hero.tituloCierre}
+      <h1 class="eh__titulo">
+        {hero.titulo}<span class="eh__resalte">{hero.tituloResalte}</span>{hero.tituloCierre}
       </h1>
 
-      <span class="eh__filete" aria-hidden="true"></span>
-
-      <p class="ej-lead eh__sub">{hero.subtitulo}</p>
+      <p class="eh__sub">{hero.subtitulo}</p>
 
       <div class="eh__ctas">
         <a
@@ -38,67 +40,81 @@ const { agenda } = ejecutivos.enlaces;
         >
           {hero.ctaPrimario}
         </a>
-        <a class="ej-btn ej-btn--outline ej-btn--grande eh__ver" href="#diferencia">
+        <a class="ej-btn ej-btn--fantasma ej-btn--grande eh__ver" href="#soluciones">
           {hero.ctaSecundario}
           <EjeIcon name="flecha" size={20} />
         </a>
       </div>
-    </div>
-
-    <div class="eh__visual">
-      <figure class="eh__foto">
-        <img src={hero.imagen} alt={hero.imagenAlt} loading="eager" referrerpolicy="no-referrer" />
-        <span class="eh__velo" aria-hidden="true"></span>
-      </figure>
-
-      <blockquote class="ej-glass eh__cita">
-        <div class="eh__rayos" aria-hidden="true">
-          <EjeIcon name="rayo" size={16} />
-          <EjeIcon name="rayo" size={16} />
-          <EjeIcon name="rayo" size={16} />
-          <EjeIcon name="rayo" size={16} />
-          <EjeIcon name="rayo" size={16} />
-        </div>
-        <p class="eh__cita-texto">{hero.cita}</p>
-        <footer class="eh__cita-autor">{hero.citaAutor}</footer>
-      </blockquote>
     </div>
   </div>
 </section>
 
 <style>
   .eh {
+    position: relative;
     overflow: hidden;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    /* Ocupa casi toda la primera pantalla, descontando la barra */
+    min-height: min(52rem, calc(100svh - var(--nav-alto)));
+    padding-block: clamp(4rem, 8vw, 7rem);
   }
+
   .eh__grid {
     display: grid;
     gap: 3rem;
-    align-items: center;
-    position: relative;
-    z-index: 1;
+    align-items: end;
   }
   .eh__copy {
     display: grid;
-    gap: 1.75rem;
+    gap: 1.5rem;
     justify-items: start;
   }
-  .eh__titulo {
-    max-width: 15ch;
-  }
-  .eh__filete {
-    display: block;
-    width: 6rem;
-    height: 4px;
+
+  .eh__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--e-azul-600), transparent);
+    border: 1px solid rgba(169, 200, 245, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    color: var(--e-celeste);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
+
+  .eh__titulo {
+    font-family: var(--font-title);
+    font-weight: 800;
+    font-size: clamp(2.125rem, 1.4rem + 2.6vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    max-width: 18ch;
+  }
+  .eh__resalte {
+    display: block;
+    color: var(--e-celeste);
+    font-style: italic;
+    font-weight: 500;
+  }
+
   .eh__sub {
-    max-width: 36rem;
+    max-width: 34rem;
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
   }
+
   .eh__ctas {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 0.5rem;
   }
   .eh__ver :global(svg) {
     transition: transform var(--transition);
@@ -107,91 +123,10 @@ const { agenda } = ejecutivos.enlaces;
     transform: translateX(4px);
   }
 
-  /* ---- Columna visual ---- */
-  .eh__visual {
-    position: relative;
-    /* Aire abajo y a la izquierda para la cita, que sobresale del marco */
-    padding: 0 0 3.5rem 0;
-  }
-  .eh__foto {
-    position: relative;
-    aspect-ratio: 1;
-    border-radius: var(--e-r-3xl);
-    overflow: hidden;
-    box-shadow: var(--e-sombra-prem);
-    transform: rotate(2deg);
-    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  }
-  .eh__foto:hover {
-    transform: rotate(0deg);
-  }
-  .eh__foto img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(0.2);
-  }
-  .eh__velo {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top right, rgba(13, 27, 61, 0.25), transparent);
-  }
-  .eh__cita {
-    position: relative;
-    margin: -3rem 0 0 0;
-    max-width: 22rem;
-    padding: 1.75rem;
-    border-radius: var(--e-r-2xl);
-    border-left: 4px solid var(--e-azul-600);
-    box-shadow: var(--e-sombra-prem);
-  }
-  .eh__rayos {
-    display: flex;
-    gap: 0.25rem;
-    color: var(--e-acento);
-    margin-bottom: 0.75rem;
-  }
-  .eh__rayos :global(svg) {
-    fill: currentColor;
-  }
-  .eh__cita-texto {
-    font-size: 0.9375rem;
-    font-style: italic;
-    line-height: 1.65;
-    color: var(--e-texto-var);
-  }
-  .eh__cita-autor {
-    margin-top: 1rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: var(--e-texto);
-  }
 
-  @media (min-width: 1024px) {
-    .eh__grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 3.5rem;
-    }
-    .eh__visual {
-      padding: 0;
-    }
-    /* En escritorio la cita vuelve a colgar de la esquina, como en el
-       original (-bottom-8 -left-8). */
-    .eh__cita {
-      position: absolute;
-      margin: 0;
-      bottom: -2rem;
-      left: -2rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .eh__foto,
-    .eh__foto:hover {
-      transform: none;
-      transition: none;
+  @media (max-width: 599px) {
+    .eh__ctas .ej-btn {
+      width: 100%;
     }
   }
 </style>

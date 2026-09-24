@@ -1,0 +1,700 @@
+---
+/* =====================================================================
+   MINI SITIO DE UN CAPACITADOR — /programa-ejecutivos/<persona>
+   ---------------------------------------------------------------------
+   Estructura común a los perfiles del equipo (Pablo y Alejandro). Cada
+   página le pasa su archivo de datos (data/pablo.ts, data/rostagno.ts) y
+   se encarga de <Base>, navbar y footer; acá vive solo el recorrido:
+
+     1  Hero          nombre, rol, foto de escenario y cifras
+     2  Quién es      retrato + los seis roles
+     3  Logos         carrusel infinito de organizaciones
+     4  Galería       fotos en acción
+     5  Temas         de qué habla y capacita
+     6  Testimonios   citas textuales
+     7  Cierre        vuelta al programa y agenda
+
+   Logos: si un item no trae `img`, se dibuja el nombre en texto (hay
+   organizaciones chicas de las que no conseguimos un logo decente).
+   ===================================================================== */
+import EjeIcon from "./EjeIcon.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+
+interface Props {
+  datos: {
+    hero: {
+      chip: string;
+      nombre: string;
+      rol: string;
+      bajada: string;
+      imagen: string;
+      imagenAlt: string;
+      /** Encuadre de la foto del hero (object-position). */
+      imagenPos?: string;
+      pie: string;
+    };
+    cifras: readonly { valor: string; label: string; detalle: string }[];
+    perfil: {
+      eyebrow: string;
+      titulo: string;
+      tituloResalte: string;
+      retrato: string;
+      texto: string;
+      roles: readonly { titulo: string; desc: string }[];
+    };
+    logos: {
+      eyebrow: string;
+      titulo: string;
+      items: readonly { nombre: string; img?: string }[];
+    };
+    galeria: { eyebrow: string; titulo: string; fotos: readonly { src: string; pie: string }[] };
+    temas: { eyebrow: string; titulo: string; items: readonly string[] };
+    testimonios: {
+      eyebrow: string;
+      titulo: string;
+      tituloResalte: string;
+      items: readonly { texto: string; autor: string; cargo?: string }[];
+    };
+    cierre: { titulo: string; subtitulo: string; ctaPrimario: string; ctaSecundario: string };
+  };
+}
+
+const { rutas, enlaces } = ejecutivos;
+const { hero, cifras, perfil, logos, galeria, temas, testimonios, cierre } = Astro.props.datos;
+
+/* La pista se duplica y se desplaza -50%: así el loop no tiene costura
+   (mismo mecanismo que components/Empresas.astro). */
+const pista = [...logos.items, ...logos.items];
+---
+
+<main>
+  <!-- 1 · HERO -->
+  <section class="ej-noche ar-hero">
+    <span class="ar-hero__halo" aria-hidden="true"></span>
+    <div class="ej-wrap ar-hero__grid">
+      <div class="ar-hero__copy">
+        <a class="ar-volver" href={`${rutas.inicio}#equipo`}>← Volver al programa</a>
+        <p class="ej-chip ar-hero__chip">
+          <EjeIcon name="personas" size={14} />
+          {hero.chip}
+        </p>
+        <h1 class="ej-h1 ar-hero__nombre">{hero.nombre}</h1>
+        <p class="ar-hero__rol">{hero.rol}</p>
+        <p class="ar-hero__bajada">{hero.bajada}</p>
+        <div class="ar-hero__ctas">
+          <a class="ej-btn ej-btn--primary" href={enlaces.agenda} target="_blank" rel="noopener noreferrer">
+            {cierre.ctaPrimario}
+          </a>
+        </div>
+      </div>
+
+      <figure class="ar-hero__foto">
+        <img
+        src={hero.imagen}
+        alt={hero.imagenAlt}
+        loading="eager"
+        style={hero.imagenPos ? `object-position: ${hero.imagenPos}` : undefined}
+      />
+        <figcaption>{hero.pie}</figcaption>
+      </figure>
+    </div>
+
+    <div class="ej-wrap">
+      <ul class="ar-cifras">
+        {
+          cifras.map((c) => (
+            <li class="ar-cifra">
+              <span class="ar-cifra__valor">{c.valor}</span>
+              <span class="ar-cifra__label">{c.label}</span>
+              <span class="ar-cifra__detalle">{c.detalle}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2 · QUIÉN ES -->
+  <section class="ej-sec ej-sup">
+    <div class="ej-wrap ar-perfil">
+      <figure class="ar-perfil__retrato ej-reveal">
+        <img src={perfil.retrato} alt={`Retrato de ${hero.nombre}`} loading="lazy" />
+      </figure>
+      <div class="ar-perfil__copy ej-reveal">
+        <p class="ej-eyebrow">{perfil.eyebrow}</p>
+        <h2 class="ej-h2">
+          {perfil.titulo} <span class="ej-hl">{perfil.tituloResalte}</span>
+        </h2>
+        <p class="ej-lead">{perfil.texto}</p>
+        <ul class="ar-roles">
+          {
+            perfil.roles.map((r) => (
+              <li class="ar-rol ej-filete">
+                <h3 class="ar-rol__t">{r.titulo}</h3>
+                <p class="ar-rol__d">{r.desc}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · LOGOS -->
+  <section class="ej-sec ej-sec--corta ej-sup-baja ar-logos" aria-label={logos.titulo}>
+    <div class="ej-wrap">
+      <header class="ar-head ar-head--centro ej-reveal">
+        <p class="ej-eyebrow">{logos.eyebrow}</p>
+        <h2 class="ej-h3">{logos.titulo}</h2>
+      </header>
+    </div>
+    <div class="ar-logos__marquee">
+      <ul class="ar-logos__pista">
+        {
+          pista.map((l, i) => (
+            <li class="ar-logos__item" aria-hidden={i >= logos.items.length ? "true" : undefined}>
+              {l.img ? (
+                <img src={l.img} alt={l.nombre} title={l.nombre} decoding="async" />
+              ) : (
+                <span class="ar-logos__texto">{l.nombre}</span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 · GALERÍA -->
+  <section class="ej-sec ej-sup">
+    <div class="ej-wrap">
+      <header class="ar-head ar-head--centro ej-reveal">
+        <p class="ej-eyebrow">{galeria.eyebrow}</p>
+        <h2 class="ej-h2">{galeria.titulo}</h2>
+      </header>
+      <div class="ar-galeria">
+        {
+          galeria.fotos.map((f, i) => (
+            <figure class={`ar-galeria__item ej-reveal ${i % 6 === 0 ? "ar-galeria__item--grande" : ""}`}>
+              <img src={f.src} alt={f.pie} loading="lazy" />
+              <figcaption>{f.pie}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · TEMAS -->
+  <section class="ej-sec ej-sec--corta ej-oscuro">
+    <div class="ej-wrap ar-temas ej-reveal">
+      <p class="ej-eyebrow ar-eyebrow-claro">{temas.eyebrow}</p>
+      <h2 class="ej-h2 ar-blanco">{temas.titulo}</h2>
+      <ul class="ar-chips">
+        {temas.items.map((t) => <li class="ar-chip">{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 · TESTIMONIOS -->
+  <section class="ej-sec ej-sup-baja">
+    <div class="ej-wrap">
+      <header class="ar-head ar-head--centro ej-reveal">
+        <p class="ej-eyebrow">{testimonios.eyebrow}</p>
+        <h2 class="ej-h2">
+          {testimonios.titulo} <span class="ej-hl">{testimonios.tituloResalte}</span>
+        </h2>
+      </header>
+      <div class="ar-testi">
+        {
+          testimonios.items.map((t) => (
+            <blockquote class="ar-testi__card ej-reveal">
+              <p class="ar-testi__texto">“{t.texto}”</p>
+              <footer>
+                <strong>{t.autor}</strong>
+                {t.cargo && <span>{t.cargo}</span>}
+              </footer>
+            </blockquote>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · CIERRE -->
+  <section class="ej-noche ej-sec ej-sec--corta ar-cierre">
+    <span class="ar-hero__halo" aria-hidden="true"></span>
+    <div class="ej-wrap ar-cierre__inner">
+      <h2 class="ej-h2 ar-blanco">{cierre.titulo}</h2>
+      <p class="ar-cierre__sub">{cierre.subtitulo}</p>
+      <div class="ar-hero__ctas ar-cierre__ctas">
+        <a class="ej-btn ej-btn--blanco ej-btn--grande" href={enlaces.agenda} target="_blank" rel="noopener noreferrer">
+          {cierre.ctaPrimario}
+        </a>
+        <a class="ej-btn ej-btn--fantasma ej-btn--grande" href={rutas.inicio}>
+          {cierre.ctaSecundario}
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<style>
+  /* ---- Hero ---- */
+  .ar-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3rem, 6vw, 5.5rem) clamp(3rem, 5vw, 4.5rem);
+  }
+  .ar-hero__halo {
+    position: absolute;
+    top: -12rem;
+    right: -10rem;
+    width: 36rem;
+    height: 36rem;
+    border-radius: 50%;
+    background: rgba(30, 92, 242, 0.28);
+    filter: blur(90px);
+    pointer-events: none;
+  }
+  .ar-hero__grid {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .ar-hero__grid {
+      grid-template-columns: 1fr 1.05fr;
+      gap: 4rem;
+    }
+  }
+  .ar-hero__copy {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+  .ar-volver {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--e-celeste);
+    transition: color var(--transition);
+  }
+  .ar-volver:hover {
+    color: #ffffff;
+  }
+  .ar-hero__chip {
+    background: rgba(169, 200, 245, 0.14);
+    color: var(--e-celeste);
+  }
+  .ar-hero__nombre {
+    color: #ffffff;
+    line-height: 1;
+  }
+  .ar-hero__rol {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--e-azul-500);
+  }
+  .ar-hero__bajada {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 38rem;
+  }
+  .ar-hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .ar-hero__foto {
+    position: relative;
+    margin: 0;
+    border-radius: var(--e-r-3xl);
+    overflow: hidden;
+    border: 1px solid rgba(169, 200, 245, 0.18);
+    box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+  }
+  .ar-hero__foto img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 60% 20%;
+  }
+  .ar-hero__foto figcaption {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(10, 20, 48, 0.7);
+    backdrop-filter: blur(8px);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .ar-cifras {
+    list-style: none;
+    padding: 0;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    border-radius: var(--e-r-xl);
+    overflow: hidden;
+    background: rgba(169, 200, 245, 0.16);
+    border: 1px solid rgba(169, 200, 245, 0.16);
+  }
+  @media (min-width: 860px) {
+    .ar-cifras {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .ar-cifra {
+    display: grid;
+    gap: 0.3rem;
+    align-content: start;
+    padding: 1.5rem 1.25rem;
+    background: var(--e-noche);
+  }
+  .ar-cifra__valor {
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+  }
+  .ar-cifra__label {
+    font-weight: 600;
+    color: var(--e-celeste);
+    line-height: 1.35;
+  }
+  .ar-cifra__detalle {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.4;
+  }
+
+  /* ---- Encabezados de sección ---- */
+  .ar-head {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 44rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .ar-head--centro {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  /* ---- Quién es ----
+     La foto acompaña al texto de punta a punta: en escritorio la fila se
+     estira al alto de la columna de texto y la imagen la llena con
+     object-fit, así arranca con el eyebrow y termina con la última
+     tarjeta de roles. Sin sticky: la foto scrollea junto con el texto.
+     Conviene una foto vertical (≈ 3:5) para que el recorte sea mínimo. */
+  .ar-perfil {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .ar-perfil__retrato {
+    margin: 0;
+    border-radius: var(--e-r-4xl);
+    overflow: hidden;
+    border: 1px solid var(--e-linea);
+    box-shadow: var(--e-sombra-prem);
+    aspect-ratio: 4 / 5;
+  }
+  .ar-perfil__retrato img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 20%;
+  }
+  @media (min-width: 960px) {
+    .ar-perfil {
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: 4.5rem;
+      align-items: stretch;
+    }
+    .ar-perfil__retrato {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+  }
+  .ar-perfil__copy {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .ar-roles {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+  @media (min-width: 620px) {
+    .ar-roles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .ar-rol {
+    padding: 1.15rem 1.25rem;
+    border-radius: var(--e-r-xl);
+    background: var(--e-sup-baja);
+  }
+  .ar-rol__t {
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--e-texto);
+    margin-bottom: 0.3rem;
+  }
+  .ar-rol__d {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--e-texto-var);
+  }
+
+  /* ---- Logos ---- */
+  .ar-logos .ar-head {
+    margin-bottom: 2rem;
+  }
+  .ar-logos__marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .ar-logos__pista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    width: max-content;
+    animation: ar-logos 48s linear infinite;
+  }
+  .ar-logos__marquee:hover .ar-logos__pista {
+    animation-play-state: paused;
+  }
+  @keyframes ar-logos {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .ar-logos__item {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    height: 56px;
+  }
+  /* Gris por defecto y color al pasar el mouse, como en la tira del home. */
+  /* Alto fijo (no max-height): varios SVG traen solo viewBox, sin
+     tamaño propio, y con max-height colapsan a 0 de ancho. */
+  .ar-logos__item img {
+    height: 38px;
+    max-width: 180px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.72;
+    transition: filter var(--transition), opacity var(--transition);
+  }
+  /* Nombre en texto cuando no hay logo: mismo gris y mismo hover. */
+  .ar-logos__texto {
+    font-family: var(--font-title);
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    color: var(--e-texto-var);
+    opacity: 0.72;
+    transition: color var(--transition), opacity var(--transition);
+  }
+  .ar-logos__item:hover .ar-logos__texto {
+    color: var(--e-azul-600);
+    opacity: 1;
+  }
+  .ar-logos__item:hover img {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ar-logos__pista {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: auto;
+      padding-inline: 1rem;
+    }
+    .ar-logos__item[aria-hidden="true"] {
+      display: none;
+    }
+    .ar-logos__marquee {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+  }
+
+  /* ---- Galería ---- */
+  .ar-galeria {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 640px) {
+    .ar-galeria {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .ar-galeria__item--grande {
+      grid-column: span 2;
+    }
+  }
+  @media (min-width: 1000px) {
+    .ar-galeria {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 15rem;
+    }
+    .ar-galeria__item--grande {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+  }
+  .ar-galeria__item {
+    position: relative;
+    margin: 0;
+    border-radius: var(--e-r-xl);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: var(--e-sup-alta);
+  }
+  @media (min-width: 1000px) {
+    .ar-galeria__item {
+      aspect-ratio: auto;
+    }
+  }
+  .ar-galeria__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms ease;
+  }
+  .ar-galeria__item:hover img {
+    transform: scale(1.04);
+  }
+  .ar-galeria__item figcaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.5rem 1rem 0.85rem;
+    background: linear-gradient(to top, rgba(10, 20, 48, 0.85), transparent);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  /* ---- Temas ---- */
+  .ar-temas {
+    max-width: 60rem;
+    text-align: center;
+  }
+  .ar-temas .ar-chips {
+    justify-content: center;
+  }
+  .ar-blanco {
+    color: #ffffff;
+  }
+  .ar-eyebrow-claro {
+    color: var(--e-celeste);
+    margin-bottom: 0.9rem;
+  }
+  .ar-chips {
+    list-style: none;
+    padding: 0;
+    margin: 1.75rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .ar-chip {
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(169, 200, 245, 0.28);
+    background: rgba(169, 200, 245, 0.06);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: #ffffff;
+  }
+  /* ---- Testimonios ---- */
+  .ar-testi {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 720px) {
+    .ar-testi {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1080px) {
+    .ar-testi {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ar-testi__card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    border-radius: var(--e-r-2xl);
+    background: var(--e-sup);
+    border: 1px solid var(--e-linea);
+    box-shadow: var(--e-sombra-del);
+  }
+  .ar-testi__texto {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--e-texto);
+  }
+  .ar-testi__card footer {
+    display: grid;
+    gap: 0.15rem;
+    font-size: 0.875rem;
+  }
+  .ar-testi__card strong {
+    color: var(--e-texto);
+  }
+  .ar-testi__card footer span {
+    color: var(--e-texto-var);
+  }
+
+  /* ---- Cierre ---- */
+  .ar-cierre {
+    position: relative;
+    overflow: hidden;
+  }
+  .ar-cierre__inner {
+    position: relative;
+    max-width: 52rem;
+    text-align: center;
+    display: grid;
+    gap: 1.25rem;
+    justify-items: center;
+  }
+  .ar-cierre__sub {
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+  }
+  .ar-cierre__ctas {
+    justify-content: center;
+  }
+</style>

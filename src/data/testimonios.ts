@@ -196,6 +196,24 @@ export const fotosMuro: FotoMuro[] = [
   { img: "/images/about/tedindx-charla.jpg", alt: "Pablo Brunet en TEDIND-X" },
 ];
 
+/* Fotos del muro de /programa-ejecutivos: el programa lo dan Pablo y
+   Alejandro, así que van intercaladas una de cada uno. Las de Alejandro
+   salen de su dossier (public/images/rostagno). */
+const R = "/images/rostagno";
+const fotosRostagno: FotoMuro[] = [
+  { img: `${R}/cx-day-argentina.webp`, alt: "Alejandro Rostagno en el CX Day Argentina" },
+  { img: `${R}/sancor-taller.webp`, alt: "Alejandro Rostagno en un taller con Grupo Sancor Seguros" },
+  { img: `${R}/tedx.webp`, alt: "Alejandro Rostagno en TEDxUAP" },
+  { img: `${R}/aguared.webp`, alt: "Alejandro Rostagno con el equipo de Aguared" },
+  { img: `${R}/convergencia.webp`, alt: "Alejandro Rostagno dando una conferencia en Convergencia Santa Fe" },
+  { img: `${R}/teatro-colon.webp`, alt: "Alejandro Rostagno en el cierre de IncuBAte en el Teatro Colón" },
+  { img: `${R}/sancor-equipo.webp`, alt: "Alejandro Rostagno con los participantes de una masterclass" },
+  { img: `${R}/escenario-cx-day.webp`, alt: "Alejandro Rostagno en el escenario del CX Day" },
+];
+export const fotosMuroEjecutivos: FotoMuro[] = fotosMuro.flatMap((foto, i) =>
+  fotosRostagno[i] ? [foto, fotosRostagno[i]] : [foto],
+);
+
 /* ---- Encabezados de cada página ----
    ⚠️ Los comentarios son de charlas y capacitaciones, NO del Programa
    INTEGRA. Por eso ninguno de los dos subtítulos dice que quien escribió
@@ -213,4 +231,34 @@ export const muroIntegra = {
   tituloResalte: "quienes ya trabajaron conmigo",
   subtitulo:
     "Mensajes de participantes de mis charlas y capacitaciones en IA, tal como los escribieron.",
+};
+
+/* /programa-ejecutivos. Menos mensajes que en el home y elegidos por lo
+   que le importa a quien decide: que sea práctico, aplicable al trabajo y
+   que no haga falta ser técnico. Mismo cuidado que arriba: son de charlas
+   y capacitaciones, no del programa ejecutivo. */
+const elegidosEjecutivos = [
+  "Nico R.",
+  "Marce",
+  "Cami R.",
+  "Agus",
+  "Mariano L.",
+  "Fede",
+  "Seba M.",
+  "Gonza C.",
+  "Florencia B.",
+  "LT Emprende",
+  "Ezequiel T.",
+  "Ale G.",
+];
+export const comentariosEjecutivos: Comentario[] = elegidosEjecutivos.map(
+  (n) => comentarios.find((c) => c.nombre === n)!
+);
+
+export const muroEjecutivos = {
+  eyebrow: "Testimonios",
+  titulo: "Lo que se dice",
+  tituloResalte: "de nuestro trabajo.",
+  subtitulo:
+    "Mensajes de participantes de nuestras charlas y capacitaciones en IA, tal como los escribieron.",
 };

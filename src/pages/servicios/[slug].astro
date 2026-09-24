@@ -86,7 +86,7 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
               <h2 class="t-h3">Preguntas frecuentes</h2>
               <div class="faq">
                 {servicio.faq.map((f) => (
-                  <details class="faq__item">
+                  <details class="faq__item" data-suave>
                     <summary>{f.q}</summary>
                     <p class="text-muted">{f.a}</p>
                   </details>
@@ -260,10 +260,27 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     background: var(--blanco);
   }
   .faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     cursor: pointer;
     font-weight: var(--w-subheadline);
     padding: 0.5rem 0;
     list-style: none;
+  }
+  .faq__item summary::after {
+    content: "+";
+    flex-shrink: 0;
+    font-size: 1.25rem;
+    line-height: 1;
+    font-weight: 400;
+    opacity: 0.55;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .faq__item[open]:not(.is-cerrando) summary::after {
+    transform: rotate(45deg);
+    opacity: 0.9;
   }
   .faq__item summary::-webkit-details-marker {
     display: none;
@@ -320,3 +337,9 @@ const otros = servicios.filter((s) => s.slug !== servicio.slug);
     }
   }
 </style>
+
+<script>
+  import { iniciarAcordeonSuave } from "../../scripts/acordeonSuave";
+  iniciarAcordeonSuave();
+  document.addEventListener("astro:page-load", iniciarAcordeonSuave);
+</script>

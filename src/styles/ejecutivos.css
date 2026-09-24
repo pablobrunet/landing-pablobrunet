@@ -144,6 +144,13 @@
   margin-inline: auto;
   padding-inline: clamp(1.15rem, 4.5vw, 1.5rem);
 }
+/* La barra superior es el <Navbar /> del sitio, que usa el contenedor
+   general (más angosto). En el anexo toma las medidas de .ej-wrap para
+   que el logo quede alineado con el texto de la Hero y las secciones. */
+.nav .nav__inner {
+  max-width: 1280px;
+  padding-inline: clamp(1.15rem, 4.5vw, 1.5rem);
+}
 .ej-wrap--angosto {
   max-width: 768px;
 }

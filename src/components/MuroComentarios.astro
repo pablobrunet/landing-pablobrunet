@@ -45,11 +45,12 @@ interface Props {
   fotos?: FotoMuro[];
   eyebrow?: string;
   titulo: string;
-  /* Solo tema INTEGRA: el fragmento que va pintado del título. */
+  /* Temas INTEGRA y ejecutivos: el fragmento que va pintado del título. */
   tituloResalte?: string;
   subtitulo?: string;
-  /* "sitio" usa el encabezado del home; "integra", el de la landing azul. */
-  tema?: "sitio" | "integra";
+  /* "sitio" usa el encabezado del home; "integra", el de la landing azul;
+     "ejecutivos", el de /programa-ejecutivos (tipografía y ritmo .ej-). */
+  tema?: "sitio" | "integra" | "ejecutivos";
   /* Fondo de la sección. En INTEGRA el muro va después del método, que ya
      es hielo: ahí conviene "blanco". */
   fondo?: "blanco" | "tint";
@@ -100,8 +101,12 @@ const tramos = Array.from({ length: filas }, (_, i) =>
 
 /* ---- 3. Cada fila tiene que sobrar de ancho ----
    Si un tramo es corto, media pista mide menos que la pantalla y se ve el
-   hueco entre copia y copia. Se repite el tramo hasta un mínimo. */
-const MINIMO = 7;
+   hueco entre copia y copia. Se repite el tramo hasta un mínimo.
+   Es 6 y no 7: con 6 (cuatro tarjetas y dos fotos) media pista ya mide
+   ~2180px, más que cualquier pantalla común. Con 7, el muro de
+   /programa-ejecutivos (12 comentarios, 6 por fila) repetía el primer
+   comentario de cada fila y se veían duplicados. */
+const MINIMO = 6;
 const completar = (items: Item[]): Item[] => {
   if (items.length === 0) return items;
   /* De a uno y no de a tandas enteras: repetir el tramo completo podía
@@ -130,8 +135,11 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
 <section
   class:list={[
     "muro-sec",
-    "section",
-    { "section--tint": fondo === "tint" },
+    /* En ejecutivos el aire y el fondo salen de ejecutivos.css, como en el
+       resto de las secciones de esa página. */
+    tema === "ejecutivos"
+      ? ["ej-sec", fondo === "tint" ? "ej-sup-baja" : "ej-sup"]
+      : ["section", { "section--tint": fondo === "tint" }],
     /* `i-claro` avisa a integra.css que el fondo es claro: sin eso, el
        resalte del título sale en degradé para fondo oscuro. */
     { "i-claro": tema === "integra" },
@@ -141,7 +149,15 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
 >
   <div class="container">
     {
-      tema === "integra" ? (
+      tema === "ejecutivos" ? (
+        <header class="muro-sec__head muro-sec__head--eje ej-reveal">
+          {eyebrow && <span class="ej-eyebrow">{eyebrow}</span>}
+          <h2 class="ej-h2">
+            {sinMarcas(titulo)} {tituloResalte && <span class="ej-hl">{tituloResalte}</span>}
+          </h2>
+          {subtitulo && <p class="ej-lead">{subtitulo}</p>}
+        </header>
+      ) : tema === "integra" ? (
         <header class="i-head i-head--centro i-reveal">
           {eyebrow && <span class="i-eyebrow">{eyebrow}</span>}
           <h2 class="t-h2">
@@ -360,6 +376,12 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     margin-inline: auto;
     margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
     text-align: center;
+  }
+  .muro-sec__head--eje {
+    display: grid;
+    gap: 1rem;
+    max-width: 48rem;
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
   }
   .muro-sec__sub {
     margin-top: 0.75rem;

@@ -22,7 +22,7 @@ const { faq } = integra;
     <div class="faq i-reveal">
       {
         faq.items.map((f) => (
-          <details class="faq__item" name="faq-integra">
+          <details class="faq__item" name="faq-integra" data-suave>
             <summary>
               <span>{f.q}</span>
               <span class="faq__signo" aria-hidden="true">
@@ -59,11 +59,11 @@ const { faq } = integra;
      en pantalla no se distinguía cuál estaba desplegada. Ahora se tiñe la
      tarjeta entera: fondo un punto más claro, borde marcado y la pregunta
      en celeste. */
-  .faq__item[open] {
+  .faq__item[open]:not(.is-cerrando) {
     border-color: rgba(169, 200, 245, 0.42);
     background: rgba(255, 255, 255, 0.08);
   }
-  .faq__item[open] summary {
+  .faq__item[open]:not(.is-cerrando) summary {
     color: var(--i-celeste);
   }
   .faq__item summary {
@@ -80,7 +80,7 @@ const { faq } = integra;
     color: #ffffff;
     transition: color var(--transition);
   }
-  .faq__item:not([open]) summary:hover {
+  .faq__item:is(:not([open]), .is-cerrando) summary:hover {
     color: var(--i-celeste);
   }
   .faq__item summary::-webkit-details-marker {
@@ -97,7 +97,7 @@ const { faq } = integra;
     color: var(--i-celeste);
     transition: transform var(--transition), background var(--transition), color var(--transition);
   }
-  .faq__item[open] .faq__signo {
+  .faq__item[open]:not(.is-cerrando) .faq__signo {
     transform: rotate(45deg);
     background: var(--i-grad);
     color: #fff;
@@ -109,3 +109,9 @@ const { faq } = integra;
     color: rgba(220, 230, 246, 0.82);
   }
 </style>
+
+<script>
+  import { iniciarAcordeonSuave } from "../../scripts/acordeonSuave";
+  iniciarAcordeonSuave();
+  document.addEventListener("astro:page-load", iniciarAcordeonSuave);
+</script>

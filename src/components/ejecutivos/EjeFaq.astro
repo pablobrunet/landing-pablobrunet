@@ -23,7 +23,7 @@ const { faq } = ejecutivos.home;
     <div class="efq__lista">
       {
         faq.items.map((item, i) => (
-          <details class="efq__item" name="faq-ejecutivos" open={i === 0}>
+          <details class="efq__item" name="faq-ejecutivos" open={i === 0} data-suave>
             <summary class="efq__pregunta">
               <span>{item.q}</span>
               <span class="efq__chev">
@@ -76,7 +76,7 @@ const { faq } = ejecutivos.home;
   .efq__pregunta:hover {
     background: var(--e-sup-media);
   }
-  .efq__item[open] .efq__pregunta {
+  .efq__item[open]:not(.is-cerrando) .efq__pregunta {
     color: var(--e-azul-600);
   }
   .efq__chev {
@@ -86,7 +86,7 @@ const { faq } = ejecutivos.home;
     color: var(--e-texto-var);
     transition: transform var(--transition), color var(--transition);
   }
-  .efq__item[open] .efq__chev {
+  .efq__item[open]:not(.is-cerrando) .efq__chev {
     transform: rotate(180deg);
     color: var(--e-azul-600);
   }
@@ -103,3 +103,9 @@ const { faq } = ejecutivos.home;
     }
   }
 </style>
+
+<script>
+  import { iniciarAcordeonSuave } from "../../scripts/acordeonSuave";
+  iniciarAcordeonSuave();
+  document.addEventListener("astro:page-load", iniciarAcordeonSuave);
+</script>

@@ -1,0 +1,36 @@
+---
+/* =====================================================================
+   /programa-ejecutivos/alejandro-rostagno — MINI SITIO DE ALEJANDRO
+   ---------------------------------------------------------------------
+   Perfil del otro capacitador del programa. Se llega desde el botón
+   "Conocer más" de la sección de equipo de la landing. Mismo navbar,
+   footer y paleta azul que el resto del anexo.
+
+   El recorrido (hero → quién es → logos → galería → temas → testimonios
+   → cierre) vive en components/ejecutivos/EjePerfil.astro y lo comparte
+   con el mini sitio de Pablo. Acá solo cambian los datos (data/rostagno.ts).
+   ===================================================================== */
+import "../../styles/ejecutivos.css";
+import Base from "../../layouts/Base.astro";
+import EjeNavbar from "../../components/ejecutivos/EjeNavbar.astro";
+import EjeFooter from "../../components/ejecutivos/EjeFooter.astro";
+import EjeReveal from "../../components/ejecutivos/EjeReveal.astro";
+import EjePerfil from "../../components/ejecutivos/EjePerfil.astro";
+import { ejecutivos } from "../../data/ejecutivos";
+import { rostagno } from "../../data/rostagno";
+
+const { whatsapp } = ejecutivos;
+---
+
+<Base
+  title={rostagno.seo.title}
+  description={rostagno.seo.description}
+  waMensaje={whatsapp.mensaje}
+  waEtiqueta={whatsapp.etiqueta}
+  icono={ejecutivos.marca.favicon}
+>
+  <EjeNavbar />
+  <EjePerfil datos={rostagno} />
+  <EjeFooter />
+  <EjeReveal />
+</Base>

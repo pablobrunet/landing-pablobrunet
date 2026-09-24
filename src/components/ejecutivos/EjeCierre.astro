@@ -2,96 +2,117 @@
 /* =====================================================================
    CIERRE — /programa-ejecutivos
    ---------------------------------------------------------------------
-   Bloque oscuro final con los dos CTAs: agendar y escribir. Los dos halos
-   difuminados en las esquinas opuestas son los del original.
+   Tarjeta oscura con los dos CTAs (agendar y escribir), apoyada sobre el
+   fondo claro. Va como tarjeta y no a todo el ancho para que no se funda
+   con el pie, que también es oscuro.
    ===================================================================== */
 import { ejecutivos } from "../../data/ejecutivos";
 const { cierre } = ejecutivos.home;
 const { agenda, whatsapp } = ejecutivos.enlaces;
 ---
 
-<section class="ej-oscuro ej-sec eci">
-  <span class="eci__halo eci__halo--a" aria-hidden="true"></span>
-  <span class="eci__halo eci__halo--b" aria-hidden="true"></span>
+<section class="ej-sup eci">
+  <div class="ej-wrap">
+    <div class="eci__card">
+      <span class="eci__halo eci__halo--a" aria-hidden="true"></span>
+      <span class="eci__halo eci__halo--b" aria-hidden="true"></span>
 
-  <div class="ej-wrap eci__inner">
-    <h2 class="ej-h2 eci__titulo">
-      <span class="eci__suave">{cierre.tituloSuave}</span><br />{cierre.titulo}
-    </h2>
-    <p class="eci__sub">{cierre.subtitulo}</p>
+      <div class="eci__inner">
+        <p class="eci__suave">{cierre.tituloSuave}</p>
+        <h2 class="ej-h2 eci__titulo">{cierre.titulo}</h2>
+        <p class="eci__sub">{cierre.subtitulo}</p>
 
-    <div class="eci__ctas">
-      <a
-        class="ej-btn ej-btn--blanco ej-btn--grande"
-        href={agenda}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {cierre.ctaPrimario}
-      </a>
-      <a
-        class="ej-btn ej-btn--fantasma ej-btn--grande"
-        href={whatsapp}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {cierre.ctaSecundario}
-      </a>
+        <div class="eci__ctas">
+          <a
+            class="ej-btn ej-btn--blanco ej-btn--grande"
+            href={agenda}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {cierre.ctaPrimario}
+          </a>
+          <a
+            class="ej-btn ej-btn--fantasma ej-btn--grande"
+            href={whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {cierre.ctaSecundario}
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  /* Arriba sin padding: las preguntas frecuentes ya dejan su aire */
   .eci {
+    padding-bottom: var(--e-sec-y-corta);
+  }
+  .eci__card {
     position: relative;
     overflow: hidden;
+    border-radius: var(--e-r-2xl);
+    background: var(--e-navy);
+    color: #ffffff;
+    padding: clamp(2.75rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+    box-shadow: var(--e-sombra-prem);
   }
   .eci__halo {
     position: absolute;
-    width: 24rem;
-    height: 24rem;
+    width: 26rem;
+    height: 26rem;
     border-radius: 50%;
-    filter: blur(64px);
+    filter: blur(70px);
   }
   .eci__halo--a {
     top: 0;
     right: 0;
-    transform: translate(50%, -50%);
-    background: rgba(76, 134, 245, 0.14);
+    transform: translate(40%, -45%);
+    background: rgba(76, 134, 245, 0.28);
   }
   .eci__halo--b {
     bottom: 0;
     left: 0;
-    transform: translate(-50%, 50%);
-    background: rgba(59, 108, 183, 0.14);
+    transform: translate(-40%, 45%);
+    background: rgba(59, 108, 183, 0.24);
   }
   .eci__inner {
     position: relative;
     z-index: 1;
-    max-width: 56rem;
+    max-width: 46rem;
+    margin-inline: auto;
     text-align: center;
     display: grid;
-    gap: 2rem;
     justify-items: center;
+  }
+  .eci__suave {
+    font-family: var(--font-title);
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
+    font-weight: 500;
+    color: var(--e-celeste);
+    margin-bottom: 0.75rem;
   }
   .eci__titulo {
     color: #ffffff;
-    font-size: clamp(2.1rem, 1.3rem + 3vw, 3.75rem);
-  }
-  .eci__suave {
-    font-weight: 400;
+    font-size: clamp(1.9rem, 1.3rem + 2.2vw, 3rem);
+    line-height: 1.15;
+    text-wrap: balance;
   }
   .eci__sub {
-    max-width: 42rem;
-    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    max-width: 36rem;
+    margin-top: 1.25rem;
+    font-size: clamp(1rem, 0.97rem + 0.2vw, 1.125rem);
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.75);
+    text-wrap: pretty;
   }
   .eci__ctas {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.5rem;
-    padding-top: 1rem;
+    gap: 1rem;
+    margin-top: 2.25rem;
   }
 </style>

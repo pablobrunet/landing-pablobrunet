@@ -24,12 +24,61 @@ export const ejecutivos = {
     inicio: "/programa-ejecutivos",
     programa: "/programa-ejecutivos/programa",
     gracias: "/programa-ejecutivos/agenda-confirmada",
+    rostagno: "/programa-ejecutivos/alejandro-rostagno",
   },
 
   enlaces: {
     agenda: AGENDA,
     whatsapp: WHATSAPP,
-    linkedin: "https://linkedin.com/in/pablobrunet",
+  },
+
+  /* ---- Marca del anexo: Programas AI First ----
+     Las versiones recortadas y livianas de los logos que están en
+     /public/images/programas ai first/ (los originales, cuadrados y con
+     mucho aire alrededor). `monograma` es sólo "pAI", sin la leyenda. */
+  marca: {
+    nombre: "Programas AI First",
+    monograma: "/images/programas-ai-first/mark-color.webp",
+    logoColor: "/images/programas-ai-first/logo-color.webp",
+    logoBlanco: "/images/programas-ai-first/logo-blanco.webp",
+    favicon: "/images/programas-ai-first/favicon.png",
+  },
+
+  /* Menú de la barra superior de las tres páginas. Lo dibuja el mismo
+     <Navbar /> del sitio, así que se ve igual que en pablobrunet.com. Los
+     enlaces a secciones llevan la ruta completa para que funcionen también
+     desde /programa. */
+  nav: {
+    items: [
+      { label: "Soluciones", href: "/programa-ejecutivos#soluciones" },
+      { label: "Resultados", href: "/programa-ejecutivos#resultados" },
+      { label: "Programa ejecutivo", href: "/programa-ejecutivos/programa" },
+      {
+        label: "Quiénes somos",
+        href: "/programa-ejecutivos#equipo",
+        menu: {
+          verTodos: "/programa-ejecutivos#equipo",
+          verTodosLabel: "Conocé al equipo",
+          items: [
+            {
+              label: "Pablo Brunet",
+              desc: "Especialista en IA aplicada, automatización y adopción empresarial.",
+              /* Su mini sitio dentro del anexo (data/pablo.ts) */
+              href: "/programa-ejecutivos/pablo-brunet",
+              icon: "mic",
+            },
+            {
+              label: "Alejandro Rostagno",
+              desc: "Experiencia de cliente, rentabilidad y ejecución comercial.",
+              /* Su mini sitio dentro del anexo (data/rostagno.ts) */
+              href: "/programa-ejecutivos/alejandro-rostagno",
+              icon: "growth",
+            },
+          ],
+        },
+      },
+    ],
+    cta: { label: "Agendar reunión", href: AGENDA, externo: true },
   },
 
   /* Mensaje con el que abre el botón flotante en las páginas del anexo */
@@ -44,40 +93,27 @@ export const ejecutivos = {
      ===================================================================== */
   home: {
     seo: {
-      title: "Programas AI First para empresas | Pablo Brunet",
+      title: "Programas AI First | IA aplicada para equipos directivos",
       description:
-        "Formación aplicada, adopción práctica e implementación de IA orientada a valor, productividad y rentabilidad. Tres programas de cuatro semanas con hoja de ruta de 90 días.",
+        "Capacitación en IA sobre las tareas y los problemas reales de tu empresa. Tres programas de cuatro semanas que terminan con un plan de trabajo para los próximos 90 días.",
     },
 
-    /* Barra de secciones propia del anexo, debajo del navbar del sitio */
-    anclas: [
-      { label: "Soluciones", href: "#soluciones" },
-      { label: "Metodología", href: "#metodologia" },
-      { label: "Programa ejecutivo", href: "/programa-ejecutivos/programa" },
-    ],
 
+    /* El hero abre el relato para los tres programas: adoptar IA no es
+       comprar herramientas, es convertirla en estrategia y en forma de
+       trabajar. Todo lo que sigue en la página desarrolla esa idea. */
     hero: {
-      chip: "Consultoría de vanguardia",
-      titulo: "Convertí a la ",
-      tituloResalte: "Inteligencia Artificial",
-      tituloCierre: " en una ventaja real.",
+      chip: "Programas AI First para empresas",
+      titulo: "Adoptar IA no es sumar herramientas. ",
+      tituloResalte: "Es cambiar cómo trabaja tu empresa.",
+      tituloCierre: "",
       subtitulo:
-        "Ayudamos a líderes a pasar de la confusión a una hoja de ruta concreta y aplicada, transformando la incertidumbre en ventaja competitiva.",
-      ctaPrimario: "Agendar reunión de descubrimiento",
-      ctaSecundario: "Ver nuestra mirada",
-      imagen:
-        "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69e0e5a22c135a8c8387aca0.jpg",
-      imagenAlt: "Equipo trabajando en la adopción de inteligencia artificial",
-      cita: "“La parte más difícil de la inteligencia artificial no es la tecnología, sino lograr que las personas cambien su forma de trabajar”",
-      citaAutor: "Satya Nadella, CEO de Microsoft",
-    },
-
-    video: {
-      titulo: "Nuestra Propuesta en Acción.",
-      subtitulo:
-        "Vea cómo transformamos la incertidumbre en ROI real para su organización.",
-      wistiaId: "uwn7n5dwy9",
-      aspecto: "1.5841584158415842",
+        "Trabajamos con tus líderes, tus equipos comerciales y el resto de la empresa sobre las tareas que hacen todos los días, para que la inteligencia artificial deje de ser algo que alguien probó una vez y empiece a ahorrar tiempo y mejorar resultados.",
+      ctaPrimario: "Agendar una reunión",
+      ctaSecundario: "Ver los programas",
+      /* Foto de fondo a sangre: taller con profesionales en la UISF */
+      imagen: "/images/capacitaciones/uisf.jpg",
+      imagenAlt: "Taller de IA aplicada con líderes de empresa",
     },
 
     /* Las tres tarjetas que giran al pasar el mouse */
@@ -85,81 +121,50 @@ export const ejecutivos = {
       titulo: "La IA ya es una realidad.",
       tituloLinea2: "El problema es cómo adoptarla.",
       subtitulo:
-        "Tres patrones que vemos en casi todas las empresas que aún no lograron que la IA genere valor real.",
+        "Tres situaciones que vemos en casi todas las empresas donde la IA todavía no cambió nada.",
       items: [
         {
           icono: "alerta",
-          titulo: "Parálisis por Análisis",
-          desc: "Demasiadas herramientas, poca claridad estratégica. El equipo prueba en abstracto y la IA nunca llega a los procesos que importan.",
+          titulo: "Parálisis por análisis",
+          desc: "Hay demasiadas herramientas y nadie sabe por dónde empezar. El equipo prueba cosas sueltas y la IA nunca llega al trabajo que de verdad importa.",
           color: "#1747c2",
         },
         {
           icono: "tendencia",
-          titulo: "Inversión sin Retorno",
-          desc: "Licencias activas, capacitaciones genéricas y ningún caso de uso que impacte en productividad, conversión o margen operativo.",
+          titulo: "Inversión sin retorno",
+          desc: "Se pagan licencias y se hacen cursos genéricos, pero nadie vende más, atiende mejor ni ahorra horas gracias a eso.",
           color: "#1e5cf2",
         },
         {
           icono: "cerebro",
-          titulo: "La IA como Amenaza",
-          desc: "La tecnología avanza más rápido que la cultura interna. Los equipos la esquivan en lugar de adoptarla como copiloto de trabajo diario.",
+          titulo: "La IA como amenaza",
+          desc: "La tecnología avanza más rápido que la gente. Los equipos la esquivan por miedo en lugar de usarla como una ayuda en el trabajo de todos los días.",
           color: "#3b6cb7",
         },
       ],
-    },
-
-    /* Grilla tipo bento de cuatro bloques */
-    transformacion: {
-      titulo: "De la confusión a",
-      tituloResalte: "una hoja de ruta concreta.",
-      roadmap: {
-        titulo: "Roadmap de 90 días",
-        desc: "No entregamos manuales teóricos. Cada programa termina con casos de uso priorizados, métricas visibles y un plan concreto para los próximos 90 días.",
-        cta: "Agendar reunión de descubrimiento",
-        imagen:
-          "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69e0cda7a2661c2e8f83c9ee.jpg",
-        imagenAlt: "Roadmap estratégico de adopción de IA",
-      },
-      adopcion: {
-        titulo: "Adopción que se sostiene",
-        desc: "Llevamos lo aprendido del taller al trabajo cotidiano. Prompts reutilizables, pilotos probados y buenas prácticas instaladas en el equipo.",
-      },
-      mentalidad: {
-        titulo: "Mentalidad de Transformación",
-        desc: "Preparamos a los equipos para adoptar la IA como copiloto, no como amenaza. Sin resistencia al cambio, con criterio.",
-      },
-      cierre: {
-        texto:
-          "Integrar Inteligencia Artificial en una organización no se trata de incorporar herramientas, ",
-        textoFuerte:
-          "sino de rediseñar cómo la empresa opera, decide y crece.",
-        imagen:
-          "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69e0cba91bd4245879e34b46.png",
-        imagenAlt: "Implementación humana de IA en empresas",
-      },
     },
 
     pilares: {
       titulo: "Qué nos diferencia",
       tituloLinea2: "de una capacitación común.",
       subtitulo:
-        "Combinamos visión estratégica, práctica operativa y lenguaje de negocio. Buscamos impacto medible en tiempo, calidad, eficiencia y rentabilidad.",
+        "Hablamos el idioma de tu negocio y trabajamos sobre tu día a día. Buscamos que se note: menos horas en tareas repetitivas, mejores respuestas y más rentabilidad.",
       items: [
         {
-          titulo: "Formación Aplicada",
-          desc: "No enseñamos herramientas en abstracto: trabajamos sobre tareas y decisiones reales de tu operación.",
+          titulo: "Sobre tu trabajo real",
+          desc: "No enseñamos herramientas en el aire: practicamos con las tareas y las decisiones de todos los días en tu empresa.",
         },
         {
-          titulo: "Casos de Uso Concretos",
-          desc: "Aterrizamos la IA en funciones y procesos específicos de tu empresa para generar impacto medible.",
+          titulo: "Problemas concretos",
+          desc: "Elegimos problemas puntuales de cada área y los resolvemos con IA durante el programa, midiendo cuánto se gana.",
         },
         {
-          titulo: "Criterio de Adopción",
-          desc: "Construimos criterio de priorización: qué automatizar, qué asistir y qué mantener bajo control humano.",
+          titulo: "Saber qué conviene",
+          desc: "Aprendés a distinguir qué conviene dejarle a la IA, en qué te puede dar una mano y qué tiene que seguir decidiendo una persona.",
         },
         {
-          titulo: "Capacidad Instalada",
-          desc: "El objetivo final es que tu empresa use IA con autonomía y mayor rentabilidad, sin depender de agencias externas.",
+          titulo: "Tecnología y negocio juntos",
+          desc: "Del lado de la IA, alguien que la implementa en empresas. Del lado del negocio, alguien que viene de ventas, atención y rentabilidad. Se nota en cada ejemplo.",
         },
       ],
       fotos: [
@@ -176,23 +181,23 @@ export const ejecutivos = {
 
     /* Franja oscura de cuatro cifras */
     franja: [
-      { valor: "3 Programas", label: "Modulares y adaptables" },
-      { valor: "4 Semanas", label: "Por programa" },
-      { valor: "90 Días", label: "Roadmap al finalizar" },
-      { valor: "100% Aplicado", label: "Sin teoría vacía" },
+      { valor: "3 programas", label: "Adaptados a tu empresa" },
+      { valor: "4 semanas", label: "Por programa" },
+      { valor: "90 días", label: "De plan de trabajo al finalizar" },
+      { valor: "100% aplicado", label: "Sobre tareas reales" },
     ],
 
     programas: {
-      titulo: "Tres programas, una misma lógica.",
+      titulo: "Tres programas. Elegí por dónde empezar.",
       subtitulo:
-        "Cada programa resuelve un nivel distinto de madurez y necesidad. Las empresas pueden tomar uno o recorrer un camino progresivo de adopción.",
+        "Si lo urgente es vender y atender mejor, el de ventas. Si los que tienen que mover el cambio son los jefes, el ejecutivo. Si lo que falta es que la gente sepa usar las herramientas, el de uso intensivo. Se puede tomar uno solo o hacerlos en secuencia.",
       cta: "Consultar programa",
       items: [
         {
-          nombre: "IA en Ventas, Atención y Marketing",
+          nombre: "IA en ventas, atención y marketing",
           publico: "Equipos comerciales, atención al cliente y marketing",
           objetivo:
-            "Mejorar productividad, calidad de respuesta y ejecución comercial",
+            "Responder mejor y más rápido a los clientes, y vender más con el mismo equipo",
           formato: "4 semanas · Talleres aplicados",
           destacado: false,
         },
@@ -200,99 +205,80 @@ export const ejecutivos = {
           nombre: "Programa Ejecutivo AI First",
           publico: "Mandos medios, gerentes y responsables de área",
           objetivo:
-            "Usar IA con criterio, rediseñar procesos y construir un roadmap aplicable de 90 días",
+            "Usar IA con criterio, mejorar la forma de trabajar del área y salir con un plan de 90 días",
           formato: "4 semanas · Talleres aplicados",
           destacado: true,
         },
         {
-          nombre: "Uso Intensivo de Herramientas de IA",
-          publico: "Equipos transversales que necesitan adopción práctica",
+          nombre: "Uso intensivo de herramientas de IA",
+          publico: "Personas de cualquier área que quieren usar IA en su trabajo diario",
           objetivo:
-            "Dominar ChatGPT, Gemini y Claude en tareas reales del trabajo diario",
+            "Manejar ChatGPT, Gemini y Claude en las tareas de todos los días",
           formato: "4 semanas · Formación práctica",
           destacado: false,
         },
       ],
     },
 
-    metodo: {
-      titulo: "Dejamos capacidad instalada",
-      tituloLinea2: "en tu organización.",
-      subtitulo:
-        "No queremos que su empresa dependa de consultores. Queremos que la IA quede integrada en sus procesos, con criterio, métricas y autonomía para seguir creciendo.",
-      pasos: [
-        {
-          titulo: "Marco conceptual",
-          desc: "Ordenamos criterio y lenguaje común. Entendemos qué es la IA, para qué sirve y cuáles son sus límites en el contexto del negocio.",
-        },
-        {
-          titulo: "Talleres hands-on",
-          desc: "Trabajamos sobre casos, ejercicios y aplicaciones reales del equipo. No demostraciones: práctica sobre las tareas de cada rol.",
-        },
-        {
-          titulo: "Compromisos entre sesiones",
-          desc: "Los participantes llevan lo aprendido al trabajo cotidiano. La implementación empieza en la semana 1, no al terminar el programa.",
-        },
-        {
-          titulo: "Hoja de ruta aplicable",
-          desc: "Cerramos con casos de uso priorizados, métricas básicas y un plan concreto de 60 a 90 días para continuar con foco.",
-        },
-      ],
-    },
-
+    /* Qué dejamos en cada empresa: cuatro tarjetas con el círculo que se
+       expande al pasar el mouse (EjeResultados). */
     resultados: {
       titulo: "Qué dejamos en cada empresa.",
       subtitulo:
-        "Cuatro resultados concretos, visibles y sostenibles para que la adopción no quede en entusiasmo inicial sino en una capacidad real de la organización.",
+        "Cuatro resultados concretos para que la IA no quede en el entusiasmo de los primeros días, sino en algo que tu equipo sabe hacer solo.",
       items: [
         {
           icono: "rayo",
           titulo: "Uso concreto de IA",
-          desc: "Los equipos salen usando IA en sus tareas diarias, no con conocimiento declarativo que se olvida.",
+          desc: "Los equipos salen usando IA en sus tareas de todos los días, no con teoría que se olvida a la semana.",
         },
         {
           icono: "diana",
-          titulo: "Pilotos priorizados",
-          desc: "Casos de uso identificados, diseñados y probados con métricas básicas de impacto operativo.",
+          titulo: "Problemas resueltos",
+          desc: "Elegimos problemas puntuales de cada área, los resolvemos con IA durante el programa y medimos cuánto tiempo se ahorra.",
         },
         {
           icono: "escudo",
-          titulo: "Adopción responsable",
-          desc: "Buenas prácticas instaladas para un uso seguro, criterioso y sostenible de la IA en la organización.",
+          titulo: "Uso responsable",
+          desc: "Reglas claras para usar la IA con cuidado y criterio: qué información no se carga, qué se revisa y qué sigue decidiendo una persona.",
         },
         {
           icono: "barras",
-          titulo: "Roadmap aplicable",
-          desc: "Hoja de ruta de 60 a 90 días con quick wins, responsables y próximos pasos claros por área.",
+          titulo: "Hoja de ruta aplicable",
+          desc: "Un plan de 60 a 90 días con los primeros problemas para atacar, quién se ocupa de cada uno y los próximos pasos por área.",
         },
       ],
     },
 
     equipo: {
-      titulo: "Construido desde tecnología, consultoría y formación.",
+      titulo: "Quiénes están detrás.",
       subtitulo:
-        "Una alianza de profesionales con experiencia práctica en transformación empresarial y IA aplicada.",
+        "Uno viene de implementar IA en empresas; el otro, de liderar equipos comerciales y de atención. Los programas combinan las dos miradas.",
       personas: [
         {
           nombre: "Pablo Brunet",
-          rol: "Especialista en IA Aplicada",
+          rol: "Especialista en IA aplicada",
           bio: "Especialista en inteligencia artificial aplicada, automatización y adopción empresarial. Experiencia en consultoría, diseño de procesos comerciales y desarrollo de soluciones de IA para empresas. Speaker y divulgador.",
           img: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69c928e35c9128f3ea7a109d.png",
-          linkedin: "https://linkedin.com/in/pablobrunet",
+          /* "Conocer más": su mini sitio dentro del anexo */
+          masInfo: "/programa-ejecutivos/pablo-brunet",
         },
         {
           nombre: "Alejandro Rostagno",
-          rol: "Experiencia de Cliente y Rentabilidad",
+          rol: "Experiencia de cliente y rentabilidad",
           bio: "Perfil con trayectoria en experiencia de cliente, rentabilidad operativa, liderazgo y ejecución comercial. Enfocado en transformación empresarial con sentido de negocio.",
           img: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69dabf72d7871cddf75e68de.webp",
-          linkedin: "https://ar.linkedin.com/in/alejandro-f-rostagno",
+          /* "Conocer más": su mini sitio dentro del anexo */
+          masInfo: "/programa-ejecutivos/alejandro-rostagno",
         },
       ],
     },
 
     carrusel: {
-      titulo: "Impacto en Acción.",
-      subtitulo: "Momentos de transformación con nuestros clientes.",
+      titulo: "Talleres que ya hicimos.",
+      subtitulo: "Algunos de los talleres que hicimos con empresas.",
+      /* Intercaladas: una foto de un taller de Pablo y una de Alejandro
+         (las de él salen de su dossier, public/images/rostagno) */
       fotos: [
         {
           src: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69c92a8f9dbb423b2be83974.jpg",
@@ -302,11 +288,25 @@ export const ejecutivos = {
           alt: "Workshop estratégico con clientes",
         },
         {
+          src: "/images/rostagno/sancor-buenos-aires.webp",
+          titulo: "Grupo Sancor Seguros: Venta Consultiva en Buenos Aires",
+          subtitulo:
+            "Workshop para vender entendiendo primero qué necesita el cliente, a cargo de Alejandro Rostagno.",
+          alt: "Workshop de venta consultiva con el equipo de Grupo Sancor Seguros en Buenos Aires",
+        },
+        {
           src: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69c92b73e025690abce9f1c5.jpeg",
           titulo: "Workshop de Automatizaciones Inteligentes para Negocios",
           subtitulo:
             "Taller práctico sobre implementación de soluciones automatizadas.",
           alt: "Sesión ejecutiva sobre adopción de IA",
+        },
+        {
+          src: "/images/rostagno/aguared.webp",
+          titulo: "Capacitación in company con el equipo de Aguared",
+          subtitulo:
+            "Taller con el equipo de la empresa, a cargo de Alejandro Rostagno.",
+          alt: "Alejandro Rostagno con el equipo de Aguared después de una capacitación",
         },
         {
           src: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69c92b99386c5a024087fa58.jpg",
@@ -316,22 +316,85 @@ export const ejecutivos = {
           alt: "Equipo trabajando en implementación de IA",
         },
         {
+          src: "/images/rostagno/sancor-equipo.webp",
+          titulo: "Masterclass: Experiencias Memorables",
+          subtitulo:
+            "Experiencia de cliente para equipos de atención y ventas, a cargo de Alejandro Rostagno.",
+          alt: "Alejandro Rostagno con los participantes de la masterclass",
+        },
+        {
           src: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69c576a322e1ed1920ed5532.jpg",
           titulo: "Workshop con Empresas del Parque Industrial Sauce Viejo",
           subtitulo:
             "Ventas modernas y recursos para la transformación de áreas comerciales con IA.",
           alt: "Encuentro de formación aplicada con clientes",
         },
+        {
+          src: "/images/rostagno/sancor-sunchales.webp",
+          titulo: "Grupo Sancor Seguros: Secretos de la Venta Consultiva",
+          subtitulo:
+            "Capacitación y workshop con el equipo comercial en Sunchales, a cargo de Alejandro Rostagno.",
+          alt: "Taller de venta consultiva con el equipo comercial de Grupo Sancor Seguros en Sunchales",
+        },
+        {
+          src: "/images/capacitaciones/camara-estaciones-de-servicio.jpg",
+          titulo: "Taller de IA aplicada en la Cámara de Estaciones de Servicio",
+          subtitulo:
+            "Taller práctico para usar IA en las tareas de todos los días de una estación de servicio.",
+          alt: "Taller de IA aplicada en la Cámara de Estaciones de Servicio",
+        },
+        {
+          src: "/images/rostagno/convergencia.webp",
+          titulo: "Convergencia Santa Fe",
+          subtitulo:
+            "Conferencia para empresarios y líderes de la región, a cargo de Alejandro Rostagno.",
+          alt: "Alejandro Rostagno dando una conferencia en Convergencia Santa Fe",
+        },
+        {
+          src: "/images/capacitaciones/espacio-demos.jpg",
+          titulo: "Taller de Agentes de IA en Espacio DEMOS",
+          subtitulo:
+            "Cómo armar asistentes que hagan solos las tareas repetitivas del negocio.",
+          alt: "Taller de Agentes de IA en Espacio DEMOS",
+        },
+        {
+          src: "/images/rostagno/sancor-taller.webp",
+          titulo: "Grupo Sancor Seguros: IA aplicada a la gestión comercial",
+          subtitulo:
+            "Taller con el equipo comercial, a cargo de Alejandro Rostagno.",
+          alt: "Alejandro Rostagno con el equipo de Grupo Sancor Seguros en un taller",
+        },
+        {
+          src: "/images/capacitaciones/cefose-galvez.jpg",
+          titulo: "IA y Ventas para empresas en el CeFoSe Gálvez",
+          subtitulo:
+            "Taller para usar IA en la venta y en la atención de clientes.",
+          alt: "Capacitación de IA y Ventas en el CeFoSe de Gálvez",
+        },
+        {
+          src: "/images/rostagno/meta.webp",
+          titulo: "Meta: Transformación digital en Salud",
+          subtitulo:
+            "Capacitación sobre transformación digital en el sector salud, a cargo de Alejandro Rostagno.",
+          alt: "Alejandro Rostagno en una capacitación de Meta sobre transformación digital en salud",
+        },
+        {
+          src: "/images/capacitaciones/ceca.jpg",
+          titulo: "Taller de IA aplicada en CECA",
+          subtitulo:
+            "Taller práctico de IA sobre los problemas concretos de cada empresa.",
+          alt: "Taller de IA aplicada en CECA",
+        },
       ],
     },
 
     agenda: {
-      titulo: "Es momento de tomar la delantera.",
+      titulo: "Contanos en qué está tu empresa.",
       subtitulo:
-        "Reservá una sesión privada para discutir sus desafíos actuales. Sin compromisos, sólo perspectiva experta para su próximo gran paso.",
+        "Reservá una charla de 30 minutos para contarnos qué está pasando en tu empresa. Sin compromiso: te vas con una idea clara de por dónde empezar.",
       garantias: [
-        { icono: "escudo", texto: "Confidencialidad Garantizada" },
-        { icono: "calendario", texto: "Sesión estratégica de 30 minutos" },
+        { icono: "escudo", texto: "Confidencialidad garantizada" },
+        { icono: "calendario", texto: "Charla de 30 minutos" },
       ],
       /* El calendario embebido de LeadConnector. El id del iframe es el que
          espera form_embed.js para ajustarle el alto. */
@@ -341,34 +404,34 @@ export const ejecutivos = {
     },
 
     faq: {
-      titulo: "Preguntas Frecuentes.",
+      titulo: "Preguntas frecuentes.",
       items: [
         {
           q: "¿Para qué tipo de empresas son estos programas?",
-          a: "Trabajamos con empresas de cualquier sector y tamaño que quieren adoptar IA de manera práctica y ordenada. La propuesta se adapta a distintos niveles de madurez digital y puede ajustarse según las prioridades estratégicas de cada organización.",
+          a: "Trabajamos con empresas de cualquier rubro y tamaño que quieren empezar a usar IA de forma práctica y ordenada. No importa cuánto hayan avanzado con la tecnología: la propuesta se ajusta a lo que cada empresa necesita resolver.",
         },
         {
           q: "¿Cuánto dura cada programa?",
-          a: "Cada programa tiene una duración de 4 semanas, con sesiones de 1,5 a 2 horas. El foco está en el trabajo aplicado: entre un 60 y 70% del tiempo es práctica hands-on sobre tareas reales del equipo.",
+          a: "Cada programa tiene una duración de 4 semanas, con sesiones de 1,5 a 2 horas. El foco está en el trabajo aplicado: entre un 60 y 70% del tiempo es práctica sobre tareas reales del equipo.",
         },
         {
           q: "¿Necesito un equipo técnico para participar?",
           a: "No. Los programas están diseñados para líderes, gerentes y equipos de negocio, no para perfiles técnicos. El lenguaje es de negocio y el foco está en usar IA para mejorar procesos y resultados reales, no en programar.",
         },
         {
-          q: "¿Qué diferencia a esto de una capacitación de IA común?",
-          a: "No enseñamos herramientas en abstracto. Trabajamos sobre tareas y decisiones reales de su operación. El objetivo no es el conocimiento declarativo, sino la capacidad instalada: que la empresa use IA todos los días con criterio y resultados medibles.",
+          q: "¿Qué queda en la empresa cuando termina el programa?",
+          a: "Cuatro cosas: equipos que ya usan IA en sus tareas diarias; problemas concretos resueltos durante el programa, con números de cuánto tiempo ahorran; reglas claras de uso responsable (qué información se puede cargar, qué hay que revisar y qué no conviene delegar); y un plan de 90 días con las primeras mejoras, quién se ocupa de cada una y los próximos pasos por área.",
         },
       ],
     },
 
     cierre: {
-      tituloSuave: "El futuro no espera.",
-      titulo: "Tu competencia tampoco.",
+      tituloSuave: "¿No sabés por dónde empezar?",
+      titulo: "Lo vemos juntos en 30 minutos.",
       subtitulo:
-        "Transformá tu organización hoy con una perspectiva orientada a generar el mayor impacto en su empresa.",
-      ctaPrimario: "Agendar Sesión Estratégica",
-      ctaSecundario: "Hablá con Nosotros",
+        "Nos contás cómo trabaja tu equipo hoy y te decimos qué programa tiene sentido, o si todavía no es el momento.",
+      ctaPrimario: "Agendar una reunión",
+      ctaSecundario: "Hablá con nosotros",
     },
   },
 
@@ -377,9 +440,9 @@ export const ejecutivos = {
      ===================================================================== */
   programa: {
     seo: {
-      title: "Programa AI First para Ejecutivos | Pablo Brunet",
+      title: "Programa para Ejecutivos | Programas AI First",
       description:
-        "Resumen del Programa AI First para Ejecutivos, orientado a líderes y mandos medios que necesitan aplicar inteligencia artificial a gestión, estrategia y toma de decisiones.",
+        "Resumen del Programa AI First para Ejecutivos, pensado para líderes y mandos medios que necesitan usar inteligencia artificial para gestionar y tomar decisiones.",
     },
 
     hero: {
@@ -387,7 +450,7 @@ export const ejecutivos = {
       titulo: "Programa AI First para Ejecutivos",
       bajada: "IA aplicada a gestión, estrategia y toma de decisiones.",
       subtitulo:
-        "Esta página resume el enfoque, el formato y el recorrido del programa. La propuesta está pensada para líderes y mandos medios que necesitan entender el contexto, bajar oportunidades a su realidad y empezar a incorporarlas a la gestión diaria.",
+        "Esta página resume el enfoque, el formato y el recorrido del programa. Está pensado para líderes y mandos medios que necesitan entender qué está pasando con la IA, ver dónde les sirve en su área y empezar a usarla en el día a día.",
       datos: [
         { label: "Duración", valor: "4 semanas" },
         { label: "Modalidad", valor: "1 encuentro por semana" },
@@ -399,8 +462,8 @@ export const ejecutivos = {
       objetivo: {
         eyebrow: "Objetivo del programa",
         titulo:
-          "Buscamos ejecutivos que entiendan, prioricen y empiecen a accionar con más criterio.",
-        desc: "Ayudamos a que cada participante pueda detectar oportunidades, ordenar prioridades y empezar a liderar cambios reales dentro de su equipo.",
+          "Que cada ejecutivo entienda, elija por dónde empezar y se ponga en marcha.",
+        desc: "Ayudamos a que cada participante encuentre los problemas de su área que la IA puede resolver, decida cuáles atacar primero y empiece a liderar el cambio en su equipo.",
       },
       imagen:
         "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69e253cec56ad27908695e4e.jpeg",
@@ -410,41 +473,41 @@ export const ejecutivos = {
     audiencia: {
       eyebrow: "Para quién está pensado",
       titulo: "Especialmente útil para quienes tienen que",
-      tituloResalte: "traducir contexto en gestión.",
+      tituloResalte: "llevar la IA al día a día de su equipo.",
       subtitulo:
         "El programa está orientado a personas que necesitan entender qué hacer con la IA en su área, sin volverse técnicas ni especialistas.",
       items: [
         "Mandos medios con responsabilidad sobre equipos, procesos o resultados.",
-        "Líderes de área que necesitan bajar la IA a decisiones concretas.",
-        "Perfiles que hoy sienten que tienen que meterse en el tema, pero todavía no lo aterrizaron a la gestión diaria.",
+        "Líderes de área que necesitan llevar la IA a decisiones concretas.",
+        "Personas que sienten que tienen que meterse en el tema, pero todavía no saben cómo usarlo en su trabajo diario.",
       ],
     },
 
     modulos: {
       eyebrow: "Estructura del programa",
       titulo:
-        "Cuatro módulos para pasar de la lectura del contexto a una hoja de ruta inicial.",
+        "Cuatro módulos para pasar de entender qué está pasando a tener un plan de trabajo.",
       subtitulo:
-        "La lógica del recorrido es progresiva: primero entender, después explorar posibilidades, luego aterrizarlo al área y finalmente definir próximos pasos concretos.",
+        "La lógica del recorrido es progresiva: primero entender, después explorar posibilidades, luego llevarlo al área y finalmente definir próximos pasos concretos.",
       items: [
         {
           paso: "Módulo 1",
-          titulo: "Contexto, impacto y cambio de mindset",
+          titulo: "Qué está cambiando y cómo nos afecta",
           icono: "chispa",
           bullets: [
             "Qué está cambiando en el contexto actual y por qué ya no es un tema accesorio.",
             "Cómo leer el impacto de la IA en la empresa, el rol y la forma de decidir.",
-            "Dónde aparecen hoy puntos de dolor, ineficiencias y cuellos de botella.",
+            "Dónde se pierde hoy tiempo, plata o calidad en el trabajo del área.",
             "Qué cambio de mirada necesita un líder para no quedarse solo en la novedad.",
           ],
         },
         {
           paso: "Módulo 2",
-          titulo: "Herramientas, casos de uso y posibilidades reales",
+          titulo: "Herramientas y problemas que resuelven",
           icono: "diana",
           bullets: [
             "Qué herramientas existen hoy y para qué tipo de trabajo sirven mejor.",
-            "Qué casos de uso son realmente aplicables a áreas de negocio y gestión.",
+            "Qué problemas concretos de un área de negocio se pueden resolver hoy con IA.",
             "Cómo evaluar dónde vale la pena avanzar según tareas, procesos o comunicación.",
             "Qué mejoras pueden lograrse en productividad, análisis, atención o coordinación.",
           ],
@@ -462,11 +525,11 @@ export const ejecutivos = {
         },
         {
           paso: "Módulo 4",
-          titulo: "Roadmap de acción",
+          titulo: "Plan de acción",
           icono: "calendario",
           bullets: [
             "Cómo ordenar prioridades y oportunidades de corto plazo.",
-            "Qué quick wins pueden activarse primero dentro de la función o el área.",
+            "Qué mejoras rápidas se pueden poner en marcha primero en el área.",
             "Qué próximos pasos son realistas para empezar a mover después del programa.",
             "Cómo salir con una hoja de ruta inicial clara, ordenada y accionable.",
           ],
@@ -478,7 +541,7 @@ export const ejecutivos = {
       eyebrow: "Trabajo entre sesiones",
       titulo:
         "Una plataforma de recursos para sostener el aprendizaje entre encuentros.",
-      desc: "La idea es que el trabajo no quede solo en el momento de sesión. La plataforma suma materiales, ejercicios y recursos para seguir bajando ideas a la operación real del área.",
+      desc: "La idea es que el trabajo no quede solo en el momento de sesión. La plataforma suma materiales, ejercicios y recursos para seguir aplicando lo aprendido en el trabajo real del área.",
       items: [
         {
           icono: "panel",
@@ -491,7 +554,7 @@ export const ejecutivos = {
         {
           icono: "red",
           texto:
-            "Un espacio para seguir bajando ideas a la operación real del área.",
+            "Un espacio para seguir aplicando lo aprendido en el trabajo real del área.",
         },
       ],
       tarjeta: {
@@ -507,14 +570,14 @@ export const ejecutivos = {
     resultados: {
       eyebrow: "Qué se lleva el participante",
       titulo:
-        "Conocimiento aplicado, criterio para anticiparse y herramientas para derramarlo al equipo.",
+        "Lo que aprende lo aplica en su área y lo puede enseñar a su equipo.",
       subtitulo:
-        "El objetivo final es que cada persona no solo entienda el contexto y las herramientas, sino que pueda incorporarlas a su forma de gestionar, mejorar conversaciones internas y mover mejores prácticas dentro de su área.",
+        "El objetivo final es que cada persona no solo entienda el contexto y las herramientas, sino que pueda incorporarlas a su forma de gestionar, mejorar las conversaciones internas y contagiar buenas prácticas en su área.",
       items: [
         "Comprensión clara del impacto de la IA en el negocio y en el rol.",
         "Herramientas para anticiparse y ordenar mejor decisiones futuras.",
-        "Oportunidades detectadas dentro del área.",
-        "Capacidad de derramar aprendizajes al equipo e incorporarlos a la gestión diaria.",
+        "Una lista de problemas concretos de su área que se pueden resolver con IA.",
+        "Capacidad de enseñarle a su equipo lo aprendido y usarlo en el día a día.",
       ],
       tarjeta: {
         eyebrow: "Certificación",
@@ -543,9 +606,9 @@ export const ejecutivos = {
      ===================================================================== */
   gracias: {
     seo: {
-      title: "Agenda confirmada | Pablo Brunet",
+      title: "Agenda confirmada | Programas AI First",
       description:
-        "Página de confirmación para quienes reservaron su reunión de descubrimiento.",
+        "Página de confirmación para quienes reservaron una reunión.",
     },
 
     hero: {
@@ -559,10 +622,10 @@ export const ejecutivos = {
       beneficios: {
         eyebrow: "Qué te llevás de esta instancia",
         titulo:
-          "Una conversación clara para transformar interés en dirección.",
+          "Una conversación clara para pasar de las ganas a un primer paso concreto.",
         items: [
           "Vamos a ordenar prioridades reales, no ideas sueltas.",
-          "La reunión está pensada desde negocio, no desde humo técnico.",
+          "Hablamos de tu negocio, no de tecnicismos.",
           "Te vas a ir con un siguiente paso mucho más claro.",
         ],
       },
@@ -591,7 +654,7 @@ export const ejecutivos = {
     proximo: {
       izquierda: {
         eyebrow: "Por qué vale esta reunión",
-        titulo: "No es una página más dentro del funnel.",
+        titulo: "No es una reunión de venta más.",
         desc: "Es una instancia para ordenar dónde la IA puede generar valor real en tu negocio y evitar empezar por el lugar equivocado.",
       },
       derecha: {

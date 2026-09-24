@@ -6,10 +6,28 @@ import Logo from "./Logo.astro";
 import Icon from "./Icon.astro";
 import RedLogo from "./RedLogo.astro";
 
-// Construye el contenido de cada desplegable a partir de los datos.
+/* Por defecto dibuja el menú del sitio (site.nav). Los anexos que no
+   deben sacar al visitante hacia otras verticales —/programa-ejecutivos—
+   le pasan sus propios `items`, `cta` y marca (slot "marca"), y así usan
+   la misma barra, con el mismo tamaño, tipografía y comportamiento. */
 type MenuKey = "servicios" | "recursos";
 type MenuItem = { label: string; href: string; desc?: string; icon: string; externo?: boolean };
-const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
+type Menu = { verTodos: string; verTodosLabel?: string; items: MenuItem[] };
+type NavItem = { label: string; href: string; menu?: MenuKey | Menu };
+interface Props {
+  items?: readonly NavItem[];
+  cta?: { label: string; href: string; externo?: boolean };
+  redes?: boolean;
+}
+const {
+  items = site.nav as readonly NavItem[],
+  cta = site.cta,
+  redes = true,
+} = Astro.props;
+const tieneMarca = Astro.slots.has("marca");
+
+// Construye el contenido de cada desplegable a partir de los datos.
+const menus: Record<MenuKey, Menu> = {
   servicios: {
     verTodos: "/servicios",
     items: servicios.map((s) => ({
@@ -25,16 +43,20 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
     items: recursos.map((r) => ({ label: r.titulo, href: r.href, desc: r.descripcion, icon: r.icon })),
   },
 };
+const menuDe = (item: NavItem): Menu | null =>
+  !item.menu ? null : typeof item.menu === "string" ? menus[item.menu] : item.menu;
+const ctaAttrs = cta.externo ? { target: "_blank", rel: "noopener noreferrer" } : {};
 ---
 
 <header class="nav">
   <div class="container nav__inner">
-    <Logo />
+    {tieneMarca ? <slot name="marca" /> : <Logo />}
 
     <nav class="nav__links" aria-label="Principal">
       {
-        site.nav.map((item) =>
-          "menu" in item && item.menu ? (
+        items.map((item) => {
+          const menu = menuDe(item);
+          return menu ? (
             <div class="nav__item" data-dropdown>
               <button class="nav__trigger" aria-expanded="false" aria-haspopup="true">
                 {item.label}
@@ -42,7 +64,7 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
               </button>
               <div class="nav__panel" role="menu">
                 <div class="nav__panel-grid">
-                  {menus[item.menu as MenuKey].items.map((sub) => (
+                  {menu.items.map((sub) => (
                     <a
                       href={sub.href}
                       class="nav__sub"
@@ -60,8 +82,8 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
                     </a>
                   ))}
                 </div>
-                <a href={menus[item.menu as MenuKey].verTodos} class="nav__vertodos">
-                  Ver todo
+                <a href={menu.verTodos} class="nav__vertodos">
+                  {menu.verTodosLabel ?? "Ver todo"}
                   <Icon name="arrow" size={15} />
                 </a>
               </div>
@@ -70,15 +92,15 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
             <a href={item.href} class="nav__link">
               {item.label}
             </a>
-          )
-        )
+          );
+        })
       }
     </nav>
 
     <div class="nav__actions">
       <ul class="nav__social">
         {
-          site.redes.map((r) => (
+          redes && site.redes.map((r) => (
             <li>
               <a href={r.href} aria-label={r.label} target="_blank" rel="noopener">
                 <RedLogo name={r.icon} size={18} />
@@ -87,7 +109,7 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
           ))
         }
       </ul>
-      <a href={site.cta.href} class="btn btn--primary nav__cta">{site.cta.label}</a>
+      <a href={cta.href} class="btn btn--primary nav__cta" {...ctaAttrs}>{cta.label}</a>
       <button class="nav__burger" aria-label="Abrir menú" aria-expanded="false" data-burger>
         <span></span><span></span><span></span>
       </button>
@@ -98,18 +120,19 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
   <div class="nav__mobile" data-mobile-menu hidden>
     <nav aria-label="Móvil">
       {
-        site.nav.map((item) =>
-          "menu" in item && item.menu ? (
+        items.map((item) => {
+          const menu = menuDe(item);
+          return menu ? (
             <div class="m-acc" data-acc>
               <button class="m-acc__head" aria-expanded="false">
                 {item.label}
                 <Icon name="chevron" size={16} />
               </button>
               <div class="m-acc__body" hidden>
-                <a href={menus[item.menu as MenuKey].verTodos} class="m-acc__all">
-                  Ver todo {item.label.toLowerCase()}
+                <a href={menu.verTodos} class="m-acc__all">
+                  {menu.verTodosLabel ?? `Ver todo ${item.label.toLowerCase()}`}
                 </a>
-                {menus[item.menu as MenuKey].items.map((sub) => (
+                {menu.items.map((sub) => (
                   <a
                     href={sub.href}
                     target={sub.externo ? "_blank" : undefined}
@@ -124,10 +147,10 @@ const menus: Record<MenuKey, { verTodos: string; items: MenuItem[] }> = {
             <a href={item.href} class="m-link">
               {item.label}
             </a>
-          )
-        )
+          );
+        })
       }
-      <a href={site.cta.href} class="btn btn--primary">{site.cta.label}</a>
+      <a href={cta.href} class="btn btn--primary" {...ctaAttrs}>{cta.label}</a>
     </nav>
   </div>
 </header>

@@ -1,0 +1,103 @@
+---
+/* =====================================================================
+   FONDO DE HERO — compartido por los heros oscuros de /programa-ejecutivos
+   ---------------------------------------------------------------------
+   Foto a sangre, velo azul noche (opaco donde va el texto, transparente
+   donde se ve la foto) y dos luces que derivan despacio sobre el lado
+   derecho. Va como primer hijo de una sección con position: relative,
+   overflow: hidden e isolation: isolate; se ubica detrás del contenido.
+   ===================================================================== */
+interface Props {
+  src: string;
+  alt: string;
+  /* object-position de la foto: dónde anclarla cuando se recorta */
+  posicion?: string;
+}
+const { src, alt, posicion = "center" } = Astro.props;
+---
+
+<img
+  class="efh__foto"
+  src={src}
+  alt={alt}
+  loading="eager"
+  fetchpriority="high"
+  referrerpolicy="no-referrer"
+  style={`object-position: ${posicion}`}
+/>
+<span class="efh__velo" aria-hidden="true"></span>
+<span class="efh__brillo" aria-hidden="true"></span>
+
+<style>
+  .efh__foto {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .efh__velo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(10, 20, 48, 0.94) 0%, rgba(10, 20, 48, 0.82) 45%, rgba(10, 20, 48, 0.35) 100%),
+      linear-gradient(0deg, rgba(10, 20, 48, 0.6) 0%, transparent 40%);
+  }
+
+  /* Brillo: dos manchas de luz azul/celeste que derivan despacio sobre el
+     lado derecho (la foto). La máscara las apaga hacia la izquierda para
+     que nunca iluminen detrás del texto. Solo se anima transform (barato
+     para el navegador). */
+  .efh__brillo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 40%, #000 70%);
+    mask-image: linear-gradient(90deg, transparent 0%, transparent 40%, #000 70%);
+  }
+  .efh__brillo::before,
+  .efh__brillo::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+  }
+  .efh__brillo::before {
+    width: 55vmax;
+    height: 55vmax;
+    top: -25vmax;
+    right: -5vmax;
+    background: radial-gradient(circle, rgba(70, 130, 240, 0.5) 0%, rgba(70, 130, 240, 0.18) 38%, transparent 65%);
+    animation: efh-deriva-a 14s ease-in-out infinite alternate;
+  }
+  .efh__brillo::after {
+    width: 50vmax;
+    height: 50vmax;
+    bottom: -28vmax;
+    right: -18vmax;
+    background: radial-gradient(circle, rgba(150, 195, 255, 0.4) 0%, rgba(150, 195, 255, 0.14) 38%, transparent 65%);
+    animation: efh-deriva-b 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes efh-deriva-a {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(-14vw, 18vh) scale(1.12); }
+    100% { transform: translate(-4vw, 30vh) scale(0.92); }
+  }
+  @keyframes efh-deriva-b {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(-16vw, -14vh) scale(1.12); }
+    100% { transform: translate(-6vw, -28vh) scale(0.95); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .efh__brillo::before,
+    .efh__brillo::after {
+      animation: none;
+    }
+  }
+</style>
