@@ -130,7 +130,7 @@ export const integra = {
      2 · ESPEJO DEL PROBLEMA (interactivo)
      ===================================================================== */
   espejo: {
-    titulo: "¿Cuántas de estas te pasan hoy?",
+    titulo: "¿Cuántas de éstas te pasan hoy?",
     subtitulo: "Tocá las que reconozcas en tu PyME. Sin registro, sin trampa.",
     dolores: [
       "Cada persona usa herramientas de IA diferentes, sin criterio común.",

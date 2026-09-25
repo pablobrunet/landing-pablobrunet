@@ -10,6 +10,10 @@
    Los dolores y sus respuestas se editan en data/integra.ts, no acá:
    van emparejados uno a uno. Cada tarjeta es un <button aria-pressed>,
    así funciona con teclado y lo anuncia un lector de pantalla.
+
+   En celular el panel queda abajo de las seis tarjetas, fuera de la
+   vista mientras se marcan. Por eso ahí aparece además un contador
+   chico pegado arriba, que acompaña el scroll y se mueve con cada toque.
    ===================================================================== */
 import { integra } from "../../data/integra";
 const { espejo } = integra;
@@ -24,6 +28,11 @@ const total = espejo.dolores.length;
     </header>
 
     <div class="esp" data-espejo data-total={total}>
+      <div class="esp__mini" aria-hidden="true">
+        <span class="esp__mini-num"><strong data-mini-contador>0</strong> de {total}</span>
+        <span class="esp__mini-barra"><span data-mini-barra></span></span>
+      </div>
+
       <ul class="esp__grid">
         {
           espejo.dolores.map((d, i) => (
@@ -90,8 +99,47 @@ const total = espejo.dolores.length;
      natural y se ve el desnivel. */
   .esp__grid {
     display: grid;
-    gap: 0.75rem;
-    grid-auto-rows: 1fr;
+    gap: 0.6rem;
+  }
+
+  /* ---- Contador pegado (sólo celular y tablet) ---- */
+  .esp__mini {
+    position: sticky;
+    top: calc(var(--nav-alto, 64px) + 0.6rem);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-pill);
+    background: var(--i-noche);
+    color: rgba(220, 230, 246, 0.75);
+    font-size: 0.875rem;
+    box-shadow: 0 10px 28px rgba(6, 12, 30, 0.28);
+  }
+  .esp__mini-num {
+    flex-shrink: 0;
+  }
+  .esp__mini-num strong {
+    font-family: var(--font-title);
+    font-size: 1.25rem;
+    font-weight: var(--w-display);
+    color: #fff;
+  }
+  .esp__mini-barra {
+    flex: 1;
+    height: 5px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+  }
+  .esp__mini-barra span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: var(--i-grad);
+    transition: width 380ms cubic-bezier(0.2, 0.7, 0.3, 1);
   }
   .esp__grid > li {
     display: grid;
@@ -106,9 +154,9 @@ const total = espejo.dolores.length;
     width: 100%;
     height: 100%;
     text-align: left;
-    padding: 1.05rem 3rem 1.05rem 1.1rem;
+    padding: 0.9rem 1rem;
     font-family: inherit;
-    font-size: 0.975rem;
+    font-size: 0.95rem;
     line-height: 1.45;
     color: var(--azul-petroleo);
     background: #fff;
@@ -137,6 +185,7 @@ const total = espejo.dolores.length;
     transition: background var(--transition), border-color var(--transition), color var(--transition);
   }
   .dolor__n {
+    display: none;
     position: absolute;
     top: 0.9rem;
     right: 1rem;
@@ -243,11 +292,26 @@ const total = espejo.dolores.length;
     color: rgba(220, 230, 246, 0.85);
   }
   @media (min-width: 700px) {
+    /* Desde dos columnas, todas las tarjetas del mismo alto. En una sola
+       columna no hace falta: igualarlas dejaba huecos en las cortas. */
     .esp__grid {
       grid-template-columns: 1fr 1fr;
+      grid-auto-rows: 1fr;
+      gap: 0.75rem;
+    }
+    .dolor {
+      padding: 1.05rem 3rem 1.05rem 1.1rem;
+      font-size: 0.975rem;
+    }
+    .dolor__n {
+      display: block;
     }
   }
   @media (min-width: 1040px) {
+    /* Con el panel al lado de las tarjetas el contador chico sobra. */
+    .esp__mini {
+      display: none;
+    }
     .esp {
       grid-template-columns: 1.35fr 0.85fr;
       gap: 2rem;
@@ -286,6 +350,8 @@ const total = espejo.dolores.length;
     const contador = raiz.querySelector<HTMLElement>("[data-contador]");
     const barra = raiz.querySelector<HTMLElement>("[data-barra]");
     const barraWrap = raiz.querySelector<HTMLElement>("[data-barra-wrap]");
+    const miniContador = raiz.querySelector<HTMLElement>("[data-mini-contador]");
+    const miniBarra = raiz.querySelector<HTMLElement>("[data-mini-barra]");
 
     /* El texto de cada lectura ya está en el HTML: acá sólo se anota
        cuántas hay marcadas y el CSS enciende la que corresponde. Así el
@@ -295,6 +361,8 @@ const total = espejo.dolores.length;
 
       if (contador) contador.textContent = String(n);
       if (barra) barra.style.width = `${(n / total) * 100}%`;
+      if (miniContador) miniContador.textContent = String(n);
+      if (miniBarra) miniBarra.style.width = `${(n / total) * 100}%`;
       barraWrap?.setAttribute("aria-valuenow", String(n));
       if (marcador) marcador.dataset.n = String(Math.min(n, total));
     }

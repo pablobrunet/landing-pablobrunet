@@ -6,8 +6,9 @@
    el dolor, nunca por "capacidad instalada" — esa idea recién se entiende
    después del reencuadre.
 
-   Va una foto, no un video: todavía no hay VSL grabado. Cuando lo haya,
-   esta misma imagen sirve de portada y se le monta el reproductor encima.
+   La foto va de FONDO, a sangre, con un velo azul noche encima: opaco
+   donde va el texto y más liviano hacia la derecha, donde se ve la gente.
+   Arriba del velo quedan los halos de luz y la trama de puntos.
 
    La imagen se importa desde src/assets (no desde public/) para que pase
    por el optimizador de Astro: el original son 3,2 MB de cámara, y así
@@ -17,11 +18,26 @@ import { Image } from "astro:assets";
 import { integra } from "../../data/integra";
 import portada from "../../assets/hero/integra1.jpg";
 import logoIntegra from "../../assets/integra/integra-lockup-blanco.png";
-const { hero, imagen, anclas } = integra;
+const { hero, anclas } = integra;
 ---
 
 <section class="ih" aria-label="Método INTEGRA">
   <div class="ih__fondo" aria-hidden="true">
+    {/* `width` acota el src de reserva: sin él Astro lo genera al tamaño
+        original (4032px) y esa es la URL que termina en el atributo src. */}
+    <Image
+      class="ih__foto"
+      src={portada}
+      alt=""
+      width={1920}
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      formats={["webp"]}
+      quality={70}
+      loading="eager"
+      fetchpriority="high"
+    />
+    <span class="ih__velo"></span>
     <span class="ih__halo ih__halo--a"></span>
     <span class="ih__halo ih__halo--b"></span>
     <span class="trama ih__trama"></span>
@@ -77,25 +93,6 @@ const { hero, imagen, anclas } = integra;
       </ul>
     </div>
 
-    <div class="ih__media">
-      <figure class="foto">
-        {/* `width` acota el src de reserva: sin él Astro lo genera al
-            tamaño original (4032px = 405 kB) y esa es la URL que termina
-            en el atributo src. Con 1040 el peor caso son 60 kB. */}
-        <Image
-          src={portada}
-          alt={imagen.alt}
-          width={1040}
-          height={780}
-          widths={[520, 760, 1040]}
-          sizes="(min-width: 980px) 42vw, 92vw"
-          formats={["webp"]}
-          quality={72}
-          loading="eager"
-          fetchpriority="high"
-        />
-      </figure>
-    </div>
   </div>
 </section>
 
@@ -105,7 +102,8 @@ const { hero, imagen, anclas } = integra;
     overflow: hidden;
     background: var(--i-noche);
     color: #fff;
-    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 7vw, 5rem);
+    padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3.5rem, 8vw, 6rem);
+    isolation: isolate;
   }
 
   /* ---- Fondo: dos halos de luz + trama fina, todo detrás del contenido ---- */
@@ -113,6 +111,30 @@ const { hero, imagen, anclas } = integra;
     position: absolute;
     inset: 0;
     pointer-events: none;
+  }
+  .ih__foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 70% center;
+  }
+  /* Velo: en celular el texto ocupa todo el ancho, así que va parejo y
+     más cerrado; desde tablet se abre hacia la derecha para que la foto
+     respire del lado donde no hay texto. */
+  .ih__velo {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10, 20, 48, 0.9) 0%, rgba(10, 20, 48, 0.8) 50%, rgba(10, 20, 48, 0.94) 100%);
+  }
+  @media (min-width: 760px) {
+    .ih__velo {
+      background:
+        linear-gradient(90deg, rgba(10, 20, 48, 0.95) 0%, rgba(10, 20, 48, 0.84) 42%, rgba(10, 20, 48, 0.4) 100%),
+        linear-gradient(0deg, rgba(10, 20, 48, 0.65) 0%, transparent 35%);
+    }
   }
   .ih__halo {
     position: absolute;
@@ -144,9 +166,10 @@ const { hero, imagen, anclas } = integra;
 
   .ih__inner {
     position: relative;
-    display: grid;
-    gap: clamp(2.5rem, 5vw, 3.5rem);
-    align-items: center;
+    width: 100%;
+  }
+  .ih__copy {
+    max-width: 44rem;
   }
 
   /* ---- Columna de texto ---- */
@@ -248,67 +271,11 @@ const { hero, imagen, anclas } = integra;
     flex-shrink: 0;
   }
 
-  /* ---- Foto ---- */
-  .foto {
-    position: relative;
-    margin: 0;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: linear-gradient(150deg, #17408f, #0a1430 70%);
-    box-shadow: 0 30px 70px rgba(6, 12, 30, 0.55);
-    transition: transform 500ms cubic-bezier(0.2, 0.7, 0.3, 1),
-      box-shadow 500ms cubic-bezier(0.2, 0.7, 0.3, 1),
-      border-color 500ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  }
-  .foto :global(img) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* El zoom va sobre la imagen y no sobre el marco: así el borde
-       redondeado queda quieto y sólo se acerca el contenido. */
-    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  }
-  /* Velo azul que se disipa al pasar el mouse: la foto "se enciende". */
-  .foto::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(160deg, rgba(30, 92, 242, 0.28), rgba(10, 20, 48, 0.42));
-    opacity: 1;
-    transition: opacity 500ms ease;
-    pointer-events: none;
-  }
-  .foto:hover {
-    transform: translateY(-6px);
-    border-color: rgba(169, 200, 245, 0.45);
-    box-shadow: 0 38px 84px rgba(6, 12, 30, 0.62), 0 0 0 1px rgba(169, 200, 245, 0.18);
-  }
-  .foto:hover :global(img) {
-    transform: scale(1.06);
-  }
-  .foto:hover::after {
-    opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .foto,
-    .foto :global(img),
-    .foto::after {
-      transition: none;
-    }
-    .foto:hover,
-    .foto:hover :global(img) {
-      transform: none;
-    }
-  }
-
   @media (min-width: 980px) {
-    .ih__inner {
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 3.5rem;
+    .ih {
+      min-height: min(92vh, 56rem);
+      display: grid;
+      align-items: center;
     }
   }
 </style>
