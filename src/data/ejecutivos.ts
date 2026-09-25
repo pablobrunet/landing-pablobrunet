@@ -188,9 +188,8 @@ export const ejecutivos = {
     ],
 
     programas: {
-      titulo: "Tres programas. Elegí por dónde empezar.",
-      subtitulo:
-        "Si lo urgente es vender y atender mejor, el de ventas. Si los que tienen que mover el cambio son los jefes, el ejecutivo. Si lo que falta es que la gente sepa usar las herramientas, el de uso intensivo. Se puede tomar uno solo o hacerlos en secuencia.",
+      titulo: "Tres programas.<br />Elegí por dónde empezar.",
+      subtitulo: "Se pueden tomar por separado o uno detrás del otro.",
       cta: "Consultar programa",
       items: [
         {
@@ -451,12 +450,16 @@ export const ejecutivos = {
       bajada: "IA aplicada a gestión, estrategia y toma de decisiones.",
       subtitulo:
         "Esta página resume el enfoque, el formato y el recorrido del programa. Está pensado para líderes y mandos medios que necesitan entender qué está pasando con la IA, ver dónde les sirve en su área y empezar a usarla en el día a día.",
+      /* Botones del hero: escribir y bajar al recorrido */
+      ctaPrimario: "Consultar por WhatsApp",
+      ctaSecundario: "Ver los cuatro módulos",
       datos: [
-        { label: "Duración", valor: "4 semanas" },
-        { label: "Modalidad", valor: "1 encuentro por semana" },
+        { icono: "calendario", label: "Duración", valor: "4 semanas" },
+        { icono: "personas", label: "Modalidad", valor: "1 encuentro por semana" },
         {
+          icono: "rayo",
           label: "Dinámica",
-          valor: "Sesiones de trabajo + ejercicios entre encuentros",
+          valor: "Práctica + ejercicios entre encuentros",
         },
       ],
       objetivo: {
@@ -464,6 +467,12 @@ export const ejecutivos = {
         titulo:
           "Que cada ejecutivo entienda, elija por dónde empezar y se ponga en marcha.",
         desc: "Ayudamos a que cada participante encuentre los problemas de su área que la IA puede resolver, decida cuáles atacar primero y empiece a liderar el cambio en su equipo.",
+        /* Los tres verbos del título, dibujados como un recorrido */
+        pasos: [
+          { verbo: "Entender", desc: "Qué está cambiando y cómo toca a su área." },
+          { verbo: "Elegir", desc: "Qué problemas atacar primero con IA." },
+          { verbo: "Arrancar", desc: "Con un plan concreto y el equipo detrás." },
+        ],
       },
       imagen:
         "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/69e253cec56ad27908695e4e.jpeg",
@@ -477,9 +486,32 @@ export const ejecutivos = {
       subtitulo:
         "El programa está orientado a personas que necesitan entender qué hacer con la IA en su área, sin volverse técnicas ni especialistas.",
       items: [
-        "Mandos medios con responsabilidad sobre equipos, procesos o resultados.",
-        "Líderes de área que necesitan llevar la IA a decisiones concretas.",
-        "Personas que sienten que tienen que meterse en el tema, pero todavía no saben cómo usarlo en su trabajo diario.",
+        {
+          icono: "personas",
+          titulo: "Mandos medios",
+          texto: "Con responsabilidad sobre equipos, procesos o resultados.",
+        },
+        {
+          icono: "diana",
+          titulo: "Líderes de área",
+          texto: "Que necesitan llevar la IA a decisiones concretas.",
+        },
+        {
+          icono: "chispa",
+          titulo: "Quienes saben que tienen que meterse",
+          texto: "Pero todavía no saben cómo usar la IA en su trabajo diario.",
+        },
+      ],
+      /* Dos fotos superpuestas de talleres con equipos de empresa */
+      fotos: [
+        {
+          src: "/images/pablo/estaciones-de-servicio.webp",
+          alt: "Taller de IA con directivos alrededor de una mesa de trabajo",
+        },
+        {
+          src: "/images/rostagno/sancor-taller.webp",
+          alt: "Equipo comercial trabajando durante un taller",
+        },
       ],
     },
 
@@ -492,6 +524,9 @@ export const ejecutivos = {
       items: [
         {
           paso: "Módulo 1",
+          semana: "Semana 1",
+          foto: "/images/pablo/fragmentacion.webp",
+          fotoAlt: "Pablo Brunet explicando qué está cambiando con la IA",
           titulo: "Qué está cambiando y cómo nos afecta",
           icono: "chispa",
           bullets: [
@@ -503,6 +538,9 @@ export const ejecutivos = {
         },
         {
           paso: "Módulo 2",
+          semana: "Semana 2",
+          foto: "/images/pablo/assal.webp",
+          fotoAlt: "Presentación sobre herramientas de IA y los problemas que resuelven",
           titulo: "Herramientas y problemas que resuelven",
           icono: "diana",
           bullets: [
@@ -514,6 +552,9 @@ export const ejecutivos = {
         },
         {
           paso: "Módulo 3",
+          semana: "Semana 3",
+          foto: "/images/pablo/espacio-demos.webp",
+          fotoAlt: "Participantes trabajando en grupos sobre problemas de su área",
           titulo: "Aplicación al área: personas, procesos y sistemas",
           icono: "personas",
           bullets: [
@@ -525,6 +566,9 @@ export const ejecutivos = {
         },
         {
           paso: "Módulo 4",
+          semana: "Semana 4",
+          foto: "/images/capacitaciones/camara-estaciones-de-servicio.jpg",
+          fotoAlt: "Directivos armando su plan de trabajo en una mesa",
           titulo: "Plan de acción",
           icono: "calendario",
           bullets: [
@@ -590,6 +634,17 @@ export const ejecutivos = {
     },
 
     cierre: {
+      /* Tira de fotos que corre sola arriba del llamado final */
+      fotos: [
+        { src: "/images/capacitaciones/uisf.jpg", alt: "Taller en la UISF" },
+        { src: "/images/rostagno/sancor-sunchales.webp", alt: "Taller con Grupo Sancor Seguros en Sunchales" },
+        { src: "/images/capacitaciones/cefose-galvez.jpg", alt: "Capacitación en el CeFoSe de Gálvez" },
+        { src: "/images/rostagno/aguared.webp", alt: "Capacitación in company con Aguared" },
+        { src: "/images/capacitaciones/ceca.jpg", alt: "Taller de IA aplicada en CECA" },
+        { src: "/images/rostagno/sancor-equipo.webp", alt: "Masterclass con equipos de atención y ventas" },
+        { src: "/images/capacitaciones/venado-tuerto.jpg", alt: "Taller en Venado Tuerto" },
+        { src: "/images/rostagno/convergencia.webp", alt: "Conferencia en Convergencia Santa Fe" },
+      ],
       titulo:
         "Adaptamos el programa a la dinámica y estructura de cada empresa.",
       subtitulo:

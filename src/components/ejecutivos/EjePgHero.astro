@@ -3,14 +3,19 @@
    HERO — /programa-ejecutivos/programa
    ---------------------------------------------------------------------
    Mismo fondo que el hero del índice (foto a sangre, velo azul y luces
-   que derivan a la derecha): título, bajada y las tres fichas de formato
-   a la izquierda. Debajo, en una franja clara, el bloque oscuro con el
-   objetivo del programa.
+   que derivan a la derecha): título, bajada, los dos botones y una sola
+   franja de vidrio con las tres fichas de formato, alineadas arriba.
+
+   Debajo, el objetivo del programa: el título a la izquierda y, a la
+   derecha, los tres verbos del objetivo (entender, elegir, arrancar)
+   dibujados como un recorrido numerado.
    ===================================================================== */
 import EjeIcon from "./EjeIcon.astro";
 import EjeFondoHero from "./EjeFondoHero.astro";
+import RedLogo from "../RedLogo.astro";
 import { ejecutivos } from "../../data/ejecutivos";
 const { hero } = ejecutivos.programa;
+const { whatsapp } = ejecutivos.enlaces;
 ---
 
 <section class="ej-noche eph">
@@ -27,33 +32,62 @@ const { hero } = ejecutivos.programa;
       <p class="eph__bajada">{hero.bajada}</p>
       <p class="eph__sub">{hero.subtitulo}</p>
 
-      <div class="eph__datos">
+      <div class="eph__ctas">
+        <a
+          class="ej-btn ej-btn--primary"
+          href={whatsapp}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <RedLogo name="whatsapp" size={18} />
+          {hero.ctaPrimario}
+        </a>
+        <a class="ej-btn ej-btn--fantasma" href="#modulos">
+          {hero.ctaSecundario}
+          <EjeIcon name="flecha" size={18} />
+        </a>
+      </div>
+
+      <dl class="eph__datos">
         {
           hero.datos.map((d) => (
             <div class="eph__dato">
-              <p class="eph__dato-label">{d.label}</p>
-              <p class="eph__dato-valor">{d.valor}</p>
+              <span class="eph__dato-ico">
+                <EjeIcon name={d.icono} size={20} />
+              </span>
+              <div>
+                <dt class="eph__dato-label">{d.label}</dt>
+                <dd class="eph__dato-valor">{d.valor}</dd>
+              </div>
             </div>
           ))
         }
-      </div>
+      </dl>
     </div>
   </div>
 </section>
 
-<section class="ej-sec ej-sec--corta ej-aurora eph-obj">
-  <div class="ej-wrap">
-    <div class="eph__objetivo">
-      <span class="eph__objetivo-luz" aria-hidden="true"></span>
-      <div class="eph__objetivo-cabeza">
-        <span class="eph__objetivo-ico">
-          <EjeIcon name="diana" size={28} />
-        </span>
-        <p class="eph__objetivo-eyebrow">{hero.objetivo.eyebrow}</p>
-        <h2 class="eph__objetivo-titulo">{hero.objetivo.titulo}</h2>
-      </div>
-      <p class="eph__objetivo-desc">{hero.objetivo.desc}</p>
-    </div>
+<section class="ej-sec ej-sup eph-obj">
+  <div class="ej-wrap eph-obj__grid">
+    <header class="eph-obj__copy ej-reveal">
+      <p class="ej-eyebrow">{hero.objetivo.eyebrow}</p>
+      <h2 class="ej-h2">{hero.objetivo.titulo}</h2>
+      <p class="ej-lead">{hero.objetivo.desc}</p>
+    </header>
+
+    <ol class="eph-obj__pasos">
+      {
+        hero.objetivo.pasos.map((p, i) => (
+          <li class="eph-obj__paso ej-reveal" style={`--i:${i}`}>
+            <span class="eph-obj__num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <p class="eph-obj__verbo">{p.verbo}</p>
+              <p class="eph-obj__desc">{p.desc}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
@@ -72,7 +106,14 @@ const { hero } = ejecutivos.programa;
     display: grid;
     gap: 1.5rem;
     justify-items: start;
-    max-width: 44rem;
+    max-width: 46rem;
+  }
+  @media (min-width: 1024px) {
+    /* Las fichas pueden ir más anchas que el texto: así ninguna se parte
+       en tres renglones. */
+    .eph__copy .eph__datos {
+      width: min(56rem, calc(100vw - 3rem));
+    }
   }
 
   .eph__chip {
@@ -93,11 +134,11 @@ const { hero } = ejecutivos.programa;
   .eph__titulo {
     font-family: var(--font-title);
     font-weight: 800;
-    font-size: clamp(2.125rem, 1.4rem + 2.6vw, 3.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    font-size: clamp(2.25rem, 1.4rem + 3vw, 3.9rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
     color: #ffffff;
-    max-width: 18ch;
+    max-width: 16ch;
   }
   .eph__bajada {
     font-family: var(--font-title);
@@ -115,128 +156,158 @@ const { hero } = ejecutivos.programa;
     color: rgba(255, 255, 255, 0.82);
   }
 
-  /* Fichas de formato: vidrio esmerilado sobre el velo */
+  .eph__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Fichas de formato: una sola franja de vidrio dividida en tres, con
+     ícono, etiqueta y valor siempre a la misma altura. */
   .eph__datos {
     display: grid;
-    gap: 1rem;
     width: 100%;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(169, 200, 245, 0.22);
+    background: rgba(10, 20, 48, 0.45);
+    backdrop-filter: blur(12px);
   }
   .eph__dato {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.25rem;
-    border-radius: var(--e-r-xl);
-    border: 1px solid rgba(169, 200, 245, 0.22);
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(10px);
-    transition: transform 500ms ease, background 500ms ease;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1.1rem 1.25rem;
   }
-  .eph__dato:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.11);
+  .eph__dato + .eph__dato {
+    border-top: 1px solid rgba(169, 200, 245, 0.16);
+  }
+  .eph__dato-ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.9rem;
+    background: rgba(76, 134, 245, 0.18);
+    color: var(--e-celeste);
   }
   .eph__dato-label {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--e-celeste);
   }
   .eph__dato-valor {
+    margin-top: 0.2rem;
     font-family: var(--font-title);
     font-weight: 700;
-    line-height: 1.35;
+    font-size: 1rem;
+    line-height: 1.3;
     color: #ffffff;
   }
 
-  /* ---- Objetivo ---- */
-  .eph__objetivo {
-    position: relative;
-    overflow: hidden;
-    display: grid;
-    gap: 1.5rem;
-    border-radius: var(--e-r-3xl);
-    background: var(--e-navy);
-    color: #ffffff;
-    padding: clamp(1.75rem, 4vw, 2.5rem);
-    box-shadow: var(--e-sombra-prem);
-    transition: transform 500ms ease;
-  }
-  .eph__objetivo:hover {
-    transform: translateY(-4px);
-  }
-  .eph__objetivo-luz {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top right, rgba(76, 134, 245, 0.22), transparent 35%);
-  }
-  .eph__objetivo-cabeza,
-  .eph__objetivo-desc {
-    position: relative;
-    z-index: 1;
-  }
-  .eph__objetivo-cabeza {
-    display: grid;
-    gap: 1rem;
-    justify-items: start;
-  }
-  .eph__objetivo-ico {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: var(--e-r-xl);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--e-azul-500);
-    transition: background 500ms ease, transform 500ms ease;
-  }
-  .eph__objetivo:hover .eph__objetivo-ico {
-    background: rgba(255, 255, 255, 0.16);
-    transform: scale(1.1);
-  }
-  .eph__objetivo-eyebrow {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-  }
-  .eph__objetivo-titulo {
-    font-family: var(--font-title);
-    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.875rem);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-  .eph__objetivo-desc {
-    font-size: 1.0625rem;
-    line-height: 1.72;
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  @media (min-width: 640px) {
+  @media (min-width: 720px) {
     .eph__datos {
       grid-template-columns: repeat(3, 1fr);
     }
+    .eph__dato + .eph__dato {
+      border-top: 0;
+      border-left: 1px solid rgba(169, 200, 245, 0.16);
+    }
   }
+
+  /* ---- Objetivo ---- */
+  .eph-obj__grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .eph-obj__copy {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 38rem;
+  }
+
+  .eph-obj__pasos {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    counter-reset: none;
+  }
+  /* El hilo vertical que une los tres pasos */
+  .eph-obj__pasos::before {
+    content: "";
+    position: absolute;
+    left: 2.25rem;
+    top: 2.5rem;
+    bottom: 2.5rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--e-azul-600), var(--e-celeste));
+    opacity: 0.5;
+  }
+  .eph-obj__paso {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem 1.25rem 1rem;
+    border-radius: var(--e-r-xl);
+    border: 1px solid var(--e-linea);
+    background: var(--e-sup-baja);
+    box-shadow: var(--e-sombra-del);
+    transition: transform 400ms ease, box-shadow 400ms ease, border-color 400ms ease;
+  }
+  .eph-obj__paso:hover {
+    transform: translateX(6px);
+    border-color: rgba(30, 92, 242, 0.3);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .eph-obj__num {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-left: 0.25rem;
+    border-radius: 50%;
+    background: var(--e-grad);
+    box-shadow: var(--e-glow);
+    color: #ffffff;
+    font-family: var(--font-title);
+    font-size: 0.875rem;
+    font-weight: 800;
+  }
+  .eph-obj__verbo {
+    font-family: var(--font-title);
+    font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--e-texto);
+  }
+  .eph-obj__desc {
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--e-texto-var);
+  }
+  .eph-obj__paso.ej-reveal.is-listo {
+    transition-delay: calc(var(--i) * 120ms);
+  }
+
   @media (min-width: 1024px) {
-    .eph__objetivo {
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: end;
-      gap: 3rem;
+    .eph-obj__grid {
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 4.5rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .eph__dato,
-    .eph__dato:hover,
-    .eph__objetivo,
-    .eph__objetivo:hover {
+    .eph-obj__paso,
+    .eph-obj__paso:hover {
       transform: none;
       transition: none;
     }

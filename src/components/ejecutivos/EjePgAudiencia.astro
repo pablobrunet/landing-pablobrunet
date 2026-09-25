@@ -1,65 +1,144 @@
 ---
 /* =====================================================================
    PARA QUIÉN ESTÁ PENSADO — /programa-ejecutivos/programa
+   ---------------------------------------------------------------------
+   Dos fotos de talleres superpuestas a la izquierda (la de atrás más
+   grande, la de adelante corrida hacia abajo) y, a la derecha, el título
+   y los tres perfiles como filas con ícono.
    ===================================================================== */
 import EjeIcon from "./EjeIcon.astro";
 import { ejecutivos } from "../../data/ejecutivos";
 const { audiencia } = ejecutivos.programa;
+const [fotoA, fotoB] = audiencia.fotos;
 ---
 
-<section class="ej-sec ej-sec--corta ej-sup epa">
+<section class="ej-sec ej-sup-baja epa">
   <div class="ej-wrap epa__grid">
-    <header class="epa__copy ej-reveal">
-      <p class="ej-eyebrow">{audiencia.eyebrow}</p>
-      <h2 class="ej-h2">
-        {audiencia.titulo} <span class="ej-hl">{audiencia.tituloResalte}</span>
-      </h2>
-      <p class="ej-lead">{audiencia.subtitulo}</p>
-    </header>
+    <div class="epa__fotos ej-reveal">
+      <img
+        class="epa__foto epa__foto--a"
+        src={fotoA.src}
+        alt={fotoA.alt}
+        loading="lazy"
+      />
+      <img
+        class="epa__foto epa__foto--b"
+        src={fotoB.src}
+        alt={fotoB.alt}
+        loading="lazy"
+      />
+      <span class="epa__sello">
+        <EjeIcon name="maletin" size={18} />
+        Sin perfil técnico
+      </span>
+    </div>
 
-    <ul class="epa__items">
-      {
-        audiencia.items.map((item, i) => (
-          <li class="epa__item ej-reveal">
-            <span class="epa__ico">
-              <EjeIcon name={i === 0 ? "personas" : "cheque"} size={20} />
-            </span>
-            <p class="ej-lead">{item}</p>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="epa__copy">
+      <header class="epa__head ej-reveal">
+        <p class="ej-eyebrow">{audiencia.eyebrow}</p>
+        <h2 class="ej-h2">
+          {audiencia.titulo} <span class="ej-hl">{audiencia.tituloResalte}</span>
+        </h2>
+        <p class="ej-lead">{audiencia.subtitulo}</p>
+      </header>
+
+      <ul class="epa__items">
+        {
+          audiencia.items.map((item) => (
+            <li class="epa__item ej-reveal">
+              <span class="epa__ico">
+                <EjeIcon name={item.icono} size={22} />
+              </span>
+              <div>
+                <p class="epa__titulo">{item.titulo}</p>
+                <p class="epa__texto">{item.texto}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </section>
 
 <style>
   .epa__grid {
     display: grid;
-    gap: 2rem;
-    align-items: start;
+    gap: 3rem;
+    align-items: center;
   }
+
+  /* ---- Fotos superpuestas ---- */
+  .epa__fotos {
+    position: relative;
+    padding-bottom: 18%;
+    padding-right: 12%;
+  }
+  .epa__foto {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--e-r-2xl);
+    box-shadow: var(--e-sombra-prem);
+  }
+  .epa__foto--a {
+    aspect-ratio: 4 / 3;
+  }
+  .epa__foto--b {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    aspect-ratio: 4 / 3;
+    border: 6px solid #ffffff;
+    box-shadow: 0 24px 50px -18px rgba(13, 27, 61, 0.45);
+  }
+  .epa__sello {
+    position: absolute;
+    left: 1.25rem;
+    top: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--e-sombra-del);
+    color: var(--e-texto);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+  .epa__sello :global(svg) {
+    color: var(--e-azul-600);
+  }
+
+  /* ---- Texto y perfiles ---- */
   .epa__copy {
     display: grid;
+    gap: 2rem;
+  }
+  .epa__head {
+    display: grid;
     gap: 1.25rem;
-    max-width: 36rem;
   }
   .epa__items {
     display: grid;
-    gap: 1rem;
+    gap: 0.75rem;
   }
   .epa__item {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
-    padding: clamp(1.25rem, 3vw, 1.75rem);
-    border-radius: var(--e-r-2xl);
+    padding: 1rem 1.25rem;
+    border-radius: var(--e-r-xl);
     border: 1px solid var(--e-linea);
-    background: var(--e-sup-baja);
+    background: #ffffff;
     box-shadow: var(--e-sombra-del);
-    transition: transform 500ms ease, box-shadow 500ms ease;
+    transition: box-shadow 400ms ease, border-color 400ms ease;
   }
   .epa__item:hover {
-    transform: translateY(-4px);
+    border-color: rgba(30, 92, 242, 0.3);
     box-shadow: var(--e-sombra-prem);
   }
   .epa__ico {
@@ -68,27 +147,32 @@ const { audiencia } = ejecutivos.programa;
     place-items: center;
     width: 3rem;
     height: 3rem;
-    border-radius: var(--e-r-xl);
+    border-radius: 0.9rem;
     background: var(--e-navy);
     color: #ffffff;
-    transition: background 500ms ease;
+    transition: background 400ms ease;
   }
   .epa__item:hover .epa__ico {
     background: var(--e-azul-600);
   }
+  .epa__titulo {
+    font-family: var(--font-title);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.3;
+    color: var(--e-texto);
+  }
+  .epa__texto {
+    margin-top: 0.15rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--e-texto-var);
+  }
 
   @media (min-width: 1024px) {
     .epa__grid {
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 3rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .epa__item,
-    .epa__item:hover {
-      transform: none;
-      transition: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 4.5rem;
     }
   }
 </style>

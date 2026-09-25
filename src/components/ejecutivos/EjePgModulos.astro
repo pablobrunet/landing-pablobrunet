@@ -2,52 +2,57 @@
 /* =====================================================================
    LOS CUATRO MÓDULOS — /programa-ejecutivos/programa
    ---------------------------------------------------------------------
-   Mismo gesto que las tarjetas de resultados de la landing, pero el relleno
-   entra con un `clip-path` circular desde la esquina superior derecha en
-   vez de un círculo que escala: con tanto texto adentro se lee mejor.
+   Sección oscura con el recorrido semana a semana. Arriba de las tarjetas
+   corre una línea con los cuatro puntos (en escritorio); cada tarjeta
+   lleva una foto de taller con la semana encima, y el título y los puntos
+   debajo. Las tarjetas comparten filas con `subgrid`, así la foto, el
+   título y la lista arrancan a la misma altura en las cuatro aunque los
+   títulos ocupen distinta cantidad de renglones.
    ===================================================================== */
 import EjeIcon from "./EjeIcon.astro";
 import { ejecutivos } from "../../data/ejecutivos";
 const { modulos } = ejecutivos.programa;
-
-const tonos = ["azul", "navy", "denim", "azul"];
 ---
 
-<section class="ej-sec ej-sec--corta ej-sup-baja epm">
-  <div class="ej-wrap">
+<section id="modulos" class="ej-sec ej-noche epm">
+  <span class="epm__halo" aria-hidden="true"></span>
+
+  <div class="ej-wrap epm__inner">
     <header class="epm__head ej-reveal">
-      <p class="ej-eyebrow">{modulos.eyebrow}</p>
-      <h2 class="ej-h2">{modulos.titulo}</h2>
-      <p class="ej-lead">{modulos.subtitulo}</p>
+      <p class="epm__eyebrow">{modulos.eyebrow}</p>
+      <h2 class="ej-h2 epm__h2">{modulos.titulo}</h2>
+      <p class="epm__lead">{modulos.subtitulo}</p>
     </header>
+
+    <ol class="epm__linea" aria-hidden="true">
+      {modulos.items.map((mod) => <li><span>{mod.semana}</span></li>)}
+    </ol>
 
     <div class="epm__grid">
       {
         modulos.items.map((mod, i) => (
-          <article class="epm__card ej-reveal" data-tono={tonos[i]}>
-            <span class="epm__relleno" aria-hidden="true" />
-            <span class="epm__esquina" aria-hidden="true">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-
-            <div class="epm__cuerpo">
-              <span class="epm__ico">
-                <EjeIcon name={mod.icono} size={24} />
-              </span>
-
-              <div class="epm__texto">
-                <p class="epm__paso">{mod.paso}</p>
-                <h3 class="ej-h4 epm__titulo">{mod.titulo}</h3>
-                <ul class="epm__bullets">
-                  {mod.bullets.map((b) => (
-                    <li>
-                      <EjeIcon name="cheque" size={18} />
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+          <article class="epm__card ej-reveal" style={`--i:${i}`}>
+            <div class="epm__foto">
+              <img src={mod.foto} alt={mod.fotoAlt} loading="lazy" />
+              <span class="epm__num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="epm__semana">{mod.semana}</span>
             </div>
+
+            <div class="epm__cabeza">
+              <span class="epm__ico">
+                <EjeIcon name={mod.icono} size={20} />
+              </span>
+              <h3 class="epm__titulo">{mod.titulo}</h3>
+            </div>
+
+            <ul class="epm__bullets">
+              {mod.bullets.map((b) => (
+                <li>
+                  <EjeIcon name="cheque" size={16} />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
           </article>
         ))
       }
@@ -56,172 +61,232 @@ const tonos = ["azul", "navy", "denim", "azul"];
 </section>
 
 <style>
+  .epm {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    scroll-margin-top: var(--nav-alto);
+  }
+  .epm__halo {
+    position: absolute;
+    z-index: -1;
+    top: -12rem;
+    right: -10rem;
+    width: 36rem;
+    height: 36rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30, 92, 242, 0.35), transparent 65%);
+    filter: blur(20px);
+  }
+
   .epm__head {
-    max-width: 48rem;
+    max-width: 50rem;
     display: grid;
     gap: 1.25rem;
     margin-bottom: 3rem;
   }
+  .epm__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--e-celeste);
+  }
+  .epm__h2 {
+    color: #ffffff;
+  }
+  .epm__lead {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ---- Línea de tiempo (sólo escritorio) ---- */
+  .epm__linea {
+    display: none;
+  }
+
+  /* ---- Tarjetas ---- */
   .epm__grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
-  @media (min-width: 768px) {
+  .epm__card {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    overflow: hidden;
+    border-radius: var(--e-r-xl);
+    border: 1px solid rgba(169, 200, 245, 0.16);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+    transition: border-color 400ms ease, box-shadow 400ms ease;
+  }
+  .epm__card:hover {
+    border-color: rgba(76, 134, 245, 0.55);
+    box-shadow: 0 24px 60px -20px rgba(30, 92, 242, 0.45);
+  }
+  .epm__card.ej-reveal.is-listo {
+    transition-delay: calc(var(--i) * 110ms);
+  }
+
+  .epm__foto {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+  }
+  .epm__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms ease;
+  }
+  .epm__card:hover .epm__foto img {
+    transform: scale(1.06);
+  }
+  /* Velo para que el número se lea sobre cualquier foto */
+  .epm__foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 20, 48, 0.1) 30%, rgba(10, 20, 48, 0.85));
+  }
+  .epm__num {
+    position: absolute;
+    z-index: 1;
+    left: 1.1rem;
+    bottom: 0.5rem;
+    font-family: var(--font-title);
+    font-size: 3.25rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+  }
+  .epm__semana {
+    position: absolute;
+    z-index: 1;
+    top: 0.9rem;
+    left: 0.9rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: var(--e-azul-600);
+    color: #ffffff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .epm__cabeza {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.4rem 1.4rem 0;
+  }
+  .epm__ico {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: rgba(76, 134, 245, 0.18);
+    color: var(--e-celeste);
+  }
+  .epm__titulo {
+    font-family: var(--font-title);
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  .epm__bullets {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+    padding: 1.1rem 1.4rem 1.6rem;
+  }
+  .epm__bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .epm__bullets li :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    color: var(--e-azul-500);
+  }
+
+  @media (min-width: 720px) {
     .epm__grid {
       grid-template-columns: 1fr 1fr;
     }
   }
 
-  .epm__card {
-    position: relative;
-    overflow: hidden;
-    min-height: 430px;
-    padding: clamp(1.75rem, 4vw, 2.5rem);
-    border-radius: var(--e-r-2xl);
-    border: 1px solid var(--e-linea);
-    background: #ffffff;
-    box-shadow: 0 18px 40px -28px rgba(13, 27, 61, 0.18);
-    transition: transform 500ms ease, box-shadow 500ms ease;
-  }
-  .epm__card:nth-child(2) {
-    background: var(--e-sup-baja);
-  }
-  .epm__card:nth-child(3) {
-    background: var(--e-sup-alta);
-  }
-  .epm__card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--e-sombra-prem);
-  }
+  @media (min-width: 1180px) {
+    .epm__grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto 1fr;
+      row-gap: 0;
+    }
+    @supports (grid-template-rows: subgrid) {
+      .epm__card {
+        grid-row: span 3;
+        grid-template-rows: subgrid;
+      }
+    }
 
-  .epm__relleno {
-    position: absolute;
-    inset: 0;
-    clip-path: circle(0% at 100% 0%);
-    transition: clip-path 700ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .epm__card:hover .epm__relleno {
-    clip-path: circle(160% at 100% 0%);
-  }
-  .epm__esquina {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-    width: 4rem;
-    height: 4rem;
-    padding: 0.75rem 1rem;
-    border-bottom-left-radius: 1.75rem;
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    transition: width 500ms ease, height 500ms ease;
-  }
-  .epm__card:hover .epm__esquina {
-    width: 5rem;
-    height: 5rem;
-  }
-
-  .epm__card[data-tono="azul"] .epm__relleno,
-  .epm__card[data-tono="azul"] .epm__esquina {
-    background: var(--e-azul-700);
-  }
-  .epm__card[data-tono="navy"] .epm__relleno,
-  .epm__card[data-tono="navy"] .epm__esquina {
-    background: var(--e-navy);
-  }
-  .epm__card[data-tono="denim"] .epm__relleno,
-  .epm__card[data-tono="denim"] .epm__esquina {
-    background: var(--e-denim);
-  }
-
-  .epm__cuerpo {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 2.5rem;
-    height: 100%;
-  }
-  .epm__ico {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: var(--e-r-xl);
-    background: rgba(30, 92, 242, 0.12);
-    color: var(--e-acento);
-    transition: background 500ms ease, color 500ms ease, transform 500ms ease;
-  }
-  .epm__card:hover .epm__ico {
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
-    transform: scale(1.1);
-  }
-  .epm__texto {
-    max-width: 30rem;
-    display: grid;
-    gap: 1.25rem;
-  }
-  .epm__paso {
-    justify-self: start;
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    border: 1px solid var(--e-linea);
-    background: rgba(255, 255, 255, 0.8);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--e-texto);
-    transition: background 300ms ease, color 300ms ease, border-color 300ms ease;
-  }
-  .epm__card:hover .epm__paso {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-  }
-  .epm__titulo {
-    transition: color 300ms ease;
-  }
-  .epm__card:hover .epm__titulo {
-    color: #ffffff;
-  }
-  .epm__bullets {
-    display: grid;
-    gap: 0.75rem;
-  }
-  .epm__bullets li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    font-size: 1rem;
-    line-height: 1.7;
-    color: var(--e-texto-var);
-    transition: color 300ms ease;
-  }
-  .epm__bullets li :global(svg) {
-    flex-shrink: 0;
-    margin-top: 0.25rem;
-    color: var(--e-acento);
-    transition: color 300ms ease;
-  }
-  .epm__card:hover .epm__bullets li {
-    color: rgba(255, 255, 255, 0.85);
-  }
-  .epm__card:hover .epm__bullets li :global(svg) {
-    color: #ffffff;
+    .epm__linea {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      list-style: none;
+    }
+    .epm__linea::before {
+      content: "";
+      position: absolute;
+      left: 0.5rem;
+      right: 0;
+      top: 0.45rem;
+      height: 2px;
+      background: linear-gradient(90deg, var(--e-azul-600), rgba(169, 200, 245, 0.25));
+    }
+    .epm__linea li {
+      position: relative;
+      padding-top: 1.6rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--e-celeste);
+    }
+    .epm__linea li::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: var(--e-azul-600);
+      border: 3px solid var(--e-noche);
+      box-shadow: 0 0 0 2px var(--e-azul-500), 0 0 16px rgba(76, 134, 245, 0.8);
+    }
+    /* En escritorio la semana ya está en la línea: la píldora sobra */
+    .epm__semana {
+      display: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .epm__card,
-    .epm__card:hover,
-    .epm__relleno {
+    .epm__foto img,
+    .epm__card:hover .epm__foto img {
       transform: none;
       transition: none;
     }

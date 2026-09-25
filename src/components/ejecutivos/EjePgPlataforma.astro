@@ -2,157 +2,193 @@
 /* =====================================================================
    TRABAJO ENTRE SESIONES — /programa-ejecutivos/programa
    ---------------------------------------------------------------------
-   Bloque oscuro a la izquierda con los tres recursos; a la derecha la
-   captura de la plataforma. La captura va con `contain`: es una imagen de
-   pantalla y recortarla la arruinaría.
+   Texto y los tres recursos a la izquierda; a la derecha, la captura de
+   la plataforma dentro de un marco de pantalla, apoyada sobre un panel
+   con el degradé azul del anexo y dos etiquetas flotantes. La captura va
+   con `contain`: es una imagen de pantalla y recortarla la arruinaría.
    ===================================================================== */
 import EjeIcon from "./EjeIcon.astro";
-import EjeTarjetaVisual from "./EjeTarjetaVisual.astro";
 import { ejecutivos } from "../../data/ejecutivos";
 const { plataforma } = ejecutivos.programa;
 ---
 
-<section class="ej-sec ej-sec--corta ej-sup epp">
+<section class="ej-sec ej-sup epp">
   <div class="ej-wrap epp__grid">
-    <div class="epp__panel ej-reveal">
-      <span class="epp__luz" aria-hidden="true"></span>
-      <div class="epp__cuerpo">
-        <span class="epp__ico">
-          <EjeIcon name="panel" size={28} />
-        </span>
-        <p class="epp__eyebrow">{plataforma.eyebrow}</p>
-        <h2 class="epp__titulo">{plataforma.titulo}</h2>
-        <p class="epp__desc">{plataforma.desc}</p>
+    <div class="epp__copy">
+      <header class="epp__head ej-reveal">
+        <p class="ej-eyebrow">{plataforma.eyebrow}</p>
+        <h2 class="ej-h2">{plataforma.titulo}</h2>
+        <p class="ej-lead">{plataforma.desc}</p>
+      </header>
 
-        <ul class="epp__items">
-          {
-            plataforma.items.map((item) => (
-              <li>
+      <ul class="epp__items">
+        {
+          plataforma.items.map((item) => (
+            <li class="ej-reveal">
+              <span class="epp__ico">
                 <EjeIcon name={item.icono} size={20} />
-                <span>{item.texto}</span>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+              </span>
+              <span>{item.texto}</span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
-    <EjeTarjetaVisual
-      class="ej-reveal"
-      src={plataforma.tarjeta.src}
-      alt={plataforma.tarjeta.alt}
-      eyebrow={plataforma.tarjeta.eyebrow}
-      titulo={plataforma.tarjeta.titulo}
-      detalle={plataforma.tarjeta.detalle}
-      ajuste="contain"
-      alto="clamp(320px, 42vw, 560px)"
-    />
+    <div class="epp__escena ej-reveal">
+      <span class="epp__trama" aria-hidden="true"></span>
+      <figure class="epp__pantalla">
+        <span class="epp__barra" aria-hidden="true"><i></i><i></i><i></i></span>
+        <img
+          src={plataforma.tarjeta.src}
+          alt={plataforma.tarjeta.alt}
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+      </figure>
+      <span class="epp__flota epp__flota--a">
+        <EjeIcon name="panel" size={16} /> Material por módulo
+      </span>
+      <span class="epp__flota epp__flota--b">
+        <EjeIcon name="cheque" size={16} /> Ejercicios entre encuentros
+      </span>
+    </div>
   </div>
 </section>
 
 <style>
   .epp__grid {
     display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .epp__copy {
+    display: grid;
     gap: 2rem;
-    align-items: stretch;
   }
-  .epp__panel {
-    position: relative;
-    overflow: hidden;
-    height: 100%;
-    padding: clamp(1.75rem, 4vw, 2.5rem);
-    border-radius: var(--e-r-3xl);
-    background: var(--e-navy);
-    color: #ffffff;
-    box-shadow: var(--e-sombra-prem);
-    transition: transform 500ms ease;
-  }
-  .epp__panel:hover {
-    transform: translateY(-4px);
-  }
-  .epp__luz {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      circle at top right,
-      rgba(76, 134, 245, 0.24),
-      transparent 35%
-    );
-  }
-  .epp__cuerpo {
-    position: relative;
-    z-index: 1;
+  .epp__head {
     display: grid;
     gap: 1.25rem;
-  }
-  .epp__ico {
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: var(--e-r-xl);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--e-azul-500);
-    transition: background 500ms ease, transform 500ms ease;
-  }
-  .epp__panel:hover .epp__ico {
-    background: rgba(255, 255, 255, 0.16);
-    transform: scale(1.1);
-  }
-  .epp__eyebrow {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
-  }
-  .epp__titulo {
-    font-family: var(--font-title);
-    font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-  }
-  .epp__desc {
-    font-size: 1.0625rem;
-    line-height: 1.72;
-    color: rgba(255, 255, 255, 0.85);
   }
   .epp__items {
     display: grid;
     gap: 0.75rem;
-    margin-top: 0.25rem;
   }
   .epp__items li {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 1rem;
-    border-radius: var(--e-r-xl);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.08);
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.9);
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--e-texto);
   }
-  .epp__items li :global(svg) {
+  .epp__ico {
     flex-shrink: 0;
-    margin-top: 0.15rem;
-    color: var(--e-azul-500);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.85rem;
+    background: rgba(30, 92, 242, 0.1);
+    color: var(--e-acento);
+  }
+
+  /* ---- Escena: panel azul + pantalla ---- */
+  .epp__escena {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 5vw, 3.5rem);
+    border-radius: var(--e-r-3xl);
+    background: var(--e-grad-marca);
+    box-shadow: var(--e-sombra-prem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .epp__trama {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: radial-gradient(
+      circle at 1.5px 1.5px,
+      rgba(169, 200, 245, 0.28) 1.5px,
+      transparent 0
+    );
+    background-size: 22px 22px;
+    mask-image: radial-gradient(circle at 70% 30%, #000, transparent 70%);
+  }
+  .epp__pantalla {
+    width: min(100%, 26rem);
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: #ffffff;
+    box-shadow: 0 40px 80px -24px rgba(5, 10, 30, 0.6);
+    transform: rotate(-2deg);
+    transition: transform 600ms ease;
+  }
+  .epp__escena:hover .epp__pantalla {
+    transform: rotate(0deg) scale(1.02);
+  }
+  .epp__barra {
+    display: flex;
+    gap: 0.35rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--e-sup-alta);
+  }
+  .epp__barra i {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--e-sup-max);
+  }
+  .epp__pantalla img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .epp__flota {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.95rem;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 14px 30px -10px rgba(5, 10, 30, 0.45);
+    color: var(--e-texto);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .epp__flota :global(svg) {
+    color: var(--e-azul-600);
+  }
+  .epp__flota--a {
+    top: 12%;
+    left: 4%;
+  }
+  .epp__flota--b {
+    bottom: 10%;
+    right: 4%;
+  }
+
+  @media (max-width: 519px) {
+    .epp__flota {
+      display: none;
+    }
   }
 
   @media (min-width: 1024px) {
     .epp__grid {
-      grid-template-columns: 1.02fr 0.98fr;
-      gap: 2.5rem;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 4.5rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .epp__panel,
-    .epp__panel:hover {
-      transform: none;
+    .epp__pantalla,
+    .epp__escena:hover .epp__pantalla {
       transition: none;
     }
   }

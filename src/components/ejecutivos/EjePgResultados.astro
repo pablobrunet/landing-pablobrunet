@@ -2,121 +2,182 @@
 /* =====================================================================
    QUÉ SE LLEVA EL PARTICIPANTE — /programa-ejecutivos/programa
    ---------------------------------------------------------------------
-   Cuatro fichas a la izquierda y, a la derecha, el certificado, que en
-   escritorio queda pegado al scroll mientras se recorren las fichas.
+   A la izquierda el título y las cuatro cosas que se lleva, como lista
+   numerada de una sola columna (en dos columnas angostas el texto se
+   partía en cinco renglones). A la derecha el certificado, apoyado sobre
+   un panel oscuro como si fuera un documento sobre la mesa.
    ===================================================================== */
 import EjeIcon from "./EjeIcon.astro";
-import EjeTarjetaVisual from "./EjeTarjetaVisual.astro";
 import { ejecutivos } from "../../data/ejecutivos";
 const { resultados } = ejecutivos.programa;
+const { tarjeta } = resultados;
 ---
 
-<section class="ej-sec ej-sec--corta ej-sup-baja epr">
-  <div class="ej-wrap">
-    <header class="epr__head ej-reveal">
-      <p class="ej-eyebrow">{resultados.eyebrow}</p>
-      <h2 class="ej-h2">{resultados.titulo}</h2>
-      <p class="ej-lead">{resultados.subtitulo}</p>
-    </header>
+<section class="ej-sec ej-sup-baja epr">
+  <div class="ej-wrap epr__grid">
+    <div class="epr__copy">
+      <header class="epr__head ej-reveal">
+        <p class="ej-eyebrow">{resultados.eyebrow}</p>
+        <h2 class="ej-h2">{resultados.titulo}</h2>
+        <p class="ej-lead">{resultados.subtitulo}</p>
+      </header>
 
-    <div class="epr__grid">
-      <ul class="epr__items">
+      <ol class="epr__items">
         {
           resultados.items.map((item, i) => (
             <li class="epr__item ej-reveal">
-              <span class="epr__ico">
-                <EjeIcon name={i === 0 ? "escudo" : "cheque"} size={20} />
-              </span>
-              <p class="ej-lead">{item}</p>
+              <span class="epr__num">{String(i + 1).padStart(2, "0")}</span>
+              <p>{item}</p>
             </li>
           ))
         }
-      </ul>
-
-      <div class="epr__cert">
-        <EjeTarjetaVisual
-          class="ej-reveal"
-          src={resultados.tarjeta.src}
-          alt={resultados.tarjeta.alt}
-          eyebrow={resultados.tarjeta.eyebrow}
-          titulo={resultados.tarjeta.titulo}
-          detalle={resultados.tarjeta.detalle}
-          ajuste="contain"
-        />
-      </div>
+      </ol>
     </div>
+
+    <figure class="epr__cert ej-reveal">
+      <span class="epr__luz" aria-hidden="true"></span>
+      <img
+        src={tarjeta.src}
+        alt={tarjeta.alt}
+        loading="lazy"
+        referrerpolicy="no-referrer"
+      />
+      <figcaption>
+        <span class="epr__cert-ico">
+          <EjeIcon name="escudo" size={20} />
+        </span>
+        <div>
+          <p class="epr__cert-eyebrow">{tarjeta.eyebrow}</p>
+          <p class="epr__cert-titulo">{tarjeta.titulo}</p>
+          <p class="epr__cert-detalle">{tarjeta.detalle}</p>
+        </div>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
 <style>
-  .epr__head {
-    max-width: 48rem;
-    display: grid;
-    gap: 1.25rem;
-    margin-bottom: 3rem;
-  }
   .epr__grid {
     display: grid;
-    gap: 2rem;
-    align-items: start;
+    gap: 3rem;
+    align-items: center;
   }
-  .epr__items {
+  .epr__copy {
+    display: grid;
+    gap: 2rem;
+  }
+  .epr__head {
     display: grid;
     gap: 1.25rem;
+  }
+
+  .epr__items {
+    display: grid;
   }
   .epr__item {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    min-height: 210px;
-    padding: 1.75rem;
-    border-radius: var(--e-r-2xl);
-    border: 1px solid var(--e-linea);
-    background: #ffffff;
-    box-shadow: var(--e-sombra-del);
-    transition: transform 500ms ease, box-shadow 500ms ease;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding-block: 1.1rem;
+    border-top: 1px solid var(--e-linea);
   }
-  .epr__item:hover {
-    transform: translateY(-4px);
+  .epr__item:last-child {
+    border-bottom: 1px solid var(--e-linea);
+  }
+  .epr__num {
+    flex-shrink: 0;
+    min-width: 2.5rem;
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: var(--e-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .epr__item p {
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: 1.55;
+    color: var(--e-texto);
+  }
+
+  /* ---- Certificado sobre panel oscuro ---- */
+  .epr__cert {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    display: grid;
+    gap: 2rem;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border-radius: var(--e-r-3xl);
+    background: var(--e-navy);
     box-shadow: var(--e-sombra-prem);
   }
-  .epr__ico {
+  .epr__luz {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: radial-gradient(circle at 80% 0%, rgba(76, 134, 245, 0.4), transparent 55%),
+      radial-gradient(circle at 0% 100%, rgba(59, 108, 183, 0.3), transparent 50%);
+  }
+  .epr__cert img {
+    width: 100%;
+    border-radius: 0.75rem;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+    transform: rotate(-2.5deg);
+    transition: transform 600ms ease;
+  }
+  .epr__cert:hover img {
+    transform: rotate(0deg) scale(1.02);
+  }
+  .epr__cert figcaption {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .epr__cert-ico {
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: var(--e-r-xl);
-    background: var(--e-navy);
-    color: #ffffff;
-    transition: background 500ms ease;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.85rem;
+    background: rgba(76, 134, 245, 0.2);
+    color: var(--e-celeste);
   }
-  .epr__item:hover .epr__ico {
-    background: var(--e-azul-600);
+  .epr__cert-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--e-celeste);
+  }
+  .epr__cert-titulo {
+    margin-top: 0.25rem;
+    font-family: var(--font-title);
+    font-size: 1.375rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+  .epr__cert-detalle {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
   }
 
-  @media (min-width: 768px) {
-    .epr__items {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
   @media (min-width: 1024px) {
     .epr__grid {
       grid-template-columns: 1.05fr 0.95fr;
-      gap: 2.5rem;
-    }
-    /* El certificado acompaña el scroll de las fichas. El desplazamiento
-       superior deja libre la barra fija del sitio. */
-    .epr__cert {
-      position: sticky;
-      top: calc(var(--nav-alto) + 2rem);
+      gap: 4.5rem;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .epr__item,
-    .epr__item:hover {
-      transform: none;
+    .epr__cert img,
+    .epr__cert:hover img {
       transition: none;
     }
   }

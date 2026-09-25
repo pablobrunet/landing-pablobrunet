@@ -2,8 +2,10 @@
 /* =====================================================================
    CIERRE — /programa-ejecutivos/programa
    ---------------------------------------------------------------------
-   Un solo CTA: escribir por WhatsApp. La página es informativa, no un
-   embudo de captación, así que no compite con el calendario de la landing.
+   Arriba, una tira de fotos de talleres que corre sola (la lista va dos
+   veces seguidas para que el loop no tenga salto). Debajo, un solo CTA:
+   escribir por WhatsApp. La página es informativa, no un embudo de
+   captación, así que no compite con el calendario de la landing.
    ===================================================================== */
 import RedLogo from "../RedLogo.astro";
 import { ejecutivos } from "../../data/ejecutivos";
@@ -11,7 +13,22 @@ const { cierre } = ejecutivos.programa;
 const { whatsapp } = ejecutivos.enlaces;
 ---
 
-<section class="ej-oscuro ej-sec ej-sec--corta epc">
+<section class="ej-noche epc">
+  <div class="epc__tira" aria-label="Fotos de talleres con empresas">
+    <div class="epc__pista">
+      {
+        [...cierre.fotos, ...cierre.fotos].map((f, i) => (
+          <img
+            src={f.src}
+            alt={i < cierre.fotos.length ? f.alt : ""}
+            aria-hidden={i >= cierre.fotos.length ? "true" : undefined}
+            loading="lazy"
+          />
+        ))
+      }
+    </div>
+  </div>
+
   <span class="epc__halo epc__halo--a" aria-hidden="true"></span>
   <span class="epc__halo epc__halo--b" aria-hidden="true"></span>
 
@@ -19,12 +36,12 @@ const { whatsapp } = ejecutivos.enlaces;
     <h2 class="ej-h2 epc__titulo">{cierre.titulo}</h2>
     <p class="epc__sub">{cierre.subtitulo}</p>
     <a
-      class="ej-btn ej-btn--blanco"
+      class="ej-btn ej-btn--primary ej-btn--grande"
       href={whatsapp}
       target="_blank"
       rel="noopener noreferrer"
     >
-      <RedLogo name="whatsapp" size={18} />
+      <RedLogo name="whatsapp" size={20} />
       {cierre.cta}
     </a>
   </div>
@@ -34,30 +51,65 @@ const { whatsapp } = ejecutivos.enlaces;
   .epc {
     position: relative;
     overflow: hidden;
+    isolation: isolate;
+    padding-bottom: var(--e-sec-y);
   }
+
+  /* ---- Tira de fotos ---- */
+  .epc__tira {
+    overflow: hidden;
+    padding-block: 2rem 0;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .epc__pista {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    animation: epc-correr 60s linear infinite;
+  }
+  .epc__tira:hover .epc__pista {
+    animation-play-state: paused;
+  }
+  .epc__pista img {
+    width: clamp(220px, 24vw, 340px);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 1rem;
+    opacity: 0.85;
+    transition: opacity 300ms ease;
+  }
+  .epc__pista img:hover {
+    opacity: 1;
+  }
+  @keyframes epc-correr {
+    to {
+      transform: translateX(calc(-50% - 0.5rem));
+    }
+  }
+
   .epc__halo {
     position: absolute;
-    width: 20rem;
-    height: 20rem;
+    z-index: -1;
+    width: 28rem;
+    height: 28rem;
     border-radius: 50%;
     filter: blur(64px);
   }
   .epc__halo--a {
-    top: 0;
+    bottom: 0;
     right: 0;
-    transform: translate(50%, -50%);
-    background: rgba(76, 134, 245, 0.14);
+    transform: translate(40%, 40%);
+    background: rgba(30, 92, 242, 0.3);
   }
   .epc__halo--b {
     bottom: 0;
     left: 0;
     transform: translate(-50%, 50%);
-    background: rgba(59, 108, 183, 0.14);
+    background: rgba(59, 108, 183, 0.25);
   }
   .epc__inner {
-    position: relative;
-    z-index: 1;
     max-width: 56rem;
+    margin-top: clamp(3rem, 6vw, 5rem);
     text-align: center;
     display: grid;
     gap: 1.5rem;
@@ -71,5 +123,14 @@ const { whatsapp } = ejecutivos.enlaces;
     font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
     line-height: 1.72;
     color: rgba(255, 255, 255, 0.78);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .epc__pista {
+      animation: none;
+    }
+    .epc__tira {
+      overflow-x: auto;
+    }
   }
 </style>
