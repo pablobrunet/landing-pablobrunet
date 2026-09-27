@@ -301,17 +301,35 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
         };
         fila.addEventListener("pointerup", soltar);
         fila.addEventListener("pointercancel", soltar);
-        /* El dedo ya scrollea solo (overflow-x + touch-action: pan-x):
-           acá solo se anota que hubo interacción, para frenar el
-           auto-scroll mientras dura. */
-        fila.addEventListener("touchstart", marcarInteraccion, { passive: true });
-        fila.addEventListener("touchmove", marcarInteraccion, { passive: true });
-        /* Solo un gesto horizontal de verdad (trackpad): un scroll vertical
-           de la página pasando por acá no tiene por qué frenar el muro. */
+        /* El dedo ya scrollea solo (overflow-x + touch-action: pan-x).
+           Solo se frena el auto-scroll si el gesto es de verdad horizontal:
+           apoyar el dedo para bajar por la página no tiene que pararlo. */
+        let toqueX = 0;
+        let toqueY = 0;
+        fila.addEventListener(
+          "touchstart",
+          (e) => {
+            toqueX = e.touches[0].clientX;
+            toqueY = e.touches[0].clientY;
+          },
+          { passive: true }
+        );
+        fila.addEventListener(
+          "touchmove",
+          (e) => {
+            const dx = Math.abs(e.touches[0].clientX - toqueX);
+            const dy = Math.abs(e.touches[0].clientY - toqueY);
+            if (dx > dy) marcarInteraccion();
+          },
+          { passive: true }
+        );
+        /* Ídem con la ruedita o el trackpad: un scroll vertical de la
+           página pasando por acá trae algo de deltaX suelto y no tiene por
+           qué frenar el muro. Solo cuenta si domina lo horizontal. */
         fila.addEventListener(
           "wheel",
           (e) => {
-            if (Math.abs(e.deltaX) > 0) marcarInteraccion();
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) marcarInteraccion();
           },
           { passive: true }
         );
@@ -332,14 +350,8 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
          recorre solo a mano (arrastre o dedo). */
       if (reducido) return;
 
-      let sobreMouse = false;
-      muro.addEventListener("pointerenter", (e) => {
-        if (e.pointerType === "mouse") sobreMouse = true;
-      });
-      muro.addEventListener("pointerleave", (e) => {
-        if (e.pointerType === "mouse") sobreMouse = false;
-      });
-
+      /* Pasar el mouse por encima NO frena el muro: solo lo detiene
+         agarrarlo y arrastrarlo. */
       let anterior: number | null = null;
       const paso = (t: number) => {
         if (anterior === null) anterior = t;
@@ -347,7 +359,7 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
         anterior = t;
         const ahora = performance.now();
         for (const carril of carriles) {
-          if (sobreMouse || carril.estaArrastrando() || ahora < carril.pausadoHasta()) continue;
+          if (carril.estaArrastrando() || ahora < carril.pausadoHasta()) continue;
           const mitad = carril.mitad;
           if (!mitad) continue;
           const velocidad = mitad / carril.duracion;
