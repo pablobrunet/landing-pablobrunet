@@ -90,7 +90,7 @@ export const site = {
        ya se lee en la imagen ("OpenAI Select Partner"), sino que aporta el
        dato que falta: que es una acreditación formal. El bloque enlaza a la
        explicación completa en /sobre-mi. */
-    badgeImg: "/images/credenciales/openai-partner-network.png",
+    badgeImg: "/images/credenciales/openai-select-partner-blanco.png",
     badgeAlt: "Insignia oficial OpenAI Select Partner",
     badgeTitulo: "Acreditación oficial",
     badgeDetalle: "Partner del ecosistema de OpenAI",
@@ -103,7 +103,7 @@ export const site = {
     // Dos párrafos: el primero abre, el segundo desarrolla.
     subtitulo: [
       "Acompaño a empresas que quieren trabajar mejor, decidir más rápido y crecer con inteligencia artificial.",
-      "Ayudo a líderes y organizaciones a transformar su manera de trabajar, desarrollar nuevas capacidades y convertir la inteligencia artificial en una ventaja real. Trabajo para que la IA deje de ser un tema de conversación y empiece a mover resultados.",
+      "Trabajo para que la IA deje de ser un tema de conversación y empiece a mover resultados.",
     ],
     ctas: [
       { label: "Quiero una charla", href: "/servicios/speaker-y-capacitador", primary: true },

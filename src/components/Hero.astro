@@ -1,6 +1,5 @@
 ---
 import { site } from "../data/site";
-import Retrato from "./Retrato.astro";
 import Icon from "./Icon.astro";
 import { resaltar } from "../lib/texto";
 const { hero } = site;
@@ -37,8 +36,8 @@ const { hero } = site;
           class="hero__cred-img"
           src={hero.badgeImg}
           alt={hero.badgeAlt}
-          width="226"
-          height="106"
+          width="816"
+          height="311"
         />
         <span class="hero__cred-txt">
           <strong>{hero.badgeTitulo}</strong>
@@ -50,10 +49,6 @@ const { hero } = site;
 
       <div class="hero__sub">
         {hero.subtitulo.map((par) => <p class="t-subhead text-muted">{par}</p>)}
-      </div>
-
-      <div class="hero__disciplinas">
-        {site.disciplinas.map((d) => <span class="chip">{d}</span>)}
       </div>
 
       <div class="hero__ctas">
@@ -69,8 +64,17 @@ const { hero } = site;
     </div>
 
     <div class="hero__media">
-      <!-- Retrato recortado; es la única imagen del sitio sin hover. -->
-      <Retrato src={hero.img} alt={`Retrato de ${site.nombre}`} hover={false} />
+      <!-- Retrato recortado, sin marco: apoya en el borde inferior del hero,
+           igual que la foto de fondo. -->
+      <img
+        class="hero__retrato"
+        src={hero.img}
+        alt={`Retrato de ${site.nombre}`}
+        width="1024"
+        height="1024"
+        loading="eager"
+        decoding="async"
+      />
     </div>
   </div>
 </section>
@@ -79,7 +83,10 @@ const { hero } = site;
   .hero {
     position: relative;
     overflow: hidden;
-    padding-block: clamp(2.5rem, 6vw, 5rem);
+    /* Sin padding abajo: el retrato apoya en el mismo borde que la foto de
+       fondo. El texto recupera ese aire con su propio padding. */
+    padding-top: clamp(2.5rem, 6vw, 5rem);
+    padding-bottom: 0;
     background: var(--azul-petroleo);
   }
   .hero__fondo {
@@ -135,39 +142,37 @@ const { hero } = site;
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
-    padding: 0.5rem 0.9rem 0.5rem 0.5rem;
-    border: 1px solid var(--borde);
-    border-radius: var(--radius);
-    background: var(--blanco);
-    transition: border-color var(--transition), box-shadow var(--transition);
+    /* Sin ficha: se lee como una línea de texto más, apoyada sobre la foto. */
+    transition: opacity var(--transition);
   }
   .hero__cred:hover {
-    border-color: var(--verde-acento);
-    box-shadow: var(--shadow-sm);
+    opacity: 0.8;
   }
   /* Alto fijo y ancho automático: la insignia nunca se recorta ni se deforma. */
   .hero__cred-img {
-    height: 52px;
+    height: 30px;
     width: auto;
     object-fit: contain;
     flex-shrink: 0;
+    /* Versión del sello sólo con logo y letras en blanco, sin marco ni fondo. */
+    opacity: 0.9;
   }
   .hero__cred-txt {
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
     padding-left: 0.85rem;
-    border-left: 1px solid var(--borde);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
     line-height: 1.3;
   }
   .hero__cred-txt strong {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: var(--w-headline);
-    color: var(--azul-petroleo);
+    color: rgba(255, 255, 255, 0.9);
   }
   .hero__cred-txt span {
-    font-size: 0.78rem;
-    color: var(--texto-suave);
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   /* En pantallas chicas la etiqueta pasa debajo para no comprimir la insignia. */
@@ -176,7 +181,6 @@ const { hero } = site;
       flex-direction: column;
       align-items: flex-start;
       gap: 0.6rem;
-      padding: 0.65rem 0.9rem;
     }
     .hero__cred-txt {
       padding-left: 0;
@@ -186,6 +190,8 @@ const { hero } = site;
   .hero__title {
     margin: 1.25rem 0 1rem;
     color: var(--blanco);
+    /* Un punto por debajo del display general. */
+    font-size: clamp(2rem, 1.25rem + 2.6vw, 3.2rem);
   }
   .hero__sub {
     max-width: 52ch;
@@ -199,21 +205,6 @@ const { hero } = site;
   .hero__sub p + p {
     margin-top: 0.85rem;
   }
-  .hero__disciplinas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-  }
-  .chip {
-    font-size: var(--fs-caption);
-    font-weight: var(--w-subheadline);
-    color: rgba(255, 255, 255, 0.88);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 0.35rem 0.8rem;
-    border-radius: var(--radius-pill);
-  }
   .hero__ctas {
     display: flex;
     flex-wrap: wrap;
@@ -224,16 +215,48 @@ const { hero } = site;
     max-width: 570px;
     width: 100%;
     justify-self: center;
+    /* Siempre pegado abajo, aunque el texto sea más alto que la foto. */
+    align-self: end;
+  }
+  .hero__retrato {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* drop-shadow sigue el contorno del PNG (box-shadow dibujaría la caja):
+       un halo oscuro y amplio que despega la figura del auditorio del fondo. */
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 28px rgba(0, 0, 0, 0.45));
   }
 
   @media (min-width: 900px) {
-    /* La columna manda sobre el max-width: para agrandar el retrato hay que
-       darle más proporción de la grilla, no sólo subir el max-width. */
+    /* Columna de texto un poco más ancha, para que el título corra más a la
+       derecha; el retrato ya no depende del ancho de su columna. */
     .hero__inner {
-      grid-template-columns: 0.92fr 1.08fr;
+      grid-template-columns: 1.08fr 0.92fr;
     }
+    .hero__copy {
+      max-width: 680px;
+      /* Mismo aire abajo que arriba: el texto queda centrado respecto de la foto. */
+      padding-bottom: clamp(2.5rem, 6vw, 5rem);
+    }
+    /* El retrato toma el alto de la columna de texto: arranca apenas debajo de
+       la insignia y apoya en el borde inferior. El ancho sale solo de la
+       proporción (nunca se estira) y se centra en su columna: los márgenes
+       transparentes del PNG pueden desbordar hacia el hueco entre columnas. */
     .hero__media {
-      justify-self: end;
+      max-width: none;
+      justify-self: stretch;
+      align-self: stretch;
+      position: relative;
+    }
+    .hero__retrato {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: auto;
+      max-width: none;
+      /* Puede subir por encima de la insignia, dentro del aire superior del hero. */
+      height: calc(100% + 3.5rem);
+      transform: translateX(-50%);
     }
   }
 </style>
