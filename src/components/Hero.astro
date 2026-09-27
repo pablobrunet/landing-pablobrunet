@@ -6,7 +6,24 @@ import { resaltar } from "../lib/texto";
 const { hero } = site;
 ---
 
-<section class="hero" aria-label="Presentación">
+<section class="hero section--dark" aria-label="Presentación">
+  <!-- Foto de una charla (Foro Campo IA) como fondo, bajo un velo azul petróleo que se carga
+       más del lado del texto. La foto es oscura: sobre fondo oscuro se lee
+       entera, y el texto pasa a blanco. Es decorativa: alt vacío. -->
+  <div class="hero__fondo" aria-hidden="true">
+    <img
+      class="hero__foto"
+      src="/images/pablo/foro-campo-ia.webp"
+      alt=""
+      width="1376"
+      height="680"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+    <span class="hero__velo"></span>
+  </div>
+
   <!-- Trama abajo a la izquierda, del lado del texto: nada de decoración
        cruzando por detrás del retrato. -->
   <span class="hero__trama trama" aria-hidden="true"></span>
@@ -63,9 +80,33 @@ const { hero } = site;
     position: relative;
     overflow: hidden;
     padding-block: clamp(2.5rem, 6vw, 5rem);
+    background: var(--azul-petroleo);
+  }
+  .hero__fondo {
+    position: absolute;
+    inset: 0;
+  }
+  .hero__foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Encuadre sobre el escenario y el público, no sobre el techo. */
+    object-position: center 60%;
+  }
+  /* Velo: petróleo denso detrás del texto (contraste AA de sobra para el
+     blanco) y más liviano hacia la derecha, donde el auditorio se ve. */
+  .hero__velo {
+    position: absolute;
+    inset: 0;
     background:
-      radial-gradient(120% 80% at 100% 0%, rgba(59, 163, 154, 0.08), transparent 55%),
-      var(--blanco);
+      linear-gradient(90deg, rgba(11, 31, 42, 0.9) 0%, rgba(11, 31, 42, 0.78) 42%, rgba(11, 31, 42, 0.45) 100%),
+      linear-gradient(180deg, rgba(11, 31, 42, 0.35) 0%, transparent 30%, transparent 75%, rgba(11, 31, 42, 0.6) 100%);
+  }
+  /* En celular el texto ocupa todo el ancho: velo parejo y un poco más denso. */
+  @media (max-width: 899px) {
+    .hero__velo {
+      background: linear-gradient(180deg, rgba(11, 31, 42, 0.86), rgba(11, 31, 42, 0.72));
+    }
   }
   .hero__trama {
     position: absolute;
@@ -73,7 +114,7 @@ const { hero } = site;
     bottom: 0;
     width: min(30%, 340px);
     height: 46%;
-    opacity: 0.45;
+    opacity: 0.25;
     -webkit-mask-image: linear-gradient(25deg, #000, transparent 62%);
     mask-image: linear-gradient(25deg, #000, transparent 62%);
   }
@@ -144,7 +185,7 @@ const { hero } = site;
   }
   .hero__title {
     margin: 1.25rem 0 1rem;
-    color: var(--azul-petroleo);
+    color: var(--blanco);
   }
   .hero__sub {
     max-width: 52ch;
@@ -153,7 +194,7 @@ const { hero } = site;
      Misma familia y color: la jerarquía la da solo el cuerpo. */
   .hero__sub p:first-child {
     font-size: 1.0625rem;
-    color: var(--azul-pizarra);
+    color: rgba(255, 255, 255, 0.9);
   }
   .hero__sub p + p {
     margin-top: 0.85rem;
@@ -167,9 +208,9 @@ const { hero } = site;
   .chip {
     font-size: var(--fs-caption);
     font-weight: var(--w-subheadline);
-    color: var(--azul-pizarra);
-    background: var(--gris-claro);
-    border: 1px solid var(--borde);
+    color: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 0.35rem 0.8rem;
     border-radius: var(--radius-pill);
   }
