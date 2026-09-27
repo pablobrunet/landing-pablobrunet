@@ -1,6 +1,8 @@
 ---
 /* =====================================================================
-   EMPRESAS QUE CONFÍAN — franja angosta con carrusel infinito.
+   EMPRESAS QUE CONFÍAN — bloque de la portada, debajo del hero.
+   Mismo recorrido que el carrusel del perfil en /programa-ejecutivos
+   (components/ejecutivos/EjePerfil.astro): etiqueta, título y tira.
    La pista se duplica y se desplaza -50%, así el loop no tiene costura.
    ===================================================================== */
 import { empresasMeta, empresas } from "../data/empresas";
@@ -11,9 +13,12 @@ const secuencia = [...empresas, ...empresas];
 
 {
   empresas.length > 0 && (
-<section class="emp" aria-label="Empresas que confían">
+<section class="emp" aria-label={empresasMeta.eyebrow}>
   <div class="container">
-    <p class="emp__title t-caption center">{sinMarcas(empresasMeta.titulo)}</p>
+    <header class="emp__head">
+      <span class="eyebrow">{empresasMeta.eyebrow}</span>
+      <h2 class="t-h3">{sinMarcas(empresasMeta.titulo)}</h2>
+    </header>
   </div>
 
   <div class="emp__marquee">
@@ -22,7 +27,7 @@ const secuencia = [...empresas, ...empresas];
         secuencia.map((e, i) => (
           <li class="emp__item" aria-hidden={i >= empresas.length ? "true" : undefined}>
             {e.img ? (
-              <img src={e.img} alt={e.nombre} loading="lazy" decoding="async" />
+              <img src={e.img} alt={e.nombre} title={e.nombre} loading="lazy" decoding="async" />
             ) : (
               <span class="emp__nombre">{e.nombre}</span>
             )}
@@ -37,37 +42,40 @@ const secuencia = [...empresas, ...empresas];
 
 <style>
   .emp {
-    padding-block: 1.6rem;
+    padding-block: clamp(2.5rem, 5vw, 3.75rem);
     background: var(--gris-claro);
     border-block: 1px solid var(--borde);
   }
-  .emp__title {
-    margin-bottom: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: var(--w-subheadline);
-    color: var(--texto-suave);
+  .emp__head {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    max-width: 44rem;
+    margin: 0 auto 2rem;
+  }
+  .emp__head .eyebrow {
+    margin-bottom: 0.6rem;
   }
 
   .emp__marquee {
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
   .emp__track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     align-items: center;
-    gap: clamp(2rem, 5vw, 3.75rem);
+    gap: clamp(2.5rem, 6vw, 4.5rem);
     width: max-content;
-    animation: emp-scroll 42s linear infinite;
+    animation: emp-scroll 60s linear infinite;
   }
   .emp__marquee:hover .emp__track {
     animation-play-state: paused;
   }
   @keyframes emp-scroll {
-    from {
-      transform: translateX(0);
-    }
     to {
       transform: translateX(-50%);
     }
@@ -77,46 +85,64 @@ const secuencia = [...empresas, ...empresas];
     flex: 0 0 auto;
     display: grid;
     place-items: center;
-    height: 46px;
+    height: 76px;
   }
   /* Gris por defecto, color al pasar el mouse: unifica logos de estilos
-     muy distintos y evita que la franja se vuelva un arcoíris. */
+     muy distintos y evita que la franja se vuelva un arcoíris.
+     Alto fijo (no max-height): varios SVG traen solo viewBox, sin tamaño
+     propio, y con max-height colapsan a 0 de ancho. */
   .emp__item img {
-    max-height: 30px;
+    height: 52px;
+    max-width: 240px;
     width: auto;
     object-fit: contain;
     filter: grayscale(1);
-    opacity: 0.62;
+    opacity: 0.7;
     transition: filter var(--transition), opacity var(--transition);
   }
   .emp__item:hover img {
     filter: grayscale(0);
     opacity: 1;
   }
-  /* Sin logo todavía: el nombre en texto mantiene la tira en pie. */
+  /* Sin logo todavía: el nombre en texto, con el mismo gris y hover. */
   .emp__nombre {
-    font-weight: var(--w-subheadline);
-    font-size: 0.875rem;
-    color: var(--azul-pizarra);
+    font-family: var(--font-title);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
     white-space: nowrap;
-    padding: 0.4rem 0.9rem;
-    border: 1px dashed var(--borde-punteado);
-    border-radius: var(--radius-pill);
+    color: var(--azul-pizarra);
+    opacity: 0.7;
+    transition: opacity var(--transition);
+  }
+  .emp__item:hover .emp__nombre {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .emp__item {
+      height: 60px;
+    }
+    .emp__item img {
+      height: 40px;
+      max-width: 180px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .emp__track {
       animation: none;
-    }
-    .emp__marquee {
-      overflow-x: auto;
-      -webkit-mask-image: none;
-      mask-image: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: auto;
       padding-inline: var(--gutter);
     }
-    .emp__item img {
-      filter: grayscale(0);
-      opacity: 1;
+    .emp__item[aria-hidden="true"] {
+      display: none;
+    }
+    .emp__marquee {
+      -webkit-mask-image: none;
+      mask-image: none;
     }
   }
 </style>

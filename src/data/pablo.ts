@@ -16,6 +16,7 @@
    ===================================================================== */
 
 import { comentarios } from "./testimonios";
+import { empresas } from "./empresas";
 
 const IMG = "/images/pablo";
 
@@ -70,30 +71,12 @@ export const pablo = {
     ],
   },
 
-  /* Carrusel: organizaciones donde dio charlas o capacitaciones (las de
-     servicios.ts y prensa.ts). Logos bajados de cada sitio oficial o de
-     su perfil en redes; viven en /public/images/pablo/logos/.
-     · "Cámara de Estaciones de Servicio" y CECA son la misma entidad
-       (Cámara de Expendedores de Combustibles y Afines de Santa Fe): va
-       una sola vez.
-     · Capital Activa es un espacio de la Municipalidad de Santa Fe y no
-       tiene logo propio: va el de la Municipalidad.
-     · TEDIND-X no tiene logo publicado; lo organiza la UISF, que ya está. */
+  /* Carrusel: la misma lista que la tira de la portada (data/empresas.ts).
+     Los que todavía no tienen logo (img: "") se dibujan en texto. */
   logos: {
     eyebrow: "Organizaciones",
     titulo: "Empresas, cámaras e instituciones donde trabajó.",
-    items: [
-      { nombre: "AgroActiva", img: `${IMG}/logos/agroactiva.png` },
-      { nombre: "Unión Industrial de Santa Fe (UISF)", img: `${IMG}/logos/uisf.png` },
-      { nombre: "ASSAL · Agencia Santafesina de Seguridad Alimentaria", img: `${IMG}/logos/assal.png` },
-      { nombre: "Universidad Nacional del Litoral", img: "/images/rostagno/logos/unl.svg" },
-      { nombre: "Parque Industrial Sauce Viejo", img: `${IMG}/logos/parque-industrial-sauce-viejo.svg` },
-      { nombre: "CECA · Cámara de Expendedores de Combustibles y Afines de Santa Fe", img: `${IMG}/logos/ceca.png` },
-      { nombre: "CeFoSe Gálvez", img: `${IMG}/logos/cefose-galvez.png` },
-      { nombre: "Capital Activa · Municipalidad de Santa Fe", img: `${IMG}/logos/municipalidad-santa-fe.png` },
-      { nombre: "Club PYXO", img: `${IMG}/logos/club-pyxo.png` },
-      { nombre: "DEMOS · Centro Cultural y de Estudios", img: `${IMG}/logos/espacio-demos.png` },
-    ],
+    items: empresas.map(({ nombre, img }) => ({ nombre, img: img || undefined })),
   },
 
   /* Galería: la primera foto de cada fila de seis va en grande */

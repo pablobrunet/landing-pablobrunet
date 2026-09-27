@@ -6,7 +6,7 @@ Subí acá el logo de cada empresa y después completá `src/data/empresas.ts`.
 
 - **SVG** siempre que puedas (escala sin perder nitidez y pesa menos).
   Si no, **PNG con fondo transparente**.
-- Alto útil: **al menos 120 px** (se muestran a 30 px, pero en pantallas
+- Alto útil: **al menos 120 px** (se muestran a 52 px de alto, pero en pantallas
   retina se piden el doble o el triple).
 - Sin márgenes blancos alrededor: recortá el logo al borde de la tinta.
 - Nombre del archivo en minúsculas y con guiones: `banco-santa-fe.svg`.

@@ -494,14 +494,14 @@ const pista = [...logos.items, ...logos.items];
     flex: 0 0 auto;
     display: grid;
     place-items: center;
-    height: 56px;
+    height: 76px;
   }
   /* Gris por defecto y color al pasar el mouse, como en la tira del home. */
   /* Alto fijo (no max-height): varios SVG traen solo viewBox, sin
      tamaño propio, y con max-height colapsan a 0 de ancho. */
   .ar-logos__item img {
-    height: 38px;
-    max-width: 180px;
+    height: 52px;
+    max-width: 240px;
     width: auto;
     object-fit: contain;
     filter: grayscale(1);
@@ -511,7 +511,7 @@ const pista = [...logos.items, ...logos.items];
   /* Nombre en texto cuando no hay logo: mismo gris y mismo hover. */
   .ar-logos__texto {
     font-family: var(--font-title);
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 800;
     letter-spacing: -0.01em;
     white-space: nowrap;
