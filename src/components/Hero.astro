@@ -54,7 +54,7 @@ const { hero } = site;
       <div class="hero__ctas">
         {
           hero.ctas.map((c) => (
-            <a href={c.href} class:list={["btn", c.primary ? "btn--primary" : "btn--outline"]}>
+            <a href={c.href} class:list={["btn", c.primary ? "btn--primary" : "btn--ghost"]}>
               {c.label}
               {c.primary && <Icon name="arrow" size={18} />}
             </a>
