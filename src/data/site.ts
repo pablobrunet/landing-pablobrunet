@@ -113,6 +113,25 @@ export const site = {
     img: "/images/hero/retrato-hero.png",
   },
 
+  /* ---- PROGRAMA INTEGRA (home) ----
+     Bloque entre "Sobre mí" (los indicadores) y el muro de comentarios:
+     quien ya entendió quién es Pablo ve enseguida su propuesta principal,
+     con enlace directo a la landing. Los cuatro pasos se leen de
+     data/integra2.ts (programa.tramos) para no escribirlos dos veces.
+     Pablo habla en primera persona (creó el programa); el trabajo con la
+     empresa va en plural, como en toda la comunicación de INTEGRA. */
+  integraHome: {
+    eyebrow: "Programa INTEGRA",
+    titulo: "El programa que creé para que tu PyME sepa qué hacer con la IA.",
+    parrafos: [
+      "Lo armé para las PyMEs que saben que la IA puede ayudarlas pero no saben por dónde arrancar, o que tienen gente probando por su lado sin que nada quede instalado.",
+      "No es un curso ni una herramienta más. Durante 60 días trabajamos con tu equipo sobre tareas reales, hasta que la IA queda metida en la forma de trabajar de la empresa.",
+    ],
+    ctaPrimario: { label: "Conocé el Programa INTEGRA", href: "/programa-integra" },
+    ctaSecundario: { label: "Agendar Consultoría Estratégica Gratuita", href: "/programa-integra#agenda-integra" },
+    imgAlt: "Pablo Brunet trabajando con el equipo de una empresa",
+  },
+
   /* ---- AGENDA ----
      Widget de reserva de LeadConnector. Si cambiás de calendario, sólo
      reemplazá el `id`: la URL se arma sola.

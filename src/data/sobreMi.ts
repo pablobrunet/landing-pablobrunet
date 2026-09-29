@@ -45,13 +45,13 @@ export const sobreMi = {
     },
     {
       icon: "growth",
-      valor: "+2.500",
+      valor: "+3.000",
       titulo: "Personas capacitadas",
       texto: "En empresas, cámaras y universidades.",
     },
     {
       icon: "mic",
-      valor: "+30",
+      valor: "+50",
       titulo: "Charlas y eventos",
       texto: "Como speaker, ante públicos muy distintos entre sí.",
     },

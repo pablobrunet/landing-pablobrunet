@@ -85,7 +85,7 @@ const { hero } = site;
     overflow: hidden;
     /* Sin padding abajo: el retrato apoya en el mismo borde que la foto de
        fondo. El texto recupera ese aire con su propio padding. */
-    padding-top: clamp(2.5rem, 6vw, 5rem);
+    padding-top: clamp(3rem, 7.5vw, 7rem);
     padding-bottom: 0;
     background: var(--azul-petroleo);
   }
@@ -236,7 +236,7 @@ const { hero } = site;
     .hero__copy {
       max-width: 680px;
       /* Mismo aire abajo que arriba: el texto queda centrado respecto de la foto. */
-      padding-bottom: clamp(2.5rem, 6vw, 5rem);
+      padding-bottom: clamp(3rem, 7.5vw, 7rem);
     }
     /* El retrato toma el alto de la columna de texto: arranca apenas debajo de
        la insignia y apoya en el borde inferior. El ancho sale solo de la
@@ -255,8 +255,8 @@ const { hero } = site;
       width: auto;
       max-width: none;
       /* Puede subir por encima de la insignia, dentro del aire superior del hero. */
-      height: calc(100% + 3.5rem);
-      transform: translateX(-50%);
+      height: calc(100% + 6rem);
+      transform: translateX(-46%);
     }
   }
 
@@ -266,7 +266,7 @@ const { hero } = site;
      contenedor; el aire de arriba se agranda a mano porque es de la sección. */
   @media (min-width: 1600px) {
     .hero {
-      padding-top: 6rem;
+      padding-top: 8rem;
     }
     .hero__inner {
       zoom: 1.2;

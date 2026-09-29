@@ -48,8 +48,8 @@ export const pablo = {
   /* Las mismas cifras que el home (data/sobreMi.ts) + la credencial */
   cifras: [
     { valor: "+16", label: "años trabajando con pymes", detalle: "8 de ellos como consultor" },
-    { valor: "+2.500", label: "personas capacitadas", detalle: "en empresas, cámaras y universidades" },
-    { valor: "+30", label: "charlas y eventos", detalle: "como speaker, ante públicos muy distintos" },
+    { valor: "+3.000", label: "personas capacitadas", detalle: "en empresas, cámaras y universidades" },
+    { valor: "+50", label: "charlas y eventos", detalle: "como speaker, ante públicos muy distintos" },
     { valor: "Select", label: "Partner de OpenAI", detalle: "nivel con el que está acreditada InnerFlow AI" },
   ],
 

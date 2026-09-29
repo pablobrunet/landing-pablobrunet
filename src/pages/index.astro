@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import Empresas from "../components/Empresas.astro";
 import Pillars from "../components/Pillars.astro";
+import IntegraHome from "../components/IntegraHome.astro";
 import MuroComentarios from "../components/MuroComentarios.astro";
 import Services from "../components/Services.astro";
 import Speaker from "../components/Speaker.astro";
@@ -23,8 +24,10 @@ import { comentarios, fotosMuro, muroHome } from "../data/testimonios";
     <Hero />
     <Empresas />
     <Pillars />
-    {/* Va pegado al bloque "Sobre mí" y con el mismo fondo blanco: lo que
-        dicen de Pablo cierra lo que Pablo dice de sí mismo. */}
+    {/* La propuesta principal, apenas después de los indicadores: quien ya
+        vio quién es Pablo llega directo al programa. */}
+    <IntegraHome />
+    {/* Lo que dicen de Pablo, después de su propuesta. */}
     <MuroComentarios
       eyebrow={muroHome.eyebrow}
       titulo={muroHome.titulo}

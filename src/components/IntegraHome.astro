@@ -1,0 +1,204 @@
+---
+/* =====================================================================
+   PROGRAMA INTEGRA — bloque de la portada
+   Va después de "Sobre mí" y antes del muro de comentarios. Fondo oscuro
+   para que corte entre dos secciones blancas y se lea como la propuesta
+   principal. Texto en data/site.ts (integraHome); los pasos salen de
+   data/integra2.ts para que la home y la landing digan lo mismo.
+   ===================================================================== */
+import { Image } from "astro:assets";
+import { site } from "../data/site";
+import { integra2 } from "../data/integra2";
+import Icon from "./Icon.astro";
+import foto from "../assets/hero/integra1.jpg";
+import logoIntegra from "../assets/integra/integra-lockup-blanco.png";
+
+const b = site.integraHome;
+const pasos = integra2.programa.tramos;
+---
+
+<section class="ih-home section section--dark" id="programa-integra" aria-label={b.eyebrow}>
+  <span class="ih-home__trama" aria-hidden="true"></span>
+  <div class="container ih-home__inner">
+    <div class="ih-home__copy">
+      <Image
+        class="ih-home__logo"
+        src={logoIntegra}
+        alt="Programa INTEGRA"
+        widths={[200, 400]}
+        sizes="200px"
+        formats={["webp"]}
+      />
+      <h2 class="t-h2 ih-home__titulo">{b.titulo}</h2>
+      {b.parrafos.map((p) => <p class="text-muted ih-home__p">{p}</p>)}
+
+      <ol class="ih-home__pasos">
+        {
+          pasos.map((p, i) => (
+            <li>
+              <span class="ih-home__num">{String(i + 1).padStart(2, "0")}</span>
+              <span>
+                <strong>{p.titulo}</strong>
+                <span class="ih-home__queda">{p.queda}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="ih-home__ctas">
+        <a href={b.ctaPrimario.href} class="btn btn--primary">
+          {b.ctaPrimario.label}
+          <Icon name="arrow" size={18} />
+        </a>
+        <a href={b.ctaSecundario.href} class="btn btn--outline">{b.ctaSecundario.label}</a>
+      </div>
+    </div>
+
+    <a class="ih-home__media" href={b.ctaPrimario.href} tabindex="-1" aria-hidden="true">
+      <Image
+        class="ih-home__foto"
+        src={foto}
+        alt={b.imgAlt}
+        width={1100}
+        widths={[600, 900, 1100]}
+        sizes="(min-width: 980px) 45vw, 100vw"
+        formats={["webp"]}
+        quality={72}
+      />
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Paleta de INTEGRA (styles/integra.css), local a este bloque: integra.css
+     no se puede importar en la home porque pisa los colores de todo el sitio. */
+  .ih-home {
+    --ih-noche: #0a1430;
+    --ih-acento: #4c86f5;
+    --ih-celeste: #a9c8f5;
+    --ih-linea: rgba(169, 200, 245, 0.18);
+    --ih-grad: linear-gradient(135deg, #4c86f5 0%, #1e5cf2 55%, #17408f 100%);
+    --ih-grad-hover: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+    --ih-glow: 0 18px 44px rgba(30, 92, 242, 0.32);
+    position: relative;
+    overflow: hidden;
+    background: var(--ih-noche);
+  }
+  /* La misma trama de puntos celestes que el hero de /programa-integra,
+     que se desvanece desde arriba. */
+  .ih-home__trama {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1.5px 1.5px, rgba(169, 200, 245, 0.35) 1.5px, transparent 0);
+    background-size: 14px 14px;
+    opacity: 0.5;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(80% 60% at 50% 0%, #000 0%, transparent 75%);
+  }
+  .ih-home__inner {
+    position: relative;
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .ih-home__logo {
+    height: 44px;
+    width: auto;
+    margin-bottom: 1.5rem;
+  }
+  .ih-home__titulo {
+    color: var(--blanco);
+    max-width: 22ch;
+    margin-bottom: 1.25rem;
+  }
+  .ih-home__p {
+    max-width: 56ch;
+  }
+  .ih-home__p + .ih-home__p {
+    margin-top: 0.85rem;
+  }
+
+  /* Los cuatro pasos como lista numerada con reglas finas, sin tarjetas. */
+  .ih-home__pasos {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    border-top: 1px solid var(--ih-linea);
+  }
+  .ih-home__pasos li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.75rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--ih-linea);
+  }
+  .ih-home__num {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    color: var(--ih-acento);
+    line-height: 1.5;
+  }
+  .ih-home__pasos strong {
+    display: block;
+    color: var(--blanco);
+    font-weight: var(--w-headline);
+  }
+  .ih-home__queda {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.92rem;
+    color: rgba(220, 230, 246, 0.72);
+  }
+
+  .ih-home__ctas .btn--primary {
+    background: var(--ih-grad) border-box;
+    color: #ffffff;
+    box-shadow: var(--ih-glow);
+  }
+  .ih-home__ctas .btn--primary:hover {
+    background: var(--ih-grad-hover) border-box;
+  }
+  .ih-home__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  .ih-home__media {
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .ih-home__foto {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 70% center;
+  }
+
+  @media (min-width: 980px) {
+    .ih-home__inner {
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+    /* Vertical en escritorio: acompaña la columna de texto sin estirarse. */
+    .ih-home__foto {
+      aspect-ratio: 4 / 5;
+    }
+  }
+  /* En celular los botones van a lo ancho: el largo del secundario no
+     queda tapado por el botón flotante de WhatsApp. */
+  @media (max-width: 520px) {
+    .ih-home__ctas .btn {
+      width: 100%;
+      justify-content: center;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+</style>
