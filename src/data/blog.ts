@@ -136,6 +136,2850 @@ export const textoPlano = (post: Post): string =>
 
 export const blog: Post[] = [
   /* =================================================================
+     N01 — NOVEDADES DE IA PARA PYMES: AGOSTO Y SEPTIEMBRE DE 2026
+     ================================================================= */
+  {
+    slug: "novedades-ia-pymes-agosto-septiembre-2026",
+    titulo: "Novedades de IA para PyMEs: lo que pasó en agosto y septiembre de 2026",
+    categoria: "Novedades",
+    fecha: "2026-09-29",
+    fechaLabel: "29 de septiembre de 2026",
+    lectura: "8 min de lectura",
+    resumen:
+      "Modelos nuevos de OpenAI, Google y Anthropic, ChatGPT gratis sin límite de mensajes de texto, cambios en lo que cobra WhatsApp y dos novedades argentinas. Lo que pasó en dos meses, filtrado por una sola pregunta: qué cambia para tu empresa.",
+    img: "/images/blog/novedades-ia-pymes-agosto-septiembre-2026.png",
+    imgLabel: "/images/blog/novedades-ia-pymes-agosto-septiembre-2026.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "Agosto y septiembre fueron dos meses cargados. Salieron modelos nuevos de las tres empresas grandes, cambió lo que se puede hacer gratis con ChatGPT, WhatsApp ajustó lo que cobra a las empresas y en Argentina aparecieron dos novedades que tocan de cerca a las PyMEs. Si intentaste seguir todo, probablemente terminaste con la sensación de siempre: mucho ruido y poca claridad sobre qué hacer el lunes.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Este resumen deja afuera lo que sólo le importa a quien programa y se queda con lo que cambia algo concreto en una empresa chica o mediana. Cada novedad tiene su fecha, su fuente y un párrafo con lo que yo haría con ella.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Los dos meses en una tabla",
+        columnas: ["Fecha", "Novedad"],
+        filas: [
+          ["1 de agosto", "WhatsApp empieza a cobrar las respuestas de su agente de IA para empresas"],
+          ["6 de agosto", "ChatGPT anuncia mensajes de texto sin límite en el plan gratuito"],
+          ["2 de septiembre", "Google lanza Gemini 3.8 Flash, también dentro de Google Sheets"],
+          ["3 de septiembre", "OpenAI presenta GPT-6 Astra, que puede usar la computadora"],
+          ["15 de septiembre", "Anthropic amplía Claude for Small Business a 43 flujos de trabajo"],
+          ["22 de septiembre", "OpenAI lanza GPT-6 Sol y Luna; Anthropic lanza Claude Opus 5.5"],
+          ["24 de septiembre", "MODO y Frávega: la primera compra real desde ChatGPT en Argentina"],
+          ["25 de septiembre", "El Kit 4.0 suma un kit de IA comercial de hasta $15 millones"],
+          ["28 de septiembre", "Anthropic lanza Claude Sonnet 5.5"],
+          ["1 de octubre", "WhatsApp empieza a cobrar mensajes de servicio por encima de 1.000 al mes"],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "ChatGPT gratis, sin límite de mensajes de texto",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 6 de agosto OpenAI anunció que el plan gratuito deja de tener tope de mensajes de texto, según [TechCrunch](https://techcrunch.com/2026/08/06/openai-brings-unlimited-chatgpt-text-chats-to-free-users/). Los planes Free y Go pasaron a usar GPT-5.6 Luna y sumaron un botón «Think» para pedirle más razonamiento en preguntas difíciles. Siguen existiendo límites aparte para archivos, imágenes, voz y generación de imágenes.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Qué cambia para tu empresa.** La excusa de «se me terminaron los mensajes» desaparece para el uso básico de texto. Eso es bueno para que más gente del equipo pruebe, pero trae de vuelta una pregunta que muchas PyMEs no se hicieron: qué información de la empresa se puede pegar en una cuenta personal gratuita y cuál no. Si todavía no tienen ese criterio escrito, este es un buen momento. Y ojo: que el texto sea ilimitado no significa que convenga cargar planillas con datos de clientes en una cuenta gratis.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "OpenAI: GPT-6 Astra, y después Sol y Luna",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 3 de septiembre OpenAI presentó GPT-6 Astra, su modelo más potente, con una función de «uso de computadora»: navegar páginas, completar formularios y moverse por planillas como lo haría una persona, según [Fortune](https://fortune.com/2026/09/03/openai-debuts-gpt-6-astra-computer-use-greg-brockman-says-start-of-agi/). Primero llegó a clientes empresariales y después a los planes pagos.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 22 de septiembre llegaron GPT-6 Sol y GPT-6 Luna, versiones más rápidas y baratas basadas en Astra. Según [TechCrunch](https://techcrunch.com/2026/09/22/openai-launches-gpt-6-sol-and-luna/), cuestan en la API la mitad que la generación anterior. Sol está pensado para tareas complejas; Luna, para trabajo repetitivo con un objetivo claro, como resumir documentos, extraer datos o responder preguntas rápidas. Están en ChatGPT Work y Codex para las cuentas pagas, y los usuarios Free y Go pueden probar Luna desde la aplicación de escritorio.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Qué cambia para tu empresa.** Si nadie en tu empresa usa la API, el precio de la API no te cambia nada. Lo que sí importa es la dirección: el trabajo administrativo de volumen —extraer datos de facturas, ordenar consultas, resumir correos— es cada vez más barato de automatizar. Si tenés una tarea así identificada y la venías postergando por costo, vale la pena volver a pedir números.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Google: Gemini 3.8 Flash, también en Sheets",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 2 de septiembre Google lanzó Gemini 3.8 Flash, tres semanas después de la versión anterior. Según [9to5Google](https://9to5google.com/2026/09/02/gemini-3-8-flash-launch/), está disponible en la app de Gemini para quienes pagan Google AI Pro o Ultra, en el Modo IA del buscador y dentro de Google Sheets. En la API mantiene un precio promocional hasta el 31 de diciembre.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Qué cambia para tu empresa.** Lo relevante no es el número de versión sino dónde aparece. Muchas PyMEs viven en planillas de Google: que el modelo esté adentro de Sheets significa que se puede pedir un análisis o una fórmula sin salir del archivo. Si tu equipo ya trabaja en Google Workspace, conviene probarlo con una planilla real antes de pagar otra herramienta.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Anthropic: Claude for Small Business y los modelos 5.5",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 15 de septiembre Anthropic [amplió Claude for Small Business](https://claude.com/blog/claude-for-small-business-launches-new-workflows-integrations-and-training-programs) a 43 flujos de trabajo y sumó 27 integraciones nuevas, entre ellas Shopify, Xero, Square, Stripe, Zoom y Zapier. Funciona dentro de Claude Cowork, la aplicación de escritorio, y todos los flujos arrancan en modo de aprobación: Claude prepara el trabajo y espera que el dueño lo confirme antes de enviar, publicar o pagar algo.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "En modelos, el 22 de septiembre salió Claude Opus 5.5, que según [TechCrunch](https://techcrunch.com/2026/09/22/anthropic-releases-opus-5-5-with-lower-prices-and-fable-level-performance/) baja el precio respecto de Opus 5, y el 28 llegó Claude Sonnet 5.5, más rápido y con el mismo precio que Sonnet 5, según [9to5Mac](https://9to5mac.com/2026/09/28/anthropic-upgrades-claude-with-new-sonnet-5-5-model-details-here/).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Qué cambia para tu empresa.** De todo el bimestre, el modo de aprobación me parece la decisión más sensata para una PyME. Automatizar la cobranza o el seguimiento de presupuestos da miedo justamente porque algo puede salir mal sin que nadie lo vea. Que la herramienta prepare y una persona apruebe es una buena manera de empezar. Eso sí: muchas de esas integraciones son con programas que en Argentina se usan poco. Antes de entusiasmarse, conviene revisar si conecta con lo que tu empresa usa de verdad.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "WhatsApp: lo que empieza a cobrarse",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Este cambio afecta a las empresas que usan WhatsApp conectado a un sistema, un CRM o un bot —lo que técnicamente se llama WhatsApp Business Platform—, no a quien atiende desde la aplicación común de WhatsApp Business en el celular. Según la [documentación de Meta para desarrolladores](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/non-template-messages), desde el 1 de agosto se cobran las respuestas de Meta Business Agent, el agente de IA de Meta para atender clientes, a US$ 2 por millón de tokens, que Meta estima en unos 4 o 5 centavos de dólar por mensaje. Y desde el 1 de octubre se empiezan a cobrar los mensajes de servicio, las respuestas comunes dentro de las 24 horas de una consulta. Los primeros 1.000 por número y por mes siguen siendo gratis, según detalla [Techweez](https://techweez.com/2026/09/28/whatsapp-business-pricing-october-2026/).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Qué cambia para tu empresa.** Si tenés un bot o un sistema conectado a WhatsApp, pedile hoy a tu proveedor dos cosas: cuántos mensajes de servicio manda tu número por mes y si la cuenta de WhatsApp tiene un medio de pago cargado, porque desde octubre esos mensajes se facturan. Si atendés desde el celular con la app, esto no te toca.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "En Argentina: comprar desde ChatGPT y plata para IA",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 24 de septiembre MODO, la billetera de los bancos, anunció una integración con ChatGPT para elegir, comprar y pagar sin salir de la conversación, con Frávega como primer comercio, según [Infobae](https://www.infobae.com/economia/2026/09/24/cambios-en-el-e-commerce-la-billetera-de-los-bancos-se-integra-con-chatgpt-para-elegir-comprar-y-pagar-un-producto-con-ia/). Es la primera vez que se puede hacer una compra real así en el país. Escribí más sobre qué implica para un comercio en [esta nota sobre comprar desde ChatGPT](/blog/comprar-desde-chatgpt-argentina-comercio).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un día después, el 25, la [Disposición 106/2026](https://www.boletinoficial.gob.ar/detalleAviso/primera/347979/20260925) sumó al programa nacional Kit 4.0 un kit de inteligencia artificial comercial que cofinancia hasta el 50 % del proyecto, con un tope de $15 millones. Tiene requisitos y letra chica que conviene leer con calma; los desarmé en [este artículo sobre el Kit 4.0](/blog/kit-4-0-ia-como-acceder-hasta-15-millones-pyme).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Qué cambia para tu empresa.** Si vendés online, lo de MODO es una señal de hacia dónde va la cosa más que algo para implementar mañana. Lo del Kit 4.0, en cambio, puede ser plata concreta si tu actividad califica y ya tenés claro qué querés resolver.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué haría yo con todo esto",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Nada de lo que salió en estos dos meses obliga a cambiar de herramienta. Lo que sí cambió es que hacer las cosas bien es cada vez más barato: más uso gratis, modelos más baratos y funciones que se meten en las planillas y programas que tu equipo ya abre todos los días. El cuello de botella en una PyME casi nunca es la herramienta. Es no tener claro por dónde arrancar, o que lo que aprendió una persona no llegue al resto del equipo.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "Cada mes va a haber un modelo nuevo. La pregunta útil no es cuál salió, sino qué tarea de tu empresa sigue esperando que alguien la ordene.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si querés una mano para bajar todo esto a tu empresa, en el [Programa INTEGRA](/programa-integra) trabajamos justo eso: elegir por dónde empezar y lograr que el uso se contagie al equipo, sin correr detrás de cada lanzamiento. El primer paso es una Consultoría Estratégica Gratuita.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "TechCrunch — ChatGPT brings unlimited text chats to free users (6 de agosto de 2026)",
+            url: "https://techcrunch.com/2026/08/06/openai-brings-unlimited-chatgpt-text-chats-to-free-users/",
+          },
+          {
+            label: "Fortune — OpenAI launches GPT-6 Astra (3 de septiembre de 2026)",
+            url: "https://fortune.com/2026/09/03/openai-debuts-gpt-6-astra-computer-use-greg-brockman-says-start-of-agi/",
+          },
+          {
+            label: "TechCrunch — OpenAI launches GPT-6 Sol and Luna (22 de septiembre de 2026)",
+            url: "https://techcrunch.com/2026/09/22/openai-launches-gpt-6-sol-and-luna/",
+          },
+          {
+            label: "9to5Google — Gemini 3.8 Flash rolling out (2 de septiembre de 2026)",
+            url: "https://9to5google.com/2026/09/02/gemini-3-8-flash-launch/",
+          },
+          {
+            label: "Claude — Claude for Small Business launches new workflows, integrations, and training programs",
+            url: "https://claude.com/blog/claude-for-small-business-launches-new-workflows-integrations-and-training-programs",
+          },
+          {
+            label: "TechCrunch — Anthropic releases Opus 5.5 (22 de septiembre de 2026)",
+            url: "https://techcrunch.com/2026/09/22/anthropic-releases-opus-5-5-with-lower-prices-and-fable-level-performance/",
+          },
+          {
+            label: "9to5Mac — Anthropic upgrades Claude with new Sonnet 5.5 model (28 de septiembre de 2026)",
+            url: "https://9to5mac.com/2026/09/28/anthropic-upgrades-claude-with-new-sonnet-5-5-model-details-here/",
+          },
+          {
+            label: "Meta for Developers — Upcoming pricing updates for Meta Business Agent, service and utility messages",
+            url: "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/non-template-messages",
+          },
+          {
+            label: "Techweez — WhatsApp Business to charge for service messages above 1,000 (28 de septiembre de 2026)",
+            url: "https://techweez.com/2026/09/28/whatsapp-business-pricing-october-2026/",
+          },
+          {
+            label: "Infobae — La billetera de los bancos se integra con ChatGPT (24 de septiembre de 2026)",
+            url: "https://www.infobae.com/economia/2026/09/24/cambios-en-el-e-commerce-la-billetera-de-los-bancos-se-integra-con-chatgpt-para-elegir-comprar-y-pagar-un-producto-con-ia/",
+          },
+          {
+            label: "Boletín Oficial — Disposición 106/2026 (25 de septiembre de 2026)",
+            url: "https://www.boletinoficial.gob.ar/detalleAviso/primera/347979/20260925",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N02 — KIT 4.0: CÓMO ACCEDER A HASTA $15 MILLONES PARA IA EN TU PYME
+     ================================================================= */
+  {
+    slug: "kit-4-0-ia-como-acceder-hasta-15-millones-pyme",
+    titulo: "Kit 4.0: cómo acceder a hasta $15 millones para sumar IA en tu PyME",
+    categoria: "Costos",
+    fecha: "2026-09-26",
+    fechaLabel: "26 de septiembre de 2026",
+    lectura: "7 min de lectura",
+    resumen:
+      "El programa nacional Kit 4.0 sumó un kit de inteligencia artificial comercial que cofinancia hasta la mitad del proyecto, con un tope de $15 millones. Qué cubre, quién puede pedirlo, cómo es el trámite y la letra chica que conviene leer antes de llamar a un proveedor.",
+    img: "/images/blog/kit-4-0-ia-como-acceder-hasta-15-millones-pyme.png",
+    imgLabel: "/images/blog/kit-4-0-ia-como-acceder-hasta-15-millones-pyme.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "El jueves 25 de septiembre salió en el Boletín Oficial una disposición que en pocas horas se convirtió en titular: «hasta $15 millones para que las PyMEs sumen inteligencia artificial». Desde entonces me llegaron varios mensajes con la misma pregunta: ¿esto es para nosotros? La respuesta corta es «puede ser, pero leé la letra chica antes». La larga es este artículo.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Lo escribo con todo lo que pude verificar en la norma y en las páginas oficiales. Donde algo no está claro, lo digo. Es plata del Estado con reglas propias, y conviene entenderlas antes de pedir un presupuesto.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué es el Kit 4.0",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Es un programa nacional, no provincial. Lo creó la [Resolución 8/2026](https://www.argentina.gob.ar/normativa/nacional/norma-425190/texto) de la Secretaría de Industria, Comercio y de la Pequeña y Mediana Empresa, en abril de este año, y lo administra la Subsecretaría de Industria y Economía del Conocimiento. La idea es simple: la PyME elige un «kit» —un paquete estandarizado de servicios, software y a veces hardware—, lo contrata con un proveedor de la economía del conocimiento inscripto en el programa, y el Estado cofinancia una parte. Una empresa de Santa Fe accede exactamente igual que una de cualquier otra provincia.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El programa tiene un cupo total de $9.000 millones y se asigna por orden de llegada: cuando se agota, se cierra. Hasta ahora el catálogo estaba armado alrededor de la industria 4.0, según la [página oficial del programa](https://www.argentina.gob.ar/economia/industria-y-economia-del-conocimiento/kit-40).",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué cambió el 25 de septiembre",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La [Disposición 106/2026](https://www.boletinoficial.gob.ar/detalleAviso/primera/347979/20260925), firmada el 23 y publicada el 25 de septiembre, sumó cuatro kits nuevos al catálogo. Rige para las solicitudes que se presenten desde esa fecha.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Los cuatro kits que se sumaron",
+        columnas: ["Kit", "Para qué es"],
+        filas: [
+          ["COM-01 · Canales y comercio digital", "Tienda online y canales de venta digitales"],
+          ["COM-02 · CRM, automatización y experiencia de cliente", "Ordenar consultas, clientes y seguimiento comercial"],
+          ["COM-03 · Analítica e inteligencia artificial comercial", "Aplicar IA a tareas concretas de ventas y análisis comercial"],
+          ["CAL-01 · Sistema de gestión", "Consultoría para normas ISO 9001, 14001 o 45001"],
+        ],
+        fuente: "Disposición 106/2026, Subsecretaría de Industria y Economía del Conocimiento",
+      },
+      {
+        tipo: "dato",
+        valor: "$15 millones",
+        texto:
+          "es el tope de beneficio del kit de IA comercial (COM-03), y nunca puede superar el 50 % del monto neto elegible del proyecto.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué cubre, en concreto, el kit de IA",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La disposición dice que el COM-03 apunta a incorporar analítica e inteligencia artificial en tareas comerciales concretas, y da ejemplos: priorizar oportunidades de venta, predecir demanda, recomendar acciones, analizar conversaciones con clientes o implementar asistentes. Los resúmenes del anexo técnico que publicaron [Contadores en Red](https://contadoresenred.com/programa-kit-4-0-suma-comercio-digital-crm-ia-y-normas-iso-a-quienes-alcanza/) y [Novedades del Contador](https://blog.aconpy.com/2026/09/25/programa-kit-4-0-suma-comercio-digital-crm-ia-y-normas-iso-a-quienes-alcanza/) agregan que financia una o dos aplicaciones por proyecto.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Lo más interesante está en lo que exige. El proyecto tiene que contar con **datos identificados, criterios de validación, usuarios definidos y una solución efectivamente desplegada y operativa**. Dicho en criollo: no alcanza con probar algo. Tiene que quedar funcionando, con gente que lo use y una forma de saber si anda bien.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**No financia diagnósticos** como resultado final del proyecto.",
+          "**No financia tableros descriptivos** como único entregable: un gráfico de ventas del mes pasado no es IA aplicada.",
+          "**No financia prototipos que no queden en uso.**",
+          "**Los servicios profesionales complementarios** (consultoría, horas de acompañamiento) no pueden pasar del 10 % del presupuesto del kit; lo que exceda se factura aparte y no entra en el beneficio.",
+        ],
+      },
+      {
+        tipo: "cita",
+        texto:
+          "El kit no paga por probar. Paga por dejar algo funcionando, con datos, con usuarios y con una forma de medir si sirve.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Quién puede pedirlo",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Según el reglamento del programa (Resolución 8/2026), la empresa que recibe el kit tiene que cumplir con todo esto:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Certificado MiPyME vigente.**",
+          "**Dos años o más de actividad.**",
+          "**Sin deuda fiscal ni previsional exigible.**",
+          "**Realizar alguna de las actividades de la nómina de actividades elegibles** (el Anexo IV del reglamento).",
+          "**CUIT y clave fiscal activos en ARCA**, y estar adherido a Trámites a Distancia (TAD).",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El cuarto punto es el que más dudas me genera. El programa nació para la PyME industrial, y la disposición que sumó los kits comerciales amplió el catálogo, pero no encontré en el texto publicado ningún cambio sobre qué actividades pueden pedirlo. Si tenés un comercio o una empresa de servicios, lo primero es que tu contador confirme si tu actividad figura en esa nómina. Antes de eso, no vale la pena pedir presupuestos.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Hay además un tope por empresa: sumando todos los kits que pida, el beneficio no puede superar los $45 millones.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cómo es el trámite, paso a paso",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Elegir el kit y el proveedor.** Tiene que estar inscripto en el listado del programa. El proveedor arma el presupuesto con el formato que pide el Estado.",
+          "**Presentar la Solicitud de Elegibilidad (TSE)** por TAD, con tu CUIT y clave fiscal, adjuntando ese presupuesto.",
+          "**Recibir el Ticket de Elegibilidad y Reserva (TER).** Si la solicitud se aprueba, el TER reserva el cupo y dice cuánto beneficio te corresponde como máximo.",
+          "**Firmar el acta de inicio con el proveedor** dentro de los 60 días corridos desde que sale el TER.",
+          "**Implementar.** El reglamento da hasta 300 días corridos más para ejecutar el kit.",
+          "**Firmar el acta de recepción conforme** cuando la solución está entregada y funcionando.",
+          "**Rendición.** El proveedor presenta la rendición de cuentas; recién cuando se aprueba, cobra el beneficio.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La cuenta que conviene hacer antes",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Acá está lo que los titulares no cuentan. La plata no entra a tu empresa. El beneficio se acredita en la cuenta tributaria de ARCA del proveedor, una vez aprobada la rendición, y funciona como una forma de cancelar parte de lo que te facturó. Tu empresa paga su parte —como mínimo la mitad del monto neto— más el IVA y cualquier otro concepto que no entre en el kit.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Cómo se reparte según el tamaño del proyecto (montos netos, sin IVA)",
+        columnas: ["Proyecto neto", "Beneficio máximo", "Pone tu empresa"],
+        filas: [
+          ["$10 millones", "$5 millones", "$5 millones + IVA"],
+          ["$20 millones", "$10 millones", "$10 millones + IVA"],
+          ["$30 millones", "$15 millones", "$15 millones + IVA"],
+          ["$40 millones", "$15 millones (tope)", "$25 millones + IVA"],
+        ],
+        fuente: "Elaboración propia con el 50 % y el tope de $15 millones de la Disposición 106/2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "O sea: para llegar a los $15 millones del titular, el proyecto tiene que costar al menos $30 millones netos. Y hay que tener espalda para pagar tu mitad mientras dura la implementación. Eso no lo hace un mal programa; lo hace un programa para empresas que ya saben qué quieren resolver.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que yo miraría antes de llamar a un proveedor",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Lo que me parece más valioso del COM-03 es que pide por escrito lo que a la mayoría de las PyMEs les falta cuando arrancan con IA: una tarea elegida, datos ordenados, gente que lo va a usar y una forma de medir. Es justo lo contrario de las pruebas sueltas que veo en tantas empresas, donde alguien arma algo con entusiasmo, funciona un par de semanas y queda en la nada.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Qué tarea comercial querés mejorar.** Una, con nombre y apellido: responder consultas, priorizar presupuestos pendientes, anticipar qué se va a vender el mes que viene.",
+          "**Dónde están los datos que esa tarea necesita.** Si están en un sistema, bien. Si están en tres planillas y en la cabeza del vendedor más viejo, el primer trabajo es otro.",
+          "**Quién lo va a usar todos los días.** Si nadie del equipo se compromete a usarlo, el requisito de «usuarios definidos» se cae solo.",
+          "**Cómo vas a saber si funciona.** Un número de hoy contra el que comparar dentro de tres meses.",
+          "**Si tu actividad entra en la nómina.** Antes que nada de lo anterior, con tu contador.",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si esas cinco preguntas tienen respuesta, el kit puede ser una muy buena forma de financiar la mitad de algo que igual ibas a hacer. Si no la tienen, el riesgo es contratar un proyecto de $30 millones para descubrir a mitad de camino que no había datos o que nadie lo iba a usar. El programa también ofrece un autodiagnóstico en su [página oficial](https://www.argentina.gob.ar/economia/industria-y-economia-del-conocimiento/kit-40), que vale la pena completar antes de pedir presupuestos.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Ordenar esas respuestas es justamente la primera parte del trabajo que hacemos en el [Programa INTEGRA](/programa-integra): elegir la tarea, revisar los datos y definir quién la sostiene, antes de gastar un peso en herramientas. Si querés hacer ese ejercicio con alguien de afuera, el primer paso es una Consultoría Estratégica Gratuita.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Boletín Oficial — Disposición 106/2026, Subsecretaría de Industria y Economía del Conocimiento (25 de septiembre de 2026)",
+            url: "https://www.boletinoficial.gob.ar/detalleAviso/primera/347979/20260925",
+          },
+          {
+            label: "Resolución 8/2026 — reglamento del Programa Kit 4.0 (texto original)",
+            url: "https://www.argentina.gob.ar/normativa/nacional/norma-425190/texto",
+          },
+          {
+            label: "Argentina.gob.ar — Kit 4.0",
+            url: "https://www.argentina.gob.ar/economia/industria-y-economia-del-conocimiento/kit-40",
+          },
+          {
+            label: "Argentina.gob.ar — Acceder al Kit 4.0",
+            url: "https://www.argentina.gob.ar/servicio/acceder-al-kit-40",
+          },
+          {
+            label: "Contadores en Red — Programa Kit 4.0 suma comercio digital, CRM, IA y normas ISO",
+            url: "https://contadoresenred.com/programa-kit-4-0-suma-comercio-digital-crm-ia-y-normas-iso-a-quienes-alcanza/",
+          },
+          {
+            label: "Novedades del Contador — Programa Kit 4.0 suma comercio digital, CRM, IA y normas ISO",
+            url: "https://blog.aconpy.com/2026/09/25/programa-kit-4-0-suma-comercio-digital-crm-ia-y-normas-iso-a-quienes-alcanza/",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N03 — CHATGPT, GEMINI O CLAUDE: CUÁL CONVIENE (SEPTIEMBRE 2026)
+     ================================================================= */
+  {
+    slug: "chatgpt-gemini-claude-cual-conviene-empresa-septiembre",
+    titulo: "ChatGPT, Gemini o Claude: cuál conviene para tu empresa en septiembre de 2026",
+    categoria: "Herramientas",
+    fecha: "2026-09-23",
+    fechaLabel: "23 de septiembre de 2026",
+    lectura: "7 min de lectura",
+    resumen:
+      "Los tres cuestan parecido y hacen casi lo mismo en las tareas de todos los días. Lo que define cuál conviene es otra cosa: dónde vive hoy el correo y los documentos de tu empresa. Precios, privacidad y una recomendación según el tipo de empresa.",
+    img: "/images/blog/chatgpt-gemini-claude-cual-conviene-empresa-septiembre.png",
+    imgLabel: "/images/blog/chatgpt-gemini-claude-cual-conviene-empresa-septiembre.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "«¿Cuál nos conviene, ChatGPT, Gemini o Claude?» es de las preguntas que más me hacen dueños y gerentes. Casi siempre viene después de que alguien del equipo empezó a usar uno por su cuenta, otro probó un segundo con la cuenta personal y nadie sabe bien qué se está pagando ni con qué datos.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La respuesta corta es que, para las tareas típicas de una PyME —redactar, resumir, ordenar información, armar un primer borrador—, los tres rinden bien. La diferencia entre ellos existe, pero es más chica de lo que parece en las comparaciones de internet, y cambia cada pocos meses con cada versión nueva. Lo que no cambia tan rápido, y pesa mucho más en la decisión, es dónde trabaja tu gente todos los días.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Antes de comparar: lo que no conviene es seguir con cuentas personales",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El escenario más común que encuentro no es una empresa que eligió mal, sino una que no eligió: tres o cuatro personas con cuentas gratuitas o individuales, cada una con su herramienta, pagadas con la tarjeta que había a mano. Así es difícil que el uso se contagie al resto, porque no hay un espacio común donde compartir lo que funciona, y la información de la empresa queda repartida en cuentas que no son de la empresa. Si ya estás en ese punto, antes de sumar nada vale la pena hacer el [inventario de lo que se paga hoy](/blog/auditar-suscripciones-de-ia-pyme).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los tres proveedores tienen planes pensados para equipos, y en los tres la condición de privacidad es la misma en lo esencial: los datos de la empresa no se usan para entrenar los modelos, salvo que la empresa lo autorice. OpenAI lo dice para ChatGPT Business en su [página de privacidad para empresas](https://openai.com/enterprise-privacy/); Anthropic lo aclara en la [página de precios de Claude](https://claude.com/pricing) para los planes Team y Enterprise; y Google lo explica en su [centro de privacidad de Gemini para Workspace](https://knowledge.workspace.google.com/admin/gemini/generative-ai-in-google-workspace-privacy-hub), donde agrega que las interacciones no salen de la organización sin permiso. Esa es la primera razón para pasar de cuentas sueltas a un plan de empresa, más allá de cuál elijas.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Los planes para equipos, lado a lado",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Planes para empresas a septiembre de 2026 (precios de lista en dólares, por persona)",
+        columnas: ["", "ChatGPT Business", "Gemini en Google Workspace", "Claude Team"],
+        filas: [
+          [
+            "Precio con pago anual",
+            "USD 20 por mes",
+            "Viene incluido en el plan de Workspace: Business Standard cuesta USD 14 por mes (USD 11,20 el primer año)",
+            "USD 20 por mes (asiento estándar)",
+          ],
+          [
+            "Precio mes a mes",
+            "USD 25",
+            "USD 14 en Business Standard",
+            "USD 25",
+          ],
+          [
+            "Asiento para uso intensivo",
+            "Premium: USD 100 anual o USD 125 mes a mes",
+            "Complemento aparte para más uso de IA",
+            "Premium: USD 100 anual o USD 125 mes a mes",
+          ],
+          [
+            "Correo y documentos",
+            "Se conecta a Gmail, Google Drive, Outlook, SharePoint y Teams, entre otros",
+            "Está adentro de Gmail, Docs, Hojas de cálculo y Meet",
+            "Se conecta a Gmail, Drive y Calendar, y a Microsoft 365 (Outlook, OneDrive, SharePoint y Teams)",
+          ],
+          [
+            "¿Entrena con los datos de la empresa?",
+            "No, por defecto",
+            "No, sin permiso del cliente",
+            "No, por defecto",
+          ],
+        ],
+        fuente:
+          "Páginas oficiales de precios de Claude y Google Workspace; OpenAI bajó el precio de Business el 2 de abril de 2026. Consultado el 23 de septiembre de 2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Dos aclaraciones sobre la tabla. La primera: en Google Workspace el plan más barato, Business Starter (USD 7 por persona), trae Gemini sólo en Gmail y un acceso básico a la aplicación de Gemini; para tenerlo en Docs, Hojas de cálculo y Meet hay que estar en Business Standard o superior, según la [página de precios de Workspace](https://workspace.google.com/pricing). La segunda: el recorte de precio de ChatGPT Business, que lo dejó en USD 20 anual y USD 25 mes a mes con un mínimo de dos personas, es de abril de este año; si ves comparaciones más viejas con USD 25 y 30, ya no corren.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cómo se paga desde Argentina",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los tres se pagan en dólares con tarjeta. Desde que dejó de existir el impuesto PAIS, a un consumo en dólares pagado en pesos se le suma la percepción del 30 % a cuenta de Ganancias; si el resumen se cancela con dólares propios de una caja de ahorro, esa percepción no se aplica, [según explica Perfil](https://www.perfil.com/noticias/economia/sin-impuesto-pais-como-cambia-el-costo-real-de-pagar-con-tarjeta-en-el-exterior-en-2026.phtml). Aparte está el IVA del 21 % sobre servicios digitales del exterior: si la empresa es responsable inscripta, la tarjeta no se lo percibe y se liquida por otra vía, [según ARCA](https://www.afip.gob.ar/iva/servicios-digitales/reg-percepcion-4240.asp). Como el costo final depende de cómo esté armada tu empresa, es una conversación de diez minutos con el contador antes de contratar.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "En qué rinde mejor cada uno",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Lo que sigue es mi criterio después de usarlos con equipos de trabajo, no un ranking técnico. Los tres mejoran cada pocos meses y en tareas comunes la diferencia es chica. Aun así, hay perfiles que se repiten:",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Tarea", "Dónde suele rendir mejor", "Por qué"],
+        filas: [
+          [
+            "Contestar y ordenar mails, resumir hilos largos",
+            "Gemini, si la empresa usa Gmail",
+            "Trabaja adentro del correo, sin copiar y pegar nada",
+          ],
+          [
+            "Resumir reuniones",
+            "Gemini, si las reuniones son por Meet",
+            "Está integrado a la videollamada",
+          ],
+          [
+            "Propuestas comerciales, informes, textos largos con tono cuidado",
+            "Claude",
+            "Escribe con un tono más natural y sostiene mejor documentos extensos",
+          ],
+          [
+            "Uso variado: imágenes, voz, búsquedas, preguntas sueltas del día a día",
+            "ChatGPT",
+            "Es el más completo como herramienta general y el que la mayoría ya conoce",
+          ],
+          [
+            "Analizar una planilla o un archivo con números",
+            "ChatGPT o Claude",
+            "Los dos ejecutan cálculos sobre el archivo en lugar de estimar a ojo; igual hay que revisar el resultado",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que más pesa: dónde vive el trabajo de tu empresa",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si la empresa ya paga Google Workspace Business Standard o superior, Gemini ya está pagado. Ahí la pregunta no es cuál comprar, sino si la gente lo está usando. Muchas veces no: está activado, pero nadie lo abrió porque nadie explicó para qué sirve en su tarea concreta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si la empresa trabaja con Microsoft 365, conviene saber que el chat de Copilot viene incluido sin costo adicional para los usuarios con una suscripción que califica, y que la versión que trabaja con los correos y archivos de la empresa, Microsoft 365 Copilot Business, cuesta [USD 21 por persona por mes con pago anual](https://justinmckelvey.com/blog/microsoft-365-copilot-pricing). No entra en esta comparación, pero es la alternativa natural en ese entorno. Claude, además, tiene un [conector con Microsoft 365](https://support.claude.com/en/articles/12542951-set-up-the-microsoft-365-connector) que busca en Outlook, OneDrive, SharePoint y Teams.",
+      },
+      {
+        tipo: "cita",
+        texto: "La mejor herramienta de IA para tu empresa suele ser la que tu gente puede abrir sin salir de donde ya trabaja.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué haría según el tipo de empresa",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Ya usan Google Workspace (Standard o más).** Arrancá por Gemini, que ya está pagado. Elegí dos o tres tareas concretas —responder consultas frecuentes por mail, resumir reuniones, armar borradores de presupuestos— y hacé que se usen de verdad antes de sumar otra suscripción.",
+          "**Ya usan Microsoft 365.** Probá primero el chat de Copilot incluido. Si queda corto, compará Copilot Business contra ChatGPT Business o Claude Team para las personas que lo van a usar todos los días.",
+          "**No tienen una suite o el correo está en otro lado.** ChatGPT Business es la opción más pareja para uso general. Si el trabajo pesado es escribir —propuestas, informes, respuestas largas a clientes—, Claude Team.",
+          "**Pocas personas usan IA a diario y el resto casi nada.** No hace falta un asiento para todos. Empezá con las personas que ya lo usan, en un plan de empresa, y sumá a otros a medida que aparezcan tareas concretas.",
+          "**Tienen dos herramientas pagas a la vez.** Casi siempre sobra una. Quedate con la que se usa más y con la que está conectada al correo y los documentos.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La elección de herramienta no resuelve lo difícil",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Elegir cualquiera de las tres, con un plan de empresa, ya es un paso bien dado. Pero lo que veo una y otra vez es que el problema no estaba en la herramienta: estaba en que una persona sabe usarla y el resto no se entera de qué hace ni cómo. Cambiar de ChatGPT a Claude, o de Claude a Gemini, no arregla eso. Lo arregla [acordar un criterio común](/blog/criterio-comun-de-ia-en-la-empresa): para qué tareas se usa, con qué datos sí y con cuáles no, y quién se ocupa de que lo que funciona le llegue al resto del equipo.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Eso es lo que trabajamos en el [Programa INTEGRA](/programa-integra): no te vendemos una herramienta, te ayudamos a decidir cuál conviene para tus tareas reales y a que la use el equipo, no sólo una persona. Si todavía no sabés por dónde arrancar, el primer paso es una Consultoría Estratégica Gratuita.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "OpenAI — Enterprise privacy (ChatGPT Business, Enterprise y API)",
+            url: "https://openai.com/enterprise-privacy/",
+          },
+          {
+            label: "OpenAI — Precios de ChatGPT para empresas",
+            url: "https://openai.com/business/chatgpt-pricing/",
+          },
+          {
+            label: "Sayfe AI — ChatGPT Business Pricing in 2026 (recorte del 2 de abril de 2026)",
+            url: "https://www.sayfeai.com/blog/chatgpt-business-pricing-2026",
+          },
+          {
+            label: "Anthropic — Precios de Claude (Pro, Max, Team y Enterprise)",
+            url: "https://claude.com/pricing",
+          },
+          {
+            label: "Anthropic — Configurar el conector de Microsoft 365",
+            url: "https://support.claude.com/en/articles/12542951-set-up-the-microsoft-365-connector",
+          },
+          {
+            label: "Google Workspace — Planes y precios",
+            url: "https://workspace.google.com/pricing",
+          },
+          {
+            label: "Google Workspace — Centro de privacidad de la IA generativa",
+            url: "https://knowledge.workspace.google.com/admin/gemini/generative-ai-in-google-workspace-privacy-hub",
+          },
+          {
+            label: "Justin McKelvey — Microsoft 365 Copilot Pricing 2026",
+            url: "https://justinmckelvey.com/blog/microsoft-365-copilot-pricing",
+          },
+          {
+            label: "Perfil — Sin impuesto PAIS, cómo cambia el costo de pagar con tarjeta en el exterior (enero de 2026)",
+            url: "https://www.perfil.com/noticias/economia/sin-impuesto-pais-como-cambia-el-costo-real-de-pagar-con-tarjeta-en-el-exterior-en-2026.phtml",
+          },
+          {
+            label: "ARCA — Servicios digitales: régimen de percepción de IVA",
+            url: "https://www.afip.gob.ar/iva/servicios-digitales/reg-percepcion-4240.asp",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N04 — CUÁNTO SALE UN BOT DE WHATSAPP CON IA (SEPTIEMBRE 2026)
+     ================================================================= */
+  {
+    slug: "bot-whatsapp-ia-negocio-septiembre-cuanto-sale",
+    titulo: "Cuánto sale un bot de WhatsApp con IA para tu negocio (septiembre de 2026)",
+    categoria: "Costos",
+    fecha: "2026-09-20",
+    fechaLabel: "20 de septiembre de 2026",
+    lectura: "8 min de lectura",
+    resumen:
+      "El precio de un bot de WhatsApp con IA no es un número: son cuatro costos que se suman, y desde el 1 de octubre uno de ellos cambia. Qué cobra Meta en Argentina, cuánto pesa el modelo de IA, qué cuestan las plataformas y para qué tareas conviene de verdad.",
+    img: "/images/blog/bot-whatsapp-ia-negocio-septiembre-cuanto-sale.png",
+    imgLabel: "/images/blog/bot-whatsapp-ia-negocio-septiembre-cuanto-sale.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "«¿Cuánto sale poner un bot en el WhatsApp?» Es de las primeras cosas que pregunta el dueño de un comercio, una clínica o una distribuidora cuando piensa en IA, y tiene lógica: WhatsApp es por donde entran las consultas, y contestar lo mismo cuarenta veces por día se come horas de alguien del equipo.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El problema es que la respuesta que suelen recibir es un número suelto —«tanto por mes»— que mezcla cosas muy distintas. Un bot de WhatsApp con IA tiene cuatro costos que conviene mirar por separado: lo que cobra Meta por los mensajes, lo que cuesta el modelo de IA que redacta las respuestas, la plataforma donde se arma el bot y el trabajo de dejarlo funcionando. Y uno de esos cuatro cambia en menos de dos semanas.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Primero: la app gratuita no alcanza",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La aplicación WhatsApp Business que muchos negocios ya usan en el celular es gratuita y tiene respuestas rápidas y mensajes de ausencia, pero para que un bot responda solo, conectado a un modelo de IA y a tus sistemas, hace falta la plataforma de WhatsApp Business de Meta, la que se conoce como «la API». Esa es la que cobra por mensaje, directamente o a través de un proveedor. Los cambios de precio que siguen afectan a la API; la app gratuita [no se ve afectada](https://sendpulse.com/blog/whatsapp-service-message-pricing).",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Costo 1: lo que cobra Meta por cada mensaje",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Desde julio de 2025, Meta cobra por mensaje entregado según su categoría. Las plantillas —mensajes que la empresa inicia, aprobados de antemano— se dividen en marketing, utilidad (confirmaciones, recordatorios, avisos de envío) y autenticación (códigos de verificación). Las respuestas a un cliente que te escribió primero, dentro de las 24 horas, son «mensajes de servicio».",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Hasta el 30 de septiembre, los mensajes de servicio son gratis. **Desde el 1 de octubre de 2026 empiezan a cobrarse**: cada número de teléfono del negocio tiene 1.000 mensajes de servicio gratis por mes, que no se acumulan, y a partir de ahí se pagan a la misma tarifa que los de utilidad, según la [documentación de precios de Meta](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing). También empiezan a cobrarse las plantillas de utilidad enviadas dentro de esa ventana de 24 horas, que hasta ahora eran gratis. Y un detalle operativo: si la cuenta no tiene un medio de pago cargado, Meta deja de entregar los mensajes de servicio cuando pasan a ser pagos.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Tarifas de Meta para Argentina, por mensaje entregado",
+        columnas: ["Categoría", "En dólares", "En pesos", "Desde el 1 de octubre de 2026"],
+        filas: [
+          ["Marketing", "USD 0,0618", "$ 89,56", "Sin cambios"],
+          ["Utilidad", "USD 0,026", "$ 37,68", "Se cobra también dentro de la ventana de 24 horas"],
+          ["Autenticación", "USD 0,026", "$ 37,68", "Sin cambios"],
+          [
+            "Servicio (respuestas al cliente)",
+            "Gratis hasta el 30 de septiembre",
+            "Gratis hasta el 30 de septiembre",
+            "1.000 gratis por mes por número; después USD 0,026 ($ 37,68)",
+          ],
+        ],
+        fuente: "Meta, tarifas vigentes desde el 1 de julio de 2026 y desde el 1 de octubre de 2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Sigue habiendo una excepción: cuando la conversación empieza desde un anuncio que lleva a WhatsApp o desde el botón de una página de Facebook, los mensajes son gratis durante 72 horas. Para un negocio que ya invierte en anuncios, eso cambia bastante la cuenta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un ejemplo para ponerle números. Un negocio que en un mes manda 3.000 respuestas de servicio (unas 600 conversaciones de cinco mensajes), 500 recordatorios de turno y una campaña de 1.000 mensajes de promoción pagaría a Meta, desde octubre: 2.000 respuestas por encima de las gratuitas a USD 0,026 (USD 52), 500 recordatorios a USD 0,026 (USD 13) y 1.000 mensajes de marketing a USD 0,0618 (USD 61,80). Total: unos **USD 127 por mes**. Si no manda la campaña, baja a USD 65. Si recibe pocas consultas, puede quedar en cero.",
+      },
+      {
+        tipo: "dato",
+        valor: "1.000",
+        texto:
+          "mensajes de servicio gratis por mes y por número de teléfono, desde el 1 de octubre de 2026. Un negocio chico puede no pasar nunca de ese cupo; uno con un bot que responde mucho, sí.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Ojo con un efecto que no es obvio: un bot que contesta en tres mensajes lo que una persona contestaba en uno cuesta el triple en Meta. Con el cambio de octubre, que las respuestas sean cortas y completas pasa a ser también una cuestión de plata.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Costo 2: el modelo de IA que redacta las respuestas",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Es la capa que más asusta y la que menos pesa. Anthropic publica en su [página de precios](https://platform.claude.com/docs/en/about-claude/pricing) un ejemplo de atención al cliente con su modelo más económico, Claude Haiku 4.5: diez mil conversaciones de unos 3.700 tokens cada una cuestan alrededor de USD 37. Es menos de medio centavo de dólar por conversación. Google tiene modelos todavía más baratos en su línea Flash-Lite, según su [lista de precios](https://ai.google.dev/gemini-api/docs/pricing).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Meta, además, ofrece su propio asistente dentro de la plataforma, Meta Business Agent, que se cobra por uso: la misma Meta estima [alrededor de 4 a 5 centavos de dólar por mensaje](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/non-template-messages). Es bastante más caro por mensaje que conectar un modelo por tu cuenta, a cambio de no tener que armar nada por fuera.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Costo 3: la plataforma donde se arma el bot",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La mayoría de los negocios no se conecta a la API de Meta directamente, sino a través de una plataforma que ya trae la bandeja de mensajes, el armado del bot, la derivación a una persona y los reportes. Cobran un abono mensual, y casi siempre **los mensajes de Meta van aparte**. Algunos ejemplos con precios publicados:",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Plataformas con precio público (septiembre de 2026)",
+        columnas: ["Plataforma", "Plan", "Precio por mes", "Qué tener en cuenta"],
+        filas: [
+          [
+            "Cliengo",
+            "Premium",
+            "USD 119",
+            "2.000 conversaciones; la API de WhatsApp tiene costo adicional",
+          ],
+          [
+            "Cliengo",
+            "Business",
+            "USD 259",
+            "4.000 conversaciones; incluye una línea de la API de WhatsApp",
+          ],
+          [
+            "respond.io",
+            "Starter",
+            "USD 79",
+            "Sin agentes de IA; hasta 5 usuarios",
+          ],
+          [
+            "respond.io",
+            "Growth",
+            "USD 159",
+            "Con agentes de IA incluidos; hasta 10 usuarios",
+          ],
+        ],
+        fuente: "Páginas de precios de Cliengo y respond.io, consultadas en septiembre de 2026. En todos los casos, lo que cobra Meta por mensaje se paga aparte",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Además del abono, algunos proveedores cobran un recargo sobre la tarifa de Meta. La guía de precios de Cliengo menciona que [suele estar entre el 10 % y el 30 %](https://guiawabusiness.cliengo.com/precios). Antes de firmar, pedí por escrito si el proveedor te traslada el costo de Meta tal cual o con recargo, y cuánto.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Costo 4: dejarlo funcionando, que es donde se va el tiempo",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Esta es la parte que casi nadie presupuesta y la que define si el bot sirve. Hay que juntar las respuestas correctas —precios, horarios, condiciones, zonas de entrega—, decidir qué contesta el bot y qué pasa a una persona, probarlo con consultas reales y, sobre todo, decidir quién lo mantiene actualizado. Un bot que responde con la lista de precios del mes pasado hace más daño que no tener bot.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Plataforma armada o desarrollo a medida",
+        columnas: ["", "Plataforma armada", "Desarrollo a medida"],
+        filas: [
+          [
+            "Costo inicial",
+            "Bajo: configuración y carga de información, que podés hacer vos o con ayuda",
+            "Más alto: se presupuesta por horas y depende de con qué sistemas se conecta",
+          ],
+          [
+            "Costo mensual",
+            "Abono de la plataforma más Meta",
+            "Meta, modelo de IA y servidor; sin abono de plataforma",
+          ],
+          [
+            "Cuándo conviene",
+            "Preguntas frecuentes, turnos, derivar consultas: lo que resuelve la mayoría de los negocios",
+            "Cuando el bot tiene que consultar o cargar datos en tus sistemas (stock, pedidos, facturación) de una forma que la plataforma no permite",
+          ],
+          [
+            "Riesgo principal",
+            "Quedar atado a un proveedor y a su recargo",
+            "Depender de quien lo desarrolló para cada cambio",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Mi recomendación para la mayoría de las PyMEs es empezar con una plataforma armada. Si en unos meses aparece una necesidad concreta que no cubre, recién ahí tiene sentido pensar en un desarrollo propio, y para entonces ya vas a saber qué preguntas entran, cuántas y cuáles se resuelven solas.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Para qué tareas conviene y para cuáles no",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Conviene para preguntas que se repiten y tienen una respuesta clara:** horarios, ubicación, medios de pago, precios de lista, requisitos para un trámite.",
+          "**Conviene para dar y confirmar turnos o reservas**, sobre todo si se conecta con la agenda real.",
+          "**Conviene para ordenar la consulta antes de pasarla a una persona:** preguntar qué necesita, de dónde es, qué producto busca, y que el vendedor reciba la consulta ya armada.",
+          "**Conviene para avisos de estado:** pedido confirmado, en camino, listo para retirar. Son plantillas de utilidad, de las más baratas.",
+          "**No conviene para reclamos ni para clientes enojados.** Ahí la respuesta automática empeora las cosas; el bot tiene que derivar rápido.",
+          "**No conviene para negociar precios o condiciones especiales**, ni para nada que comprometa a la empresa sin que una persona lo apruebe.",
+          "**No conviene si la información cambia seguido y nadie la actualiza.** Primero se resuelve quién mantiene las respuestas; después se arma el bot.",
+          "**No se puede usar como asistente general.** Desde el 15 de enero de 2026, las condiciones de Meta [prohíben los chatbots de propósito general](https://techcrunch.com/2025/10/18/whatssapp-changes-its-terms-to-bar-general-purpose-chatbots-from-its-platform/) en la API. Un bot que atiende a los clientes de tu negocio está permitido; uno que responde cualquier cosa sobre cualquier tema, no.",
+        ],
+      },
+      {
+        tipo: "cita",
+        texto: "Un bot de WhatsApp no ordena la atención de un negocio. La automatiza. Si antes estaba desordenada, automatiza el desorden.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Un rango honesto",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con los números de arriba, un negocio chico que recibe pocas consultas y usa una plataforma armada puede quedar en el abono de la plataforma más unos pocos dólares de IA, con Meta en cero o cerca. Un negocio con volumen, que además manda campañas y recordatorios, va a sumar entre decenas y algunos cientos de dólares por mes en Meta, según cuántos mensajes mande y cuántas respuestas pasen el cupo gratuito. En casi todos los casos que veo, el modelo de IA es lo más barato de la cuenta y el tiempo de armado y mantenimiento es lo más caro.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Antes de pedir presupuestos, vale la pena hacer un ejercicio simple: contar durante dos semanas cuántas consultas entran por WhatsApp, cuáles son y cuántas se contestan siempre igual. Ese número te dice si el bot tiene sentido y te permite comparar presupuestos con algo concreto en la mano. En el [Programa INTEGRA](/programa-integra) arrancamos justamente por ahí: mirar qué tareas se repiten en tu empresa y cuál conviene resolver primero, antes de contratar cualquier herramienta.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Meta — Precios en la plataforma de WhatsApp Business (tarifas y cambios del 1 de octubre de 2026)",
+            url: "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing",
+          },
+          {
+            label: "Meta — Próximas actualizaciones de precios de Meta Business Agent, servicio y utilidad",
+            url: "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/non-template-messages",
+          },
+          {
+            label: "SendPulse — WhatsApp Service Message Pricing Changes in October 2026",
+            url: "https://sendpulse.com/blog/whatsapp-service-message-pricing",
+          },
+          {
+            label: "Anthropic — Precios de la API de Claude",
+            url: "https://platform.claude.com/docs/en/about-claude/pricing",
+          },
+          {
+            label: "Google — Precios de la API de Gemini",
+            url: "https://ai.google.dev/gemini-api/docs/pricing",
+          },
+          {
+            label: "Cliengo — Precios",
+            url: "https://www.cliengo.com/pricing",
+          },
+          {
+            label: "Cliengo — Guía de precios de la API de WhatsApp Business 2026",
+            url: "https://guiawabusiness.cliengo.com/precios",
+          },
+          {
+            label: "respond.io — Precios",
+            url: "https://respond.io/pricing",
+          },
+          {
+            label: "TechCrunch — WhatsApp changes its terms to bar general-purpose chatbots (octubre de 2025)",
+            url: "https://techcrunch.com/2025/10/18/whatssapp-changes-its-terms-to-bar-general-purpose-chatbots-from-its-platform/",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N05 — CUÁNTO CUESTA IMPLEMENTAR IA EN UNA PYME EN 2026
+     ================================================================= */
+  {
+    slug: "cuanto-cuesta-implementar-ia-pyme-2026",
+    titulo: "Cuánto cuesta implementar IA en una PyME en 2026",
+    categoria: "Costos",
+    fecha: "2026-09-17",
+    fechaLabel: "17 de septiembre de 2026",
+    lectura: "9 min de lectura",
+    resumen:
+      "La licencia es la parte más visible y la más barata. Las cuatro partidas reales de una implementación de IA, con los precios vigentes de los planes de equipo, de qué depende que el número suba o baje y cómo arrancar gastando poco.",
+    img: "/images/blog/cuanto-cuesta-implementar-ia-pyme-2026.png",
+    imgLabel: "/images/blog/cuanto-cuesta-implementar-ia-pyme-2026.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "«¿Cuánto sale esto?» es una de las primeras preguntas que me hacen, casi siempre antes de saber qué se quiere hacer. Es una pregunta razonable, pero la respuesta que la gente espera —un número, el precio de una licencia— es la parte más chica del costo real.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Implementar IA en una PyME tiene cuatro partidas. Una se ve en el resumen de la tarjeta. Las otras tres no, y son las que definen si la plata de la primera rinde o se pierde.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Las cuatro partidas",
+      },
+      {
+        tipo: "tabla",
+        titulo: "De qué está hecho el costo",
+        columnas: ["Partida", "Qué incluye", "De qué depende"],
+        filas: [
+          [
+            "Licencias",
+            "Los planes de equipo de ChatGPT, Claude, Copilot o Gemini",
+            "Cuántas personas las necesitan de verdad y si ya pagás Google Workspace o Microsoft 365",
+          ],
+          [
+            "Tiempo interno",
+            "Las horas de quien sostiene el proceso, de quien hace la tarea y de dirección",
+            "Cuántas tareas se encaran a la vez y si hay alguien con horas asignadas",
+          ],
+          [
+            "Acompañamiento externo",
+            "Capacitación, ordenamiento del proceso, seguimiento durante los primeros meses",
+            "Cuántas áreas entran, cuánto dura y qué queda instalado al final",
+          ],
+          [
+            "Automatizaciones y desarrollos",
+            "Conectar la IA con tus sistemas: mails, planillas, sistema de gestión, WhatsApp",
+            "Cuántos sistemas hay que conectar y quién mantiene lo que se construye",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Licencias: los precios reales, a septiembre de 2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Para una empresa, lo que corresponde es un plan de equipo, no cuentas personales pagadas con la tarjeta de cada uno. La diferencia no está en la calidad de las respuestas: está en quién administra los accesos y en qué pasa con los datos, un tema que desarrollé en [este otro artículo](/blog/es-seguro-subir-datos-empresa-chatgpt). Estos son los precios publicados por cada proveedor:",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Planes de equipo, en dólares por usuario por mes",
+        columnas: ["Plan", "Pago mensual", "Pago anual", "Lo que conviene saber"],
+        filas: [
+          [
+            "ChatGPT Business (puesto estándar)",
+            "USD 25",
+            "USD 20",
+            "Mínimo dos puestos. Hay un puesto Premium de USD 125 mensual o USD 100 anual, con cinco veces más uso",
+          ],
+          [
+            "Claude Team (puesto estándar)",
+            "USD 25",
+            "USD 20",
+            "Para equipos de 2 a 150 personas. El puesto Premium cuesta USD 125 mensual o USD 100 anual",
+          ],
+          [
+            "Microsoft 365 Copilot Business",
+            "USD 25,20",
+            "USD 21 (USD 18 en promoción hasta el 31 de diciembre de 2026)",
+            "Es un agregado: exige tener aparte una licencia de Microsoft 365. Para empresas de hasta 300 usuarios",
+          ],
+          [
+            "Google Workspace Business Standard",
+            "USD 14 (precio de lista)",
+            "Con descuento por compromiso anual",
+            "Incluye Gemini en Gmail, Docs, Sheets, Meet y Drive. El plan Starter, de USD 7, trae un acceso más limitado",
+          ],
+        ],
+        fuente:
+          "Páginas oficiales de precios de OpenAI, Anthropic, Microsoft y Google, consultadas en septiembre de 2026. Precios sin impuestos; pueden variar según el país",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con esos números, la cuenta se hace sola. Un equipo de ocho personas con ChatGPT Business o Claude Team en pago anual son 160 dólares por mes, 1.920 por año. A eso hay que sumarle los impuestos que se aplican a los servicios digitales del exterior, que conviene revisar con tu contador antes de dar el alta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Antes de comprar nada, un control que casi nadie hace: fijate qué pagás hoy. Si la empresa ya tiene Google Workspace en un plan Standard, Gemini ya está incluido en la factura de todos los meses. Si tiene Microsoft 365, sumar Copilot puede tener más sentido que abrir una herramienta nueva. Y si hay suscripciones sueltas pagadas por distintas personas, el primer ahorro está en [ordenarlas](/blog/auditar-suscripciones-de-ia-pyme), no en contratar otra.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "El tiempo del equipo: la partida que nadie presupuesta",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Es la partida más grande y la única que no aparece en ninguna factura. Una adopción que funciona necesita que alguien convoque, haga seguimiento y persiga lo que se trabó; que la persona que hace la tarea tenga tiempo para probarla de otra manera; y que dirección aparezca cada tanto a decidir. Con los [tres roles que propongo para una PyME](/blog/adopcion-de-ia-sin-depender-de-una-persona), en los primeros tres meses el cálculo queda más o menos así:",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Horas internas en un primer ciclo de doce semanas",
+        columnas: ["Rol", "Dedicación", "Total aproximado"],
+        filas: [
+          ["Referente de adopción", "3 a 4 horas por semana", "36 a 48 horas"],
+          ["Dueño del proceso que se prueba", "2 horas por semana", "24 horas"],
+          ["Dirección", "1 hora cada dos semanas", "6 horas"],
+        ],
+        fuente: "Estimación propia, sobre la dedicación de cada rol",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Entre 66 y 78 horas en tres meses. Multiplicadas por el costo hora de cada persona, en casi cualquier PyME ese número es mayor que un año entero de licencias. Por eso digo que la licencia es la parte barata. Y por eso, cuando esas horas no se asignan y se suman a la carga de siempre, la plata de las licencias se pierde: la herramienta está, pero nadie tiene tiempo para cambiar cómo se trabaja.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "La licencia se paga con la tarjeta. El cambio se paga con horas, y esas horas hay que sacarlas de algún lado.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Acompañamiento externo: qué estás pagando",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Acá no voy a darte un rango de mercado, porque no existe una fuente seria que lo publique y las propuestas varían muchísimo según quién las arma. Lo que sí puedo decirte es qué mirar en cualquier propuesta, incluida la mía:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Qué queda instalado cuando termina.** Una capacitación deja criterio y habilidad; un acompañamiento tendría que dejar un proceso funcionando y gente de la casa que lo sostenga. Si la propuesta no dice qué queda, lo más probable es que no quede nada.",
+          "**Sobre qué tareas se trabaja.** Si la propuesta habla de «transformación» y no nombra ninguna tarea concreta de tu empresa, pedí que la nombre.",
+          "**Cuánto tiempo de tu gente requiere.** Un buen acompañamiento te dice de entrada cuántas horas vas a tener que poner. Si promete resultados sin pedirte tiempo, desconfiá.",
+          "**Si incluye desarrollo o no.** No es lo mismo ordenar cómo se usa una herramienta que construir una automatización. Son trabajos distintos y se cotizan distinto.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Automatizaciones y desarrollos: la plataforma es lo de menos",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Cuando la tarea necesita que la IA lea los mails que llegan, cargue datos en una planilla o responda por WhatsApp, entra una tercera capa de costo. Las plataformas para armar esas automatizaciones son accesibles: [n8n](https://n8n.io/pricing/) tiene un plan en la nube desde 20 euros por mes con pago anual (2.500 ejecuciones) y una versión gratuita para instalar en un servidor propio; [Zapier](https://zapier.com/pricing) tiene un plan gratuito de 100 tareas por mes y uno profesional desde 19,99 dólares mensuales con pago anual.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Pero la plataforma es la parte chica. Lo que cuesta es el diseño, las pruebas y, sobre todo, el mantenimiento: una automatización que conecta tres sistemas se rompe cuando cambia cualquiera de los tres. A eso se suma el consumo de la API del modelo, que se factura por uso y aparte: por ejemplo, [la suscripción a ChatGPT Business no incluye el uso de la API](https://help.openai.com/en/articles/8792828-what-is-chatgpt-business). Mi consejo es no arrancar por acá. Primero probá la tarea a mano, con la herramienta de chat, hasta que el resultado sea confiable. Recién ahí tiene sentido automatizarla.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Tres formas de arrancar, con números",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Lo que cuesta en licencias cada punto de partida",
+        columnas: ["Escenario", "Licencias por mes", "Lo que no hay que olvidar"],
+        filas: [
+          [
+            "Una tarea, dos o tres personas, pago mensual",
+            "USD 50 a 75",
+            "Las horas del referente y del dueño del proceso",
+          ],
+          [
+            "Herramienta común para un equipo de diez, pago anual",
+            "USD 200",
+            "Un criterio escrito de uso y alguien que administre las cuentas",
+          ],
+          [
+            "Lo anterior más una automatización",
+            "USD 200 más la plataforma (desde 20 euros) y el consumo de API",
+            "Las horas de desarrollo y quién la mantiene cuando algo cambie",
+          ],
+        ],
+        fuente: "Cálculo sobre los precios publicados de ChatGPT Business, Claude Team y n8n",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "El costo de no hacer nada",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "No hacer nada también tiene un precio, aunque no llegue en una factura. El primero es que la IA ya se está usando en tu empresa: con cuentas personales, con datos de clientes pegados en chats que nadie administra y sin ningún criterio común. No gastar en licencias de empresa no evita ese uso. Solo lo deja fuera de tu control.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El segundo es la distancia con quienes sí se ordenaron. El estudio [The Widening AI Value Gap](https://www.bcg.com/press/30september2025-ai-leaders-outpace-laggards-revenue-growth-cost-savings) de BCG, sobre 1.250 ejecutivos, encontró que el 5 % de empresas que construye capacidades de IA en todas sus áreas logra 1,7 veces el crecimiento de ingresos y 1,6 veces el margen operativo de las rezagadas, que son el 60 %. Son empresas grandes y no conviene trasladar esos números a una PyME de treinta personas. Pero la dirección es clara: la brecha se abre con el tiempo, no se cierra sola.",
+      },
+      {
+        tipo: "dato",
+        valor: "5,4 %",
+        texto:
+          "de sus horas de trabajo ahorraban en promedio quienes usaban IA generativa, según una encuesta a trabajadores de Estados Unidos analizada por la Reserva Federal de St. Louis. Unas 2,2 horas en una semana de 40.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El dato de la [Reserva Federal de St. Louis](https://www.stlouisfed.org/on-the-economy/2025/feb/impact-generative-ai-work-productivity) sirve para poner los pies en la tierra: no es una revolución por persona, son un par de horas por semana. Multiplicadas por un equipo y sostenidas en el tiempo, son muchas horas. Pero solo aparecen si alguien las [mide](/blog/como-medir-si-ia-sirve-pyme) y decide en qué se usan.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cómo empezar gastando poco",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Hacé el inventario de lo que ya pagás.** Suscripciones sueltas, módulos de IA dentro de software que ya tenés, Gemini o Copilot incluidos en tu paquete de oficina. Muchas veces la primera herramienta ya está paga.",
+          "**Elegí una sola tarea.** Una que se repita, que hoy haga alguien a mano y que se pueda medir. El [mapa de impacto contra facilidad](/blog/por-donde-empezar-a-implementar-ia-en-una-empresa) ayuda a encontrarla en una tarde.",
+          "**Licencias solo para quienes hacen esa tarea, con pago mensual.** Pagás 25 dólares en lugar de 20, pero no te atás un año a algo que todavía no probaste.",
+          "**Asigná las horas antes de empezar.** Tres o cuatro horas semanales para quien sostiene el proceso, sacadas de algo que deja de hacer.",
+          "**Pasá al plan anual y sumá gente recién cuando haya un resultado medido.** Ahí el ahorro del pago anual tiene sentido, porque ya sabés que lo vas a usar.",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con este orden, los primeros tres meses cuestan poco en plata y bastante en atención, que es exactamente al revés de como suele hacerse. En el [Programa INTEGRA](/programa-integra) trabajamos con ese orden, y el primer paso es una Consultoría Estratégica Gratuita donde miramos juntos qué pagás hoy, qué tarea conviene encarar primero y cuánto tiempo de tu equipo va a hacer falta.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "OpenAI — ChatGPT Business, precios y tipos de puesto",
+            url: "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+          },
+          {
+            label: "Anthropic — Precios de Claude",
+            url: "https://claude.com/pricing",
+          },
+          {
+            label: "Microsoft — Precios de Microsoft 365 Copilot",
+            url: "https://www.microsoft.com/en-us/microsoft-365-copilot/pricing",
+          },
+          {
+            label: "Google — Precios de Google Workspace",
+            url: "https://workspace.google.com/pricing",
+          },
+          {
+            label: "n8n — Precios",
+            url: "https://n8n.io/pricing/",
+          },
+          {
+            label: "Zapier — Precios",
+            url: "https://zapier.com/pricing",
+          },
+          {
+            label: "BCG — AI Leaders Outpace Laggards (The Widening AI Value Gap), septiembre de 2025",
+            url: "https://www.bcg.com/press/30september2025-ai-leaders-outpace-laggards-revenue-growth-cost-savings",
+          },
+          {
+            label: "Federal Reserve Bank of St. Louis — The Impact of Generative AI on Work Productivity, febrero de 2025",
+            url: "https://www.stlouisfed.org/on-the-economy/2025/feb/impact-generative-ai-work-productivity",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N06 — POR QUÉ LOS EMPLEADOS NO QUIEREN USAR IA
+     ================================================================= */
+  {
+    slug: "empleados-no-quieren-usar-ia-por-que-y-que-hacer",
+    titulo: "Tu equipo no quiere usar IA: por qué pasa y qué hacer desde la dirección",
+    categoria: "Equipos",
+    fecha: "2026-09-14",
+    fechaLabel: "14 de septiembre de 2026",
+    lectura: "9 min de lectura",
+    resumen:
+      "Casi la mitad de la gente que usa IA en el trabajo no se anima a contárselo a su jefe, y buena parte del resto no la usa porque nadie le dijo para qué ni con qué permiso. Lo que dicen las encuestas y lo que puede hacer, en concreto, la dirección de una PyME.",
+    img: "/images/blog/empleados-no-quieren-usar-ia-por-que-y-que-hacer.png",
+    imgLabel: "/images/blog/empleados-no-quieren-usar-ia-por-que-y-que-hacer.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "Cuando un dueño me dice «mi gente no quiere saber nada con la IA», casi siempre le pido lo mismo: que no saque conclusiones todavía. Porque detrás de esa frase suelen convivir dos grupos bien distintos. Los que de verdad no la usan, y los que la usan todos los días pero no lo dicen.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los dos grupos parecen iguales desde la oficina de dirección: no aparecen en ningún informe, no proponen nada, no cambia ningún proceso. Pero tienen motivos distintos y se destraban de maneras distintas. Confundirlos es el primer error.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Primero: mucha de esa gente ya la usa, a escondidas",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El [Work Trend Index 2024 de Microsoft y LinkedIn](https://www.microsoft.com/en-us/worklab/work-trend-index/ai-at-work-is-here-now-comes-the-hard-part), que encuestó a 31.000 trabajadores del conocimiento en 31 países, encontró que el 75 % ya usaba IA generativa en el trabajo y que el 78 % de esos usuarios llevaba sus propias herramientas, sin esperar a que la empresa se las diera. El mismo estudio mostró la otra cara: el 52 % de los que la usan se resiste a admitirlo cuando la aplica a sus tareas más importantes.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "No es un dato aislado. El [Workforce Index de Slack de otoño de 2024](https://slack.com/blog/news/the-fall-2024-workforce-index-shows-executives-and-employees-investing-in-ai-but-uncertainty-holding-back-adoption), con más de 17.000 respuestas en quince países, encontró que el 48 % de los empleados de oficina se sentiría incómodo contándole a su jefe que usó IA para tareas comunes. Y el estudio global de [KPMG y la Universidad de Melbourne](https://kpmg.com/xx/en/media/press-releases/2025/04/trust-of-ai-remains-a-critical-challenge.html), publicado en abril de 2025 con 48.000 personas de 47 países, fue más lejos: el 57 % de los empleados dice que oculta su uso de IA y presenta como propio trabajo hecho con ella.",
+      },
+      {
+        tipo: "grafico",
+        titulo: "Usar IA y no decirlo",
+        bajada: "Porcentaje de trabajadores que declara cada situación, según tres encuestas internacionales.",
+        barras: [
+          { label: "Oculta su uso y presenta el trabajo como propio (KPMG)", valor: 57, texto: "57 %" },
+          {
+            label: "Se resiste a admitir que la usa en sus tareas importantes (Microsoft)",
+            valor: 52,
+            texto: "52 %",
+            tono: "neutro",
+          },
+          {
+            label: "Se sentiría incómodo contándole a su jefe que la usó (Slack)",
+            valor: 48,
+            texto: "48 %",
+            tono: "neutro",
+          },
+        ],
+        nota: "Las tres preguntas no son idénticas ni las muestras son las mismas, pero apuntan al mismo lugar: una parte grande del uso real no se ve desde arriba.",
+        fuente:
+          "KPMG y Universidad de Melbourne, abril de 2025 · Microsoft Work Trend Index, mayo de 2024 · Slack Workforce Index, otoño de 2024",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Para una PyME, esto tiene una consecuencia práctica. Si la gente que ya sabe usar IA la usa callada, lo que aprende no le llega a nadie más. Es exactamente el problema de la persona que sabe y no contagia: no es que no quiera compartir, es que compartir la expone.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Los motivos de fondo, uno por uno",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Cuando se les pregunta a los que no se animan a contarlo por qué, las respuestas de la encuesta de Slack son reveladoras. Casi ninguna tiene que ver con la tecnología.",
+      },
+      {
+        tipo: "grafico",
+        titulo: "Por qué no le cuentan al jefe que usan IA",
+        bajada: "Entre quienes se sentirían incómodos, porcentaje que menciona cada motivo.",
+        barras: [
+          { label: "Siente que usar IA es hacer trampa", valor: 47, texto: "47 %" },
+          { label: "Teme que lo vean como menos capaz", valor: 46, texto: "46 %" },
+          { label: "Teme que lo vean como vago", valor: 46, texto: "46 %" },
+          {
+            label: "La política de la empresa la desaconseja o prohíbe",
+            valor: 21,
+            texto: "21 %",
+            tono: "neutro",
+          },
+        ],
+        nota: "La prohibición formal es el motivo menos citado. Lo que frena es la mirada del otro.",
+        fuente: "Slack Workforce Index · encuesta del 2 al 30 de agosto de 2024, 17.372 respuestas",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "A esos motivos se suman otros que escucho seguido en las capacitaciones y que las encuestas también registran. Los ordeno en cinco, porque cada uno pide una respuesta distinta:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Miedo a quedar como reemplazable.** El 53 % de los usuarios de IA encuestados por Microsoft teme que usarla en tareas importantes lo haga parecer reemplazable. Y el temor no es de un solo nivel: el estudio [AI at Work 2025 de BCG](https://www.bcg.com/publications/2025/ai-at-work-momentum-builds-but-gaps-remain) encontró que el 43 % de los líderes y gerentes y el 36 % del personal de primera línea teme perder su trabajo en los próximos diez años.",
+          "**No ver para qué.** Mucha gente probó una vez, le pidió algo genérico, recibió una respuesta genérica y concluyó que «no sirve para lo mío». No es desinterés: es que nadie le mostró una tarea de su propio trabajo resuelta mejor.",
+          "**Falta de tiempo.** Aprender algo nuevo cuesta más al principio. Si la persona está al límite con lo urgente, la IA compite contra la entrega de mañana y pierde. El mismo informe de Slack encontró que el 61 % de los empleados había dedicado menos de cinco horas a aprender a usarla.",
+          "**Una mala primera experiencia.** Un dato inventado en un informe, un mail que salió con un error vergonzoso. Una sola vez alcanza para que alguien decida no volver. Es razonable: el estudio de KPMG encontró que el 56 % de los empleados cometió errores en su trabajo por culpa de la IA, y que el 66 % usa lo que devuelve sin verificarlo.",
+          "**No saber si está permitido.** Según Slack, el 45 % de los empleados no tiene permiso explícito para usar IA. Y según KPMG, solo el 40 % dice que su lugar de trabajo tiene una política o una guía sobre IA generativa. Ante la duda, mucha gente elige no usarla o usarla sin avisar.",
+        ],
+      },
+      {
+        tipo: "cita",
+        texto:
+          "La mayoría de las veces el freno no es la herramienta ni la edad de la gente. Es no saber qué piensa el que decide.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que las encuestas dicen que sí mueve la aguja",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La parte buena de estos estudios es que también miden qué cambia cuando la dirección hace algo. Y los efectos son grandes.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Qué pasa cuando la dirección se mueve",
+        columnas: ["Lo que hace la dirección", "Lo que se midió", "Fuente"],
+        filas: [
+          [
+            "Da permiso explícito para usar IA",
+            "Los empleados con permiso son casi 6 veces más propensos a haber probado herramientas de IA",
+            "Slack, marzo de 2024",
+          ],
+          [
+            "Apoya el uso de forma visible",
+            "La opinión positiva sobre la IA sube del 15 % al 55 % cuando hay apoyo fuerte de los líderes",
+            "BCG, junio de 2025",
+          ],
+          [
+            "El jefe directo acompaña el uso",
+            "Los empleados son 1,7 veces más propensos a usarla con frecuencia",
+            "Gallup, 2026",
+          ],
+          [
+            "Comunica un plan claro",
+            "Solo el 25 % de los empleados en Estados Unidos dice que su organización lo hizo",
+            "Gallup, mayo de 2026",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El dato de [Slack de marzo de 2024](https://slack.com/blog/news/the-workforce-index-june-2024) es el que más me gusta mostrar, porque desarma una intuición común. No hace falta una política sofisticada: lo que multiplica el uso es que exista un permiso claro. Incluso las empresas con reglas que limitan el uso tienen más gente probando que las que no dicen nada. El silencio es peor que una regla estricta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El indicador de [Gallup sobre IA en el trabajo](https://www.gallup.com/699797/indicator-artificial-intelligence.aspx) va en la misma línea: en mayo de 2026, tres de cada cuatro empleados en Estados Unidos decían que su organización no les había comunicado un plan claro para integrar la IA. Si eso pasa en las empresas grandes, que tienen áreas enteras dedicadas a comunicar, en una PyME el silencio suele ser total.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué hacer desde la dirección, en concreto",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Nada de lo que sigue requiere comprar una herramienta ni contratar un curso. Requiere decisiones y, sobre todo, conversaciones.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Decí en voz alta que está permitido, y qué no.** Una página alcanza: qué se puede hacer sin preguntar, qué información de la empresa no se carga nunca y qué tiene que revisar una persona antes de salir hacia un cliente. Lo desarrollé en [este artículo sobre el criterio común](/blog/criterio-comun-de-ia-en-la-empresa). Lo importante es que lo diga el dueño, no el de sistemas.",
+          "**Sacá el uso de la sombra sin castigar a nadie.** Preguntá quién ya la usa y para qué, aclarando antes que no hay consecuencias. El mensaje tiene que ser «queremos aprender de lo que ya hacen», no «queremos saber quién la usa».",
+          "**Contestá la pregunta del reemplazo antes de que la hagan.** Si no la contestás vos, la contesta el rumor. No prometas lo que no podés garantizar, pero sí podés decir qué vas a hacer con el tiempo que se libere. Qué dicen los datos sobre esto lo repasé en [otro artículo](/blog/ia-reemplazar-empleados-datos-2026).",
+          "**Elegí una tarea real de cada área, no un curso general.** La forma más rápida de pasar de «no sirve para lo mío» a usarla es ver resuelta una tarea propia: la respuesta a un reclamo típico, el resumen de una reunión con un cliente, la primera versión de una cotización.",
+          "**Dale tiempo protegido, aunque sea poco.** Una hora por semana, en la agenda, para probar sobre trabajo real. Si el aprendizaje tiene que entrar en los huecos que deja lo urgente, no entra.",
+          "**Premiá al que muestra, no al que esconde.** Cuando alguien comparte cómo resolvió algo, que se note. Es la forma de que lo que sabe una persona le sirva a las demás, que es el problema de fondo de casi todas las PyMEs con las que trabajo.",
+          "**Usala vos, a la vista.** Si el dueño llega a la reunión con algo que preparó con IA y cuenta cómo lo revisó, el equipo entiende más que con cualquier comunicado. Volví sobre este punto en [el artículo sobre liderazgo](/blog/liderazgo-en-la-era-de-la-ia).",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que conviene no hacer",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Prohibir no funciona. BCG encontró que más de la mitad de los empleados que no tienen las herramientas que necesitan dicen que igual buscarían alternativas y las usarían. La prohibición no elimina el uso: lo empuja a cuentas personales, con datos de la empresa y sin ningún criterio común.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Tampoco conviene obligar a usarla con metas de uso. «Todos tienen que usar IA al menos tres veces por semana» produce exactamente eso: tres usos por semana, casi siempre en lo que menos importa. Lo que interesa medir no es cuánto se usa la herramienta, sino si alguna tarea concreta se hace mejor o más rápido que antes.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "Un equipo que no usa IA casi nunca es un equipo que se niega. Es un equipo que todavía no sabe qué espera de él la empresa.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La resistencia, cuando se la mira de cerca, suele ser una suma de preguntas sin contestar: si está permitido, si es trampa, si me va a dejar sin trabajo, para qué me sirve a mí. Ninguna de esas preguntas la contesta un proveedor de tecnología. Las contesta la dirección, y cuanto antes, mejor.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "En el [Programa INTEGRA](/programa-integra) empezamos justamente por ahí: antes de hablar de herramientas, ordenamos qué se permite, qué tarea de cada área vale la pena tocar primero y quién lo sostiene dentro de la empresa. El primer paso es una Consultoría Estratégica Gratuita, donde miramos juntos dónde está el freno en tu equipo.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Microsoft y LinkedIn — Work Trend Index 2024: AI at work is here. Now comes the hard part",
+            url: "https://www.microsoft.com/en-us/worklab/work-trend-index/ai-at-work-is-here-now-comes-the-hard-part",
+          },
+          {
+            label: "Slack — Workforce Index, otoño de 2024",
+            url: "https://slack.com/blog/news/the-fall-2024-workforce-index-shows-executives-and-employees-investing-in-ai-but-uncertainty-holding-back-adoption",
+          },
+          {
+            label: "Slack — Workforce Index, marzo de 2024",
+            url: "https://slack.com/blog/news/the-workforce-index-june-2024",
+          },
+          {
+            label: "KPMG y Universidad de Melbourne — Trust, attitudes and use of AI: a global study 2025",
+            url: "https://kpmg.com/xx/en/media/press-releases/2025/04/trust-of-ai-remains-a-critical-challenge.html",
+          },
+          {
+            label: "BCG — AI at Work 2025: Momentum Builds, but Gaps Remain, junio de 2025",
+            url: "https://www.bcg.com/publications/2025/ai-at-work-momentum-builds-but-gaps-remain",
+          },
+          {
+            label: "Gallup — Indicador de inteligencia artificial en el trabajo",
+            url: "https://www.gallup.com/699797/indicator-artificial-intelligence.aspx",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N07 — ¿ES SEGURO SUBIR DATOS DE LA EMPRESA A CHATGPT?
+     ================================================================= */
+  {
+    slug: "es-seguro-subir-datos-empresa-chatgpt",
+    titulo: "¿Es seguro subir datos de tu empresa a ChatGPT?",
+    categoria: "Herramientas",
+    fecha: "2026-09-11",
+    fechaLabel: "11 de septiembre de 2026",
+    lectura: "8 min de lectura",
+    resumen:
+      "Depende de qué cuenta uses, cómo la tengas configurada y qué dato estés pegando. Qué cambia entre un plan personal y uno de empresa, qué no se sube nunca, qué dice la Ley 25.326 y cinco reglas simples para el equipo.",
+    img: "/images/blog/es-seguro-subir-datos-empresa-chatgpt.png",
+    imgLabel: "/images/blog/es-seguro-subir-datos-empresa-chatgpt.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "La pregunta aparece en casi todas las capacitaciones, y casi siempre la hace alguien de administración o el dueño: «¿es seguro poner los datos de la empresa en ChatGPT?». Detrás hay una preocupación real, y muchas veces tardía: para cuando se pregunta, ya hay gente del equipo pegando planillas, mails de clientes y contratos en una cuenta personal.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La respuesta corta es que depende de tres cosas: qué cuenta usás, cómo está configurada y qué dato estás subiendo. Las tres se pueden ordenar sin ser experto en seguridad informática.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cuenta personal o cuenta de empresa: la diferencia que importa",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Las herramientas de IA tienen dos familias de planes: los personales (gratis o pagos, como ChatGPT Plus o Claude Pro) y los de empresa (ChatGPT Business, Claude Team, Gemini dentro de Google Workspace). El modelo que responde puede ser el mismo. Lo que cambia es el contrato y, con él, lo que el proveedor puede hacer con lo que escribís.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Qué pasa con tus conversaciones según el plan",
+        columnas: ["Cuenta", "¿Se usan para entrenar modelos?", "Lo que conviene saber"],
+        filas: [
+          [
+            "ChatGPT gratis o Plus",
+            "Sí, salvo que apagues «Mejorar el modelo para todos» en Controles de datos",
+            "Los chats temporales no se usan para entrenar, pero pueden guardarse hasta 30 días por seguridad",
+          ],
+          [
+            "ChatGPT Business o Enterprise",
+            "No, por defecto",
+            "La empresa administra usuarios, roles y accesos desde un panel",
+          ],
+          [
+            "Claude Free, Pro o Max",
+            "Lo elige cada usuario, desde un cambio anunciado en agosto de 2025",
+            "Si aceptás, las conversaciones se guardan hasta cinco años; si no, 30 días",
+          ],
+          [
+            "Claude Team o Enterprise",
+            "No; ese cambio no alcanza a los planes comerciales",
+            "Rigen los términos comerciales de Anthropic",
+          ],
+          [
+            "App de Gemini con cuenta personal",
+            "Puede usarse para mejorar los servicios de Google",
+            "Si no apagás la actividad, una parte de los chats la leen revisores humanos y se conserva hasta tres años",
+          ],
+          [
+            "Gemini dentro de Google Workspace",
+            "No fuera de tu dominio sin permiso",
+            "Google se compromete a que no lo revisen personas",
+          ],
+        ],
+        fuente:
+          "Centros de ayuda y páginas de privacidad de OpenAI, Anthropic y Google, consultados en septiembre de 2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Algunos detalles de esa tabla vale la pena leerlos en la fuente. OpenAI explica que, aun con el entrenamiento apagado, [si le das pulgar arriba o abajo a una respuesta, la conversación completa puede usarse para mejorar sus modelos](https://help.openai.com/en/articles/5722486-how-your-data-is-used-to-improve-model-performance). Anthropic [cambió sus términos para los planes personales en agosto de 2025](https://www.anthropic.com/news/updates-to-our-consumer-terms) y pidió a cada usuario que eligiera. Y Google, en la [ayuda de la app de Gemini](https://support.google.com/gemini/answer/13594961?hl=en), lo dice sin vueltas: no ingreses información confidencial que no querrías que vea un revisor.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "La pregunta no es si ChatGPT es seguro. Es si la cuenta con la que tu equipo lo usa es de la empresa o de cada uno.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Que no entrene no quiere decir que no guarde",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Aun en un plan de empresa, lo que subís queda en servidores de otra compañía, en otro país, durante un tiempo. En ChatGPT Enterprise, por ejemplo, [el administrador define cuánto tiempo se conservan las conversaciones, y las borradas se eliminan dentro de los 30 días](https://openai.com/enterprise-privacy/), salvo obligación legal. Es razonable, pero no es lo mismo que «no pasó nada».",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Además, hay errores que dependen de quien usa la herramienta, no del proveedor. En 2023, [Samsung prohibió el uso de estas herramientas](https://www.cnbc.com/2023/05/02/samsung-bans-use-of-ai-like-chatgpt-for-staff-after-misuse-of-chatbot.html) después de que empleados subieran código interno a ChatGPT. En 2025, [miles de conversaciones compartidas con un link público aparecieron en los resultados de Google](https://www.searchenginejournal.com/openai-is-pulling-shared-chatgpt-chats-from-google-search/552671/), porque sus autores habían tildado una opción para que fueran encontrables; OpenAI la sacó el 1 de agosto de ese año. En ninguno de los dos casos hubo un ataque. Hubo gente que no sabía bien qué estaba haciendo.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que no se sube nunca, ni en un plan pago",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Contraseñas, claves de acceso y datos de tarjetas o cuentas bancarias.** No hay tarea que lo justifique.",
+          "**Datos sensibles de personas.** La ley argentina los define con precisión: salud, origen racial o étnico, opiniones políticas, convicciones religiosas, filosóficas o morales, afiliación sindical, vida sexual. Un certificado médico de un empleado entra en esta categoría.",
+          "**Información de terceros que firmaste mantener en reserva.** Si tenés un acuerdo de confidencialidad con un cliente o proveedor, subir sus documentos a un servicio externo puede incumplirlo, aunque el plan sea de empresa.",
+          "**Bases completas de clientes o empleados.** Casi nunca hace falta la planilla entera. Para que la IA entienda el formato o arme una fórmula, alcanza con diez filas con los nombres cambiados.",
+          "**Cualquier cosa, desde una cuenta personal, que no publicarías en la web de la empresa.** Si la cuenta no es de la empresa, tratala como si fuera pública.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué dice la Ley 25.326",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "En Argentina, la [Ley 25.326 de Protección de Datos Personales](https://servicios.infoleg.gob.ar/infolegInternet/anexos/60000-64999/64790/texact.htm) sigue siendo la norma vigente. Es del año 2000 y no menciona la inteligencia artificial, pero varios de sus artículos se aplican de lleno a lo que hace tu equipo cuando pega datos en un chat. No soy abogado, así que lo que sigue es un mapa para saber qué preguntar, no un dictamen:",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Cuatro artículos que conviene conocer",
+        columnas: ["Artículo", "Qué dice", "Qué significa para tu equipo"],
+        filas: [
+          [
+            "Art. 2 — Definiciones",
+            "Dato personal es información referida a personas humanas o jurídicas determinadas o determinables. Define también los datos sensibles",
+            "El nombre, el mail o el CUIT de un cliente son datos personales. No hace falta que sea un dato íntimo",
+          ],
+          [
+            "Art. 4 — Calidad de los datos",
+            "Los datos no pueden usarse para fines distintos o incompatibles con aquellos para los que se obtuvieron",
+            "Que un cliente te haya dado sus datos para facturarle no habilita cualquier otro uso",
+          ],
+          [
+            "Art. 9 — Seguridad",
+            "Quien tiene la base de datos debe adoptar medidas técnicas y organizativas para garantizar su seguridad y confidencialidad",
+            "Dejar que cada empleado decida qué pega en una cuenta personal difícilmente cuente como una medida organizativa",
+          ],
+          [
+            "Art. 12 — Transferencia internacional",
+            "Prohíbe transferir datos personales a países que no den un nivel de protección adecuado, con excepciones",
+            "Los servidores de estas herramientas suelen estar en el exterior, y Estados Unidos no figura en la lista de países adecuados",
+          ],
+        ],
+        fuente: "Ley 25.326, texto actualizado en InfoLEG",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El último punto es el que más sorprende. La [Agencia de Acceso a la Información Pública](https://www.argentina.gob.ar/transferencias-internacionales) publica la lista de países con protección adecuada: incluye a la Unión Europea, el Reino Unido, Suiza, Uruguay y otros, pero no a Estados Unidos. Para transferir datos a un país que no está en la lista, la agencia prevé mecanismos como el consentimiento expreso de las personas o cláusulas contractuales modelo. Si tu empresa maneja datos de clientes en volumen, esta es una conversación para tener con un abogado antes de elegir herramienta, no después.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cinco reglas para el equipo, en una página",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Nada de esto se resuelve con un reglamento de veinte páginas. Se resuelve con [un criterio común](/blog/criterio-comun-de-ia-en-la-empresa) que entre en una hoja y que todos conozcan. Estas cinco reglas cubren la mayoría de los casos:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Para trabajar, cuentas de la empresa.** Un plan de equipo, a nombre de la empresa, con alguien que administre las altas y las bajas. Cuando alguien se va, se le da de baja desde el panel y listo.",
+          "**Mientras tanto, cuentas personales configuradas.** Si todavía no hay plan de empresa, cada persona apaga el entrenamiento en la configuración y usa chats temporales para cualquier cosa del trabajo.",
+          "**Nombres cambiados antes de pegar.** «Cliente A», «Proveedor 3», montos redondeados. La IA resuelve igual y el dato real no sale de la empresa.",
+          "**Nada de links públicos.** Las conversaciones de trabajo no se comparten con un link: se copia lo que haga falta y se manda por el canal de siempre.",
+          "**Una persona a quien preguntar.** Cuando alguien duda si puede subir algo, tiene que saber a quién consultar en cinco minutos. Si no hay a quién, decide solo, y cada uno decide distinto.",
+        ],
+      },
+      {
+        tipo: "tabla",
+        titulo: "El semáforo, para colgar al lado de la pantalla",
+        columnas: ["Color", "Qué entra", "Dónde"],
+        filas: [
+          [
+            "Verde",
+            "Textos públicos, borradores genéricos, ideas, fórmulas de planilla con datos de ejemplo",
+            "En cualquier cuenta",
+          ],
+          [
+            "Amarillo",
+            "Información interna sin datos de personas: procedimientos, informes de gestión, textos comerciales",
+            "Solo en la cuenta de empresa",
+          ],
+          [
+            "Rojo",
+            "Datos sensibles, claves, datos bancarios, bases de clientes identificables, documentos bajo confidencialidad",
+            "No se sube",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Prohibir no lo hace más seguro",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Frente a este panorama, la reacción de muchos dueños es prohibir. Lo entiendo, pero en una PyME casi nunca funciona: el uso no desaparece, se muda al celular personal, que es el lugar donde menos control hay. El informe [Superagency in the workplace](https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/superagency-in-the-workplace-empowering-people-to-unlock-ais-full-potential) de McKinsey encontró que los empleados adoptan la IA generativa bastante más rápido de lo que sus líderes creen. Lo más probable es que en tu empresa ya se esté usando.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Lo que sí funciona es darle a la gente una forma segura de hacer lo que ya está haciendo: una cuenta de empresa, una hoja con el semáforo y alguien a quien preguntar. Es de las primeras cosas que dejamos armadas en el [Programa INTEGRA](/programa-integra), porque sin esa base cualquier avance posterior se apoya sobre datos que nadie sabe dónde terminaron.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "OpenAI — Controles de datos en ChatGPT",
+            url: "https://help.openai.com/en/articles/7730893-data-controls-faq",
+          },
+          {
+            label: "OpenAI — Cómo se usan los datos para mejorar los modelos",
+            url: "https://help.openai.com/en/articles/5722486-how-your-data-is-used-to-improve-model-performance",
+          },
+          {
+            label: "OpenAI — Enterprise privacy",
+            url: "https://openai.com/enterprise-privacy/",
+          },
+          {
+            label: "OpenAI — ChatGPT Business",
+            url: "https://help.openai.com/en/articles/8792828-what-is-chatgpt-business",
+          },
+          {
+            label: "Anthropic — Updates to our consumer terms, agosto de 2025",
+            url: "https://www.anthropic.com/news/updates-to-our-consumer-terms",
+          },
+          {
+            label: "Google — Privacidad de las apps de Gemini",
+            url: "https://support.google.com/gemini/answer/13594961?hl=en",
+          },
+          {
+            label: "Google — Generative AI in Google Workspace Privacy Hub",
+            url: "https://knowledge.workspace.google.com/admin/gemini/generative-ai-in-google-workspace-privacy-hub",
+          },
+          {
+            label: "Ley 25.326 de Protección de Datos Personales (InfoLEG)",
+            url: "https://servicios.infoleg.gob.ar/infolegInternet/anexos/60000-64999/64790/texact.htm",
+          },
+          {
+            label: "AAIP — Transferencias internacionales de datos personales",
+            url: "https://www.argentina.gob.ar/transferencias-internacionales",
+          },
+          {
+            label: "CNBC — Samsung bans use of AI like ChatGPT for employees, mayo de 2023",
+            url: "https://www.cnbc.com/2023/05/02/samsung-bans-use-of-ai-like-chatgpt-for-staff-after-misuse-of-chatbot.html",
+          },
+          {
+            label: "Search Engine Journal — OpenAI is pulling shared ChatGPT chats from Google Search, agosto de 2025",
+            url: "https://www.searchenginejournal.com/openai-is-pulling-shared-chatgpt-chats-from-google-search/552671/",
+          },
+          {
+            label: "McKinsey — Superagency in the workplace, enero de 2025",
+            url: "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/superagency-in-the-workplace-empowering-people-to-unlock-ais-full-potential",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N08 — COMPRAR DESDE CHATGPT: QUÉ HAY HOY Y QUÉ PREPARAR EN ARGENTINA
+     ================================================================= */
+  {
+    slug: "comprar-desde-chatgpt-argentina-comercio",
+    titulo: "Comprar desde ChatGPT: qué hay hoy y qué tiene que preparar un comercio argentino",
+    categoria: "Herramientas",
+    fecha: "2026-09-08",
+    fechaLabel: "8 de septiembre de 2026",
+    lectura: "7 min de lectura",
+    resumen:
+      "OpenAI lanzó la compra dentro del chat, la cerró seis meses después y hoy apuesta a recomendar productos y mandar al cliente a la tienda. Qué está disponible, qué llega a la Argentina y qué conviene ordenar en tu catálogo mientras tanto.",
+    img: "/images/blog/comprar-desde-chatgpt-argentina-comercio.png",
+    imgLabel: "/images/blog/comprar-desde-chatgpt-argentina-comercio.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "Cada tanto alguien que tiene un comercio me pregunta si «ya se puede vender por ChatGPT». La pregunta tiene sentido: hace un año se anunció con bombos y platillos que se iba a poder comprar sin salir del chat. Lo que pasó después se contó bastante menos, y es lo que más le sirve entender a un comercio argentino antes de invertir tiempo o plata en esto.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué es eso de comprar desde un chat",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La idea, que en inglés se llama agentic commerce, es simple de explicar: en lugar de buscar en Google, abrir cinco pestañas y comparar, le contás al asistente qué necesitás, te muestra opciones y, en la versión más ambiciosa, hace la compra por vos. Para que eso funcione, el asistente necesita tres cosas del comercio: el catálogo con datos completos y actualizados, una forma de cobrar sin que la tarjeta pase por el chat, y confianza del cliente en que lo que compró va a llegar.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que se lanzó y lo que se cerró",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El 29 de septiembre de 2025 OpenAI y Stripe lanzaron [Instant Checkout](https://stripe.com/newsroom/news/stripe-openai-instant-checkout): compras dentro de ChatGPT, sólo para usuarios de Estados Unidos, arrancando con vendedores de Etsy y con comercios de Shopify anunciados para más adelante. Junto con eso publicaron el Agentic Commerce Protocol (ACP), un estándar abierto para que los comercios y los asistentes de IA hablen el mismo idioma.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "En marzo de 2026 OpenAI dio marcha atrás. Según [Digital Commerce 360](https://www.digitalcommerce360.com/2026/03/24/openai-agentic-commerce-updates-chatgpt-walmart/), la empresa reconoció que la primera versión de Instant Checkout «no ofrecía la flexibilidad» que buscaba, y el 24 de marzo anunció que ChatGPT se iba a concentrar en ayudar a descubrir productos, dejando el cobro en manos de cada comercio. El ACP siguió vivo, pero ahora para que los comercios compartan su catálogo y sus promociones con ChatGPT.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "La compra dentro del chat no desapareció por falta de tecnología. Desapareció porque comprar bien requiere cosas que un chat todavía no resuelve solo: stock real, envíos, cambios, promociones.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué hay hoy, en el mundo",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Dónde está la compra con IA a principios de septiembre",
+        columnas: ["Qué", "Cómo funciona", "Dónde está disponible"],
+        filas: [
+          [
+            "Descubrimiento de productos en ChatGPT",
+            "ChatGPT recomienda y compara productos; el cliente compra en la tienda del comercio",
+            "El estándar de catálogo de OpenAI apunta hoy a Estados Unidos",
+          ],
+          [
+            "Apps de comercios dentro de ChatGPT",
+            "Cada comercio arma su propia experiencia, con su cuenta, su programa de fidelidad y sus medios de pago (el caso de Walmart)",
+            "Comercios grandes, mayormente de Estados Unidos",
+          ],
+          [
+            "Compra con IA de Google (UCP)",
+            "Botón de compra dentro del Modo IA del buscador y de Gemini",
+            "Estados Unidos, Canadá y Australia, para comercios seleccionados",
+          ],
+          [
+            "Publicidad en ChatGPT",
+            "Anuncios marcados como patrocinados debajo de las respuestas",
+            "52 países al 3 de septiembre; en América Latina, sólo Brasil y México",
+          ],
+        ],
+        fuente:
+          "OpenAI Developers, Google Merchant Center, Digital Commerce 360 y Digital Applied",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los detalles, con sus fuentes: la [especificación del catálogo de OpenAI](https://developers.openai.com/commerce/specs/file-upload/products) dice que el estándar «actualmente se dirige a EE. UU.»; la [ayuda de Google Merchant Center](https://support.google.com/merchants/answer/16837055?hl=en) limita la compra con su protocolo a productos de Estados Unidos, Canadá y Australia; y el relevamiento de [Digital Applied](https://www.digitalapplied.com/blog/where-chatgpt-ads-are-sold-every-market-and-date) sobre la publicidad en ChatGPT no incluye a la Argentina en la lista de países al 3 de septiembre.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué llega (y qué no) a la Argentina",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Hoy un comercio argentino no puede subir su catálogo a ChatGPT por la vía oficial ni vender con el botón de compra de Google. Eso no quiere decir que la IA no le esté mandando clientes. ChatGPT, Gemini y Claude recomiendan productos con lo que encuentran publicado, y esas recomendaciones ya generan visitas.",
+      },
+      {
+        tipo: "dato",
+        valor: "396 %",
+        texto:
+          "creció en 2025 el tráfico que llega desde herramientas de IA a las tiendas de Tiendanube, según datos de la plataforma citados por Expansión.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El dato es de Tiendanube, que tiene más de 180.000 tiendas en América Latina, y lo publicó [Expansión](https://expansion.mx/tecnologia/2026/05/28/chatgpt-gemini-cambian-completo-forma-de-comprar-ropa) en mayo. En otra nota de agosto, [Expansión](https://expansion.mx/tecnologia/2026/08/03/chatgpt-quintuplico-visitas-tiendas-en-linea) agrega que de cada 100 visitas que llegan por recomendación de una IA, entre 3 y 5 terminan en compra. Desde la misma plataforma explican que estos agentes no entran por la página de inicio: van directo al catálogo. Por eso importa tanto cómo está escrita cada ficha de producto.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Del lado de los pagos, el movimiento local existe pero todavía en etapa de prueba. En marzo, [Infobae](https://www.infobae.com/economia/2026/03/29/comprar-y-pagar-con-chatgpt-como-se-preparan-los-bancos-las-billeteras-y-las-tarjetas-para-sumar-la-ia-al-e-commerce/) contó que Mastercard había hecho transacciones de prueba con agentes de IA junto al Banco Nación, que Visa estaba probando algo parecido con Santander en cinco países de la región, incluida la Argentina, y que MODO ya tenía una app dentro de ChatGPT funcionando en Estados Unidos, a la espera de habilitarse acá.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué preparar mientras tanto",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La buena noticia es que casi todo lo que hay que hacer para que una IA recomiende bien tus productos es lo mismo que ya deberías tener para vender bien online. No hay que esperar a que la compra dentro del chat llegue al país para empezar.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Fichas de producto completas.** Nombre claro, marca, descripción con materiales, medidas, talles y para qué sirve, precio, disponibilidad e imágenes. Son, casi uno por uno, los campos obligatorios que pide el catálogo de OpenAI: título, descripción, link, marca, vendedor, imagen, disponibilidad y precio.",
+          "**Descripciones que respondan preguntas.** Un cliente le pregunta a ChatGPT «zapatillas para caminar en ripio, talle 43, que no pasen de tanto». Si tu ficha dice sólo «Zapatilla modelo X negra», no hay nada que la IA pueda usar para recomendarte.",
+          "**Precio y stock al día.** El estándar de OpenAI pide actualizar el catálogo apenas cambia un precio o se termina una oferta. Una IA que recomienda un producto sin stock te hace perder la venta y la confianza.",
+          "**Código de barras cuando lo tengas.** El GTIN (el número del código de barras) es opcional, pero ayuda a que el producto se identifique sin confusiones.",
+          "**Políticas visibles.** Envíos, cambios y devoluciones escritos en la tienda, no sólo en la cabeza de quien atiende el WhatsApp.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Mercado Libre, tienda propia o las dos",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Para la mayoría de los comercios argentinos la pregunta real no es ChatGPT sí o no. Es dónde tener el catálogo bien armado. Mercado Libre te da tráfico y confianza, pero las reglas y el vínculo con el cliente son de la plataforma. Una tienda propia, en Tiendanube o en otra plataforma, te deja controlar cómo se describe cada producto y es la página a la que una IA puede mandarte clientes directamente.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Mi recomendación, para un comercio chico o mediano: no dupliques el trabajo. Armá una sola planilla maestra de productos, con las descripciones completas, y desde ahí alimentá Mercado Libre y la tienda propia. Esa planilla ordenada es lo que te va a permitir sumar el canal que venga —ChatGPT, Google o el que aparezca— en días y no en meses.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "**Actualización, 24 de septiembre.** MODO anunció que su integración con ChatGPT ya está disponible en la Argentina, con Frávega como primer comercio: se puede elegir, comprar y pagar sin salir de la conversación, según [Infobae](https://www.infobae.com/economia/2026/09/24/cambios-en-el-e-commerce-la-billetera-de-los-bancos-se-integra-con-chatgpt-para-elegir-comprar-y-pagar-un-producto-con-ia/). La empresa dice que es un ecosistema abierto al que se irán sumando más comercios, pero todavía no publicó cómo puede hacerlo uno. Por ahora es una señal clara de hacia dónde va la cosa, y otra razón para tener el catálogo en orden.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Ordenar el catálogo es una de esas tareas que todo comercio sabe que tiene que hacer y que siempre queda para la semana que viene. Con IA se hace mucho más rápido: redactar descripciones a partir de una planilla, completar datos faltantes, unificar formatos. Es el tipo de trabajo concreto con el que solemos arrancar en el [Programa INTEGRA](/programa-integra), y el primer paso es una Consultoría Estratégica Gratuita.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Stripe — Stripe powers Instant Checkout in ChatGPT and releases Agentic Commerce Protocol (29 de septiembre de 2025)",
+            url: "https://stripe.com/newsroom/news/stripe-openai-instant-checkout",
+          },
+          {
+            label: "Digital Commerce 360 — OpenAI reveals updates to its agentic commerce experience for ChatGPT (24 de marzo de 2026)",
+            url: "https://www.digitalcommerce360.com/2026/03/24/openai-agentic-commerce-updates-chatgpt-walmart/",
+          },
+          {
+            label: "OpenAI Developers — Agentic Commerce: especificación del catálogo de productos",
+            url: "https://developers.openai.com/commerce/specs/file-upload/products",
+          },
+          {
+            label: "Google Merchant Center — About the Universal Commerce Protocol (UCP)",
+            url: "https://support.google.com/merchants/answer/16837055?hl=en",
+          },
+          {
+            label: "Digital Applied — Where ChatGPT Ads are sold: every market, every date",
+            url: "https://www.digitalapplied.com/blog/where-chatgpt-ads-are-sold-every-market-and-date",
+          },
+          {
+            label: "Expansión — ChatGPT y Gemini cambian por completo la forma de comprar ropa (28 de mayo de 2026)",
+            url: "https://expansion.mx/tecnologia/2026/05/28/chatgpt-gemini-cambian-completo-forma-de-comprar-ropa",
+          },
+          {
+            label: "Expansión — ChatGPT quintuplicó las visitas a tiendas en línea (3 de agosto de 2026)",
+            url: "https://expansion.mx/tecnologia/2026/08/03/chatgpt-quintuplico-visitas-tiendas-en-linea",
+          },
+          {
+            label: "Infobae — Comprar y pagar con ChatGPT: cómo se preparan los bancos, las billeteras y las tarjetas (29 de marzo de 2026)",
+            url: "https://www.infobae.com/economia/2026/03/29/comprar-y-pagar-con-chatgpt-como-se-preparan-los-bancos-las-billeteras-y-las-tarjetas-para-sumar-la-ia-al-e-commerce/",
+          },
+          {
+            label: "Infobae — La billetera de los bancos se integra con ChatGPT (24 de septiembre de 2026)",
+            url: "https://www.infobae.com/economia/2026/09/24/cambios-en-el-e-commerce-la-billetera-de-los-bancos-se-integra-con-chatgpt-para-elegir-comprar-y-pagar-un-producto-con-ia/",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N09 — ¿LA IA VA A REEMPLAZAR EMPLEADOS? LOS DATOS A 2026
+     ================================================================= */
+  {
+    slug: "ia-reemplazar-empleados-datos-2026",
+    titulo: "¿La IA va a reemplazar empleados? Lo que dicen los datos en 2026",
+    categoria: "Futuro del trabajo",
+    fecha: "2026-09-05",
+    fechaLabel: "5 de septiembre de 2026",
+    lectura: "9 min de lectura",
+    resumen:
+      "Casi cuatro años después de ChatGPT, ya no hace falta adivinar: hay estudios del mercado laboral con datos reales. Muestran menos destrucción de empleo de la que anuncian los titulares y un cambio más silencioso, que empieza por las tareas y por la contratación de gente joven.",
+    img: "/images/blog/ia-reemplazar-empleados-datos-2026.png",
+    imgLabel: "/images/blog/ia-reemplazar-empleados-datos-2026.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "Es la pregunta que aparece en todas las charlas, a veces al principio y a veces al final, cuando alguien se anima: «¿esto nos va a dejar sin trabajo?». Durante los primeros dos años la única respuesta honesta era «no sabemos». Hoy, a fines de 2026, sabemos bastante más, porque ya no dependemos solo de proyecciones: hay estudios que miran qué pasó de verdad en el mercado laboral.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La respuesta corta es que, hasta ahora, la IA no produjo una ola de despidos generalizada. La respuesta larga tiene matices que a un dueño de PyME le conviene conocer, porque algunos ya lo están afectando.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Tareas, no puestos: la distinción que ordena todo",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Casi todos los estudios serios parten de la misma idea: la IA no hace puestos, hace tareas. Un puesto es un conjunto de tareas, y muy pocos están hechos enteramente de tareas que una máquina pueda resolver sola. Por eso los organismos internacionales hablan de «exposición»: qué parte del trabajo podría verse afectada, para bien o para mal.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La [Organización Internacional del Trabajo](https://www.ilo.org/resource/news/one-four-jobs-risk-being-transformed-genai-new-ilo%E2%80%93nask-global-index-shows) publicó en mayo de 2025 su índice más completo, construido sobre casi 30.000 tareas. Encontró que uno de cada cuatro trabajadores del mundo está en una ocupación con algún grado de exposición a la IA generativa, pero que solo el 3,3 % del empleo mundial cae en la categoría de exposición más alta. Su conclusión textual es que lo más probable para la mayoría de los puestos expuestos es la transformación, no el reemplazo.",
+      },
+      {
+        tipo: "dato",
+        valor: "3,3 %",
+        texto:
+          "del empleo mundial está en la categoría de mayor exposición a la IA generativa, según el índice de la OIT de mayo de 2025. Uno de cada cuatro trabajadores tiene algún grado de exposición.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El Fondo Monetario Internacional había llegado a una cifra más alta en enero de 2024: cerca del 40 % del empleo mundial expuesto a la IA, 60 % en las economías avanzadas. Pero el propio FMI aclaraba que exposición no es pérdida: en alrededor de la mitad de esos puestos, la IA podía complementar el trabajo en lugar de reemplazarlo. Las cifras distintas salen de métodos distintos; lo que tienen en común es que ninguna dice que un cuarto o un 40 % de la gente vaya a perder el empleo.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Cuánto trabajo está expuesto a la IA, según quién mide",
+        columnas: ["Estudio", "Qué encontró", "Qué no dice"],
+        filas: [
+          [
+            "OIT y NASK, mayo de 2025",
+            "25 % del empleo mundial con alguna exposición; 3,3 % en la exposición más alta",
+            "Que esos puestos vayan a desaparecer: espera sobre todo transformación",
+          ],
+          [
+            "FMI, enero de 2024",
+            "Cerca del 40 % del empleo mundial expuesto; 60 % en economías avanzadas",
+            "Que la exposición implique pérdida: en cerca de la mitad, la IA complementa",
+          ],
+          [
+            "OIT y Banco Mundial, julio de 2024 (América Latina)",
+            "Entre 26 % y 38 % del empleo regional expuesto; entre 2 % y 5 % en riesgo de automatización total",
+            "Que la región esté a salvo: la brecha digital frena también las mejoras de productividad",
+          ],
+        ],
+        fuente: "OIT · FMI · OIT y Banco Mundial, Buffer or Bottleneck?",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que ya se ve en el mercado laboral",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Las proyecciones son una cosa. Los datos de empleo, otra. Y los estudios que miran datos reales coinciden bastante.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El Budget Lab de la Universidad de Yale [analizó en octubre de 2025](https://fortune.com/2025/10/02/ai-job-losses-apocalypse-research-yale) la composición del mercado laboral de Estados Unidos desde el lanzamiento de ChatGPT y no encontró una alteración apreciable. Sus medidas de exposición a la IA no mostraban relación con cambios en el empleo ni en el desempleo, y sus [actualizaciones periódicas](https://budgetlab.yale.edu/research/tracking-impact-ai-labor-market) de 2026 no cambiaron ese cuadro general.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Anthropic, la empresa que desarrolla Claude, publicó en marzo de 2026 un [estudio sobre el impacto en el mercado laboral](https://www.anthropic.com/research/labor-market-impacts) que cruza el uso real de su herramienta con datos oficiales de empleo. Tampoco encontró un aumento significativo del desempleo en las ocupaciones más expuestas. Y marcó otra cosa: la distancia entre lo que la IA podría hacer en teoría y lo que efectivamente hace es enorme. En las tareas de informática y matemática, por ejemplo, la teoría hablaba de un 94 % de tareas alcanzables y el uso observado cubría el 33 %. Además, el 30 % de los trabajadores —cocineros, mecánicos, mozos— tenía una exposición observada nula.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La señal de alerta: la gente joven que no entra",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Que no haya despidos masivos no significa que no pase nada. El efecto más claro que se registró hasta ahora es otro, más silencioso: se contrata menos gente joven en las ocupaciones más expuestas.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El estudio más citado sobre esto es el del Laboratorio de Economía Digital de Stanford, conocido como «Canarios en la mina». Con datos de nómina de millones de trabajadores de Estados Unidos, su [actualización de agosto de 2026](https://digitaleconomy.stanford.edu/news/canariesaug26/) encontró que el empleo de las personas de 22 a 25 años en ocupaciones expuestas a la IA está un 19 % por debajo de donde estaría si hubiera seguido el ritmo de sus pares menos expuestos. Un año antes, la brecha era del 15 %. Para los trabajadores con más experiencia, no aparece una brecha comparable.",
+      },
+      {
+        tipo: "grafico",
+        titulo: "Dónde aparece el efecto, por ahora",
+        bajada: "Brecha de empleo de los trabajadores de 22 a 25 años en ocupaciones expuestas a la IA, frente a sus pares menos expuestos.",
+        barras: [
+          { label: "Medición de julio de 2025", valor: 15, texto: "−15 %", tono: "neutro" },
+          { label: "Medición de agosto de 2026 (datos a junio)", valor: 19, texto: "−19 %" },
+        ],
+        nota: "El ajuste pasa sobre todo por menos contrataciones, no por más despidos. Los trabajadores mayores de 25 no muestran una brecha comparable.",
+        fuente: "Stanford Digital Economy Lab, Canaries in the Coal Mine? · agosto de 2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Hay dos detalles del mismo estudio que importan. El ajuste ocurre sobre todo porque se contrata menos, no porque se despida más. Y la caída se concentra en las ocupaciones donde la IA automatiza tareas; donde la IA complementa el trabajo, el empleo se mantiene o crece. El estudio de Anthropic encontró algo parecido por otro camino: una caída del 14 % en la tasa con que la gente joven consigue empleo en las ocupaciones expuestas, comparada con 2022, con un margen estadístico ajustado.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "Hasta ahora, la IA no está echando gente. Está cambiando a quién se contrata para empezar.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué esperan las empresas",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El [Future of Jobs Report 2025](https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/) del Foro Económico Mundial, que ya comenté en [el artículo sobre cómo cambian los roles](/blog/como-cambian-los-roles-con-ia), tiene un dato que conviene poner al lado de los anteriores: el 40 % de los empleadores espera reducir personal allí donde la IA pueda automatizar tareas. Pero la respuesta más mencionada no es esa, sino capacitar a su gente, que el 77 % planea hacer.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Y del lado de los que usan IA todos los días, la foto tampoco es de pánico. En la [encuesta que Anthropic publicó en junio de 2026](https://www.anthropic.com/research/economic-index-june-2026-report) entre usuarios de Claude, el 10 % consideraba probable o muy probable perder su propio trabajo, y el 57 % decía que la IA había hecho más valiosas sus habilidades. Es gente que ya la adoptó, así que no representa a todos los trabajadores, pero el dato es útil: los que más la usan no son los que más miedo tienen.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Y en una PyME argentina, ¿qué cambia?",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "No hay todavía un estudio del mercado laboral argentino con la calidad de datos de los de Estados Unidos, así que conviene no inventar certezas. Lo que sí hay son algunas piezas. El informe de la [OIT y el Banco Mundial para América Latina](https://www.ilo.org/resource/news/press-release-ai-latin-america) estima que entre el 26 % y el 38 % del empleo de la región está expuesto, que solo entre el 2 % y el 5 % corre riesgo de automatización total, y que la falta de acceso digital limita justamente las mejoras de productividad.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Del lado del uso, el [Anthropic Economic Index](https://www.anthropic.com/economic-index) muestra que en mayo de 2026 Argentina usaba Claude un 48 % más de lo que predeciría su población en edad de trabajar, en el puesto 45 de 121 países, y que cerca del 47 % de esas conversaciones eran de trabajo, algo por encima del promedio mundial. Es un dato de uso, no de empleo: dice que la gente la está usando, no qué le pasa a su puesto.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Traducido a una empresa de veinte o cien personas, lo que veo es esto:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Las tareas administrativas son las primeras en cambiar.** Carga de datos, armado de informes, respuestas a consultas repetidas, conciliaciones. Todos los estudios ubican ahí la mayor exposición. No quiere decir que esos puestos sobren: quiere decir que su semana se va a parecer cada vez menos a la actual.",
+          "**El trabajo de planta, depósito, reparto o atención presencial cambia mucho menos.** Buena parte del empleo en las PyMEs argentinas está ahí, y es justamente donde el uso observado es más bajo.",
+          "**La decisión más delicada es la de la próxima contratación.** Es donde los datos muestran el efecto real. Antes de reemplazar a alguien que se va o de sumar un puesto junior, vale preguntarse qué tareas va a hacer, y cuáles de ellas ya cambiaron.",
+          "**La gente que aprende a trabajar con IA vale más, no menos.** Si una persona de tu equipo resuelve en una mañana lo que antes le llevaba tres días, lo que tenés no es un puesto de sobra: es capacidad para hacer cosas que hoy no hacés.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué conviene hacer",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con los datos disponibles, la postura más razonable no es el alarmismo ni la tranquilidad total. Es mirar las tareas en lugar de los puestos. Tres cosas concretas:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Hacé el inventario de tareas de dos o tres puestos clave.** Qué hace cada persona en una semana típica, cuánto tiempo le lleva cada cosa, y cuáles de esas tareas son repetitivas y con criterio estable. Es el ejercicio que describí en [el artículo sobre roles](/blog/como-cambian-los-roles-con-ia).",
+          "**Decidí antes qué vas a hacer con el tiempo que se libere.** Si no lo decidís, el equipo va a suponer lo peor, y con razón. Más atención al cliente, más seguimiento comercial, menos horas extra: cualquiera de esas respuestas es mejor que el silencio.",
+          "**Hablalo con tu equipo con datos, no con promesas.** Nadie puede garantizar qué va a pasar en cinco años. Sí se puede contar qué dicen los estudios hoy y qué piensa hacer la empresa. Por qué ese silencio frena la adopción lo desarrollé en [otro artículo](/blog/empleados-no-quieren-usar-ia-por-que-y-que-hacer).",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los datos van a seguir cambiando, y conviene revisarlos cada tanto sin dramatismo. Lo que no va a cambiar es que las empresas que ordenan sus tareas antes de que el cambio las obligue tienen más margen para decidir cómo lo atraviesan. En el [Programa INTEGRA](/programa-integra) trabajamos exactamente sobre eso: qué tareas de tu empresa conviene tocar primero, con qué criterio y con la gente adentro del proceso, no enfrente.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "OIT — One in four jobs at risk of being transformed by GenAI, mayo de 2025",
+            url: "https://www.ilo.org/resource/news/one-four-jobs-risk-being-transformed-genai-new-ilo%E2%80%93nask-global-index-shows",
+          },
+          {
+            label: "FMI — AI Will Transform the Global Economy, enero de 2024",
+            url: "https://www.imf.org/en/Blogs/Articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity",
+          },
+          {
+            label: "OIT y Banco Mundial — IA generativa y empleo en América Latina, julio de 2024",
+            url: "https://www.ilo.org/resource/news/press-release-ai-latin-america",
+          },
+          {
+            label: "Yale Budget Lab — Tracking the Impact of AI on the Labor Market",
+            url: "https://budgetlab.yale.edu/research/tracking-impact-ai-labor-market",
+          },
+          {
+            label: "Fortune — Yale Budget Lab: sin alteración apreciable del empleo, octubre de 2025",
+            url: "https://fortune.com/2025/10/02/ai-job-losses-apocalypse-research-yale",
+          },
+          {
+            label: "Anthropic — Labor market impacts of AI: a new measure and early evidence, marzo de 2026",
+            url: "https://www.anthropic.com/research/labor-market-impacts",
+          },
+          {
+            label: "Anthropic Economic Index — Cadences, junio de 2026",
+            url: "https://www.anthropic.com/research/economic-index-june-2026-report",
+          },
+          {
+            label: "Anthropic Economic Index — datos por país",
+            url: "https://www.anthropic.com/economic-index",
+          },
+          {
+            label: "Stanford Digital Economy Lab — Canaries in the Coal Mine?, actualización de agosto de 2026",
+            url: "https://digitaleconomy.stanford.edu/news/canariesaug26/",
+          },
+          {
+            label: "World Economic Forum — Future of Jobs Report 2025",
+            url: "https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N10 — GOOGLE ADS AI MAX: QUÉ REVISAR EN LAS CAMPAÑAS
+     ================================================================= */
+  {
+    slug: "google-ads-ai-max-que-revisar-campanas",
+    titulo: "Google Ads AI Max: qué revisar en tus campañas de búsqueda",
+    categoria: "Herramientas",
+    fecha: "2026-09-02",
+    fechaLabel: "2 de septiembre de 2026",
+    lectura: "7 min de lectura",
+    resumen:
+      "Desde este mes, Google empieza a pasar campañas de búsqueda a AI Max por su cuenta. Qué cambia en cómo se muestran tus anuncios, qué riesgos tiene para una PyME con presupuesto chico y qué revisar esta semana.",
+    img: "/images/blog/google-ads-ai-max-que-revisar-campanas.png",
+    imgLabel: "/images/blog/google-ads-ai-max-que-revisar-campanas.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "En muchas PyMEs las campañas de Google Ads funcionan así: alguien las armó hace un tiempo —una agencia, un sobrino, el mismo dueño un fin de semana—, se cargó una tarjeta y desde entonces nadie las mira demasiado, mientras las consultas sigan llegando. Si ese es tu caso, este mes conviene mirarlas, porque Google está cambiando cómo deciden en qué búsquedas aparecen tus anuncios, qué dicen y a qué página llevan.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El cambio se llama AI Max, y este mes empezó la migración automática de una parte de las campañas de búsqueda. No hay que entrar en pánico ni apagar todo. Hay que saber qué se activó y revisar cinco o seis cosas.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué es AI Max, sin vueltas",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "AI Max es un conjunto de funciones que Google agrega a las campañas de búsqueda y que [presentó en mayo de 2025](https://blog.google/products/ads-commerce/google-ai-max-for-search-campaigns/). Son tres cosas distintas, y conviene separarlas porque cada una tiene su riesgo:",
+      },
+      {
+        tipo: "tabla",
+        columnas: ["Función", "Qué hace", "Qué puede salir mal"],
+        filas: [
+          [
+            "Coincidencia de términos de búsqueda",
+            "Muestra tus anuncios en búsquedas que no están en tus palabras clave, usando concordancia amplia y búsquedas «sin palabra clave» que la IA considera relacionadas",
+            "Que aparezcas en búsquedas que no te sirven y pagues clics que nunca iban a comprar",
+          ],
+          [
+            "Personalización de texto",
+            "Genera títulos y descripciones nuevos a partir de tus anuncios, tu sitio web y tus palabras clave",
+            "Que un anuncio prometa algo que no hacés: un precio, un envío, una garantía",
+          ],
+          [
+            "Expansión de URL final",
+            "Elige a qué página de tu sitio mandar a cada persona, en lugar de la que definiste vos",
+            "Que el clic termine en una nota del blog, en «Trabajá con nosotros» o en un producto sin stock",
+          ],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Por qué te puede tocar aunque no hayas hecho nada",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Google anunció que a partir de septiembre de 2026 pasa a AI Max, de forma automática, a las campañas de búsqueda que usaban dos configuraciones viejas: los recursos creados automáticamente y la concordancia amplia a nivel de campaña. En las primeras se activan la coincidencia de términos y la personalización de texto; en las segundas, la coincidencia de términos. Los anuncios dinámicos de búsqueda también van a pasar a AI Max, pero Google [corrió esa fecha a febrero de 2027](https://blog.google/products/ads-commerce/dsa-upgrade-to-ai-max-2026/).",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Además, según la [ayuda de Google Ads](https://support.google.com/google-ads/answer/15909989?hl=en), las campañas de búsqueda nuevas ya se crean con AI Max activado. Si alguien armó una campaña en los últimos meses y aceptó lo que venía por defecto, lo más probable es que lo tenga prendido.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que promete Google, y cómo leerlo",
+      },
+      {
+        tipo: "dato",
+        valor: "14 %",
+        texto:
+          "más de conversiones o de valor de conversión, a un costo por conversión similar, es lo que Google dice que obtienen típicamente los anunciantes que activan AI Max. El dato sale de mediciones internas de Google.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Puede ser cierto en promedio y no ser cierto en tu cuenta. Ese número se apoya en que la cuenta mida bien sus conversiones y tenga presupuesto para que el sistema aprenda. La misma ayuda de Google dice que AI Max [no va a ser efectivo si la campaña está limitada por presupuesto](https://support.google.com/google-ads/answer/15910187?hl=en), y que la coincidencia de términos, la expansión de URL y la personalización de texto necesitan estrategias de oferta automáticas basadas en conversiones. Una PyME que invierte poco, con conversiones mal configuradas, está justo en el caso donde el promedio menos la representa.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Los riesgos concretos para una PyME",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Que el sistema optimice hacia algo que no es una venta.** Si la «conversión» configurada es una visita a la página de contacto o un clic en el botón de WhatsApp, AI Max va a buscar más de eso, aunque esas personas nunca compren.",
+          "**Que el presupuesto se reparta entre más búsquedas.** Con un presupuesto diario chico, abrir el abanico puede sacarle plata a las búsquedas que ya funcionaban.",
+          "**Que los textos generados digan lo que no querés.** Precios, plazos de entrega, «envío gratis», cuotas: la IA arma los textos con lo que encuentra en tu sitio, incluso si esa página está desactualizada.",
+          "**Que aparezcas buscando a la competencia, o pagues por tu propia marca.** Con la coincidencia ampliada, tus anuncios pueden salir en búsquedas de otras marcas, o en las de tu nombre, que igual te iban a encontrar.",
+          "**Que los clics lleguen a la página equivocada.** Con la expansión de URL, Google puede elegir una página que no fue pensada para vender.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué revisar esta semana",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Nada de esto requiere ser especialista. Requiere una hora con la cuenta abierta y, si las campañas las maneja una agencia, hacerle estas preguntas por escrito.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Si AI Max está activado y qué funciones.** En la configuración de cada campaña hay una sección AI Max. Ahí se ve si está prendido y cuáles de las tres funciones: la personalización de texto y la expansión de URL se pueden manejar por separado, aunque la expansión de URL necesita la personalización de texto activada.",
+          "**Qué se está midiendo como conversión.** Si no es una venta, un pedido de presupuesto o una consulta real, arreglá eso antes que cualquier otra cosa.",
+          "**El informe de términos de búsqueda.** Filtrá la columna de tipo de concordancia por «AI Max» y vas a ver las búsquedas que vinieron por la ampliación, según el [informe de AI Max](https://support.google.com/google-ads/answer/16470459). Durante el primer mes, miralo una vez por semana.",
+          "**Las palabras clave negativas.** Se siguen respetando con AI Max activado, según las [preguntas frecuentes de Google](https://support.google.com/google-ads/answer/15913066?hl=en). Todo lo que aparezca en el informe y no te sirva —«gratis», «empleo», «usado», productos que no vendés— va a la lista de negativas.",
+          "**Las exclusiones de URL.** En el informe de páginas de destino se ven las URL que eligió la expansión. Las que no sirven para vender se excluyen desde la configuración de AI Max de la campaña.",
+          "**Los controles de marca.** Se pueden excluir marcas a nivel de campaña (tu propio nombre en las campañas que no son de marca, o competidores) e incluir marcas a nivel de campaña o de grupo de anuncios.",
+          "**Las pautas de texto.** Si la personalización de texto está activa, podés cargar hasta 25 términos excluidos y hasta 40 restricciones de mensaje por campaña, escritas en tus palabras, como «no mencionar envío gratis». Un detalle de la [ayuda de Google](https://support.google.com/google-ads/answer/16489313?hl=en-GB): excluir términos no evita que se generen textos con precios; para eso hace falta una restricción de mensaje. Desde febrero, esta función está [disponible para todos los anunciantes](https://blog.google/products/ads-commerce/text-guidelines-beta-global-expansion/) y en todos los idiomas.",
+          "**Las ubicaciones.** Si vendés en una zona, revisá la segmentación geográfica y, a nivel de grupo de anuncios, las ubicaciones de interés que ofrece AI Max.",
+        ],
+      },
+      {
+        tipo: "tabla",
+        titulo: "Una rutina mínima para el primer mes",
+        columnas: ["Qué mirar", "Dónde", "Cada cuánto"],
+        filas: [
+          ["Búsquedas que trajo AI Max", "Informe de términos de búsqueda, filtrado por «AI Max»", "Semanal"],
+          ["Páginas a las que mandó los clics", "Informe de páginas de destino", "Semanal"],
+          ["Títulos y descripciones generados", "Informe de recursos (marcados como «Google AI»)", "Cada quince días"],
+          ["Costo por conversión real, antes y después", "Resumen de la campaña, comparando períodos", "Al cumplir cuatro semanas"],
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "¿Lo apago o lo dejo?",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Se puede apagar. Google avisa que, si lo hacés, se desactivan todas las funciones de AI Max, incluidas las exclusiones de marca. Mi sugerencia es no decidir por intuición ni por lo que dice un foro: decidir con los números de tu cuenta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Google tiene experimentos que dividen el tráfico de la campaña en dos, una mitad con AI Max y otra sin, y en agosto [sumó herramientas para probarlo](https://blog.google/products/ads-commerce/ai-max-testing-planning-tools/) manteniendo activos los controles de marca y ubicación. Si tu campaña tiene volumen suficiente, es la forma más limpia de saber si te conviene. Definí antes de empezar qué número te haría quedarte con AI Max y cuál te haría apagarlo; es el mismo principio que uso para [cualquier prueba con IA](/blog/cuando-abandonar-una-prueba-de-ia). Si la campaña es muy chica para un experimento, la alternativa es la rutina de la tabla de arriba durante un mes y una comparación honesta del costo por conversión real.",
+      },
+      {
+        tipo: "cita",
+        texto: "Que Google decida más cosas por vos no es malo en sí. Lo malo es que nadie en tu empresa esté mirando qué decidió.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "AI Max es un ejemplo de algo que va a pasar cada vez más: herramientas que ya usás incorporan IA que toma decisiones sola, sin que nadie lo haya pedido. No hace falta resistirse, pero sí que haya alguien en la empresa que sepa qué se activó y lo revise. En el [Programa INTEGRA](/programa-integra) trabajamos eso con los equipos: que cada herramienta tenga un responsable y un momento fijo para mirar si está dando resultado.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Google — Presentación de AI Max para campañas de búsqueda (mayo de 2025)",
+            url: "https://blog.google/products/ads-commerce/google-ai-max-for-search-campaigns/",
+          },
+          {
+            label: "Google — Los anuncios dinámicos de búsqueda pasan a AI Max (actualizado en junio de 2026)",
+            url: "https://blog.google/products/ads-commerce/dsa-upgrade-to-ai-max-2026/",
+          },
+          {
+            label: "Google Ads Help — About AI Max for Search campaigns",
+            url: "https://support.google.com/google-ads/answer/15910366?hl=en",
+          },
+          {
+            label: "Google Ads Help — How AI Max for Search campaigns works",
+            url: "https://support.google.com/google-ads/answer/15910187?hl=en",
+          },
+          {
+            label: "Google Ads Help — Set up AI Max for Search campaigns",
+            url: "https://support.google.com/google-ads/answer/15909989?hl=en",
+          },
+          {
+            label: "Google Ads Help — About reporting in AI Max for Search campaigns",
+            url: "https://support.google.com/google-ads/answer/16470459",
+          },
+          {
+            label: "Google Ads Help — Frequently asked questions about AI Max",
+            url: "https://support.google.com/google-ads/answer/15913066?hl=en",
+          },
+          {
+            label: "Google Ads Help — Use text guidelines with Performance Max and Search campaigns",
+            url: "https://support.google.com/google-ads/answer/16489313?hl=en-GB",
+          },
+          {
+            label: "Google — Pautas de texto disponibles para todos los anunciantes (febrero de 2026)",
+            url: "https://blog.google/products/ads-commerce/text-guidelines-beta-global-expansion/",
+          },
+          {
+            label: "Google — Nuevas herramientas para probar y planificar AI Max (agosto de 2026)",
+            url: "https://blog.google/products/ads-commerce/ai-max-testing-planning-tools/",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N11 — CÓMO MEDIR SI LA IA LE SIRVE A TU PYME
+     ================================================================= */
+  {
+    slug: "como-medir-si-ia-sirve-pyme",
+    titulo: "Cómo medir si la IA le sirve a tu PyME",
+    categoria: "Método",
+    fecha: "2026-08-30",
+    fechaLabel: "30 de agosto de 2026",
+    lectura: "9 min de lectura",
+    resumen:
+      "«La gente la usa bastante» no es una medición. Qué medir antes de empezar, cómo contar tiempo, calidad, errores y uso real en tareas concretas, y con qué resultados conviene adoptar, ajustar o descartar.",
+    img: "/images/blog/como-medir-si-ia-sirve-pyme.png",
+    imgLabel: "/images/blog/como-medir-si-ia-sirve-pyme.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "Cuando pregunto en una empresa si la IA les está sirviendo, la respuesta más común es «sí, la gente la usa bastante». Después pregunto cuánto tiempo ahorraron, en qué tarea, comparado con qué. Ahí la conversación se pone más lenta.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "No es falta de interés. Es que casi nadie midió cómo estaban las cosas antes de empezar, y sin ese número cualquier respuesta es una impresión. El problema es que las impresiones sobre la IA tienen un sesgo conocido: suelen ser más optimistas que la realidad.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La sensación de ir más rápido no es ir más rápido",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "En 2025, el instituto METR hizo un experimento con 16 programadores con experiencia, sobre 246 tareas reales de sus propios proyectos. Antes de empezar, esperaban que la IA los hiciera un 24 % más rápidos. Al terminar, creían que los había acelerado un 20 %. [La medición mostró lo contrario](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/): con IA tardaron un 19 % más.",
+      },
+      {
+        tipo: "dato",
+        valor: "+19 %",
+        texto:
+          "más de tiempo tardaron programadores experimentados usando IA, mientras creían haber ido un 20 % más rápido. METR, julio de 2025.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Es un estudio chico, sobre un tipo de trabajo muy específico, y no dice que la IA no sirva. Dice algo más útil: que la percepción de quien la usa no alcanza para saberlo. La misma distancia aparece a escala. El [State of AI 2026 de McKinsey](https://www.theregister.com/ai-and-ml/2026/08/25/mckinsey-says-enterprise-ai-is-finally-on-the-road-to-roi/5292388), con 1.719 encuestados, encontró que el 80 % de quienes usan IA en su trabajo dice que mejoró su productividad, pero solo el 37 % atribuye a la IA algún impacto en el resultado operativo de su empresa.",
+      },
+      {
+        tipo: "grafico",
+        titulo: "Lo que se siente y lo que llega al resultado",
+        bajada: "Porcentaje de encuestados que afirma cada punto.",
+        barras: [
+          { label: "Dice que la IA mejoró su productividad individual", valor: 80, texto: "80 %" },
+          {
+            label: "Atribuye a la IA algún impacto en el resultado operativo (EBIT)",
+            valor: 37,
+            texto: "37 %",
+            tono: "neutro",
+          },
+        ],
+        nota: "Entre una cosa y la otra hay una tarea que alguien tiene que medir.",
+        fuente: "McKinsey, The state of AI in 2026: On the road to ROI · agosto de 2026",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Parte de esa distancia se explica por algo muy simple. En su edición de marzo de 2025, [McKinsey encontró](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value) que menos de una de cada cinco organizaciones seguía indicadores concretos de sus soluciones de IA generativa, y que esa era, entre todas las prácticas que analizaron, la que más se asociaba con el impacto en el resultado. Medir no es un trámite posterior. Es parte de lo que hace que funcione.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Antes de empezar: la línea de base",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La línea de base es cómo está la tarea hoy, sin IA. Sin ella, dentro de un mes vas a tener un número suelto que no se compara con nada. Tomarla no requiere un sistema ni un cronómetro. Alcanza con esto:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Una tarea, no un área.** «Responder las consultas que llegan por mail», no «atención al cliente».",
+          "**Diez casos anotados.** Durante una o dos semanas, quien hace la tarea anota en una planilla la hora de inicio y de fin de diez casos. No hace falta más precisión que esa.",
+          "**Cuántas veces por semana pasa.** El volumen es lo que convierte minutos en horas.",
+          "**Cuántos casos vuelven.** Un error que llega al cliente, una corrección de un jefe, un retrabajo. Aunque sea un conteo aproximado.",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Lo importante es anotarlo antes de probar nada. Una estimación escrita el primer día vale más que un dato exacto reconstruido de memoria un mes después, cuando ya todos quieren que haya funcionado.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Las cuatro cosas que conviene medir",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Qué medir y dónde está la trampa",
+        columnas: ["Qué", "Cómo se mide", "La trampa típica"],
+        filas: [
+          [
+            "Tiempo",
+            "Minutos por caso, contando la revisión humana, contra la línea de base",
+            "Medir solo lo que tarda la IA y olvidarse del tiempo de revisar y corregir",
+          ],
+          [
+            "Calidad",
+            "Una persona que no hizo la tarea revisa una muestra con un criterio escrito antes",
+            "Que evalúe el mismo que la hizo, que siempre la va a ver mejor",
+          ],
+          [
+            "Errores",
+            "Cuántos llegan al cliente, al sistema o a otra área, y cuántos se frenan antes",
+            "Contar errores solo cuando alguien se queja, que es cuando ya es tarde",
+          ],
+          [
+            "Uso real",
+            "Qué parte de los casos de la semana se hizo de la nueva forma y cuántas personas la usaron",
+            "Contar licencias pagadas o gente capacitada en lugar de casos resueltos",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La columna de errores es la que más se saltea y la que más importa. Una tarea puede hacerse en la mitad del tiempo y estar produciendo, sin que nadie lo note, resultados peores. Por eso, en cualquier medición, tiempo y calidad van juntos. Uno sin el otro no dice nada.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Tres tareas, tres formas de medirlas",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Ejemplos de medición en tareas comunes de una PyME",
+        columnas: ["Tarea", "Línea de base", "Qué mirar durante la prueba"],
+        filas: [
+          [
+            "Responder consultas de clientes por mail",
+            "Tiempo desde que entra la consulta hasta la primera respuesta, y cuántas respuestas necesitaron una segunda aclaración",
+            "Mismo tiempo, más una revisión semanal de diez respuestas hecha por alguien que conoce al cliente",
+          ],
+          [
+            "Armar presupuestos comerciales",
+            "Horas entre el pedido y el envío, y cuántos presupuestos salieron con un precio o una condición mal",
+            "Mismo tiempo, errores de precio encontrados antes de enviar y errores encontrados después",
+          ],
+          [
+            "Cargar facturas de proveedores",
+            "Facturas cargadas por hora y diferencias encontradas al conciliar a fin de mes",
+            "Qué porcentaje pasa sin corrección y cuántas diferencias aparecen en la conciliación",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un ejemplo con números, para que se vea la cuenta. Supongamos que entran 60 consultas por semana y cada una lleva 12 minutos: son 12 horas semanales. Si con IA el borrador sale en 5 minutos y revisarlo lleva 4, cada consulta pasa a 9 minutos y la semana a 9 horas. El ahorro no son los 7 minutos que parece a primera vista, son 3 por consulta: 3 horas por semana, unas 12 por mes. Es un buen resultado, pero bastante menos espectacular que el que uno se imagina mirando lo rápido que escribe la herramienta.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "El ahorro real se mide con la revisión incluida. Si no, estás midiendo lo rápido que escribe la IA, no lo rápido que trabaja tu equipo.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Qué resultados son razonables esperar",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Tener una referencia ayuda a no decepcionarse ni entusiasmarse de más. Una encuesta a trabajadores de Estados Unidos analizada por la [Reserva Federal de St. Louis](https://www.stlouisfed.org/on-the-economy/2025/feb/impact-generative-ai-work-productivity) encontró que quienes usaban IA generativa ahorraban en promedio el 5,4 % de sus horas de trabajo: unas 2,2 horas en una semana de 40. Un tercio de esos usuarios ahorraba una hora o menos; uno de cada cinco, cuatro horas o más.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El otro dato que conviene tener a mano viene de un estudio de Erik Brynjolfsson y otros investigadores sobre [5.179 agentes de atención al cliente](https://www.nber.org/papers/w31161). Con un asistente de IA, resolvieron en promedio un 14 % más de consultas por hora. Pero la mejora no fue pareja: los más nuevos y menos experimentados mejoraron un 34 %, y en los más experimentados el efecto fue mínimo.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Eso tiene una consecuencia práctica para la medición: mirá el resultado por persona, no solo el promedio. Si la mejora se concentra en los que recién empiezan, la IA está funcionando como una forma de pasar lo que saben los más experimentados al resto. Y eso, en empresas donde hay una o dos personas que saben mucho y no logran contagiar al equipo, puede valer más que las horas ahorradas.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cuánto se usa de verdad",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Hay una métrica que casi nadie mira y que explica muchos fracasos: qué parte de los casos se está haciendo de la nueva forma. Una herramienta puede funcionar muy bien y no mover ningún número porque la usa una sola persona de seis. Los planes de empresa suelen mostrar el uso en el panel de administración; si no, alcanza con preguntar una vez por semana cuántos casos se hicieron de cada manera.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Cuando el uso es bajo, el problema casi nunca es la herramienta. Es que nadie decidió que la tarea se hace así ahora, o que a la persona que la hace nadie le mostró cómo, o que lo nuevo todavía cuesta un poco más y aparece una urgencia. Se arregla distinto que un problema de calidad, y por eso conviene medirlos por separado.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Adoptar, ajustar o descartar",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Con las cuatro mediciones sobre la mesa, al final del plazo la decisión suele ser bastante clara. Lo ideal es haber escrito los umbrales [antes de empezar](/blog/cuando-abandonar-una-prueba-de-ia); si no se hizo, esta tabla sirve de guía:",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Qué hacer según lo que muestran los números",
+        columnas: ["Lo que muestran", "Decisión"],
+        filas: [
+          [
+            "El tiempo baja, la calidad se mantiene o mejora y la mayoría del equipo lo usa",
+            "Adoptar: escribir cómo se hace, sumar a quienes faltan y pasar a la siguiente tarea",
+          ],
+          [
+            "El tiempo baja pero aparecen errores o cae la calidad",
+            "Ajustar la tarea: achicarla a la parte que sale bien o sumar un control antes de que el resultado salga",
+          ],
+          [
+            "Funciona bien, pero lo usa una o dos personas",
+            "Ajustar la adopción, no la herramienta: quién enseña, cuándo, y qué se deja de hacer de la forma vieja",
+          ],
+          [
+            "No hay mejora de tiempo después del plazo, o hubo errores graves",
+            "Descartar, y [dejar escrito por qué](/blog/descartar-una-iniciativa-de-ia-con-evidencia)",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Durante la prueba, la medición se mira una vez por semana, en la [reunión de seguimiento](/blog/reunion-semanal-de-adopcion-de-ia). Una vez adoptada, alcanza con una revisión mensual de las mismas cuatro cosas, para detectar a tiempo si el uso se cae o si la calidad empieza a bajar.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Medir así parece más trabajo del que vale una prueba chica. Pero es lo único que te permite contestar, dentro de tres meses, si la IA le sirve a tu empresa con un número en lugar de una impresión. En el [Programa INTEGRA](/programa-integra) la línea de base se toma antes de probar cualquier herramienta, y cada tarea termina con una de esas tres decisiones.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "METR — Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity, julio de 2025",
+            url: "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+          },
+          {
+            label: "The Register — McKinsey says enterprise AI is finally on the road to ROI, agosto de 2026",
+            url: "https://www.theregister.com/ai-and-ml/2026/08/25/mckinsey-says-enterprise-ai-is-finally-on-the-road-to-roi/5292388",
+          },
+          {
+            label: "McKinsey — The state of AI in 2026: On the road to ROI",
+            url: "https://www.mckinsey.com/~/media/mckinsey/business%20functions/quantumblack/our%20insights/the%20state%20of%20ai/the-state-of-ai-in-2026-on-the-road-to-roi.pdf",
+          },
+          {
+            label: "McKinsey — The state of AI: How organizations are rewiring to capture value, marzo de 2025",
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-how-organizations-are-rewiring-to-capture-value",
+          },
+          {
+            label: "Federal Reserve Bank of St. Louis — The Impact of Generative AI on Work Productivity, febrero de 2025",
+            url: "https://www.stlouisfed.org/on-the-economy/2025/feb/impact-generative-ai-work-productivity",
+          },
+          {
+            label: "Brynjolfsson, Li y Raymond — Generative AI at Work (NBER)",
+            url: "https://www.nber.org/papers/w31161",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
+     N12 — QUÉ ES UN AGENTE DE IA Y EN QUÉ SE DIFERENCIA DE UN CHATBOT
+     ================================================================= */
+  {
+    slug: "que-es-agente-ia-diferencia-chatbot",
+    titulo: "Qué es un agente de IA y en qué se diferencia de un chatbot",
+    categoria: "Herramientas",
+    fecha: "2026-08-27",
+    fechaLabel: "27 de agosto de 2026",
+    lectura: "8 min de lectura",
+    resumen:
+      "Un chatbot te contesta. Un agente hace cosas en tus sistemas: busca, carga, manda, decide el próximo paso. Qué pueden hacer hoy de verdad en una PyME, qué todavía no, y qué controles poner antes de dejarlos actuar.",
+    img: "/images/blog/que-es-agente-ia-diferencia-chatbot.png",
+    imgLabel: "/images/blog/que-es-agente-ia-diferencia-chatbot.png",
+    cuerpo: [
+      {
+        tipo: "parrafo",
+        texto:
+          "En los últimos meses, la palabra «agente» aparece en casi todas las conversaciones sobre IA. Los proveedores la usan para vender, los medios para titular y muchos dueños de PyME me la traen como pregunta: «¿necesito un agente?». Antes de contestar, vale la pena entender qué es, porque buena parte de lo que hoy se ofrece con ese nombre no lo es.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "La diferencia, en una frase",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un chatbot conversa: le preguntás algo y te devuelve un texto. Lo que hacés con ese texto depende de vos. Un agente actúa: recibe un objetivo, decide qué pasos seguir, usa herramientas —tu correo, una planilla, el sistema de gestión, un buscador— y va ajustando el camino según lo que encuentra, hasta terminar o hasta que necesita que alguien intervenga.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Anthropic lo definió con bastante precisión en una [guía publicada en diciembre de 2024](https://www.anthropic.com/research/building-effective-agents), que sigue siendo una de las referencias más usadas. Distingue dos cosas que en el mercado se mezclan todo el tiempo: los **flujos de trabajo**, donde un modelo de IA sigue un camino fijo, definido de antemano, y los **agentes**, donde el propio modelo decide sus pasos y qué herramientas usar.",
+      },
+      {
+        tipo: "tabla",
+        titulo: "Chatbot, flujo automatizado y agente",
+        columnas: ["", "Chatbot", "Flujo automatizado con IA", "Agente"],
+        filas: [
+          [
+            "Qué hace",
+            "Responde preguntas y redacta textos",
+            "Sigue siempre los mismos pasos, con IA en alguno de ellos",
+            "Decide los pasos para llegar a un objetivo",
+          ],
+          [
+            "Toca tus sistemas",
+            "No, salvo que copies y pegues",
+            "Sí, en los puntos que se programaron",
+            "Sí, según lo que el agente decida en cada momento",
+          ],
+          [
+            "Ejemplo en una PyME",
+            "Pedirle un borrador de respuesta a un reclamo",
+            "Cada mail con factura adjunta se lee, se extraen los datos y se cargan en una planilla",
+            "Revisar los pedidos pendientes, averiguar cuáles tienen stock, avisar a cada cliente y dejar anotado lo que no pudo resolver",
+          ],
+          [
+            "Riesgo si se equivoca",
+            "Bajo: una persona lee antes de usar",
+            "Medio: el error se repite igual en todos los casos",
+            "Más alto: el error puede encadenarse con otros pasos",
+          ],
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La columna del medio es la que más le sirve hoy a una PyME, y es la que menos se nombra porque suena menos novedosa. La misma guía de Anthropic recomienda buscar siempre la solución más simple posible y sumar complejidad solo cuando hace falta, y advierte que los agentes cambian velocidad y costo por flexibilidad, con el riesgo de que los errores se acumulen.",
+      },
+      {
+        tipo: "cita",
+        texto:
+          "Si podés escribir los pasos de una tarea en una hoja, probablemente no necesitás un agente. Necesitás un flujo que los siga siempre igual.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Tareas donde un agente tiene sentido",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Un agente vale la pena cuando la tarea tiene un objetivo claro pero el camino cambia según el caso, y cuando equivocarse en un paso intermedio no es grave porque alguien revisa antes del final. Algunos ejemplos que tienen sentido en empresas chicas y medianas:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Preparar una cotización.** El agente lee el pedido del cliente, busca los productos en la lista de precios, arma el borrador con las condiciones habituales y lo deja listo para que un vendedor lo revise y lo mande.",
+          "**Seguir cobranzas.** Revisa qué facturas vencieron, arma un recordatorio distinto según la antigüedad y el historial de cada cliente, y deja para una persona los casos raros: montos grandes, clientes con reclamos abiertos.",
+          "**Investigar antes de una reunión.** Junta lo que hay en la web sobre una empresa, lo cruza con el historial de compras en tu sistema y te deja un resumen de una página.",
+          "**Ordenar lo que entra.** Lee los mails de proveedores, identifica cuáles traen listas de precios nuevas, compara con las anteriores y marca las subas que superan un porcentaje.",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "En los cuatro casos hay algo en común: el agente prepara y una persona decide. Esa división no es timidez; es lo que hoy funciona.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Lo que todavía no pueden hacer bien",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "El experimento más instructivo que conozco sobre esto lo hizo la propia Anthropic. En el [Project Vend](https://www.anthropic.com/research/project-vend-1), publicado en junio de 2025, le dieron a una versión de Claude la gestión de un pequeño kiosco en su oficina durante alrededor de un mes: podía buscar proveedores en la web, mandar mails, llevar notas, atender a los clientes por chat y cambiar precios. El resultado: vendió productos por debajo del costo, regaló descuentos a quien se los pedía con suficiente insistencia, dejó pasar oportunidades de ganancia claras e inventó una cuenta de pago que no existía. La conclusión de la propia empresa fue que, si tuvieran que contratar a alguien para ese kiosco, no lo contratarían.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La [segunda etapa](https://www.anthropic.com/research/project-vend-2), publicada en diciembre de 2025, es igual de interesante. Con modelos más nuevos, mejores herramientas y procedimientos más estrictos, el kiosco dejó de perder plata casi todas las semanas. Pero siguieron apareciendo problemas: empleados que lo convencían de saltearse las reglas financieras y decisiones ingenuas que podían tener problemas legales. Una de las lecciones que sacaron es muy de PyME: los procedimientos y los controles, eso que a veces llamamos burocracia, protegen contra los errores.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**No tienen buen criterio comercial propio.** Tienden a complacer al que les habla, y eso en una negociación es un problema.",
+          "**Se los puede manipular.** Un mail o un mensaje bien armado puede hacer que un agente haga algo que no debería. Cuanto más acceso tiene, más grave es.",
+          "**Los errores se encadenan.** Un dato mal leído en el paso dos termina en una acción equivocada en el paso siete, y nadie lo vio en el medio.",
+          "**Las tareas largas siguen siendo frágiles.** El instituto METR [midió en 2025](https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/) que la duración de las tareas que los agentes pueden completar se venía duplicando cada siete meses aproximadamente. Es un avance enorme, pero la medición toma como referencia la mitad de los intentos exitosos, y en una empresa acertar la mitad de las veces no alcanza.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Cuidado con los agentes que no son agentes",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Gartner publicó en junio de 2025 una [predicción](https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027) que conviene tener a mano cuando llega una oferta: más del 40 % de los proyectos de agentes de IA se van a cancelar antes de fines de 2027, por costos que crecen, valor poco claro o controles de riesgo insuficientes. En el mismo informe describió lo que llamó «agent washing»: productos existentes, como asistentes, chatbots o automatizaciones de siempre, que se vuelven a vender con la etiqueta de agente sin serlo. Según su estimación, de los miles de proveedores que dicen ofrecer agentes, unos 130 lo hacen de verdad.",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Las empresas grandes tampoco están tan adelantadas como parece. El [State of AI 2025 de McKinsey](https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai) encontró que el 23 % de las organizaciones está usando agentes a escala en alguna parte de su negocio y otro 39 % recién empezó a probarlos. Y en ninguna función en particular —ventas, finanzas, atención— más del 10 % los usa a escala.",
+      },
+      {
+        tipo: "dato",
+        valor: "+40 %",
+        texto:
+          "de los proyectos de agentes de IA se cancelarán antes de fines de 2027, según Gartner, por costos crecientes, valor poco claro o controles de riesgo insuficientes.",
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Los controles, antes de darle acceso a nada",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Si vas a probar un agente, estas son las reglas que pondría antes de conectarlo a cualquier sistema de la empresa:",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Que proponga antes de ejecutar.** Las primeras semanas, el agente deja todo como borrador: la cotización, el mail, la carga. Una persona aprueba. Recién cuando se ve que acierta, se le deja hacer sola la parte de menor riesgo.",
+          "**Acceso mínimo.** Solo a lo que necesita para esa tarea. Si prepara cotizaciones, lee la lista de precios; no necesita entrar al banco.",
+          "**Nada irreversible sin una persona.** Pagar, borrar, mandar algo a un cliente, cambiar un precio: siempre con aprobación humana.",
+          "**Límites explícitos.** Montos máximos, cantidad de mails por día, clientes que no toca. Escritos, no supuestos.",
+          "**Registro de todo lo que hizo.** Qué leyó, qué decidió y qué hizo, en un lugar que alguien revisa. Sin registro, un error se descubre cuando lo reclama un cliente.",
+          "**Un dueño con nombre.** Alguien de la empresa responde por lo que hace el agente. Si nadie responde, no está listo para funcionar.",
+        ],
+      },
+      {
+        tipo: "subtitulo",
+        texto: "Por dónde empezar",
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "La mayoría de las PyMEs con las que trabajo no necesita un agente como primer paso. Necesita resolver bien una tarea con IA, con un criterio claro sobre qué datos se usan y quién revisa. Si eso todavía no pasó, un agente no lo va a resolver: va a automatizar el desorden.",
+      },
+      {
+        tipo: "lista",
+        items: [
+          "**Elegí una tarea repetitiva que hoy te consuma horas.** Con pasos que alguien del equipo pueda explicar en diez minutos. Cómo elegirla lo expliqué en [este artículo](/blog/por-donde-empezar-a-implementar-ia-en-una-empresa).",
+          "**Resolvela primero con un chat y una persona.** Si con el chat común ya no sale bien, un agente tampoco va a sacarla bien. Qué se puede hacer con esas herramientas lo repasé en [otro artículo](/blog/chatgpt-para-empresas-que-se-puede-y-que-no).",
+          "**Si funciona, automatizá los pasos fijos.** Un flujo que se repite siempre igual, con revisión humana al final.",
+          "**Recién ahí, probá un agente en la parte que cambia según el caso.** Con los controles de arriba, con fecha de cierre y con un criterio escrito de antes para decidir si sigue o [se abandona](/blog/cuando-abandonar-una-prueba-de-ia).",
+        ],
+      },
+      {
+        tipo: "parrafo",
+        texto:
+          "Los agentes van a ser cada vez más capaces, y es razonable prepararse. Pero la preparación no pasa por comprar el primero que aparece, sino por tener tareas ordenadas, datos accesibles y reglas claras, que es lo que después permite dejar actuar a un agente sin miedo. En el [Programa INTEGRA](/programa-integra) te acompañamos en ese orden: primero la tarea y el criterio, después la herramienta. Si no sabés por dónde arrancar, la Consultoría Estratégica Gratuita es para eso.",
+      },
+      {
+        tipo: "fuentes",
+        items: [
+          {
+            label: "Anthropic — Building effective agents, diciembre de 2024",
+            url: "https://www.anthropic.com/research/building-effective-agents",
+          },
+          {
+            label: "Anthropic — Project Vend: Can Claude run a small shop?, junio de 2025",
+            url: "https://www.anthropic.com/research/project-vend-1",
+          },
+          {
+            label: "Anthropic — Project Vend: Phase two, diciembre de 2025",
+            url: "https://www.anthropic.com/research/project-vend-2",
+          },
+          {
+            label: "Gartner — Over 40% of agentic AI projects will be canceled by end of 2027, junio de 2025",
+            url: "https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027",
+          },
+          {
+            label: "McKinsey — The State of AI in 2025: Agents, innovation, and transformation",
+            url: "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai",
+          },
+          {
+            label: "METR — Measuring AI ability to complete long tasks, marzo de 2025",
+            url: "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+          },
+        ],
+      },
+    ],
+  },
+
+  /* =================================================================
      00a — POR DÓNDE EMPEZAR A IMPLEMENTAR IA
      ================================================================= */
   {
