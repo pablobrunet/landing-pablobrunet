@@ -1,0 +1,335 @@
+---
+/* =====================================================================
+   /programa-integra-4 — ALTERNATIVA COMPLEMENTARIA A LA V3
+   ---------------------------------------------------------------------
+   Borrador con `noindex` y fuera del sitemap. No toca /programa-integra
+   ni las versiones 2 y 3. Contenido en src/data/integra4.ts; estilos en
+   src/styles/integra4.css; comportamiento en src/scripts/integra4.ts.
+
+   Orden:
+     1 Portada            voz de Pablo, foto de trabajo con pie
+     2 Una tarea          ficha que se completa del día 1 al 60 (pieza central)
+     3 Lo que te pide     horas por rol, reparto, qué no incluye
+     4 Portal             captura grande y ampliable
+     5 Quién acompaña     Pablo, foto real, mensajes sin editar, logos
+     6 Preguntas
+     7 Autoevaluación     hoja con las seis preguntas a la vista
+     8 Cierre             Consultoría Estratégica Gratuita + calendario
+   ===================================================================== */
+import { Image } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import Navbar from "../../components/Navbar.astro";
+import logoIntegra from "../../assets/integra/integra-lockup-color.png";
+import { integra4 } from "../../data/integra4";
+import { integra } from "../../data/integra";
+import { comentarios } from "../../data/testimonios";
+import { empresas } from "../../data/empresas";
+import { site } from "../../data/site";
+import "../../styles/integra4.css";
+
+const { portada, tarea, dedicacion, portal, pablo, faq, auto, cierre } = integra4;
+const calendario = `https://api.leadconnectorhq.com/widget/booking/${integra.cierre.calendarioId}`;
+const whatsapp = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent(cierre.whatsappMensaje)}`;
+const mensajes = pablo.mensajes
+  .map((nombre) => comentarios.find((c) => c.nombre === nombre))
+  .filter((c): c is NonNullable<typeof c> => Boolean(c));
+const logos = pablo.logos
+  .map((nombre) => empresas.find((e) => e.nombre === nombre))
+  .filter((e): e is NonNullable<typeof e> => Boolean(e?.img));
+const campos = Object.entries(tarea.campos) as [keyof typeof tarea.campos, { etiqueta: string; valor: string }][];
+const tramoDeCampo = (clave: string) => tarea.tramos.findIndex((t) => (t.campos as readonly string[]).includes(clave));
+---
+
+<Base title={integra4.seo.title} description={integra4.seo.description} noindex mostrarWhatsapp={false}>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap" />
+  <a class="i4-saltar" href="#contenido">Saltar al contenido</a>
+  <Navbar items={integra4.nav} cta={{ label: "Consultoría Estratégica Gratuita", href: "#agenda" }} redes={false} />
+
+  <main id="contenido" class="i4">
+    {/* ============================ 1 · PORTADA ============================ */}
+    <section class="i4-portada" aria-labelledby="i4-titulo">
+      <div class="i4-caja i4-portada__grilla">
+        <div class="i4-portada__texto">
+          <p class="i4-marca">
+            <Image src={logoIntegra} alt="INTEGRA" width={132} format="webp" loading="eager" />
+            <span>para PyMEs</span>
+          </p>
+          <h1 id="i4-titulo">{portada.titulo}</h1>
+          <p class="i4-portada__bajada">{portada.bajada}</p>
+          <div class="i4-portada__acciones">
+            <a class="i4-boton" href="#agenda" data-i4-evento="integra_agenda_click" data-i4-lugar="portada">{portada.cta}</a>
+            <a class="i4-enlace" href="#una-tarea">{portada.secundario} <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="i4-portada__nota">{portada.ctaNota} <a href="#autoevaluacion">O empezá por la autoevaluación de 2 minutos.</a></p>
+          <ul class="i4-portada__datos" aria-label="El programa en tres datos">
+            {portada.datos.map((d) => <li>{d}</li>)}
+          </ul>
+        </div>
+        <figure class="i4-portada__foto">
+          <img src={portada.foto} alt={portada.fotoAlt} width="1400" height="1050" fetchpriority="high" decoding="async" />
+          <figcaption>{portada.fotoPie}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    {/* ========================== 2 · UNA TAREA =========================== */}
+    <section class="i4-tarea" id="una-tarea" aria-labelledby="i4-tarea-titulo">
+      <div class="i4-caja">
+        <header class="i4-tarea__cabeza">
+          <h2 id="i4-tarea-titulo">{tarea.titulo}</h2>
+          <p>{tarea.bajada}</p>
+        </header>
+
+        <div class="i4-tarea__grilla" data-i4-tarea>
+          <ol class="i4-tramos">
+            {tarea.tramos.map((t, i) => (
+              <li class="i4-tramo" id={`tramo-${i + 1}`} data-i4-tramo={i} data-desde={t.desde} data-hasta={t.hasta}>
+                <p class="i4-tramo__dias">{t.dias}</p>
+                <p class="i4-tramo__letras"><abbr title={t.letrasNombre}>{t.letras}</abbr> <span>{t.letrasNombre}</span></p>
+                <h3>{t.titulo}</h3>
+                <p class="i4-tramo__texto">{t.texto}</p>
+                <dl class="i4-tramo__quien">
+                  <div><dt>Tu equipo</dt><dd>{t.equipo}</dd></div>
+                  <div><dt>Yo</dt><dd>{t.integra}</dd></div>
+                </dl>
+                {/* En celular, lo que este tramo suma a la ficha va acá mismo. */}
+                <dl class="i4-tramo__anota" aria-label="Lo que se anota en la ficha">
+                  {t.campos.map((c) => (
+                    <div><dt>{tarea.campos[c].etiqueta}</dt><dd>{tarea.campos[c].valor}</dd></div>
+                  ))}
+                </dl>
+              </li>
+            ))}
+          </ol>
+
+          <aside class="i4-ficha-lugar" aria-label="Ficha de prueba del ejemplo">
+            <div class="i4-ficha" data-i4-ficha>
+              <div class="i4-ficha__cabeza">
+                <div>
+                  <p class="i4-ficha__tipo">{tarea.ficha.titulo}</p>
+                  <p class="i4-ficha__asunto">{tarea.ficha.asunto}</p>
+                  <p class="i4-ficha__empresa">{tarea.ficha.empresa}</p>
+                </div>
+                <p class="i4-ficha__dia" aria-hidden="true">Día <strong data-i4-dia>60</strong><span> / 60</span></p>
+              </div>
+              <div class="i4-ficha__barra" aria-hidden="true"><span data-i4-barra></span></div>
+              <nav class="i4-ficha__tramos" aria-label="Ir a un tramo">
+                {tarea.tramos.map((t, i) => (
+                  <a href={`#tramo-${i + 1}`} data-i4-salto={i}>{t.dias.replace("Días ", "")}</a>
+                ))}
+              </nav>
+              <dl class="i4-ficha__campos">
+                {campos.map(([clave, campo]) => (
+                  <div class:list={["i4-campo", { "i4-campo--decision": clave === "decision" }]} data-i4-campo={tramoDeCampo(clave)}>
+                    <dt>{campo.etiqueta}</dt>
+                    <dd>{campo.valor}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p class="i4-ficha__pie">Ejemplo armado para mostrar el método. No es un cliente.</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="i4-tarea__cierre">
+          <p class="i4-transversal">{tarea.transversal}</p>
+          <aside class="i4-nota" aria-label="Nota de Pablo">
+            <p>{tarea.nota}</p>
+            <p class="i4-nota__firma">— Pablo</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    {/* ========================= 3 · LO QUE TE PIDE ========================= */}
+    <section class="i4-seccion i4-dedicacion" id="dedicacion" aria-labelledby="i4-dedicacion-titulo">
+      <div class="i4-caja">
+        <div class="i4-dedicacion__cabeza">
+          <h2 id="i4-dedicacion-titulo">{dedicacion.titulo}</h2>
+          <p>{dedicacion.bajada}</p>
+        </div>
+        <ul class="i4-horas">
+          {dedicacion.roles.map((r) => (
+            <li>
+              <p class="i4-horas__rol">{r.rol}</p>
+              <p class="i4-horas__tiempo">{r.tiempo} <span>{r.unidad}</span></p>
+              <p class="i4-horas__texto">{r.texto}</p>
+            </li>
+          ))}
+        </ul>
+        <div class="i4-reparto">
+          {[dedicacion.reparto.equipo, dedicacion.reparto.integra].map((col) => (
+            <div>
+              <h3>{col.titulo}</h3>
+              <ul>{col.items.map((it) => <li>{it}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+        <div class="i4-limites">
+          <div><h3>{dedicacion.noIncluye.titulo}</h3><p>{dedicacion.noIncluye.texto}</p></div>
+          <div><h3>{dedicacion.noEs.titulo}</h3><p>{dedicacion.noEs.texto}</p></div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ 4 · PORTAL ============================ */}
+    <section class="i4-seccion i4-portal" aria-labelledby="i4-portal-titulo">
+      <div class="i4-caja">
+        <div class="i4-portal__cabeza">
+          <h2 id="i4-portal-titulo">{portal.titulo}</h2>
+          <p>{portal.texto}</p>
+        </div>
+        <figure class="i4-portal__figura">
+          <button type="button" class="i4-portal__abrir" data-i4-portal-abrir aria-label="Ampliar la captura del portal">
+            <img src={portal.img} alt={portal.alt} width="1358" height="594" loading="lazy" decoding="async" />
+          </button>
+          <figcaption>{portal.pie} <span aria-hidden="true">Tocá la imagen para verla más grande.</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    {/* ========================= 5 · QUIÉN ACOMPAÑA ========================= */}
+    <section class="i4-seccion i4-pablo" aria-labelledby="i4-pablo-titulo">
+      <div class="i4-caja">
+        <div class="i4-pablo__grilla">
+          <figure class="i4-pablo__foto">
+            <img src={pablo.foto} alt={pablo.fotoAlt} width="801" height="543" loading="lazy" decoding="async" />
+            <figcaption>{pablo.fotoPie}</figcaption>
+          </figure>
+          <div class="i4-pablo__texto">
+            <h2 id="i4-pablo-titulo">{pablo.titulo}</h2>
+            {pablo.texto.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+
+        {mensajes.length > 0 && (
+          <div class="i4-mensajes">
+            <h3>{pablo.mensajesTitulo}</h3>
+            <p class="i4-mensajes__nota">{pablo.mensajesNota}</p>
+            <ul>
+              {mensajes.map((m) => (
+                <li>
+                  <blockquote><p>{m.texto}</p></blockquote>
+                  <p class="i4-mensajes__nombre">{m.nombre}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {logos.length > 0 && (
+          <div class="i4-logos">
+            <h3>{pablo.logosTitulo}</h3>
+            <ul>
+              {logos.map((l) => <li><img src={l.img} alt={l.nombre} loading="lazy" decoding="async" /></li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {/* =========================== 6 · PREGUNTAS =========================== */}
+    <section class="i4-seccion i4-faq" id="preguntas" aria-labelledby="i4-faq-titulo">
+      <div class="i4-caja i4-faq__grilla">
+        <h2 id="i4-faq-titulo">Lo que me suelen preguntar.</h2>
+        <div class="i4-faq__lista">
+          {faq.map((f) => (
+            <details>
+              <summary>{f.pregunta}<span aria-hidden="true"></span></summary>
+              <p>{f.respuesta}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ========================= 7 · AUTOEVALUACIÓN ========================= */}
+    <section class="i4-seccion i4-auto" id="autoevaluacion" aria-labelledby="i4-auto-titulo">
+      <div class="i4-caja">
+        <div class="i4-auto__cabeza">
+          <h2 id="i4-auto-titulo">{auto.titulo}</h2>
+          <p>{auto.bajada}</p>
+        </div>
+        <form class="i4-hoja" data-i4-auto novalidate>
+          <div class="i4-hoja__preguntas">
+            {auto.preguntas.map((p, i) => (
+              <fieldset data-i4-pregunta={i}>
+                <legend><span>{i + 1}.</span> {p.texto}</legend>
+                <div class="i4-opciones">
+                  {p.opciones.map((o, j) => (
+                    <label><input type="radio" name={`i4-${p.id}`} value={j} /><span>{o}</span></label>
+                  ))}
+                </div>
+              </fieldset>
+            ))}
+          </div>
+          <div class="i4-hoja__pie">
+            <button type="submit" class="i4-boton">{auto.boton}</button>
+            <p class="i4-hoja__aclaracion">{auto.aclaracion}</p>
+          </div>
+          <p class="i4-hoja__error" data-i4-error role="alert" hidden></p>
+          <noscript><p class="i4-hoja__error">La autoevaluación necesita JavaScript. Si preferís, contame tu situación en el diagnóstico.</p></noscript>
+        </form>
+
+        <div class="i4-resultado" data-i4-resultado hidden>
+          <h3 tabindex="-1" data-i4-resultado-titulo>{auto.resultadoTitulo}</h3>
+          <ol data-i4-resultado-lista></ol>
+          <p class="i4-resultado__nota">{auto.resultadoNota}</p>
+          <div class="i4-resultado__acciones">
+            <a class="i4-boton" href="#agenda" data-i4-evento="integra_agenda_click" data-i4-lugar="autoevaluacion">Charlarlo en la Consultoría Estratégica Gratuita</a>
+            <button type="button" class="i4-enlace i4-enlace--boton" data-i4-editar>Cambiar respuestas</button>
+          </div>
+          <details class="i4-resultado__compartir">
+            <summary>{auto.compartir}</summary>
+            <p>{auto.compartirNota}</p>
+            <textarea data-i4-mensaje rows="8" aria-label="Texto que se va a abrir en WhatsApp"></textarea>
+            <a class="i4-enlace" data-i4-whatsapp href={whatsapp} target="_blank" rel="noopener noreferrer">Abrir en WhatsApp <span aria-hidden="true">↗</span></a>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ 8 · CIERRE ============================ */}
+    <section class="i4-cierre" id="agenda" aria-labelledby="i4-cierre-titulo">
+      <div class="i4-caja i4-cierre__grilla">
+        <div class="i4-cierre__texto">
+          <h2 id="i4-cierre-titulo">{cierre.titulo}</h2>
+          <p>{cierre.texto}</p>
+          <p class="i4-cierre__detalle">{cierre.detalle}</p>
+          <p class="i4-cierre__alternativa">
+            {cierre.alternativa}
+          </p>
+          <p class="i4-cierre__enlaces">
+            <a href={calendario} target="_blank" rel="noopener noreferrer" data-i4-evento="integra_agenda_click" data-i4-lugar="alternativa">Abrir la agenda ↗</a>
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" data-i4-evento="integra_contact_click" data-i4-lugar="cierre">Escribirme por WhatsApp ↗</a>
+          </p>
+        </div>
+        <div class="i4-calendario" data-i4-calendario>
+          <p class="i4-calendario__estado" data-i4-calendario-estado role="status">Cargando el calendario…</p>
+          <button type="button" class="i4-enlace i4-enlace--boton" data-i4-calendario-reintentar hidden>Reintentar</button>
+          <iframe title="Calendario de la Consultoría Estratégica Gratuita del Programa INTEGRA" data-src={calendario} hidden></iframe>
+          <noscript><p class="i4-calendario__estado">Para ver el calendario hace falta JavaScript. Usá el enlace “Abrir la agenda”.</p></noscript>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="i4-pie">
+    <div class="i4-caja">
+      <p>Programa INTEGRA · Pablo Brunet</p>
+      <p><a href="/">pablobrunet.com</a> · <a href={whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a></p>
+    </div>
+  </footer>
+
+  <dialog class="i4-dialogo" data-i4-portal-dialogo aria-label="Captura ampliada del portal">
+    <button type="button" data-i4-portal-cerrar>Cerrar <span aria-hidden="true">×</span></button>
+    <img src={portal.img} alt={portal.alt} width="1358" height="594" loading="lazy" />
+  </dialog>
+</Base>
+
+<script>
+  import { initIntegra4 } from "../../scripts/integra4";
+  initIntegra4();
+  document.addEventListener("astro:page-load", initIntegra4);
+</script>

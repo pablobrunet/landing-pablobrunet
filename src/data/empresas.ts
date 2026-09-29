@@ -58,5 +58,6 @@ export const empresas: Empresa[] = [
   { nombre: "Capital Activa · Municipalidad de Santa Fe", img: `${PABLO}/municipalidad-santa-fe.png` },
   { nombre: "FAPASA · Federación de Asociaciones de Productores Asesores de Seguros de Argentina", img: `${EMP}/fapasa.svg` },
   { nombre: "Club PYXO", img: `${PABLO}/club-pyxo.png` },
+  { nombre: "Universidad Tecnológica Nacional", img: `${EMP}/utn.png` },
   { nombre: "DEMOS · Centro Cultural y de Estudios", img: `${PABLO}/espacio-demos.png` },
 ];

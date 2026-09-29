@@ -117,13 +117,13 @@ export const site = {
      Widget de reserva de LeadConnector. Si cambiás de calendario, sólo
      reemplazá el `id`: la URL se arma sola.
      ⚠️ Este es el calendario GENERAL de Pablo (el de /contacto y el home).
-     El diagnóstico del Método INTEGRA usa otro calendario distinto, que
+     La Consultoría Estratégica Gratuita del Método INTEGRA usa otro calendario distinto, que
      vive en data/integra.ts → cierre.calendarioId. No mezclarlos. */
   agenda: {
     eyebrow: "Agenda",
     titulo: "Reservá un espacio *en mi calendario*",
     subtitulo:
-      "Elegí el día y el horario que mejor te queden. Son 30 minutos para entender tu caso y decirte por dónde empezar.",
+      "Elegí el día y el horario que mejor te queden. Es una Consultoría Estratégica Gratuita de 30 minutos para entender tu caso y decirte por dónde empezar.",
     id: "nm0xMF4ZzrA3ycbREOLG",
   },
 
@@ -182,9 +182,8 @@ export const site = {
   finalCta: {
     titulo: "¿Listo para escalar con inteligencia artificial?",
     subtitulo:
-      "Convertí la IA en una ventaja competitiva. Agendá un diagnóstico y definamos el primer paso.",
-    cta: { label: "Agendar diagnóstico", href: "/contacto" },
-    nota: "Respuesta en 24 h",
+      "Convertí la IA en una ventaja competitiva. Agendá una Consultoría Estratégica Gratuita y definamos el primer paso.",
+    cta: { label: "Agendar Consultoría Estratégica Gratuita", href: "/contacto" },
   },
 
   /* ---- FOOTER ---- */

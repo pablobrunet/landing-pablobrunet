@@ -10,7 +10,7 @@
      Método     → Método INTEGRA
      Programa   → Programa INTEGRA   (sin "60": el número quedó retirado)
      Sistema    → Sistema INTEGRA
-     Diagnóstico gratuito → Chequeo INTEGRA (nombre todavía provisorio)
+     Instancia gratuita → Consultoría Estratégica Gratuita (nombre único)
 
    PROHIBIDO en toda la página (regla dura del brief): prometer "un caso
    implementado", "una automatización funcionando" o "un resultado medido
@@ -83,7 +83,7 @@ export const integra = {
   seo: {
     title: "Programa INTEGRA",
     description:
-      "INTEGRA: en 60 días tu PyME aprende a identificar oportunidades de inteligencia artificial, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Primer paso gratis: el Chequeo INTEGRA.",
+      "INTEGRA: en 60 días tu PyME aprende a identificar oportunidades de inteligencia artificial, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Primer paso: una Consultoría Estratégica Gratuita de 30 minutos.",
   },
 
   /* ---- Ancla de navegación interna de la propia landing ---- */
@@ -108,12 +108,12 @@ export const integra = {
     tituloResalte: "Es saber qué hacer con ella.",
     subtitulo:
       "Cada persona usa una herramienta distinta, se pagan suscripciones que nadie controla y las capacitaciones no cambiaron nada. En 60 días instalamos en tu PyME un sistema práctico para integrar IA: gente formada, oportunidades priorizadas, pruebas sobre trabajo real y una forma de decidir.",
-    ctaPrimario: "Agendar diagnóstico gratuito",
+    ctaPrimario: "Agendar Consultoría Estratégica Gratuita",
     ctaPrimarioNota: "30 minutos, por videollamada. Te vas con claridad, lo contrates o no.",
     ctaSecundario: "Hacer el chequeo de 2 minutos",
     /* Franja de confianza, debajo de los botones. */
     confianza: [
-      { tipo: "logo", texto: "Miembro del OpenAI Partner Network", img: "/images/credenciales/openai-partner-network.png" },
+      { tipo: "logo", texto: "Miembro del OpenAI Partner Network", img: "/images/credenciales/openai-select-partner-blanco.png" },
     ],
   },
 
@@ -488,22 +488,18 @@ export const integra = {
      cuando la imagen termina de cargar.
      ===================================================================== */
   portal: {
-    eyebrow: "Portal INTEGRA",
     titulo: "El acompañamiento es semanal.",
     tituloResalte: "El portal está todos los días.",
     subtitulo:
-      "Los encuentros en vivo son una parte. El resto de la semana cada persona avanza por su cuenta, y para eso está el portal: un espacio privado de formación, con los cursos en video, la comunidad y los archivos compartidos del programa.",
+      "Los encuentros en vivo son una vez por semana. El resto de los días cada persona avanza por su cuenta en el portal: entra con su usuario, ve los cursos que le corresponden según de dónde parte y retoma donde dejó. Ahí también están la comunidad y los archivos compartidos del programa.",
 
-    icono: "documento",
-    etiqueta: "Incluido en el programa",
-    titulo2: "Un usuario para cada persona del equipo",
+    /* Lo usa /programa-integra-4. */
     texto:
       "No es una carpeta con PDFs ni una lista de videos sueltos. Cada participante entra con su usuario, ve los cursos que le corresponden según de dónde parte y retoma exactamente donde dejó.",
 
     captura: "/images/integra/portal-integra.png",
     capturaAlt:
       "Portal INTEGRA: el panel de un participante, con el curso en progreso y su barra de avance, el resumen de actividad y el catálogo de cursos por nivel",
-    capturaPie: "El portal tal como lo ve cada participante cuando entra.",
 
     claves: [
       {
@@ -533,10 +529,6 @@ export const integra = {
           "Cursos en progreso y completados por persona: el referente interno sabe dónde está cada uno sin tener que preguntar de a uno.",
       },
     ],
-
-    acceso: "Acceso durante los 60 días del programa, para todo el equipo que participa",
-    remate:
-      "El portal no reemplaza los encuentros ni el trabajo sobre casos reales: los sostiene. Es lo que hace que gente con niveles muy distintos llegue pareja a la semana siguiente.",
   },
 
   /* =====================================================================
@@ -552,7 +544,7 @@ export const integra = {
       "Hablo el idioma de las PyMEs — no sólo el de los departamentos de sistemas.",
     ],
     credencialDestacada: {
-      img: "/images/credenciales/openai-partner-network.png",
+      img: "/images/credenciales/openai-select-partner-blanco.png",
       titulo: "Miembro del OpenAI Partner Network",
       texto: "Acreditación oficial dentro del ecosistema de partners de OpenAI.",
       href: "/sobre-mi#openai",
@@ -674,7 +666,7 @@ export const integra = {
           "El paso siguiente es institucionalizar: documentar el criterio, formar más gente y dejar corriendo un ciclo que produzca la próxima oportunidad sin que nadie lo empuje.",
       },
     ],
-    resultadoCta: "Quiero mi diagnóstico gratuito",
+    resultadoCta: "Quiero mi Consultoría Estratégica Gratuita",
     reiniciar: "Volver a empezar",
   },
 
@@ -706,7 +698,7 @@ export const integra = {
       },
       {
         q: "¿Cuánto cuesta?",
-        a: "El programa tiene un valor único según la cantidad de personas de tu PyME que participen. Lo conversamos en el diagnóstico, cuando sepamos qué necesita tu PyME — la reunión es gratuita y sin compromiso.",
+        a: "El programa tiene un valor único según la cantidad de personas de tu PyME que participen. Lo conversamos en la Consultoría Estratégica Gratuita, cuando sepamos qué necesita tu PyME: no tiene costo ni compromiso.",
       },
       {
         q: "¿Es presencial?",
@@ -724,7 +716,7 @@ export const integra = {
   disponibilidad: {
     titulo: "Trabajo con pocas empresas a la vez",
     texto:
-      "Coordinemos una conversación para entender dónde estás hoy y qué oportunidades concretas existen.",
+      "Coordinemos una Consultoría Estratégica Gratuita para entender dónde estás hoy y qué oportunidades concretas existen.",
     nota: "Los espacios semanales son limitados.",
     notaPie: "Asegurá tu espacio esta semana.",
     cta: "Ver horarios disponibles",
@@ -751,19 +743,19 @@ export const integra = {
     /* El número es real y sale de la carga operativa (~25 h por PyME por
        ciclo). No inflarlo ni convertirlo en contador falso de lugares. */
     fallbackTitulo: "¿Preferís escribirnos directo?",
-    fallbackCta: "Escribirme por WhatsApp",
+    fallbackCta: "Escribirnos por WhatsApp",
   },
 
   /* ---- WhatsApp: mensaje propio de esta landing ---- */
   whatsapp: {
     mensaje:
-      "Hola Pablo, vengo de la página del Método INTEGRA y quiero saber más sobre el diagnóstico gratuito.",
+      "Hola Pablo, vengo de la página del Método INTEGRA y quiero saber más sobre la Consultoría Estratégica Gratuita.",
     etiqueta: "Consultar por el Método INTEGRA",
   },
 
   /* ---- Página de gracias ---- */
   gracias: {
-    titulo: "Listo — nos vemos en la reunión",
+    titulo: "Listo — nos vemos en la Consultoría Estratégica Gratuita",
     subtitulo:
       "Te llega la confirmación por correo con el enlace de la videollamada. Si necesitás reprogramar, avisame y lo movemos sin problema.",
     queEsperar: {
@@ -775,7 +767,7 @@ export const integra = {
       ],
     },
     pedido: {
-      titulo: "Una sola cosa antes de la reunión",
+      titulo: "Una sola cosa antes de la consultoría",
       texto:
         "Sumá a la invitación a quien podría ser el referente interno del proceso, o a tu socio, si querés que participe. La conversación rinde mucho más cuando están las dos cabezas que van a decidir.",
     },

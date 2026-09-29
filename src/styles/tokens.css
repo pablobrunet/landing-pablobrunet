@@ -66,6 +66,7 @@
   --radius:    16px;
   --radius-lg: 24px;
   --radius-pill: 999px;
+  --radius-btn: 14px; /* botones: rectángulo suave, no píldora */
 
   --shadow-sm: 0 2px 8px rgba(11, 31, 42, 0.06);
   --shadow:    0 12px 32px rgba(11, 31, 42, 0.10);

@@ -1,0 +1,285 @@
+---
+/* =====================================================================
+   CÓMO TRABAJAMOS · v2 — fichas unidas por una línea de puntos
+   ---------------------------------------------------------------------
+   Sobrio a propósito, en la línea de /programa-integra-4: una línea fina
+   a la izquierda con puntos chicos y, a la derecha, fichas anchas. Al
+   bajar, la línea se va marcando y cada ficha "cae" a su lugar cuando la
+   línea llega a su punto. Sin días ni fechas, sin degradados ni brillos:
+   el orden lo cuentan los puntos.
+
+   Sin JavaScript (o con movimiento reducido) todo se ve en su lugar y la
+   línea completa: la animación sólo corre si el script agrega `tl--js`.
+   ===================================================================== */
+import { integra2 } from "../../data/integra2";
+const { programa, anclas } = integra2;
+const dos = (n: number) => String(n).padStart(2, "0");
+---
+
+<section class="section i-hielo i-claro pg" id={anclas.programa} aria-label="Cómo trabajamos">
+  <div class="container">
+    <header class="pg__head i-reveal">
+      <span class="i-eyebrow">{programa.eyebrow}</span>
+      <h2 class="t-h2">
+        {programa.titulo} <span class="i-hl">{programa.tituloResalte}</span>
+      </h2>
+      <p class="text-muted">{programa.subtitulo}</p>
+    </header>
+
+    <div class="tl" data-tl>
+      <div class="tl__riel" aria-hidden="true">
+        <span class="tl__lleno"></span>
+      </div>
+
+      <ol class="tl__lista">
+        {
+          programa.tramos.map((t, i) => (
+            <li class="tl__item" data-tl-item>
+              <span class="tl__punto" aria-hidden="true"></span>
+              <article class="tl__ficha">
+                <div class="tl__cabeza">
+                  <span class="tl__n">{dos(i + 1)}</span>
+                  <h3 class="tl__t">{t.titulo}</h3>
+                </div>
+                <div class="tl__cuerpo">
+                  <p class="tl__p">{t.texto}</p>
+                  <p class="tl__queda">
+                    <span>Te llevás</span>
+                    {t.queda}
+                  </p>
+                </div>
+              </article>
+            </li>
+          ))
+        }
+        <li class="tl__item tl__item--fin" data-tl-item>
+          <span class="tl__punto tl__punto--fin" aria-hidden="true"></span>
+          <p class="tl__fin">{programa.meta}</p>
+        </li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .pg__head {
+    max-width: 44rem;
+    margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
+  }
+  .pg__head h2 {
+    margin-top: 0.6rem;
+    font-size: clamp(1.6rem, 1.05rem + 2.1vw, 2.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .pg__head p {
+    margin-top: 0.9rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  /* ============================ RECORRIDO ============================ */
+  .tl {
+    --x: 7px; /* eje de la línea, pegado a la izquierda */
+    position: relative;
+  }
+  /* La vía: puntos finos en fila. */
+  .tl__riel {
+    position: absolute;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    left: var(--x);
+    width: 1px;
+    background-image: linear-gradient(var(--borde-punteado) 50%, transparent 50%);
+    background-size: 1px 7px;
+  }
+  /* Lo recorrido: una raya lisa, sin brillo. */
+  .tl__lleno {
+    position: absolute;
+    inset: 0 auto auto -0.5px;
+    width: 2px;
+    height: 100%;
+    background: var(--i-azul-600);
+    transform-origin: top;
+  }
+  .tl--js .tl__lleno {
+    transform: scaleY(var(--p, 0));
+  }
+
+  .tl__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.5rem);
+  }
+  .tl__item {
+    position: relative;
+    padding-left: clamp(2.25rem, 5vw, 3.5rem);
+  }
+  .tl__punto {
+    position: absolute;
+    left: var(--x);
+    top: clamp(1.55rem, 3vw, 2.05rem);
+    width: 15px;
+    height: 15px;
+    margin-left: -7px;
+    border-radius: 50%;
+    background: var(--i-hielo);
+    border: 1.5px solid var(--borde-punteado);
+    /* Sombra leve: despega el punto de la línea sin volverlo un brillo. */
+    box-shadow: 0 1px 3px rgba(13, 27, 61, 0.12);
+    transition: background 350ms ease, border-color 350ms ease, box-shadow 350ms ease;
+  }
+  .tl__item.is-on .tl__punto,
+  .tl:not(.tl--js) .tl__punto {
+    background: var(--i-azul-600);
+    border-color: var(--i-azul-600);
+    box-shadow: 0 0 0 4px rgba(30, 92, 242, 0.1), 0 2px 6px rgba(30, 92, 242, 0.3);
+  }
+
+  /* ---- Ficha ---- */
+  .tl__ficha {
+    display: grid;
+    gap: 0.9rem 2.5rem;
+    padding: clamp(1.35rem, 3vw, 2rem) clamp(1.35rem, 3vw, 2.25rem);
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    transition: opacity 500ms ease, transform 650ms cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  /* Antes de que llegue la línea, la ficha espera un poco más arriba y
+     transparente; al llegar, cae a su lugar. */
+  .tl--js .tl__item:not(.is-on) .tl__ficha {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  .tl__cabeza {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+  .tl__n {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.08em;
+    color: var(--i-azul-600);
+    font-variant-numeric: tabular-nums;
+  }
+  .tl__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .tl__p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--texto-suave);
+  }
+  .tl__queda {
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--borde-punteado);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--azul-petroleo);
+  }
+  .tl__queda span {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.8rem;
+    font-weight: var(--w-headline);
+    color: var(--verde-resalte);
+  }
+
+  /* ---- Cierre del recorrido ---- */
+  .tl__item--fin {
+    padding-top: 0.25rem;
+  }
+  .tl__punto--fin {
+    top: 0.55rem;
+  }
+  .tl__fin {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.3rem);
+    color: var(--azul-petroleo);
+    transition: opacity 500ms ease;
+  }
+  .tl--js .tl__item--fin:not(.is-on) .tl__fin {
+    opacity: 0.25;
+  }
+
+  /* En escritorio la ficha se estira a lo ancho: título a la izquierda,
+     desarrollo a la derecha. */
+  @media (min-width: 900px) {
+    .tl__ficha {
+      grid-template-columns: minmax(15rem, 0.8fr) 1.4fr;
+      align-items: start;
+    }
+    .tl__cabeza {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tl__ficha,
+    .tl__punto,
+    .tl__fin {
+      transition: none;
+    }
+  }
+
+</style>
+
+<script>
+  /* La línea se marca hasta la altura del 80% de la pantalla. Cada ficha
+     cae cuando la línea pasa su punto y queda en su lugar: volver a subir
+     no la desarma, así nada parpadea mientras se lee. */
+  function initRecorrido() {
+    const tl = document.querySelector<HTMLElement>("[data-tl]");
+    if (!tl || tl.dataset.listo) return;
+    tl.dataset.listo = "1";
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const items = Array.from(tl.querySelectorAll<HTMLElement>("[data-tl-item]"));
+    const riel = tl.querySelector<HTMLElement>(".tl__riel");
+    tl.classList.add("tl--js");
+
+    let pendiente = false;
+    const pintar = () => {
+      pendiente = false;
+      if (!riel) return;
+      const r = riel.getBoundingClientRect();
+      /* 80% de la pantalla: con menos, en celular (fichas altas) la
+         siguiente tardaba en caer y quedaba un hueco vacío abajo. */
+      const y = window.innerHeight * 0.8 - r.top;
+      tl.style.setProperty("--p", String(Math.min(1, Math.max(0, y / r.height))));
+      items.forEach((it) => {
+        if (it.classList.contains("is-on")) return;
+        const punto = it.querySelector<HTMLElement>(".tl__punto");
+        if (!punto) return;
+        const pr = punto.getBoundingClientRect();
+        if (pr.top + pr.height / 2 - r.top <= y) it.classList.add("is-on");
+      });
+    };
+    const pedir = () => {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(pintar);
+    };
+
+    pintar();
+    window.addEventListener("scroll", pedir, { passive: true });
+    window.addEventListener("resize", pedir);
+  }
+
+  initRecorrido();
+  document.addEventListener("astro:page-load", initRecorrido);
+</script>

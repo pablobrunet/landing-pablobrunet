@@ -8,12 +8,20 @@
 import { empresasMeta, empresas } from "../data/empresas";
 import { sinMarcas } from "../lib/texto";
 
+/* color: logos con su color original, sin el gris por defecto.
+   continuo: la tira nunca se frena ni responde al mouse (ni hover, ni clic, ni arrastre). */
+interface Props {
+  color?: boolean;
+  continuo?: boolean;
+}
+const { color = false, continuo = false } = Astro.props;
+
 const secuencia = [...empresas, ...empresas];
 ---
 
 {
   empresas.length > 0 && (
-<section class="emp" aria-label={empresasMeta.eyebrow}>
+<section class:list={["emp", { "emp--color": color, "emp--continuo": continuo }]} aria-label={empresasMeta.eyebrow}>
   <div class="container">
     <header class="emp__head">
       <span class="eyebrow">{empresasMeta.eyebrow}</span>
@@ -75,6 +83,13 @@ const secuencia = [...empresas, ...empresas];
   .emp__marquee:hover .emp__track {
     animation-play-state: paused;
   }
+  .emp--continuo .emp__marquee {
+    pointer-events: none;
+    user-select: none;
+  }
+  .emp--continuo .emp__marquee:hover .emp__track {
+    animation-play-state: running;
+  }
   @keyframes emp-scroll {
     to {
       transform: translateX(-50%);
@@ -102,6 +117,10 @@ const secuencia = [...empresas, ...empresas];
   }
   .emp__item:hover img {
     filter: grayscale(0);
+    opacity: 1;
+  }
+  .emp--color .emp__item img {
+    filter: none;
     opacity: 1;
   }
   /* Sin logo todavía: el nombre en texto, con el mismo gris y hover. */

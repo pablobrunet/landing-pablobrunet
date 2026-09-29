@@ -1,0 +1,1982 @@
+---
+/* =====================================================================
+   CÓMO ES ESTAR EN EL PROGRAMA · v2 — cuatro escenas panorámicas en zigzag
+   ---------------------------------------------------------------------
+   Fondo claro (a pedido de Pablo: un bloque oscuro tan largo cansaba);
+   sólo la videollamada va en ventana oscura, como una real.
+   Sin clics ni controles: se baja y se ve. Cuatro filas alternadas
+   (escena | texto, después texto | escena) sin cajas alrededor. Cada
+   escena es un "videito" 16:9 en loop que arranca cuando entra en
+   pantalla y se frena cuando sale:
+     1 Encuentro semanal   videollamada: mosaico con nombres, ondas de voz
+                           en quien habla, chat al costado y controles.
+     2 Portal              lista de lecciones de 5 minutos; se "reproduce"
+                           una lección como presentación. Al terminar, el
+                           cursor toca "Marcar como completada", se tilda y
+                           pasa sola a la siguiente. Se hace dos veces
+                           (lecciones 8 y 9) y queda en la 10. Ritmo ágil:
+                           que no parezca que hay que esperar para avanzar.
+     3 Ficha de prueba     los campos se escriben solos, el registro se
+                           llena y en el panel de comentarios se escriben
+                           y envían cuatro comentarios nuevos; los viejos
+                           se van por arriba, como en un chat.
+     4 Decisión            el cursor abre cada prueba en una pestaña, mira
+                           el antes y después, decide y vuelve a la lista.
+
+   ESCALA: cada ventana es 16:9 sobre un lienzo de 44em de ancho. Su letra
+   es `100cqw / 44` (1em = 1/44 del ancho): todo adentro está en `em` y
+   escala parejo en cualquier pantalla.
+
+   CÓMO ANDA: cada escena tiene su duración (`data-dur`). El script le
+   pone `is-corriendo` y se la vuelve a poner al terminar cada vuelta;
+   todas las animaciones cuelgan de esa clase con su propio retardo. El
+   estilo de base es el cuadro FINAL: sin JavaScript o con movimiento
+   reducido se ve la escena completa y quieta.
+
+   Sin marcas de terceros ni roles internos del programa.
+   ===================================================================== */
+import { integra2 } from "../../data/integra2";
+const { experiencia } = integra2;
+const [m1, m2, m3, m4] = experiencia.momentos;
+
+const personas = [
+  { i: "PB", n: "Pablo" },
+  { i: "MG", n: "Mariana" },
+  { i: "LR", n: "Lucas" },
+  { i: "JC", n: "Julia" },
+  { i: "AS", n: "Andrés" },
+  { i: "+3", n: "3 personas más" },
+];
+const lecciones = [
+  "Qué es y qué no es la IA",
+  "Cómo darle contexto",
+  "Verificar lo que devuelve",
+  "Usarla con datos de la empresa",
+  "Armar tu primera prueba",
+];
+const registro = Array.from({ length: 10 }, (_, i) => (i === 3 || i === 7 ? "ojo" : "ok"));
+const pruebas = [
+  { t: "Propuestas comerciales", r: "Borrador en 20 min en vez de 1 h", d: "Adoptar", c: "si", antes: "60 min", con: "20 min", pct: 33, nota: "2 de 10 necesitaron una corrección" },
+  { t: "Respuestas a clientes", r: "Más rápido, pero falta el tono de la casa", d: "Ajustar", c: "ajustar", antes: "15 min", con: "6 min", pct: 40, nota: "Más rápido, pero el tono no es el de la casa" },
+  { t: "Reporte semanal", r: "No ahorra tiempo real", d: "Descartar", c: "no", antes: "45 min", con: "40 min", pct: 89, nota: "Casi no cambia el tiempo" },
+];
+const decisiones = [
+  { d: "Adoptar", c: "si" },
+  { d: "Ajustar", c: "ajustar" },
+  { d: "Descartar", c: "no" },
+];
+---
+
+<section class="section i-hielo i-claro ex" aria-label="Cómo es estar en el programa">
+  <div class="container">
+    <header class="ex__head i-reveal">
+      <span class="i-eyebrow">{experiencia.eyebrow}</span>
+      <h2 class="t-h2">
+        {experiencia.titulo} <span class="i-hl">{experiencia.tituloResalte}</span>
+      </h2>
+      <p>{experiencia.subtitulo}</p>
+    </header>
+
+    {
+      experiencia.video && (
+        <figure class="ex__video i-reveal">
+          <iframe
+            src={experiencia.video}
+            title={experiencia.videoTitulo}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
+        </figure>
+      )
+    }
+
+    <ol class="filas">
+      {/* =========================== 1 · ENCUENTRO =========================== */}
+      <li class="fila">
+        <div class="vi vi--llamada" data-vi data-dur="13000" aria-hidden="true">
+          <div class="vent vent--oscura">
+            <div class="vent__barra">
+              <span class="ll__vivo"><i></i>En vivo</span>
+              <span class="vent__nombre">Encuentro semanal</span>
+            </div>
+            <div class="ll">
+              <div class="ll__mosaico">
+                {personas.map((p, i) => (
+                  <span class={`ll__cara ll__cara--${i}`}>
+                    <span class="ll__avatar">{p.i}</span>
+                    <span class="ll__nombre">{p.n}</span>
+                    {i < 3 && <span class="ll__ondas"><i></i><i></i><i></i><i></i></span>}
+                    {i === 3 && (
+                      <span class="ll__mano">
+                        <svg viewBox="0 0 24 24"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12m0-6.5V5a1.5 1.5 0 0 1 3 0v7m0-6a1.5 1.5 0 0 1 3 0v7m0-4a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1.5A6.5 6.5 0 0 1 6 16.5L4.5 13a1.5 1.5 0 0 1 2.6-1.4L8 13" /></svg>
+                      </span>
+                    )}
+                  </span>
+                ))}
+              </div>
+
+              <aside class="ll__chat">
+                <p class="ll__chat-t">Mensajes de la llamada</p>
+                <div class="ll__msjs">
+                  <p class="ll__msj ll__msj--1"><b>Pablo</b>¿Qué probó cada área esta semana?</p>
+                  <p class="ll__msj ll__msj--2"><b>Mariana · Comercial</b>Armamos 3 propuestas con borrador de IA.</p>
+                  <p class="ll__msj ll__msj--3"><b>Lucas · Administración</b>Nosotros probamos con los reclamos.</p>
+                  <p class="ll__msj ll__msj--fija"><b>Fijado por Pablo</b>Para la próxima: probar el borrador en 5 propuestas más.</p>
+                </div>
+                <p class="ll__input">Escribí un mensaje</p>
+              </aside>
+
+              <div class="ll__controles">
+                <span class="ll__reunion">Encuentro INTEGRA</span>
+                <span class="ll__botones">
+                  <i class="ll__btn"><svg viewBox="0 0 24 24"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v3" /></svg></i>
+                  <i class="ll__btn"><svg viewBox="0 0 24 24"><path d="M3 7h12v10H3zM15 10l6-3v10l-6-3" /></svg></i>
+                  <i class="ll__btn ll__btn--mano"><svg viewBox="0 0 24 24"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12m0-6.5V5a1.5 1.5 0 0 1 3 0v7m0-6a1.5 1.5 0 0 1 3 0v7m0-4a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1.5A6.5 6.5 0 0 1 6 16.5L4.5 13" /></svg></i>
+                  <i class="ll__btn"><svg viewBox="0 0 24 24"><path d="M3 5h18v11H3zM8 20h8M12 16v4M12 13V8M9.5 10.5L12 8l2.5 2.5" /></svg></i>
+                  <i class="ll__btn ll__btn--chat"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" /></svg></i>
+                  <i class="ll__btn ll__btn--colgar"><svg viewBox="0 0 24 24"><path d="M3 14c5-5 13-5 18 0l-2.5 2.5-3-1.5v-2.5a10 10 0 0 0-5 0V15l-3 1.5z" /></svg></i>
+                </span>
+                <span class="ll__gente">
+                  <svg viewBox="0 0 24 24"><path d="M9 7a3 3 0 1 0 0 6a3 3 0 0 0 0-6M3 20c0-3 2.7-5 6-5s6 2 6 5M16 4a3 3 0 0 1 0 6M21 20c0-2.5-1.5-4.3-4-4.8" /></svg>
+                  8
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fila__txt i-reveal">
+          <p class="fila__n">01</p>
+          <h3 class="fila__t">{m1.titulo}</h3>
+          <p class="fila__p">{m1.texto}</p>
+        </div>
+      </li>
+
+      {/* ============================ 2 · PORTAL ============================ */}
+      <li class="fila fila--invertida">
+        <div class="vi vi--portal" data-vi data-dur="15500" aria-hidden="true">
+          <div class="vent">
+            <div class="vent__barra vent__barra--clara">
+              <span class="vent__puntos"><i></i><i></i><i></i></span>
+              <span class="vent__nombre">Portal INTEGRA</span>
+            </div>
+            <div class="po">
+              <aside class="po__lado">
+                <p class="po__curso">Bases y buenas prácticas de IA</p>
+                <span class="po__prog"><span></span></span>
+                <p class="po__prog-n"><span class="po__n7">7 de 13 lecciones</span><span class="po__n8">8 de 13 lecciones</span><span class="po__n9">9 de 13 lecciones</span></p>
+                <ol class="po__lista">
+                  {lecciones.map((t, i) => (
+                    <li class={`po__lec po__lec--${i}`}>
+                      <span class="po__marca"></span>
+                      <span class="po__lec-t">{t}</span>
+                      <span class="po__min">5 min</span>
+                    </li>
+                  ))}
+                </ol>
+              </aside>
+
+              <div class="po__main">
+                <div class="po__player">
+                  <div class="dia dia--a">
+                    <p class="dia__kick">Lección 8</p>
+                    <p class="dia__titulo">Cómo darle contexto a la IA</p>
+                    <p class="dia__marca">INTEGRA</p>
+                  </div>
+                  <div class="dia dia--b">
+                    <p class="dia__h">Tres cosas que la IA necesita saber</p>
+                    <ol class="dia__puntos">
+                      <li class="dia__p dia__p--1"><span>1</span>Para quién es</li>
+                      <li class="dia__p dia__p--2"><span>2</span>Qué necesitás que haga</li>
+                      <li class="dia__p dia__p--3"><span>3</span>Un ejemplo de cómo lo querés</li>
+                    </ol>
+                  </div>
+                  <div class="dia dia--c">
+                    <p class="dia__h">Así cambia el pedido</p>
+                    <div class="dia__comp">
+                      <div class="dia__caja dia__caja--sin">
+                        <span>Sin contexto</span>
+                        “Escribí una propuesta comercial.”
+                      </div>
+                      <div class="dia__caja dia__caja--con">
+                        <span>Con contexto</span>
+                        “Escribí una propuesta para una distribuidora de 35 personas, tono cercano, con esta lista de precios.”
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dia dia--d">
+                    <p class="dia__kick">Lección 9</p>
+                    <p class="dia__titulo">Verificar lo que devuelve</p>
+                    <p class="dia__marca">INTEGRA</p>
+                  </div>
+                  <div class="dia dia--e">
+                    <p class="dia__h">Antes de usarlo, revisá</p>
+                    <ol class="dia__puntos">
+                      <li class="dia__p dia__p--4"><span>1</span>Números y precios</li>
+                      <li class="dia__p dia__p--5"><span>2</span>Nombres y fechas</li>
+                      <li class="dia__p dia__p--6"><span>3</span>Que suene a tu empresa</li>
+                    </ol>
+                  </div>
+                  <div class="dia dia--f">
+                    <p class="dia__kick">Lección 10</p>
+                    <p class="dia__titulo">Usarla con datos de la empresa</p>
+                    <p class="dia__marca">INTEGRA</p>
+                  </div>
+                  <span class="po__presentador">PB</span>
+                </div>
+                <div class="po__controles">
+                  <span class="po__play"></span>
+                  <span class="po__barra"><span></span></span>
+                  <span class="po__tiempo">5:00</span>
+                  <span class="po__boton">
+                    <span class="chispas"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                    <span class="po__boton-1">Marcar como completada</span>
+                    <span class="po__boton-2">✓ Completada</span>
+                  </span>
+                </div>
+                <p class="po__titulo">
+                  <span class="po__titulo-1">Cómo darle contexto a la IA <i>· 5 min</i></span>
+                  <span class="po__titulo-2">Verificar lo que devuelve <i>· 5 min</i></span>
+                  <span class="po__titulo-3">Usarla con datos de la empresa <i>· 5 min</i></span>
+                </p>
+              </div>
+              <svg class="cursor po__cursor" viewBox="0 0 24 24"><path d="M4 3l7 17 2.5-7L20 10.5z" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="fila__txt i-reveal">
+          <p class="fila__n">02</p>
+          <h3 class="fila__t">{m2.titulo}</h3>
+          <p class="fila__p">{m2.texto}</p>
+        </div>
+      </li>
+
+      {/* ============================ 3 · FICHA ============================ */}
+      <li class="fila">
+        <div class="vi vi--ficha" data-vi data-dur="17500" aria-hidden="true">
+          <div class="vent">
+            <div class="vent__barra vent__barra--clara">
+              <span class="vent__puntos"><i></i><i></i><i></i></span>
+              <span class="vent__nombre">Ficha de prueba</span>
+            </div>
+            <div class="fi">
+              <div class="fi__izq">
+                <div class="fi__cab">
+                  <p><span class="fi__et">Prueba</span>Propuestas comerciales</p>
+                  <span class="fi__estado">
+                    <span class="fi__e1">Por arrancar</span>
+                    <span class="fi__e2">En curso</span>
+                  </span>
+                </div>
+                <dl class="fi__filas">
+                  <div><dt>Área</dt><dd><span class="tipea tipea--1">Comercial</span></dd></div>
+                  <div><dt>Cómo se prueba</dt><dd><span class="tipea tipea--2">Borrador con IA, revisado a mano</span></dd></div>
+                  <div><dt>Tiene que cumplir</dt><dd><span class="tipea tipea--3">Sin errores de precio</span></dd></div>
+                  <div><dt>Cuántas</dt><dd><span class="tipea tipea--4">10 propuestas reales</span></dd></div>
+                </dl>
+                <p class="fi__reg-t">Registro</p>
+                <ul class="fi__cuadros">
+                  {registro.map((r, i) => <li class={`fi__c fi__c--${i} fi__c--${r}`}></li>)}
+                </ul>
+                <p class="fi__ley"><i class="fi__ok"></i>Salió bien <i class="fi__ojo"></i>Hubo que corregir</p>
+              </div>
+
+              <div class="fi__der">
+                <p class="fi__com-t">Comentarios</p>
+                <div class="fi__coms">
+                  <div class="com com--1">
+                    <span class="com__av">MG</span>
+                    <p><b>Mariana</b>Arranqué con las primeras 3 propuestas.</p>
+                  </div>
+                  <div class="com com--2">
+                    <span class="com__av com__av--lr">LR</span>
+                    <p><b>Lucas</b>La 4 traía un descuento no aprobado.</p>
+                  </div>
+                  <div class="com com--3">
+                    <span class="com__av">MG</span>
+                    <p><b>Mariana</b>Promedio: 20 min, antes era 1 hora.</p>
+                  </div>
+                  <div class="com com--4">
+                    <span class="com__av com__av--jc">JC</span>
+                    <p><b>Julia</b>Le sumé la lista de precios vigente.</p>
+                  </div>
+                  <div class="com com--5">
+                    <span class="com__av com__av--lr">LR</span>
+                    <p><b>Lucas</b>Listas las 10: sólo 2 hubo que corregir.</p>
+                  </div>
+                </div>
+                <div class="fi__input">
+                  <span class="fi__campo">
+                    <span class="fi__ph">Escribí un comentario</span>
+                    <span class="fi__escribe fi__escribe--2">La 4 traía un descuento no aprobado.</span>
+                    <span class="fi__escribe fi__escribe--3">Promedio: 20 min, antes era 1 hora.</span>
+                    <span class="fi__escribe fi__escribe--4">Le sumé la lista de precios vigente.</span>
+                    <span class="fi__escribe fi__escribe--5">Listas las 10: sólo 2 hubo que corregir.</span>
+                  </span>
+                  <span class="fi__enviar">Enviar</span>
+                </div>
+              </div>
+              <svg class="cursor fi__cursor" viewBox="0 0 24 24"><path d="M4 3l7 17 2.5-7L20 10.5z" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="fila__txt i-reveal">
+          <p class="fila__n">03</p>
+          <h3 class="fila__t">{m3.titulo}</h3>
+          <p class="fila__p">{m3.texto}</p>
+        </div>
+      </li>
+
+      {/* =========================== 4 · DECISIÓN =========================== */}
+      <li class="fila fila--invertida">
+        <div class="vi vi--decision" data-vi data-dur="18000" aria-hidden="true">
+          <div class="vent">
+            <div class="vent__barra vent__barra--clara vent__barra--tabs">
+              <span class="vent__puntos"><i></i><i></i><i></i></span>
+              <span class="tab tab--lista">Pruebas de la quincena</span>
+              <span class="tab__extra">
+                {pruebas.map((p, i) => <span class={`tab tab--nueva tab--${i}`}>{p.t}</span>)}
+              </span>
+            </div>
+            <div class="de">
+              <div class="de__izq">
+                <p class="de__t">Pruebas de esta quincena</p>
+                <ul class="de__lista">
+                  {pruebas.map((p, i) => (
+                    <li class={`de__fila de__fila--${i} de__fila--${p.c}`}>
+                      <div class="de__txt">
+                        <p class="de__nombre">{p.t}</p>
+                        <p class="de__res">{p.r}</p>
+                      </div>
+                      <span class={`de__chip de__chip--${p.c}`}>{p.d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="de__der">
+                <p class="de__t">Resumen</p>
+                <div class="de__resumen">
+                  <span class="de__stat de__stat--si"><b>1</b>adoptada</span>
+                  <span class="de__stat de__stat--ajustar"><b>1</b>a ajustar</span>
+                  <span class="de__stat de__stat--no"><b>1</b>descartada</span>
+                </div>
+                <p class="de__nota">Cada decisión queda escrita con su motivo.</p>
+              </div>
+
+              {/* Detalle de cada prueba: se abre en una pestaña al hacer clic. */}
+              {pruebas.map((p, i) => (
+                <div class={`dd dd--${i}`}>
+                  <p class="dd__t">{p.t}</p>
+                  <p class="dd__sub">Tiempo por tarea</p>
+                  <div class="dd__barras">
+                    <div class="dd__fila">
+                      <span class="dd__et">Antes</span>
+                      <span class="dd__barra dd__barra--antes"><span style="width:100%"></span></span>
+                      <span class="dd__v">{p.antes}</span>
+                    </div>
+                    <div class="dd__fila">
+                      <span class="dd__et">Con IA</span>
+                      <span class="dd__barra dd__barra--con"><span style={`width:${p.pct}%`}></span></span>
+                      <span class="dd__v dd__v--con">{p.con}</span>
+                    </div>
+                  </div>
+                  <p class="dd__nota">{p.nota}</p>
+                  <div class="dd__botones">
+                    {decisiones.map((d) => (
+                      <span class={`dd__btn dd__btn--${d.c} ${d.c === p.c ? "dd__btn--elegido" : ""}`}>{d.d}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <svg class="cursor de__cursor" viewBox="0 0 24 24"><path d="M4 3l7 17 2.5-7L20 10.5z" /></svg>
+            </div>
+          </div>
+        </div>
+        <div class="fila__txt i-reveal">
+          <p class="fila__n">04</p>
+          <h3 class="fila__t">{m4.titulo}</h3>
+          <p class="fila__p">{m4.texto}</p>
+        </div>
+      </li>
+    </ol>
+
+  </div>
+</section>
+
+<style>
+  .ex__head {
+    max-width: 44rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .ex__head h2 {
+    margin-top: 0.6rem;
+    font-size: clamp(1.6rem, 1.05rem + 2.1vw, 2.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .ex__head p {
+    margin-top: 0.9rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+  .ex__video {
+    margin: 0 0 clamp(3rem, 6vw, 5rem);
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+  }
+  .ex__video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ============================ FILAS ============================ */
+  .filas {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: clamp(3.5rem, 9vw, 7rem);
+  }
+  .fila {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 2rem);
+    align-items: center;
+  }
+  .fila__n {
+    font-size: 0.85rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.1em;
+    color: var(--verde-resalte);
+  }
+  .fila__t {
+    margin-top: 0.5rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.4rem, 1.1rem + 1.1vw, 1.9rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .fila__p {
+    margin-top: 0.9rem;
+    max-width: 28rem;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--texto-suave);
+  }
+  @media (min-width: 900px) {
+    .fila {
+      grid-template-columns: 1.55fr 0.75fr;
+      gap: clamp(2.5rem, 4.5vw, 4rem);
+    }
+    .fila--invertida {
+      grid-template-columns: 0.75fr 1.55fr;
+    }
+    .fila--invertida .vi {
+      order: 2;
+    }
+  }
+
+  /* ======================= ESCENARIO Y VENTANA ======================= */
+  .vi {
+    position: relative;
+    container-type: inline-size;
+  }
+  .vi::before {
+    content: "";
+    position: absolute;
+    inset: -6% 4%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(76, 134, 245, 0.12), transparent);
+    filter: blur(24px);
+    pointer-events: none;
+  }
+  /* 16:9 sobre un lienzo de 44em: 1em = 1/44 del ancho. */
+  .vent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    font-size: calc(100cqw / 44);
+    line-height: 1.35;
+    border-radius: 0.9em;
+    background: #fff;
+    color: var(--azul-petroleo);
+    box-shadow: 0 1.4em 3.2em rgba(13, 27, 61, 0.16), 0 0 0 1px var(--borde);
+    overflow: hidden;
+  }
+  .vent--oscura {
+    background: #0f1834;
+    color: #fff;
+  }
+  .vent__barra {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    height: 2.2em;
+    padding: 0 1em;
+    border-bottom: 1px solid rgba(169, 200, 245, 0.1);
+    color: rgba(220, 230, 246, 0.7);
+  }
+  .vent__barra > * {
+    font-size: 0.72em;
+  }
+  .vent__barra--clara {
+    color: var(--texto-suave);
+    background: var(--i-hielo);
+    border-bottom-color: var(--borde);
+  }
+  .vent__nombre {
+    flex: 1;
+  }
+  .vent__puntos {
+    display: flex;
+    gap: 0.45em;
+  }
+  .vent__puntos i {
+    width: 0.85em;
+    height: 0.85em;
+    border-radius: 50%;
+    background: var(--borde-punteado);
+  }
+  .cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    width: 1.5em;
+    height: 1.5em;
+    pointer-events: none;
+    opacity: 0;
+    filter: drop-shadow(0 0.15em 0.2em rgba(0, 0, 0, 0.3));
+  }
+  .cursor path {
+    fill: #fff;
+    stroke: #0d1b3d;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  /* Chispas: puntitos que salen disparados al confirmar algo. */
+  .chispas i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: var(--i-azul-500);
+    opacity: 0;
+  }
+  .chispas i:nth-child(1) { --dx: -5em; --dy: -1.6em; }
+  .chispas i:nth-child(2) { --dx: -1.8em; --dy: -2.4em; }
+  .chispas i:nth-child(3) { --dx: 1.8em; --dy: -2.4em; }
+  .chispas i:nth-child(4) { --dx: 5em; --dy: -1.4em; }
+  .chispas i:nth-child(5) { --dx: 4.4em; --dy: 1.8em; }
+  .chispas i:nth-child(6) { --dx: -4.6em; --dy: 1.6em; }
+
+  /* ====================== 1 · ENCUENTRO (estilo videollamada) ====================== */
+  .ll__vivo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-weight: var(--w-headline);
+    color: #fff;
+  }
+  .ll__vivo i {
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: #ef4444;
+  }
+  .ll {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 13em;
+    grid-template-rows: 1fr 3.2em;
+  }
+  .ll__mosaico {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 0.5em;
+    padding: 0.8em 0 0 0.8em;
+  }
+  .ll__cara {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 0.7em;
+    background: #1d2a55;
+  }
+  .ll__avatar {
+    display: grid;
+    place-items: center;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    background: #3a5bb8;
+    font-weight: var(--w-headline);
+    font-size: 0.95em;
+    color: #fff;
+  }
+  .ll__cara--1 .ll__avatar { background: #2f7a6a; }
+  .ll__cara--2 .ll__avatar { background: #8a5a2b; }
+  .ll__cara--3 .ll__avatar { background: #6b4fa0; }
+  .ll__cara--4 .ll__avatar { background: #2b6f94; }
+  .ll__cara--5 .ll__avatar { background: #3b4668; }
+  .ll__nombre {
+    position: absolute;
+    left: 0.7em;
+    bottom: 0.5em;
+    font-size: 0.62em;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .ll__ondas {
+    position: absolute;
+    top: 0.55em;
+    right: 0.55em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.14em;
+    width: 1.4em;
+    height: 1.4em;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+    opacity: 0;
+  }
+  .ll__ondas i {
+    width: 0.16em;
+    height: 0.7em;
+    border-radius: 0.1em;
+    background: #fff;
+  }
+  .ll__mano {
+    position: absolute;
+    top: 0.55em;
+    right: 0.55em;
+    display: grid;
+    place-items: center;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background: #f0a93b;
+    color: #0f1834;
+  }
+  .ll__mano svg,
+  .ll__btn svg,
+  .ll__gente svg {
+    width: 62%;
+    height: 62%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ll__chat {
+    display: flex;
+    flex-direction: column;
+    margin: 0.8em 0.8em 0 0.6em;
+    padding: 0.8em;
+    border-radius: 0.8em;
+    background: #fff;
+    color: var(--azul-petroleo);
+    overflow: hidden;
+  }
+  .ll__chat-t {
+    font-size: 0.72em;
+    font-weight: var(--w-headline);
+    margin-bottom: 0.6em;
+  }
+  .ll__msjs {
+    display: grid;
+    gap: 0.5em;
+  }
+  .ll__msj {
+    font-size: 0.64em;
+    line-height: 1.35;
+  }
+  .ll__msj b {
+    display: block;
+    font-size: 0.92em;
+    color: var(--verde-resalte);
+  }
+  .ll__msj--fija {
+    padding: 0.55em 0.65em;
+    border-radius: 0.6em;
+    background: var(--i-neblina);
+    font-weight: var(--w-subheadline);
+  }
+  .ll__input {
+    margin-top: auto;
+    padding: 0.5em 0.7em;
+    border-radius: 99px;
+    background: var(--i-hielo);
+    font-size: 0.6em;
+    color: var(--texto-suave);
+  }
+  .ll__controles {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1em;
+  }
+  .ll__reunion,
+  .ll__gente {
+    flex: 1;
+    font-size: 0.66em;
+    color: rgba(220, 230, 246, 0.75);
+  }
+  .ll__gente {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.3em;
+  }
+  .ll__gente svg {
+    width: 1.4em;
+    height: 1.4em;
+  }
+  .ll__botones {
+    display: flex;
+    gap: 0.55em;
+  }
+  .ll__btn {
+    display: grid;
+    place-items: center;
+    width: 2.1em;
+    height: 2.1em;
+    border-radius: 50%;
+    background: #26335f;
+    color: #fff;
+  }
+  .ll__btn--chat {
+    background: var(--i-celeste);
+    color: #0f1834;
+  }
+  .ll__btn--colgar {
+    width: 3em;
+    border-radius: 99px;
+    background: #e5484d;
+  }
+
+  /* ========================= 2 · PORTAL =========================
+     Cuadro final (en quieto): la lección 8 ya tildada y la 9 elegida y
+     empezando a reproducirse. */
+  .po {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 13em 1fr;
+  }
+  .po__lado {
+    padding: 1em 0.9em;
+    background: var(--i-hielo);
+    border-right: 1px solid var(--borde);
+  }
+  .po__curso {
+    font-size: 0.74em;
+    font-weight: var(--w-headline);
+    line-height: 1.3;
+  }
+  .po__prog {
+    display: block;
+    height: 0.4em;
+    margin-top: 0.6em;
+    border-radius: 1em;
+    background: var(--i-neblina);
+    overflow: hidden;
+  }
+  .po__prog span {
+    display: block;
+    height: 100%;
+    width: 69%;
+    background: var(--i-azul-600);
+  }
+  .po__prog-n {
+    display: grid;
+    margin-top: 0.35em;
+    font-size: 0.58em;
+    color: var(--texto-suave);
+  }
+  .po__prog-n > span {
+    grid-area: 1 / 1;
+  }
+  .po__n7,
+  .po__n8 {
+    opacity: 0;
+  }
+  .po__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.35em;
+    margin-top: 0.9em;
+  }
+  .po__lec {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    height: 2.3em;
+    padding: 0 0.5em;
+    border-radius: 0.5em;
+  }
+  .po__lec--3 {
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--i-azul-500);
+  }
+  .po__marca {
+    flex-shrink: 0;
+    width: 1.05em;
+    height: 1.05em;
+    border-radius: 50%;
+    border: 1.5px solid var(--borde-punteado);
+  }
+  .po__lec--0 .po__marca,
+  .po__lec--1 .po__marca,
+  .po__lec--2 .po__marca {
+    border: 0;
+    background: var(--i-azul-600) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l4 4 10-10'/%3E%3C/svg%3E") center / 65% no-repeat;
+  }
+  .po__lec-t {
+    flex: 1;
+    font-size: 0.62em;
+    line-height: 1.25;
+  }
+  .po__min {
+    font-size: 0.52em;
+    color: var(--texto-suave);
+  }
+  .po__main {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 1.1em;
+    min-width: 0;
+  }
+  .po__player {
+    position: relative;
+    aspect-ratio: 16 / 8.6;
+    border-radius: 0.7em;
+    background: #0f1834;
+    color: #fff;
+    overflow: hidden;
+  }
+  .dia {
+    position: absolute;
+    inset: 0;
+    padding: 1.4em 1.6em;
+    display: flex;
+    flex-direction: column;
+  }
+  .dia--a,
+  .dia--b,
+  .dia--c,
+  .dia--d,
+  .dia--e {
+    opacity: 0;
+  }
+  .dia--a,
+  .dia--d,
+  .dia--f {
+    justify-content: center;
+    background: radial-gradient(circle at 85% 20%, rgba(76, 134, 245, 0.35), transparent 55%);
+  }
+  .dia__kick {
+    font-size: 0.62em;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--i-celeste);
+  }
+  .dia__titulo {
+    margin-top: 0.3em;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.55em;
+    line-height: 1.1;
+    max-width: 11em;
+  }
+  .dia__marca {
+    position: absolute;
+    left: 1.6em;
+    bottom: 1.1em;
+    font-size: 0.55em;
+    letter-spacing: 0.2em;
+    color: rgba(220, 230, 246, 0.5);
+  }
+  .dia__h {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 0.95em;
+  }
+  .dia__puntos {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.6em;
+    margin-top: 1em;
+  }
+  .dia__p {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    font-size: 0.82em;
+  }
+  .dia__p span {
+    display: grid;
+    place-items: center;
+    width: 1.6em;
+    height: 1.6em;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+    font-size: 0.8em;
+    font-weight: var(--w-headline);
+  }
+  .dia__comp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7em;
+    margin-top: 0.9em;
+  }
+  .dia__caja {
+    padding: 0.7em;
+    border-radius: 0.5em;
+    font-size: 0.66em;
+    line-height: 1.4;
+  }
+  .dia__caja span {
+    display: block;
+    margin-bottom: 0.35em;
+    font-size: 0.85em;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .dia__caja--sin {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(220, 230, 246, 0.75);
+  }
+  .dia__caja--con {
+    background: #fff;
+    color: var(--azul-petroleo);
+  }
+  .dia__caja--con span {
+    color: var(--verde-resalte);
+  }
+  .po__presentador {
+    position: absolute;
+    right: 0.8em;
+    bottom: 0.8em;
+    display: grid;
+    place-items: center;
+    width: 2.8em;
+    height: 2.8em;
+    border-radius: 50%;
+    background: #3a5bb8;
+    border: 0.15em solid var(--i-celeste);
+    font-size: 0.8em;
+    font-weight: var(--w-headline);
+  }
+  .po__controles {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    height: 2.1em;
+    margin-top: 0.5em;
+  }
+  .po__play {
+    width: 0;
+    height: 0;
+    border-left: 0.6em solid var(--azul-petroleo);
+    border-top: 0.38em solid transparent;
+    border-bottom: 0.38em solid transparent;
+  }
+  .po__barra {
+    flex: 1;
+    height: 0.3em;
+    border-radius: 1em;
+    background: var(--i-neblina);
+    overflow: hidden;
+  }
+  .po__barra span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--i-azul-600);
+    transform-origin: left;
+    transform: scaleX(0.2);
+  }
+  .po__tiempo {
+    font-size: 0.58em;
+    color: var(--texto-suave);
+  }
+  .po__boton {
+    position: relative;
+    display: grid;
+    padding: 0.45em 0.9em;
+    border-radius: 99px;
+    background: var(--i-azul-600);
+    color: #fff;
+    font-size: 0.62em;
+    font-weight: var(--w-headline);
+    white-space: nowrap;
+    opacity: 0;
+  }
+  .po__boton-1,
+  .po__boton-2 {
+    grid-area: 1 / 1;
+    text-align: center;
+  }
+  .po__boton-2 {
+    opacity: 0;
+  }
+  .po__titulo {
+    display: grid;
+    margin-top: 0.2em;
+    font-size: 0.74em;
+    font-weight: var(--w-headline);
+  }
+  .po__titulo > span {
+    grid-area: 1 / 1;
+  }
+  .po__titulo i {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--texto-suave);
+  }
+  .po__titulo-1,
+  .po__titulo-2 {
+    opacity: 0;
+  }
+
+  /* ========================= 3 · FICHA ========================= */
+  .fi {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: minmax(0, 1fr); /* alto fijo: el chat no estira la ventana */
+    gap: 1.3em;
+    padding: 1.1em 1.3em;
+  }
+  .fi__izq,
+  .fi__der {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .fi__cab {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.8em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid var(--borde);
+  }
+  .fi__cab p {
+    font-weight: var(--w-headline);
+  }
+  .fi__et {
+    display: block;
+    font-size: 0.6em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+  }
+  .fi__estado {
+    display: grid;
+    flex-shrink: 0;
+  }
+  .fi__estado > span {
+    grid-area: 1 / 1;
+    padding: 0.25em 0.7em;
+    border-radius: 99px;
+    text-align: center;
+    font-size: 0.62em;
+    font-weight: var(--w-headline);
+  }
+  .fi__e1 {
+    background: var(--i-hielo);
+    color: var(--texto-suave);
+    opacity: 0;
+  }
+  .fi__e2 {
+    background: #fff4dc;
+    color: #8a5a00;
+  }
+  .fi__filas div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+    height: 2.35em;
+    border-bottom: 1px dashed var(--borde);
+  }
+  .fi__filas dt {
+    font-size: 0.68em;
+    color: var(--texto-suave);
+  }
+  .fi__filas dd {
+    margin: 0;
+    font-size: 0.7em;
+    font-weight: var(--w-subheadline);
+    text-align: right;
+  }
+  .tipea {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .fi__reg-t {
+    margin-top: 0.8em;
+    font-size: 0.68em;
+    font-weight: var(--w-headline);
+  }
+  .fi__cuadros {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.35em;
+    margin-top: 0.45em;
+  }
+  .fi__c {
+    aspect-ratio: 1;
+    border-radius: 0.35em;
+  }
+  .fi__c--ok,
+  .fi__ok {
+    background: var(--i-azul-600);
+  }
+  .fi__c--ojo,
+  .fi__ojo {
+    background: #f0a93b;
+  }
+  .fi__ley {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-top: 0.5em;
+    font-size: 0.56em;
+    color: var(--texto-suave);
+  }
+  .fi__ley i {
+    width: 0.9em;
+    height: 0.9em;
+    border-radius: 0.25em;
+  }
+  .fi__ley .fi__ojo {
+    margin-left: 0.6em;
+  }
+  /* Panel de comentarios de la prueba. */
+  .fi__der {
+    padding: 0.8em;
+    border-radius: 0.8em;
+    background: var(--i-hielo);
+  }
+  .fi__com-t {
+    font-size: 0.7em;
+    font-weight: var(--w-headline);
+    margin-bottom: 0.6em;
+  }
+  /* Como un chat: los comentarios se apilan abajo y, cuando no entran,
+     los más viejos se van por arriba y se esfuman. */
+  .fi__coms {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.5em;
+    margin-bottom: 0.6em;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 1.2em);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 1.2em);
+  }
+  .com {
+    flex-shrink: 0;
+  }
+  .com__av--jc {
+    background: #5b5f9e;
+  }
+  .com {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+  .com__av {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 1.8em;
+    height: 1.8em;
+    border-radius: 50%;
+    background: #2f7a6a;
+    color: #fff;
+    font-size: 0.6em;
+    font-weight: var(--w-headline);
+  }
+  .com__av--lr {
+    background: #8a5a2b;
+  }
+  .com p {
+    flex: 1;
+    padding: 0.45em 0.65em;
+    border-radius: 0.6em;
+    background: #fff;
+    font-size: 0.62em;
+    line-height: 1.35;
+    box-shadow: 0 0 0 1px var(--borde);
+  }
+  .com b {
+    display: block;
+    font-size: 0.9em;
+    color: var(--verde-resalte);
+  }
+  .fi__input {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: auto;
+  }
+  .fi__campo {
+    flex: 1;
+    display: grid;
+    min-width: 0;
+    padding: 0.5em 0.7em;
+    border-radius: 99px;
+    background: #fff;
+    box-shadow: 0 0 0 1px var(--borde);
+    font-size: 0.6em;
+    overflow: hidden;
+  }
+  .fi__campo > span {
+    grid-area: 1 / 1;
+    white-space: nowrap;
+  }
+  .fi__ph {
+    color: var(--texto-suave);
+  }
+  .fi__escribe {
+    opacity: 0;
+  }
+  .fi__enviar {
+    flex-shrink: 0;
+    padding: 0.5em 0.9em;
+    border-radius: 99px;
+    background: var(--i-azul-600);
+    color: #fff;
+    font-size: 0.6em;
+    font-weight: var(--w-headline);
+  }
+
+  /* ========================= 4 · DECISIÓN ========================= */
+  .vent__barra--tabs {
+    gap: 0.5em;
+  }
+  .tab {
+    padding: 0.35em 0.9em;
+    border-radius: 0.5em 0.5em 0 0;
+    white-space: nowrap;
+  }
+  .tab--lista {
+    background: #fff;
+    color: var(--azul-petroleo);
+    font-weight: var(--w-headline);
+    margin-left: 0.4em;
+  }
+  .tab__extra {
+    display: grid;
+  }
+  .tab--nueva {
+    grid-area: 1 / 1;
+    background: #fff;
+    color: var(--azul-petroleo);
+    font-weight: var(--w-headline);
+    box-shadow: 0 0 0 1px var(--borde);
+    opacity: 0;
+  }
+  .de {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 1.3em;
+    padding: 1.1em 1.3em;
+    overflow: hidden;
+  }
+  .de__t {
+    margin-bottom: 0.6em;
+    font-size: 0.8em;
+    font-weight: var(--w-headline);
+  }
+  .de__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.5em;
+  }
+  .de__fila {
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+    height: 3.8em;
+    padding: 0 0.8em;
+    border-radius: 0.7em;
+    border: 1px solid var(--borde);
+  }
+  .de__txt {
+    flex: 1;
+    min-width: 0;
+  }
+  .de__nombre {
+    font-size: 0.78em;
+    font-weight: var(--w-headline);
+  }
+  .de__res {
+    font-size: 0.6em;
+    color: var(--texto-suave);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .de__fila--no .de__nombre {
+    text-decoration: line-through;
+    color: var(--texto-suave);
+  }
+  .de__chip {
+    flex-shrink: 0;
+    width: 7.5em;
+    padding: 0.4em 0;
+    border-radius: 99px;
+    text-align: center;
+    font-size: 0.64em;
+    font-weight: var(--w-headline);
+  }
+  .de__chip--si,
+  .dd__btn--si.dd__btn--elegido {
+    background: var(--i-azul-600);
+    color: #fff;
+  }
+  .de__chip--ajustar,
+  .dd__btn--ajustar.dd__btn--elegido {
+    background: #f6c56a;
+    color: #5a3a00;
+  }
+  .de__chip--no,
+  .dd__btn--no.dd__btn--elegido {
+    background: #d9e0ec;
+    color: var(--azul-petroleo);
+  }
+  .de__der {
+    display: flex;
+    flex-direction: column;
+  }
+  .de__resumen {
+    display: grid;
+    gap: 0.5em;
+  }
+  .de__stat {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    height: 3.1em;
+    padding: 0 0.9em;
+    border-radius: 0.7em;
+    background: var(--i-hielo);
+    font-size: 0.8em;
+    color: var(--texto-suave);
+  }
+  .de__stat b {
+    font-family: var(--font-title);
+    font-size: 1.5em;
+    color: var(--azul-petroleo);
+  }
+  .de__stat--si b {
+    color: var(--i-azul-600);
+  }
+  .de__stat--ajustar b {
+    color: #c07a10;
+  }
+  .de__nota {
+    margin-top: auto;
+    font-size: 0.6em;
+    color: var(--texto-suave);
+  }
+  /* Detalle de una prueba: tapa todo el cuerpo, como una pestaña nueva. */
+  .dd {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 1.1em 1.3em;
+    background: #fff;
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  .dd__t {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 1.2em;
+  }
+  .dd__sub {
+    margin-top: 0.8em;
+    font-size: 0.66em;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+  }
+  .dd__barras {
+    display: grid;
+    gap: 0.6em;
+    margin-top: 0.6em;
+  }
+  .dd__fila {
+    display: grid;
+    grid-template-columns: 4.5em 1fr 4em;
+    align-items: center;
+    gap: 0.7em;
+  }
+  .dd__et,
+  .dd__v {
+    font-size: 0.7em;
+    color: var(--texto-suave);
+  }
+  .dd__v {
+    font-weight: var(--w-headline);
+    color: var(--azul-petroleo);
+  }
+  .dd__v--con {
+    color: var(--i-azul-600);
+  }
+  .dd__barra {
+    height: 1.4em;
+    border-radius: 0.4em;
+    background: var(--i-hielo);
+    overflow: hidden;
+  }
+  .dd__barra span {
+    display: block;
+    height: 100%;
+    border-radius: 0.4em;
+    transform-origin: left;
+  }
+  .dd__barra--antes span {
+    background: #b9c6dc;
+  }
+  .dd__barra--con span {
+    background: var(--i-azul-600);
+  }
+  .dd__nota {
+    margin-top: 0.8em;
+    padding: 0.6em 0.8em;
+    border-radius: 0.6em;
+    background: var(--i-hielo);
+    font-size: 0.7em;
+  }
+  .dd__botones {
+    display: flex;
+    gap: 0.6em;
+    margin-top: auto;
+  }
+  .dd__btn {
+    width: 8em;
+    padding: 0.55em 0;
+    border-radius: 99px;
+    text-align: center;
+    font-size: 0.7em;
+    font-weight: var(--w-headline);
+    color: var(--texto-suave);
+    box-shadow: inset 0 0 0 1px var(--borde-punteado);
+  }
+
+  /* ============================ ANIMACIONES ============================
+     Todo cuelga de `.is-corriendo`, que el script vuelve a poner en cada
+     vuelta. El estilo de base (arriba) es el cuadro final. */
+  .vi--llamada.is-corriendo .vent { animation: ex-vuelta 13s ease both; }
+  .vi--portal.is-corriendo .vent { animation: ex-vuelta 15.5s ease both; }
+  .vi--ficha.is-corriendo .vent { animation: ex-vuelta 17.5s ease both; }
+  .vi--decision.is-corriendo .vent { animation: ex-vuelta 18s ease both; }
+  @keyframes ex-vuelta {
+    0% { opacity: 0; transform: translateY(0.8em); }
+    2.5%, 97% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateY(-0.5em); }
+  }
+  /* Piezas compartidas. */
+  @keyframes ex-pop {
+    from { opacity: 0; transform: scale(0.6); }
+  }
+  @keyframes ex-entra {
+    from { opacity: 0; transform: translateY(0.6em); }
+  }
+  @keyframes ex-derecha {
+    from { opacity: 0; transform: translateX(-1em); }
+  }
+  @keyframes ex-muestra {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes ex-oculta {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes ex-tipea {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes ex-chispa {
+    0% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4); }
+  }
+  @keyframes ex-clic {
+    50% { transform: scale(0.9); filter: brightness(0.9); }
+  }
+
+  /* ---- 1 · Encuentro (13 s) ---- */
+  .is-corriendo .ll__vivo i { animation: ex-late 1.2s ease-in-out infinite; }
+  .is-corriendo .ll__cara { animation: ex-pop 450ms cubic-bezier(0.3, 1.5, 0.5, 1) both; }
+  .is-corriendo .ll__cara--0 { animation: ex-pop 450ms cubic-bezier(0.3, 1.5, 0.5, 1) 0.3s both, ex-habla 3.2s ease 1.6s both; }
+  .is-corriendo .ll__cara--1 { animation: ex-pop 450ms cubic-bezier(0.3, 1.5, 0.5, 1) 0.5s both, ex-habla 3s ease 5s both; }
+  .is-corriendo .ll__cara--2 { animation: ex-pop 450ms cubic-bezier(0.3, 1.5, 0.5, 1) 0.7s both, ex-habla 2.6s ease 8.2s both; }
+  .is-corriendo .ll__cara--3 { animation-delay: 0.9s; }
+  .is-corriendo .ll__cara--4 { animation-delay: 1.1s; }
+  .is-corriendo .ll__cara--5 { animation-delay: 1.3s; }
+  .is-corriendo .ll__cara--0 .ll__ondas { animation: ex-ver 3.2s ease 1.6s both; }
+  .is-corriendo .ll__cara--1 .ll__ondas { animation: ex-ver 3s ease 5s both; }
+  .is-corriendo .ll__cara--2 .ll__ondas { animation: ex-ver 2.6s ease 8.2s both; }
+  .is-corriendo .ll__ondas i { animation: ex-onda 0.45s ease-in-out infinite alternate; }
+  .is-corriendo .ll__ondas i:nth-child(2) { animation-duration: 0.32s; }
+  .is-corriendo .ll__ondas i:nth-child(3) { animation-duration: 0.55s; }
+  .is-corriendo .ll__ondas i:nth-child(4) { animation-duration: 0.38s; }
+  .is-corriendo .ll__mano { animation: ex-mano 3s ease 6.4s both; }
+  .is-corriendo .ll__btn--mano { animation: ex-btn 3s ease 6.4s both; }
+  .is-corriendo .ll__msj--1 { animation: ex-entra 450ms ease 2.2s both; }
+  .is-corriendo .ll__msj--2 { animation: ex-entra 450ms ease 5.6s both; }
+  .is-corriendo .ll__msj--3 { animation: ex-entra 450ms ease 8.8s both; }
+  .is-corriendo .ll__msj--fija { animation: ex-sube 550ms cubic-bezier(0.2, 0.8, 0.3, 1.2) 10.8s both; }
+  .is-corriendo .ll__input { animation: ex-tipeando 1.4s ease 10s both; }
+
+  @keyframes ex-late {
+    50% { opacity: 0.3; }
+  }
+  @keyframes ex-habla {
+    0%, 100% { box-shadow: none; }
+    8%, 92% { box-shadow: inset 0 0 0 0.18em var(--i-azul-500), 0 0 1.2em rgba(76, 134, 245, 0.5); }
+  }
+  @keyframes ex-ver {
+    0%, 100% { opacity: 0; transform: scale(0.6); }
+    8%, 92% { opacity: 1; transform: none; }
+  }
+  @keyframes ex-onda {
+    from { transform: scaleY(0.3); }
+    to { transform: scaleY(1); }
+  }
+  @keyframes ex-mano {
+    0%, 100% { opacity: 0; transform: translateY(0.5em) scale(0.5); }
+    10%, 90% { opacity: 1; transform: none; }
+  }
+  @keyframes ex-btn {
+    0%, 100% { background: #26335f; color: #fff; }
+    10%, 90% { background: #f0a93b; color: #0f1834; }
+  }
+  @keyframes ex-sube {
+    from { opacity: 0; transform: translateY(1.2em) scale(0.96); }
+  }
+  @keyframes ex-tipeando {
+    0%, 100% { color: var(--texto-suave); }
+    30%, 70% { color: var(--verde-resalte); }
+  }
+
+  /* ---- 2 · Portal (15.5 s) ----
+     Ritmo ágil a pedido de Pablo: láminas cortas y barra rápida, para que
+     no parezca que hay que esperar mucho para avanzar.
+     0.2 – 1     el cursor elige la lección 8
+     1.2 – 7.2   se reproduce: portada, tres puntos, antes y después
+     7.4         clic en "Marcar como completada"; se tilda, el curso avanza
+     8.1 – 12.1  lección 9: portada y qué revisar
+     12.4        otra vez "Marcar como completada"; se tilda
+     13.1        pasa sola a la lección 10, que empieza a reproducirse */
+  .is-corriendo .po__cursor { animation: ex-cursor-po 13.2s cubic-bezier(0.45, 0, 0.25, 1) 0.2s both; }
+  .is-corriendo .po__lec--1 { animation: ex-resalta 7.1s ease 1s both; }
+  .is-corriendo .po__lec--1 .po__marca { animation: ex-marca 450ms cubic-bezier(0.3, 1.8, 0.5, 1) 7.5s both; }
+  .is-corriendo .po__lec--2 { animation: ex-resalta 5s ease 8.1s both; }
+  .is-corriendo .po__lec--2 .po__marca { animation: ex-marca 450ms cubic-bezier(0.3, 1.8, 0.5, 1) 12.5s both; }
+  .is-corriendo .po__lec--3 { animation: ex-elige 450ms ease 13.1s both; }
+  .is-corriendo .po__prog span { animation: ex-prog 5.8s ease 7.6s both; }
+  .is-corriendo .po__n7 { animation: ex-hasta 7.6s linear 0s both; }
+  .is-corriendo .po__n8 { animation: ex-hasta 5s linear 7.6s forwards; }
+  .is-corriendo .po__n9 { animation: ex-muestra 200ms ease 12.6s both; }
+  .is-corriendo .dia--a { animation: ex-dia 1.8s ease 1.2s both; }
+  .is-corriendo .dia--b { animation: ex-dia 2.4s ease 2.8s both; }
+  .is-corriendo .dia--c { animation: ex-dia 3.1s ease 5s both; }
+  .is-corriendo .dia--d { animation: ex-dia 1.6s ease 8.1s both; }
+  .is-corriendo .dia--e { animation: ex-dia 3.6s ease 9.5s both; }
+  .is-corriendo .dia--f { animation: ex-dia-fin 500ms ease 13.1s both; }
+  .is-corriendo .dia--a .dia__titulo { animation: ex-entra 500ms ease 1.4s both; }
+  .is-corriendo .dia--d .dia__titulo { animation: ex-entra 500ms ease 8.3s both; }
+  .is-corriendo .dia--f .dia__titulo { animation: ex-entra 500ms ease 13.4s both; }
+  .is-corriendo .dia__p--1 { animation: ex-derecha 400ms ease 3.1s both; }
+  .is-corriendo .dia__p--2 { animation: ex-derecha 400ms ease 3.5s both; }
+  .is-corriendo .dia__p--3 { animation: ex-derecha 400ms ease 3.9s both; }
+  .is-corriendo .dia__caja--sin { animation: ex-entra 400ms ease 5.3s both; }
+  .is-corriendo .dia__caja--con { animation: ex-entra 400ms ease 5.9s both; }
+  .is-corriendo .dia__p--4 { animation: ex-derecha 400ms ease 9.8s both; }
+  .is-corriendo .dia__p--5 { animation: ex-derecha 400ms ease 10.2s both; }
+  .is-corriendo .dia__p--6 { animation: ex-derecha 400ms ease 10.6s both; }
+  .is-corriendo .po__presentador { animation: ex-pop 450ms cubic-bezier(0.3, 1.5, 0.5, 1) 1.3s both, ex-voz 1.1s ease-in-out 1.8s 10 both; }
+  .is-corriendo .po__barra span { animation: ex-barra-po 14.3s linear 1.2s both; }
+  /* El botón aparece dos veces. La segunda animación va sin relleno hacia
+     atrás: si no, taparía a la primera desde el arranque. */
+  .is-corriendo .po__boton { animation: ex-boton 2.4s ease 6s both, ex-boton2 2.4s ease 11s forwards; }
+  .is-corriendo .po__boton-1 { animation: ex-b1 5s linear 7.4s both; }
+  .is-corriendo .po__boton-2 { animation: ex-b2 5s linear 7.4s both; }
+  .is-corriendo .po__boton .chispas i { animation: ex-chispa 800ms ease-out 7.4s both, ex-chispa2 800ms ease-out 12.4s forwards; }
+  .is-corriendo .po__titulo-1 { animation: ex-titulo 8.1s ease 0s both; }
+  .is-corriendo .po__titulo-2 { animation: ex-titulo 5s ease 8.1s both; }
+  .is-corriendo .po__titulo-3 { animation: ex-muestra 400ms ease 13.1s both; }
+
+  /* Tres viajes: a la lección 8 (izquierda) y dos veces al botón (abajo a
+     la derecha). Clics a los 1, 7.4 y 12.4 s. */
+  @keyframes ex-cursor-po {
+    0% { opacity: 0; transform: translate(12em, 15em); }
+    2.7% { opacity: 1; }
+    5.3% { transform: translate(7.5em, 8.7em); }
+    6.1% { transform: translate(7.5em, 8.7em) scale(0.82); }
+    7% { transform: translate(7.5em, 8.7em) scale(1); }
+    10.6% { opacity: 1; }
+    14.4% { opacity: 0; transform: translate(9em, 11em); }
+    45.5% { opacity: 0; transform: translate(33em, 22em); }
+    47.7% { opacity: 1; }
+    53% { transform: translate(37.4em, 18.8em); }
+    54.5% { transform: translate(37.4em, 18.8em) scale(0.82); }
+    55.7% { transform: translate(37.4em, 18.8em) scale(1); }
+    60.6% { transform: translate(35.4em, 21.4em); }
+    86.4% { transform: translate(35.4em, 21.4em); }
+    90.9% { transform: translate(37.4em, 18.8em); }
+    92.4% { transform: translate(37.4em, 18.8em) scale(0.82); }
+    93.6% { transform: translate(37.4em, 18.8em) scale(1); opacity: 1; }
+    100% { transform: translate(38.4em, 20.4em); opacity: 0; }
+  }
+  @keyframes ex-resalta {
+    0%, 100% { background: transparent; box-shadow: none; }
+    4%, 96% { background: #fff; box-shadow: 0 0 0 1px var(--i-azul-500); }
+  }
+  @keyframes ex-elige {
+    from { background: transparent; box-shadow: none; }
+  }
+  @keyframes ex-marca {
+    from { background-color: transparent; background-size: 0; border: 1.5px solid var(--borde-punteado); transform: scale(0.6); }
+  }
+  /* 7 → 8 → 9 lecciones de 13. */
+  @keyframes ex-prog {
+    0% { width: 54%; }
+    17%, 86% { width: 62%; }
+    100% { width: 69%; }
+  }
+  /* Visible desde el arranque y se va al final. */
+  @keyframes ex-hasta {
+    0%, 99% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes ex-dia {
+    0% { opacity: 0; transform: translateX(1.5em); }
+    10%, 90% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateX(-1.5em); }
+  }
+  @keyframes ex-dia-fin {
+    from { opacity: 0; transform: translateX(1.5em); }
+  }
+  @keyframes ex-voz {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(169, 200, 245, 0.5); }
+    50% { box-shadow: 0 0 0 0.45em rgba(169, 200, 245, 0); }
+  }
+  /* Se llena rápido con la 8 (6 s), vuelve a cero, se llena con la 9
+     (4 s), vuelve a cero y arranca la 10. */
+  @keyframes ex-barra-po {
+    0% { transform: scaleX(0); }
+    42% { transform: scaleX(1); }
+    48.9% { transform: scaleX(1); }
+    49.2% { transform: scaleX(0); }
+    76.9% { transform: scaleX(1); }
+    83.9% { transform: scaleX(1); }
+    84.2% { transform: scaleX(0); }
+    100% { transform: scaleX(0.2); }
+  }
+  @keyframes ex-boton {
+    0% { opacity: 0; transform: scale(0.8); }
+    10%, 55% { opacity: 1; transform: none; }
+    58% { transform: scale(0.92); }
+    62% { transform: none; background: var(--i-azul-600); }
+    68%, 85% { opacity: 1; background: #1f9d63; }
+    100% { opacity: 0; background: #1f9d63; }
+  }
+  @keyframes ex-boton2 {
+    0% { opacity: 0; transform: scale(0.8); }
+    10%, 55% { opacity: 1; transform: none; }
+    58% { transform: scale(0.92); }
+    62% { transform: none; background: var(--i-azul-600); }
+    68%, 85% { opacity: 1; background: #1f9d63; }
+    100% { opacity: 0; background: #1f9d63; }
+  }
+  /* Texto del botón: "Marcar como completada" / "Completada", dos veces. */
+  @keyframes ex-b1 {
+    0% { opacity: 1; }
+    4%, 60% { opacity: 0; }
+    62%, 97% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes ex-b2 {
+    0% { opacity: 0; }
+    4%, 60% { opacity: 1; }
+    62%, 97% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes ex-chispa2 {
+    0% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4); }
+  }
+  @keyframes ex-titulo {
+    0% { opacity: 0; }
+    10%, 96% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  /* ---- 3 · Ficha (17.5 s) ----
+     0.3 – 3     los campos se escriben rápido; "En curso"
+     3.2 – 5.2   el registro se llena de a una
+     1.2         ya hay un comentario de Mariana
+     5.2 – 7.3   Lucas escribe, clic en Enviar, aparece abajo
+     7.8 – 9.8   Mariana escribe otro, Enviar, aparece abajo
+     10.3 – 12.3 Julia escribe, Enviar, aparece abajo
+     12.8 – 14.8 Lucas cierra, Enviar, aparece abajo
+     Los comentarios viejos se van yendo por arriba, como en un chat. */
+  .is-corriendo .fi__e1 { animation: ex-panel 3s ease 0s both; }
+  .is-corriendo .fi__e2 { animation: ex-pop 400ms cubic-bezier(0.3, 1.5, 0.5, 1) 3s both; }
+  .is-corriendo .tipea--1 { animation: ex-tipea 0.35s steps(9) 0.3s both; }
+  .is-corriendo .tipea--2 { animation: ex-tipea 0.8s steps(24) 0.75s both; }
+  .is-corriendo .tipea--3 { animation: ex-tipea 0.55s steps(18) 1.65s both; }
+  .is-corriendo .tipea--4 { animation: ex-tipea 0.5s steps(16) 2.3s both; }
+  .is-corriendo .fi__c { animation: ex-cuadro 280ms cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+  .is-corriendo .fi__c--0 { animation-delay: 3.2s; }
+  .is-corriendo .fi__c--1 { animation-delay: 3.4s; }
+  .is-corriendo .fi__c--2 { animation-delay: 3.6s; }
+  .is-corriendo .fi__c--3 { animation-delay: 3.8s; }
+  .is-corriendo .fi__c--4 { animation-delay: 4s; }
+  .is-corriendo .fi__c--5 { animation-delay: 4.2s; }
+  .is-corriendo .fi__c--6 { animation-delay: 4.4s; }
+  .is-corriendo .fi__c--7 { animation-delay: 4.6s; }
+  .is-corriendo .fi__c--8 { animation-delay: 4.8s; }
+  .is-corriendo .fi__c--9 { animation-delay: 5s; }
+  .is-corriendo .com--1 { animation: ex-entra 400ms ease 1.2s both; }
+  .is-corriendo .fi__ph { animation: ex-nada 9.9s linear 5.1s; }
+  .is-corriendo .fi__escribe--2 { animation: ex-escribe 2.1s linear 5.2s both; }
+  .is-corriendo .fi__escribe--3 { animation: ex-escribe 2s linear 7.8s both; }
+  .is-corriendo .fi__escribe--4 { animation: ex-escribe 2s linear 10.3s both; }
+  .is-corriendo .fi__escribe--5 { animation: ex-escribe 2s linear 12.8s both; }
+  .is-corriendo .fi__enviar { animation: ex-clic 250ms ease 7.1s, ex-clic2 250ms ease 9.6s, ex-clic3 250ms ease 12.1s, ex-clic4 250ms ease 14.6s; }
+  .is-corriendo .com--2 { animation: ex-comenta 450ms cubic-bezier(0.2, 0.8, 0.3, 1.2) 7.3s both; }
+  .is-corriendo .com--3 { animation: ex-comenta 450ms cubic-bezier(0.2, 0.8, 0.3, 1.2) 9.8s both; }
+  .is-corriendo .com--4 { animation: ex-comenta 450ms cubic-bezier(0.2, 0.8, 0.3, 1.2) 12.3s both; }
+  .is-corriendo .com--5 { animation: ex-comenta 450ms cubic-bezier(0.2, 0.8, 0.3, 1.2) 14.8s both; }
+  .is-corriendo .fi__cursor { animation: ex-cursor-fi 10s cubic-bezier(0.45, 0, 0.25, 1) 5.6s both; }
+
+  @keyframes ex-panel {
+    0% { opacity: 0; }
+    8%, 92% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @keyframes ex-cuadro {
+    from { transform: scale(0); background: var(--i-neblina); }
+  }
+  @keyframes ex-nada {
+    from, to { opacity: 0; }
+  }
+  /* Se escribe letra por letra, queda un instante y se borra al enviarse. */
+  @keyframes ex-escribe {
+    0% { opacity: 1; clip-path: inset(0 100% 0 0); animation-timing-function: steps(36); }
+    72% { opacity: 1; clip-path: inset(0 0 0 0); }
+    92% { opacity: 1; clip-path: inset(0 0 0 0); }
+    100% { opacity: 0; clip-path: inset(0 0 0 0); }
+  }
+  @keyframes ex-clic2 {
+    50% { transform: scale(0.9); filter: brightness(0.9); }
+  }
+  @keyframes ex-clic3 {
+    50% { transform: scale(0.9); filter: brightness(0.9); }
+  }
+  @keyframes ex-clic4 {
+    50% { transform: scale(0.9); filter: brightness(0.9); }
+  }
+  @keyframes ex-comenta {
+    from { opacity: 0; transform: translateY(1.5em) scale(0.95); }
+  }
+  /* Cuatro clics en "Enviar" (abajo a la derecha): 7.1, 9.6, 12.1 y 14.6 s. */
+  @keyframes ex-cursor-fi {
+    0% { opacity: 0; transform: translate(34em, 25em); }
+    4% { opacity: 1; }
+    13% { transform: translate(40.6em, 19.6em); }
+    15% { transform: translate(40.6em, 19.6em) scale(0.82); }
+    17% { transform: translate(40.6em, 19.6em) scale(1); }
+    38% { transform: translate(40.6em, 19.6em) scale(1); }
+    40% { transform: translate(40.6em, 19.6em) scale(0.82); }
+    42% { transform: translate(40.6em, 19.6em) scale(1); }
+    63% { transform: translate(40.6em, 19.6em) scale(1); }
+    65% { transform: translate(40.6em, 19.6em) scale(0.82); }
+    67% { transform: translate(40.6em, 19.6em) scale(1); }
+    88% { transform: translate(40.6em, 19.6em) scale(1); }
+    90% { transform: translate(40.6em, 19.6em) scale(0.82); }
+    92% { transform: translate(40.6em, 19.6em) scale(1); opacity: 1; }
+    100% { transform: translate(42em, 23em); opacity: 0; }
+  }
+
+  /* ---- 4 · Decisión (18 s) ----
+     Cada prueba toma 5 s, empezando a los 0.5, 5.5 y 10.5:
+       +0.6  clic en la fila       +0.8  se abre la pestaña con el detalle
+       +1.2  crecen las barras     +2.9  clic en la decisión
+       +3.3  se cierra la pestaña  +3.6  queda la decisión en la lista */
+  .is-corriendo .de__cursor { animation: ex-cursor-de 15s cubic-bezier(0.45, 0, 0.25, 1) 0.5s both; }
+  .is-corriendo .dd--0,
+  .is-corriendo .tab--0 { animation: ex-detalle 2.6s cubic-bezier(0.3, 0.7, 0.3, 1) 1.3s both; }
+  .is-corriendo .dd--1,
+  .is-corriendo .tab--1 { animation: ex-detalle 2.6s cubic-bezier(0.3, 0.7, 0.3, 1) 6.3s both; }
+  .is-corriendo .dd--2,
+  .is-corriendo .tab--2 { animation: ex-detalle 2.6s cubic-bezier(0.3, 0.7, 0.3, 1) 11.3s both; }
+  .is-corriendo .tab--0 { animation-name: ex-pestana; }
+  .is-corriendo .tab--1 { animation-name: ex-pestana; }
+  .is-corriendo .tab--2 { animation-name: ex-pestana; }
+  .is-corriendo .dd--0 .dd__barra span { animation: ex-crece 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 1.7s both; }
+  .is-corriendo .dd--1 .dd__barra span { animation: ex-crece 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 6.7s both; }
+  .is-corriendo .dd--2 .dd__barra span { animation: ex-crece 700ms cubic-bezier(0.3, 0.7, 0.3, 1) 11.7s both; }
+  .is-corriendo .dd--0 .dd__barra--con span { animation-delay: 1.95s; }
+  .is-corriendo .dd--1 .dd__barra--con span { animation-delay: 6.95s; }
+  .is-corriendo .dd--2 .dd__barra--con span { animation-delay: 11.95s; }
+  .is-corriendo .dd--0 .dd__btn--elegido { animation: ex-decide 350ms ease 3.4s both; }
+  .is-corriendo .dd--1 .dd__btn--elegido { animation: ex-decide 350ms ease 8.4s both; }
+  .is-corriendo .dd--2 .dd__btn--elegido { animation: ex-decide 350ms ease 13.4s both; }
+  .is-corriendo .de__fila--0 { animation: ex-toca 400ms ease 1.1s both; }
+  .is-corriendo .de__fila--1 { animation: ex-toca 400ms ease 6.1s both; }
+  .is-corriendo .de__fila--2 { animation: ex-toca 400ms ease 11.1s both; }
+  .is-corriendo .de__chip--si { animation: ex-chip 450ms cubic-bezier(0.3, 1.6, 0.5, 1) 4.1s both; }
+  .is-corriendo .de__chip--ajustar { animation: ex-chip 450ms cubic-bezier(0.3, 1.6, 0.5, 1) 9.1s both; }
+  .is-corriendo .de__chip--no { animation: ex-chip 450ms cubic-bezier(0.3, 1.6, 0.5, 1) 14.1s both; }
+  .is-corriendo .de__fila--no .de__nombre { animation: ex-tacha 400ms ease 14.2s both; }
+  .is-corriendo .de__stat--si { animation: ex-derecha 350ms ease 4.3s both; }
+  .is-corriendo .de__stat--ajustar { animation: ex-derecha 350ms ease 9.3s both; }
+  .is-corriendo .de__stat--no { animation: ex-derecha 350ms ease 14.3s both; }
+  .is-corriendo .de__nota { animation: ex-entra 400ms ease 15s both; }
+
+  @keyframes ex-detalle {
+    0% { opacity: 0; transform: translateX(100%); }
+    12%, 88% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateX(100%); }
+  }
+  /* La pestaña aparece y desaparece en su lugar, sin deslizarse. */
+  @keyframes ex-pestana {
+    0%, 100% { opacity: 0; transform: translateY(0.4em); }
+    10%, 90% { opacity: 1; transform: none; }
+  }
+  @keyframes ex-crece {
+    from { transform: scaleX(0); }
+  }
+  @keyframes ex-decide {
+    0% { background: transparent; color: var(--texto-suave); transform: none; }
+    40% { transform: scale(0.9); }
+    100% { transform: none; }
+  }
+  @keyframes ex-toca {
+    0% { background: #fff; }
+    50% { background: var(--i-neblina); transform: scale(0.99); }
+    100% { background: #fff; }
+  }
+  @keyframes ex-chip {
+    from { transform: scale(0.4); opacity: 0; }
+  }
+  @keyframes ex-tacha {
+    from { text-decoration-color: transparent; color: var(--azul-petroleo); }
+  }
+  /* Seis paradas: fila 1, Adoptar, fila 2, Ajustar, fila 3, Descartar.
+     Los porcentajes salen de los tiempos de arriba sobre 15 s. */
+  @keyframes ex-cursor-de {
+    0% { opacity: 0; transform: translate(12em, 16em); }
+    2% { opacity: 1; }
+    3% { transform: translate(7em, 4.9em); }
+    4% { transform: translate(7em, 4.9em) scale(0.82); }
+    5% { transform: translate(7em, 4.9em) scale(1); }
+    17% { transform: translate(4.9em, 19.9em); }
+    19% { transform: translate(4.9em, 19.9em) scale(0.82); }
+    21% { transform: translate(4.9em, 19.9em) scale(1); }
+    36% { transform: translate(7em, 9.2em); }
+    37% { transform: translate(7em, 9.2em) scale(0.82); }
+    38% { transform: translate(7em, 9.2em) scale(1); }
+    51% { transform: translate(10.9em, 19.9em); }
+    53% { transform: translate(10.9em, 19.9em) scale(0.82); }
+    55% { transform: translate(10.9em, 19.9em) scale(1); }
+    69% { transform: translate(7em, 13.5em); }
+    70% { transform: translate(7em, 13.5em) scale(0.82); }
+    71% { transform: translate(7em, 13.5em) scale(1); }
+    84% { transform: translate(16.9em, 19.9em); }
+    86% { transform: translate(16.9em, 19.9em) scale(0.82); }
+    88% { transform: translate(16.9em, 19.9em) scale(1); opacity: 1; }
+    100% { transform: translate(20em, 23em); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vi *,
+    .vi .vent {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  /* Cada escena corre en loop mientras está en pantalla: se le pone
+     `is-corriendo` y se la vuelve a poner al cumplirse su duración, así
+     todas las animaciones arrancan de cero. Fuera de pantalla se detiene
+     y vuelve al cuadro final (quieto). */
+  function initEscenas() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+    document.querySelectorAll<HTMLElement>("[data-vi]").forEach((vi) => {
+      if (vi.dataset.listo) return;
+      vi.dataset.listo = "1";
+      const dur = Number(vi.dataset.dur) || 12000;
+      let intervalo = 0;
+      const arrancar = () => {
+        vi.classList.remove("is-corriendo");
+        void vi.offsetWidth;
+        vi.classList.add("is-corriendo");
+      };
+      new IntersectionObserver(
+        (entradas) => {
+          entradas.forEach((e) => {
+            if (e.isIntersecting && !intervalo) {
+              arrancar();
+              intervalo = window.setInterval(arrancar, dur);
+            } else if (!e.isIntersecting && intervalo) {
+              window.clearInterval(intervalo);
+              intervalo = 0;
+              vi.classList.remove("is-corriendo");
+            }
+          });
+        },
+        { threshold: 0.3 }
+      ).observe(vi);
+    });
+  }
+
+  initEscenas();
+  document.addEventListener("astro:page-load", initEscenas);
+</script>

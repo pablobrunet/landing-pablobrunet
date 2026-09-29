@@ -1,4 +1,11 @@
 -- =====================================================================
+-- ⚠️  DESACTUALIZADO — NO CORRER
+--     La tabla `leads_integra` nunca se creó en el proyecto. El chequeo
+--     guarda en `newsletter-prospects` con origen 'chequeo'.
+--     El estado vigente de la base está en `migracion-03-chequeo.sql`.
+-- =====================================================================
+
+-- =====================================================================
 -- CHEQUEO INTEGRA — tabla `leads_integra` + función de registro
 -- ---------------------------------------------------------------------
 -- Es el quiz de la landing /integra. Guarda más cosas que el resto de los

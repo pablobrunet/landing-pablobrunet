@@ -11,6 +11,7 @@ interface Props {
      lo cambia para que el chat abra diciendo de dónde viene la consulta. */
   waMensaje?: string;
   waEtiqueta?: string;
+  mostrarWhatsapp?: boolean;
   /* Páginas que se comparten por enlace directo y no son contenido del
      sitio — las cotizaciones para un cliente concreto, por ejemplo — se
      marcan con `noindex` para que no aparezcan en buscadores. */
@@ -25,6 +26,7 @@ const {
   description = site.seoDescription,
   waMensaje,
   waEtiqueta,
+  mostrarWhatsapp = true,
   noindex = false,
   icono = "/images/logos/logo%20v3%20-%20transparente.png?v=4",
 } = Astro.props;
@@ -69,6 +71,6 @@ const {
   <body>
     <slot />
     <!-- Botón flotante en todas las páginas -->
-    <WhatsApp mensaje={waMensaje} etiqueta={waEtiqueta} />
+    {mostrarWhatsapp && <WhatsApp mensaje={waMensaje} etiqueta={waEtiqueta} />}
   </body>
 </html>

@@ -12,12 +12,13 @@ import sitemap from '@astrojs/sitemap';
 // que acordarse de tocar este archivo al agregar una.
 const EXCLUIDAS_DEL_SITEMAP = (ruta) =>
   ruta.startsWith('/cotizacion-') ||
+  ['/programa-integra-3', '/programa-integra-4'].includes(ruta) ||
   // Páginas de gracias: son el final de un embudo, no contenido del sitio.
   // Las dos llevan `noindex`; nadie debería caer acá desde una búsqueda.
   ['/programa-ejecutivos/agenda-confirmada',
    '/programa-integra/gracias'].includes(ruta) ||
   // URLs viejas que sólo redirigen (ver `redirects` más abajo).
-  ['/integra', '/integra/gracias', '/metodo-integra',
+  ['/integra', '/integra/gracias', '/metodo-integra', '/programa-integra-2',
    '/servicios/estrategia-e-implementacion-de-ia',
    '/servicios/metodo-integra'].includes(ruta);
 
@@ -47,6 +48,8 @@ export default defineConfig({
     '/servicios/estrategia-e-implementacion-de-ia': '/programa-integra',
     '/servicios/metodo-integra': '/programa-integra',
     '/metodo-integra': '/programa-integra',
+    // Borrador de la versión que terminó reemplazando a la landing.
+    '/programa-integra-2': '/programa-integra',
   },
   // Sitio multipágina 100% estático (SSG) con navegación instantánea.
   prefetch: {

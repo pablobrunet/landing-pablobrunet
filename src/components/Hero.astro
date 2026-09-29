@@ -259,4 +259,17 @@ const { hero } = site;
       transform: translateX(-50%);
     }
   }
+
+  /* Monitores grandes: el hero entero (texto, botones, insignia y retrato)
+     crece un 20% en bloque, así mantiene las proporciones de la notebook en
+     lugar de quedar chato. `zoom` escala también el ancho máximo del
+     contenedor; el aire de arriba se agranda a mano porque es de la sección. */
+  @media (min-width: 1600px) {
+    .hero {
+      padding-top: 6rem;
+    }
+    .hero__inner {
+      zoom: 1.2;
+    }
+  }
 </style>

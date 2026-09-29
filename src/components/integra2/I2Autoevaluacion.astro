@@ -1,0 +1,923 @@
+---
+/* =====================================================================
+   AUTOEVALUACIÓN · v2 (antes "Chequeo exprés")
+   ---------------------------------------------------------------------
+   Mismas seis preguntas; cambia todo lo demás:
+     · Tarjeta en dos columnas. A la izquierda, un panel azul fijo con la
+       lista de pasos: se ve de un vistazo qué se respondió y qué falta.
+       En celular ese panel se achica a una cabecera con barra de avance.
+     · Opciones grandes. Pasar el mouse ya no las muestra marcadas: en la
+       v1 hover y elegida se veían igual.
+     · Resultado sin número sobre 10 ni emojis: una escala de tres niveles
+       con el propio marcado, hallazgos y por dónde empezar.
+     · Además del calendario, un botón para mandar el resultado por
+       WhatsApp: la persona llega a la reunión con eso ya contado. La
+       pregunta del tamaño no puntúa, pero viaja en ese mensaje.
+     · Entre la última pregunta y el resultado, un paso que pide nombre,
+       empresa y correo para mandar el informe por mail. Se guarda en
+       Supabase (`registrar_chequeo`, origen 'chequeo') y desde ahí un webhook
+       dispara n8n: mail con Resend + alta en GHL. Ver
+       docs/chequeo-lead-magnet.md. Es obligatorio: sin correo no hay
+       resultado. La única excepción es que falle Supabase: ahí se
+       muestra igual, con un aviso.
+   ===================================================================== */
+import { integra2 } from "../../data/integra2";
+import { site } from "../../data/site";
+import { leads } from "../../lib/leads";
+const { auto, anclas } = integra2;
+const { datos } = auto;
+const total = auto.preguntas.length;
+const maxPuntaje = auto.preguntas.reduce(
+  (t, p) => t + Math.max(0, ...p.opciones.map((o) => o.peso ?? 0)),
+  0
+);
+const config = {
+  niveles: auto.niveles,
+  max: maxPuntaje,
+  wa: site.whatsapp.numero,
+  intro: "Hola Pablo, hice la autoevaluación de la página del Programa INTEGRA.",
+  cierre: "Me gustaría conversarlo en la Consultoría Estratégica Gratuita.",
+  endpoint: leads.endpointChequeo,
+  clave: leads.clave,
+};
+---
+
+<section class="section i-hielo i-claro" id={anclas.auto} aria-label="Autoevaluación">
+  <div class="container">
+    <header class="i-head i-head--centro i-reveal">
+      <span class="i-eyebrow">{auto.eyebrow}</span>
+      <h2 class="t-h2">{auto.titulo}</h2>
+      <p class="text-muted">{auto.subtitulo}</p>
+    </header>
+
+    <div class="av i-reveal" data-av data-estado="intro">
+      {/* ---------------- Panel lateral ---------------- */}
+      <aside class="av__panel">
+        <p class="av__panel-t">{auto.panelTitulo}</p>
+        <p class="av__panel-p">{auto.panelTexto}</p>
+
+        <ol class="av__pasos" aria-hidden="true">
+          {
+            auto.preguntas.map((p, i) => (
+              <li class="av__paso" data-paso={i}>
+                <span class="av__paso-n">{i + 1}</span>
+                <span class="av__paso-t">{p.corto}</span>
+              </li>
+            ))
+          }
+          <li class="av__paso av__paso--fin" data-paso-fin>
+            <span class="av__paso-n">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10" /></svg>
+            </span>
+            <span class="av__paso-t">Tu resultado</span>
+          </li>
+        </ol>
+
+      </aside>
+
+      {/* ---------------- Escenario ---------------- */}
+      <div class="av__escena">
+        {/* Intro */}
+        <div class="av__vista" data-vista="intro">
+          <p class="av__kicker">{total} preguntas · 2 minutos</p>
+          <h3 class="av__intro-t">Las mismas preguntas con las que arranca cualquier Consultoría Estratégica Gratuita.</h3>
+          <p class="av__intro-p">Respondé rápido, con lo primero que te sale. No hay respuestas buenas ni malas: hay un punto de partida.</p>
+          <button type="button" class="btn btn--primary" data-empezar>{auto.empezar}</button>
+        </div>
+
+        {/* Preguntas */}
+        <div class="av__vista" data-vista="preguntas" hidden>
+          {
+            auto.preguntas.map((p, i) => (
+              <fieldset class="av__preg" data-preg={i} hidden={i !== 0}>
+                {/* El contador va DENTRO de la leyenda: el navegador siempre
+                    dibuja la <legend> primero, así que suelto quedaba abajo. */}
+                <legend class="av__legend">
+                  <span class="av__kicker">Pregunta {i + 1} de {total}</span>
+                  {p.texto}
+                </legend>
+                <div class="av__ops" data-muchas={p.opciones.length > 3 ? "" : undefined}>
+                  {p.opciones.map((o) => (
+                    <button
+                      type="button"
+                      class="av__op"
+                      data-peso={o.peso ?? 0}
+                      data-hallazgo={o.hallazgo ?? ""}
+                      data-texto={o.texto}
+                      data-corto={p.corto}
+                      aria-pressed="false"
+                    >
+                      <span class="av__op-m" aria-hidden="true" />
+                      <span>{o.texto}</span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            ))
+          }
+          <div class="av__nav">
+            <button type="button" class="av__link" data-atras>← Anterior</button>
+            <button type="button" class="av__link" data-inicio>Salir</button>
+          </div>
+        </div>
+
+        {/* Datos para mandar el informe */}
+        <div class="av__vista" data-vista="datos" hidden>
+          <p class="av__kicker">{datos.kicker}</p>
+          <h3 class="av__intro-t">{datos.titulo}</h3>
+          <p class="av__intro-p av__datos-p">{datos.texto}</p>
+
+          <form class="av__form" data-av-form>
+            <div class="av__campos">
+              <div class="av__campo">
+                <label for="av-nombre">Nombre y apellido</label>
+                <input id="av-nombre" name="nombre" type="text" required maxlength="120" autocomplete="name" />
+              </div>
+              <div class="av__campo">
+                <label for="av-empresa">Empresa</label>
+                <input id="av-empresa" name="empresa" type="text" required maxlength="160" autocomplete="organization" />
+              </div>
+              <div class="av__campo av__campo--ancho">
+                <label for="av-email">Correo</label>
+                <input id="av-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="tu@empresa.com" />
+              </div>
+            </div>
+
+            {/* Trampa para bots: fuera de pantalla. Si viene completa, se
+                muestra el resultado pero no se guarda nada. El nombre no
+                puede parecerse a nada conocido ("website", "url", "phone"):
+                el autocompletar del navegador y de los gestores de
+                contraseñas lo llenaría y una persona real quedaría como bot. */}
+            <div class="av__trampa" aria-hidden="true">
+              <label for="av-hp">Dejar vacío</label>
+              <input id="av-hp" name="av_hp" type="text" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore />
+            </div>
+
+            <button type="submit" class="btn btn--primary av__enviar">{datos.boton}</button>
+            <p class="av__aviso">
+              {datos.aviso} <a href="/legal/privacidad" target="_blank" rel="noopener">Privacidad</a>
+            </p>
+          </form>
+
+          <div class="av__nav">
+            <button type="button" class="av__link" data-volver>← Cambiar respuestas</button>
+          </div>
+        </div>
+
+        {/* Resultado */}
+        <div class="av__vista" data-vista="resultado" hidden>
+          <p class="av__kicker">Tu resultado</p>
+
+          <ol class="av__escala" aria-label="Escala de resultados">
+            {
+              auto.niveles.map((n, i) => (
+                <li data-nivel={i}>
+                  <span class="av__escala-barra" />
+                  <span class="av__escala-t">{n.nombre}</span>
+                </li>
+              ))
+            }
+          </ol>
+
+          <h3 class="av__nivel" data-nivel-nombre></h3>
+          <p class="av__nivel-p" data-nivel-texto></p>
+
+          <div class="av__bloque" data-hallazgos hidden>
+            <p class="av__bloque-t">Lo que vemos en tus respuestas</p>
+            <ul data-hallazgos-lista></ul>
+          </div>
+
+          <div class="av__bloque av__bloque--reco">
+            <p class="av__bloque-t">Por dónde empezar</p>
+            <p data-reco></p>
+          </div>
+
+          <p class="av__estado" data-enviado hidden>
+            {datos.enviado} <strong data-enviado-mail></strong>. {datos.enviadoPie}
+          </p>
+          <p class="av__estado av__estado--fallo" data-fallo hidden>{datos.fallo}</p>
+
+          <div class="av__acciones">
+            <a href={`#${anclas.agenda}`} class="btn btn--primary">{auto.resultadoCta}</a>
+            <a href="#" class="btn btn--primary av__wa" target="_blank" rel="noopener" data-wa>
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.966 1.164-.198.199-.396.223-.693.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.347-.446.52-.669.174-.223.232-.383.347-.643.114-.26.057-.482-.024-.68-.081-.198-.669-1.611-.916-2.207-.245-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" /></svg>
+              {auto.whatsappCta}
+            </a>
+          </div>
+          <button type="button" class="av__link av__reiniciar" data-reiniciar>{auto.reiniciar}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline type="application/json" data-av-config set:html={JSON.stringify(config)} />
+
+<style>
+  .i-head h2 {
+    text-wrap: balance;
+  }
+  .av {
+    display: grid;
+    max-width: 1040px;
+    margin-inline: auto;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* ============================ PANEL ============================ */
+  .av__panel {
+    position: relative;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: linear-gradient(160deg, var(--i-azul-800), var(--i-noche) 75%);
+    color: #fff;
+  }
+  .av__panel-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+  .av__panel-p {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(220, 230, 246, 0.72);
+  }
+  /* En celular los pasos son una barra de tramos, sin rótulos. */
+  .av__pasos {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 4px;
+    margin-top: 1.1rem;
+  }
+  .av__paso {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.16);
+    transition: background 260ms ease;
+  }
+  .av__paso-n,
+  .av__paso-t {
+    display: none;
+  }
+  .av__paso.is-hecho,
+  .av__paso.is-actual {
+    background: var(--i-celeste);
+  }
+
+  /* ============================ ESCENA ============================ */
+  .av__escena {
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    min-height: 26rem;
+    display: grid;
+    align-content: center;
+  }
+  .av__kicker {
+    display: block;
+    font-family: var(--font-body, inherit);
+    font-size: 0.75rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+    margin-bottom: 0.75rem;
+  }
+  .av__intro-t {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--azul-petroleo);
+    text-wrap: balance;
+  }
+  .av__intro-p {
+    margin: 0.9rem 0 1.75rem;
+    max-width: 32rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--texto-suave);
+  }
+  .av__intro-p + .btn {
+    justify-self: start;
+  }
+
+  /* ---- Preguntas ---- */
+  .av__preg {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+  }
+  .av__legend {
+    padding: 0;
+    margin-bottom: 1.4rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.8rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--azul-petroleo);
+  }
+  .av__ops {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .av__op {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-petroleo);
+    background: var(--i-hielo-2);
+    border: 1.5px solid var(--borde);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+  }
+  .av__op:hover {
+    border-color: var(--i-azul-500);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+  .av__op:focus-visible {
+    outline: 3px solid var(--i-azul-600);
+    outline-offset: 2px;
+  }
+  .av__op-m {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--borde-punteado);
+    background: #fff;
+    transition: all var(--transition);
+  }
+  .av__op[aria-pressed="true"] {
+    border-color: var(--i-azul-600);
+    background: rgba(30, 92, 242, 0.07);
+  }
+  .av__op[aria-pressed="true"] .av__op-m {
+    border-color: var(--i-azul-600);
+    background: var(--i-azul-600);
+    box-shadow: inset 0 0 0 4px #fff;
+  }
+  .av__nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+  .av__link {
+    padding: 0;
+    background: none;
+    border: 0;
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: var(--texto-suave);
+    cursor: pointer;
+  }
+  .av__link:hover {
+    color: var(--verde-resalte);
+  }
+  .av__link[hidden] {
+    display: inline-block;
+    visibility: hidden;
+  }
+
+  /* ---- Resultado ---- */
+  .av__escala {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .av__escala li {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .av__escala-barra {
+    height: 8px;
+    border-radius: 99px;
+    background: var(--i-neblina);
+  }
+  .av__escala-t {
+    font-size: 0.78rem;
+    font-weight: var(--w-subheadline);
+    color: var(--texto-suave);
+  }
+  .av__escala li.is-hecho .av__escala-barra {
+    background: var(--i-azul-500);
+  }
+  .av__escala li.is-actual .av__escala-barra {
+    background: var(--i-grad);
+    box-shadow: 0 0 0 3px rgba(30, 92, 242, 0.16);
+  }
+  .av__escala li.is-actual .av__escala-t {
+    font-weight: var(--w-headline);
+    color: var(--verde-resalte);
+  }
+  .av__nivel {
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--azul-petroleo);
+  }
+  .av__nivel-p {
+    margin-top: 0.8rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--texto-suave);
+  }
+  .av__bloque {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--borde);
+  }
+  .av__bloque-t {
+    margin-bottom: 0.7rem;
+    font-size: 0.75rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+  }
+  .av__bloque ul {
+    display: grid;
+    gap: 0.6rem;
+  }
+  /* Los <li> los crea el script: no llevan la marca de estilo con alcance
+     de Astro, por eso van con :global. */
+  .av__bloque :global(li) {
+    position: relative;
+    padding-left: 1.3rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--azul-petroleo);
+  }
+  .av__bloque :global(li)::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--i-azul-600);
+  }
+  .av__bloque--reco [data-reco] {
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--i-hielo);
+    border-left: 3px solid var(--i-azul-600);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--azul-petroleo);
+  }
+  .av__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+  /* Mismo botón que el resto de la página (degradado y forma de la v1):
+     acá sólo se acomoda el ícono al lado del texto. */
+  .av__wa {
+    gap: 0.5rem;
+  }
+  .av__reiniciar {
+    justify-self: start;
+    margin-top: 1.25rem;
+  }
+
+  /* ---- Datos para el informe ---- */
+  .av__datos-p {
+    margin-bottom: 1.4rem;
+  }
+  .av__form {
+    display: grid;
+    gap: 1rem;
+  }
+  .av__campos {
+    display: grid;
+    gap: 0.85rem;
+  }
+  .av__campo {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .av__campo label {
+    font-size: 0.875rem;
+    font-weight: var(--w-subheadline);
+    color: var(--azul-petroleo);
+  }
+  .av__campo input {
+    font-family: inherit;
+    font-size: 1rem;
+    min-height: 3rem;
+    padding: 0.7rem 0.95rem;
+    color: var(--azul-petroleo);
+    background: var(--i-hielo-2);
+    border: 1.5px solid var(--borde);
+    border-radius: var(--radius);
+    transition: border-color var(--transition), background var(--transition);
+  }
+  .av__campo input:focus {
+    outline: none;
+    border-color: var(--i-azul-600);
+    background: #fff;
+  }
+  .av__enviar {
+    justify-self: start;
+  }
+  .av__enviar[disabled] {
+    opacity: 0.6;
+    cursor: progress;
+  }
+  .av__aviso {
+    max-width: 34rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    color: var(--texto-suave);
+  }
+  .av__aviso a {
+    color: inherit;
+    text-decoration: underline;
+  }
+  /* Fuera de pantalla, no con display:none: algunos bots ignoran lo oculto. */
+  .av__trampa {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .av__estado {
+    margin-top: 1.4rem;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 191, 114, 0.08);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--azul-petroleo);
+  }
+  .av__estado--fallo {
+    background: rgba(179, 38, 30, 0.07);
+  }
+  /* En celular los dos links no entran lado a lado: van uno abajo del otro. */
+  @media (max-width: 859px) {
+    [data-vista="datos"] .av__nav {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+  }
+
+  /* ======================= ESCRITORIO ======================= */
+  @media (min-width: 860px) {
+    .av {
+      grid-template-columns: 17rem 1fr;
+    }
+    .av__panel {
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.75rem;
+    }
+    /* Los pasos pasan a lista vertical con número y rótulo. */
+    .av__pasos {
+      flex-direction: column;
+      gap: 0;
+      margin-top: 1.75rem;
+    }
+    .av__paso {
+      flex: none;
+      height: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      background: none;
+      color: rgba(220, 230, 246, 0.5);
+      font-size: 0.9rem;
+    }
+    .av__paso.is-hecho,
+    .av__paso.is-actual {
+      background: none;
+    }
+    .av__paso-n,
+    .av__paso-t {
+      display: inline-grid;
+    }
+    .av__paso-n {
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(169, 200, 245, 0.3);
+      font-size: 0.75rem;
+      font-weight: var(--w-headline);
+      transition: all 260ms ease;
+    }
+    .av__paso.is-hecho {
+      color: rgba(220, 230, 246, 0.8);
+    }
+    .av__paso.is-hecho .av__paso-n {
+      background: rgba(169, 200, 245, 0.2);
+      border-color: transparent;
+      color: var(--i-celeste);
+    }
+    .av__paso.is-actual {
+      color: #fff;
+      font-weight: var(--w-headline);
+    }
+    /* `border-box`: sin eso el degradé arranca dentro del borde transparente
+       y se repite en el aro, que queda con rayitas sueltas. */
+    .av__paso.is-actual .av__paso-n {
+      background: var(--i-grad) border-box;
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(76, 134, 245, 0.25);
+    }
+    .av__escena {
+      min-height: 32rem;
+      padding: 2.75rem 3rem;
+    }
+    .av__ops[data-muchas] {
+      grid-template-columns: 1fr 1fr;
+    }
+    .av__campos {
+      grid-template-columns: 1fr 1fr;
+    }
+    .av__campo--ancho {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .av__op,
+    .av__op-m,
+    .av__paso,
+    .av__paso-n {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { enviarChequeo, type InformeChequeo } from "../../scripts/enviarChequeo";
+
+  type Nivel = { hasta: number; nombre: string; texto: string; recomendacion: string };
+  type Config = {
+    niveles: Nivel[];
+    max: number;
+    wa: string;
+    intro: string;
+    cierre: string;
+    endpoint: string;
+    clave: string;
+  };
+
+  /* Las UTM de la URL con la que se llegó. Es una landing de una sola
+     página: si la persona no navegó a otro lado, siguen ahí. */
+  function leerUtm(): Record<string, string> {
+    const q = new URLSearchParams(location.search);
+    const utm: Record<string, string> = {};
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach((k) => {
+      const v = q.get(k);
+      if (v) utm[k] = v.slice(0, 120);
+    });
+    return utm;
+  }
+
+  function initAutoevaluacion() {
+    const raiz = document.querySelector<HTMLElement>("[data-av]");
+    if (!raiz || raiz.dataset.listo) return;
+    raiz.dataset.listo = "1";
+
+    let cfg: Config;
+    try {
+      cfg = JSON.parse(document.querySelector("[data-av-config]")?.textContent ?? "");
+    } catch {
+      return;
+    }
+
+    const vistas = Array.from(raiz.querySelectorAll<HTMLElement>("[data-vista]"));
+    const pregs = Array.from(raiz.querySelectorAll<HTMLElement>("[data-preg]"));
+    const pasos = Array.from(raiz.querySelectorAll<HTMLElement>("[data-paso]"));
+    const pasoFin = raiz.querySelector<HTMLElement>("[data-paso-fin]");
+    const atras = raiz.querySelector<HTMLButtonElement>("[data-atras]");
+    const form = raiz.querySelector<HTMLFormElement>("[data-av-form]");
+    const enviar = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const textoEnviar = enviar?.textContent ?? "";
+    const enviado = raiz.querySelector<HTMLElement>("[data-enviado]");
+    const fallo = raiz.querySelector<HTMLElement>("[data-fallo]");
+    let actual = 0;
+
+    const ver = (nombre: string) => {
+      vistas.forEach((v) => (v.hidden = v.dataset.vista !== nombre));
+      raiz.dataset.estado = nombre;
+    };
+
+    /* Marca los pasos del panel: hechos, el actual y los que faltan.
+       `n` = total de preguntas marca "todo respondido" (datos y resultado). */
+    const marcarPasos = (n: number) => {
+      pasos.forEach((p, i) => {
+        p.classList.toggle("is-hecho", i < n);
+        p.classList.toggle("is-actual", i === n);
+      });
+      pasoFin?.classList.toggle("is-actual", n >= pregs.length);
+    };
+
+    const verPregunta = (n: number) => {
+      actual = n;
+      pregs.forEach((p, i) => (p.hidden = i !== n));
+      if (atras) atras.hidden = n === 0;
+      marcarPasos(n);
+    };
+
+    const elegidas = () =>
+      pregs
+        .map((p) => p.querySelector<HTMLElement>('.av__op[aria-pressed="true"]'))
+        .filter((b): b is HTMLElement => Boolean(b));
+
+    /* Todo lo que se muestra en pantalla sale de acá, y es también lo que
+       viaja a Supabase para armar el mail: pantalla y correo no pueden
+       decir cosas distintas. */
+    const calcular = (): InformeChequeo => {
+      const resp = elegidas();
+      const puntaje = resp.reduce((t, b) => t + Number(b.dataset.peso ?? 0), 0);
+      const idx = Math.max(0, cfg.niveles.findIndex((n) => puntaje <= n.hasta));
+      const nivel = cfg.niveles[idx] ?? cfg.niveles[cfg.niveles.length - 1];
+      return {
+        nivel: nivel.nombre,
+        nivelIndice: idx,
+        texto: nivel.texto,
+        recomendacion: nivel.recomendacion,
+        // Como mucho tres hallazgos: más deja de leerse como un diagnóstico.
+        hallazgos: resp.map((b) => b.dataset.hallazgo ?? "").filter(Boolean).slice(0, 3),
+        respuestas: resp.map((b) => ({ pregunta: b.dataset.corto ?? "", respuesta: b.dataset.texto ?? "" })),
+        pagina: location.pathname,
+      };
+    };
+
+    const mostrarResultado = () => {
+      const inf = calcular();
+
+      raiz.querySelectorAll<HTMLElement>("[data-nivel]").forEach((li) => {
+        const i = Number(li.dataset.nivel);
+        li.classList.toggle("is-hecho", i < inf.nivelIndice);
+        li.classList.toggle("is-actual", i === inf.nivelIndice);
+      });
+      const set = (sel: string, txt: string) => {
+        const el = raiz.querySelector<HTMLElement>(sel);
+        if (el) el.textContent = txt;
+      };
+      set("[data-nivel-nombre]", inf.nivel);
+      set("[data-nivel-texto]", inf.texto);
+      set("[data-reco]", inf.recomendacion);
+
+      const caja = raiz.querySelector<HTMLElement>("[data-hallazgos]");
+      const lista = raiz.querySelector<HTMLElement>("[data-hallazgos-lista]");
+      if (caja && lista) {
+        lista.replaceChildren(
+          ...inf.hallazgos.map((h) => {
+            const li = document.createElement("li");
+            li.textContent = h;
+            return li;
+          })
+        );
+        caja.hidden = inf.hallazgos.length === 0;
+      }
+
+      /* El mensaje de WhatsApp lleva el nivel y cada respuesta, así la
+         conversación arranca con el contexto ya contado. */
+      const lineas = inf.respuestas.map((r) => `• ${r.pregunta}: ${r.respuesta}`);
+      const msg = [cfg.intro, `Resultado: ${inf.nivel}.`, ...lineas, cfg.cierre].join("\n");
+      const wa = raiz.querySelector<HTMLAnchorElement>("[data-wa]");
+      if (wa) wa.href = `https://wa.me/${cfg.wa}?text=${encodeURIComponent(msg)}`;
+
+      marcarPasos(pregs.length);
+      ver("resultado");
+      raiz.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    /* Aviso del correo debajo del resultado: enviado, falló o nada (bots
+       que cayeron en la trampa). */
+    const avisoCorreo = (estado: "enviado" | "fallo" | "ninguno", email = "") => {
+      if (enviado) enviado.hidden = estado !== "enviado";
+      if (fallo) fallo.hidden = estado !== "fallo";
+      const mail = raiz.querySelector<HTMLElement>("[data-enviado-mail]");
+      if (mail) mail.textContent = email;
+    };
+
+    const verDatos = () => {
+      marcarPasos(pregs.length);
+      ver("datos");
+      raiz.querySelector<HTMLInputElement>("#av-nombre")?.focus({ preventScroll: true });
+    };
+
+    raiz.querySelector("[data-empezar]")?.addEventListener("click", () => {
+      ver("preguntas");
+      verPregunta(0);
+      pregs[0]?.querySelector<HTMLElement>(".av__op")?.focus({ preventScroll: true });
+    });
+
+    atras?.addEventListener("click", () => {
+      if (actual > 0) verPregunta(actual - 1);
+    });
+
+    raiz.querySelector("[data-inicio]")?.addEventListener("click", () => {
+      ver("intro");
+      marcarPasos(-1);
+    });
+
+    pregs.forEach((p, idx) => {
+      p.querySelectorAll<HTMLButtonElement>(".av__op").forEach((b) => {
+        b.addEventListener("click", () => {
+          p.querySelectorAll(".av__op").forEach((o) => o.setAttribute("aria-pressed", "false"));
+          b.setAttribute("aria-pressed", "true");
+          // Pausa corta para que se vea la elección antes de avanzar.
+          window.setTimeout(() => {
+            if (idx < pregs.length - 1) {
+              verPregunta(idx + 1);
+              pregs[idx + 1]?.querySelector<HTMLElement>(".av__op")?.focus({ preventScroll: true });
+            } else {
+              verDatos();
+            }
+          }, 240);
+        });
+      });
+    });
+
+    raiz.querySelector("[data-volver]")?.addEventListener("click", () => {
+      ver("preguntas");
+      verPregunta(pregs.length - 1);
+    });
+
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (enviar?.disabled) return;
+      const datos = new FormData(form);
+      const campo = (n: string) => String(datos.get(n) ?? "").trim();
+
+      // Trampa para bots: resultado sí, registro no.
+      if (campo("av_hp")) {
+        console.warn("[chequeo] Se completó el campo trampa: no se guarda el registro.");
+        avisoCorreo("ninguno");
+        mostrarResultado();
+        return;
+      }
+
+      const email = campo("email");
+      const inf = calcular();
+      if (enviar) {
+        enviar.disabled = true;
+        enviar.textContent = "Enviando…";
+      }
+
+      /* enviarChequeo nunca lanza: si Supabase falla, el resultado se
+         muestra igual con un aviso. La persona ya respondió todo. */
+      const r = await enviarChequeo(cfg.endpoint, cfg.clave, {
+        nombre: campo("nombre"),
+        empresa: campo("empresa"),
+        email,
+        utm: leerUtm(),
+        informe: inf,
+      });
+
+      if (enviar) {
+        enviar.disabled = false;
+        enviar.textContent = textoEnviar;
+      }
+      avisoCorreo(r.ok ? "enviado" : "fallo", email);
+      mostrarResultado();
+    });
+
+    raiz.querySelector("[data-reiniciar]")?.addEventListener("click", () => {
+      raiz.querySelectorAll(".av__op").forEach((o) => o.setAttribute("aria-pressed", "false"));
+      avisoCorreo("ninguno");
+      marcarPasos(-1);
+      ver("intro");
+      raiz.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  initAutoevaluacion();
+  document.addEventListener("astro:page-load", initAutoevaluacion);
+</script>

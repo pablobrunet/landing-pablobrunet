@@ -1,86 +1,90 @@
 ---
 /* =====================================================================
-   /programa-integra — LANDING DEL MÉTODO INTEGRA
+   /programa-integra — LANDING DEL PROGRAMA INTEGRA
    ---------------------------------------------------------------------
    Anexo de pablobrunet.com: comparte navbar, footer, tipografías y
    componentes con el resto del sitio, pero cambia la paleta a la familia
    azul del método (styles/integra.css, que se importa solo acá).
 
-   El orden de las secciones NO es decorativo: cada scroll acumula una
-   sola cosa — la sensación de que seguir como están cuesta plata, y que
-   la salida es una reunión gratis sin riesgo.
+   Es la versión rediseñada que se trabajó como /programa-integra-2 y
+   reemplazó a la primera (esa URL ahora redirige acá). Sus secciones
+   propias viven en components/integra2/ y su texto en data/integra2.ts;
+   las que se reutilizan de la primera versión siguen en components/integra/.
 
-     1 Hero + VSL          el dolor exacto y el CTA desde el segundo cero
-     2 Espejo              "esto me pasa a mí"
-     3 Costo               el dolor difuso se vuelve urgencia concreta
-     4 Método              las siete fases: el mecanismo creíble
-     4b Comentarios        el muro en movimiento: alguien ya lo atravesó
-     5 Qué queda           artefactos + capacidades, siempre juntos
-     5b Portal             la única prueba que ya existe: se ve funcionando
-     6 Quién soy           autoridad: en tráfico frío es lo que habilita
-     7 Chequeo exprés      segundo camino de conversión
-     8 Preguntas           los frenos reales, antes del cierre
-     9 Disponibilidad      la razón para reservar hoy, ya sin objeciones
-    10 Cierre + calendario el CTA final, sin salir de la página
+   Orden de las secciones:
+     1 Hero               IntegraHero
+     2 Empresas           logos: la prueba más barata, pegada al hero
+     3 El problema        lo que pasa y lo que cuesta
+     4 Cómo funciona      fichas unidas por una línea de puntos (hielo)
+     5 Comentarios        charlas y capacitaciones, entre el método y la
+                          experiencia (blanco)
+     6 Experiencia        cómo es estar adentro: cuatro escenas animadas
+                          en zigzag + lugar para video (hielo)
+     7 Qué queda          hoy vs. después + la cita del cliente (blanco)
+     8 Quién soy          IntegraAutoridad (oscuro)
+     9 Portal             IntegraPortal con claves propias (hielo); va
+                          acá para que no queden dos secciones oscuras
+                          pegadas (Quién soy + Preguntas)
+    10 Preguntas          IntegraFaq con respuestas propias (fondo claro)
+    11 Autoevaluación     justo antes del calendario
+    12 Cierre             Consultoría Estratégica Gratuita + calendario
    ===================================================================== */
 import "../../styles/integra.css";
 import Base from "../../layouts/Base.astro";
 import Navbar from "../../components/Navbar.astro";
 import Footer from "../../components/Footer.astro";
-import IntegraHero from "../../components/integra/IntegraHero.astro";
-import IntegraEspejo from "../../components/integra/IntegraEspejo.astro";
-import IntegraCosto from "../../components/integra/IntegraCosto.astro";
-import IntegraFases from "../../components/integra/IntegraFases.astro";
+import Empresas from "../../components/Empresas.astro";
 import MuroComentarios from "../../components/MuroComentarios.astro";
-import IntegraInstalado from "../../components/integra/IntegraInstalado.astro";
 import IntegraPortal from "../../components/integra/IntegraPortal.astro";
 import IntegraAutoridad from "../../components/integra/IntegraAutoridad.astro";
-import IntegraChequeo from "../../components/integra/IntegraChequeo.astro";
 import IntegraFaq from "../../components/integra/IntegraFaq.astro";
-import IntegraDisponibilidad from "../../components/integra/IntegraDisponibilidad.astro";
-import IntegraCierre from "../../components/integra/IntegraCierre.astro";
+import IntegraHero from "../../components/integra/IntegraHero.astro";
+import I2Problema from "../../components/integra2/I2Problema.astro";
+import I2Programa from "../../components/integra2/I2Programa.astro";
+import I2Experiencia from "../../components/integra2/I2Experiencia.astro";
+import I2Resultado from "../../components/integra2/I2Resultado.astro";
+import I2Autoevaluacion from "../../components/integra2/I2Autoevaluacion.astro";
+import I2Cierre from "../../components/integra2/I2Cierre.astro";
 import { integra } from "../../data/integra";
-import { comentarios, fotosMuro, muroIntegra } from "../../data/testimonios";
+import { integra2 } from "../../data/integra2";
+import { comentarios, fotosMuro } from "../../data/testimonios";
 ---
 
 <Base
-  title={integra.seo.title}
-  description={integra.seo.description}
+  title={integra2.seo.title}
+  description={integra2.seo.description}
   waMensaje={integra.whatsapp.mensaje}
   waEtiqueta={integra.whatsapp.etiqueta}
 >
   <Navbar />
   <main>
     <IntegraHero />
-    <IntegraEspejo />
-    <IntegraCosto />
-    <IntegraFases />
-    {/* Pegado al método: recién explicado el mecanismo, la prueba de que
-        alguien ya lo atravesó. Fondo blanco porque las fases van en hielo. */}
+    <Empresas color continuo />
+    <I2Problema />
+    <I2Programa />
     <MuroComentarios
       tema="integra"
       fondo="blanco"
-      eyebrow={muroIntegra.eyebrow}
-      titulo={muroIntegra.titulo}
-      tituloResalte={muroIntegra.tituloResalte}
-      subtitulo={muroIntegra.subtitulo}
+      eyebrow={integra2.muro.eyebrow}
+      titulo={integra2.muro.titulo}
+      tituloResalte={integra2.muro.tituloResalte}
+      subtitulo={integra2.muro.subtitulo}
       comentarios={comentarios}
       fotos={fotosMuro}
     />
-    <IntegraInstalado />
-    <IntegraPortal />
+    <I2Experiencia />
+    <I2Resultado />
     <IntegraAutoridad />
-    <IntegraChequeo />
-    <IntegraFaq />
-    <IntegraDisponibilidad />
-    <IntegraCierre />
+    <IntegraPortal claves={[...integra2.portalClaves]} />
+    <IntegraFaq items={[...integra2.faq]} fondoClaro />
+    <I2Autoevaluacion />
+    <I2Cierre />
   </main>
   <Footer />
 </Base>
 
 <style is:global>
-  /* El botón de WhatsApp se aparta cuando el calendario está en pantalla:
-     ahí el CTA principal es agendar, y no queremos competencia. */
+  /* El botón de WhatsApp se aparta cuando el calendario está en pantalla. */
   .wa {
     transition: transform var(--transition), box-shadow var(--transition),
       opacity var(--transition);
@@ -90,29 +94,58 @@ import { comentarios, fotosMuro, muroIntegra } from "../../data/testimonios";
     transform: translateY(120%);
     pointer-events: none;
   }
+
+  /* Botón primario de esta landing (sólo acá: integra.css lo comparten las
+     cotizaciones). Azul intenso con un degradé apenas perceptible y un
+     halo corto, en lugar del degradé diagonal y el brillo grande que trae
+     integra.css por defecto. `border-box` estira el degradé bajo el borde
+     transparente: sin eso asoman filetes de otro tono en las curvas. */
+  body .btn.btn--primary {
+    background: linear-gradient(180deg, #2b66f4 0%, #1e5cf2 100%) border-box;
+    border-color: transparent;
+    box-shadow: 0 6px 16px rgba(30, 92, 242, 0.22);
+  }
+  body .btn.btn--primary:hover {
+    background: linear-gradient(180deg, #1f55db 0%, #1747c2 100%) border-box;
+  }
+
+  /* Etiqueta sobre los títulos: sólo el texto en mayúsculas, sin la
+     píldora que trae integra.css. Se pisa acá para no tocar las cotizaciones,
+     que también usan integra.css. */
+  body .i-eyebrow,
+  body .emp__head .eyebrow {
+    display: block;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--verde-resalte);
+    margin-bottom: 1rem;
+  }
+  body .emp__head .eyebrow::before {
+    content: none;
+  }
+  body .i-oscuro .i-eyebrow {
+    color: var(--i-neblina);
+    background: none;
+    border: 0;
+  }
 </style>
 
 <script>
-  /* ------------------------------------------------------------------
-     Dos cosas, las dos livianas y sin dependencias:
-       1. Aparición al hacer scroll (se desactiva con motion reducido).
-       2. El botón de WhatsApp se esconde cuando el calendario está a la
-          vista, para no competir con el CTA principal.
+  function initLandingIntegra2() {
+    const calendario = document.querySelector("[data-agenda-integra2]");
+    if (!calendario) return;
 
-     Acá vivía la captura de UTMs en sessionStorage: viajaban con el lead
-     del chequeo, y el chequeo ya no pide datos ni escribe nada. Sin
-     consumidor, guardarlas era juntar polvo.
-     ------------------------------------------------------------------ */
-  function initLandingIntegra() {
-    if (!document.querySelector("#agenda-integra")) return;
-
-    /* ---- 1. Aparición al hacer scroll ---- */
+    /* ---- Aparición al hacer scroll ---- */
     const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const bloques = Array.from(document.querySelectorAll<HTMLElement>(".i-reveal"));
-
     if (!reducido && "IntersectionObserver" in window) {
-      // La clase `is-listo` es la que aplica el estado inicial oculto: sin
-      // JS nunca se agrega y el contenido se ve normal.
       bloques.forEach((b) => b.classList.add("is-listo"));
       const obs = new IntersectionObserver(
         (entradas) => {
@@ -127,9 +160,8 @@ import { comentarios, fotosMuro, muroIntegra } from "../../data/testimonios";
       bloques.forEach((b) => obs.observe(b));
     }
 
-    /* ---- 2. WhatsApp vs. calendario ---- */
-    const calendario = document.getElementById("agenda-integra");
-    if (calendario && "IntersectionObserver" in window) {
+    /* ---- WhatsApp vs. calendario ---- */
+    if ("IntersectionObserver" in window) {
       const obsWa = new IntersectionObserver(
         (entradas) => {
           entradas.forEach((e) => {
@@ -142,6 +174,6 @@ import { comentarios, fotosMuro, muroIntegra } from "../../data/testimonios";
     }
   }
 
-  initLandingIntegra();
-  document.addEventListener("astro:page-load", initLandingIntegra);
+  initLandingIntegra2();
+  document.addEventListener("astro:page-load", initLandingIntegra2);
 </script>

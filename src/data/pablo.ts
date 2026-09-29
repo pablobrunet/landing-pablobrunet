@@ -129,8 +129,8 @@ export const pablo = {
 
   cierre: {
     titulo: "Pablo es parte del Programa para Ejecutivos.",
-    subtitulo: "Si querés que trabajemos con tu empresa, arranquemos por una reunión.",
-    ctaPrimario: "Agendar reunión de descubrimiento",
+    subtitulo: "Si querés que trabajemos con tu empresa, arranquemos por una Consultoría Estratégica Gratuita.",
+    ctaPrimario: "Agendar Consultoría Estratégica Gratuita",
     ctaSecundario: "Ver el programa",
   },
 };

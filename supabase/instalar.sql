@@ -1,4 +1,12 @@
 -- =====================================================================
+-- ⚠️  DESACTUALIZADO — NO CORRER
+--     La tabla se renombró a `newsletter-prospects`. Este script crea una
+--     `leads` nueva y devuelve `registrar_lead` a esa tabla, que es lo que
+--     rompió la newsletter hasta el 2026-09-28.
+--     El estado vigente de la base está en `migracion-03-chequeo.sql`.
+-- =====================================================================
+
+-- =====================================================================
 -- INSTALACIÓN COMPLETA — tabla `leads` + función `registrar_lead`
 -- ---------------------------------------------------------------------
 -- ES EL ÚNICO ARCHIVO QUE HACE FALTA CORRER.

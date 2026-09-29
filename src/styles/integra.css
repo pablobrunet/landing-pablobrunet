@@ -79,12 +79,12 @@
 
 /* ---- Botón primario: sobre azul el texto va en blanco ---- */
 .btn.btn--primary {
-  background: var(--i-grad);
+  background: var(--i-grad) border-box;
   color: #ffffff;
   box-shadow: var(--i-glow);
 }
 .btn.btn--primary:hover {
-  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%) border-box;
 }
 
 /* Trama de puntos del sistema gráfico, en azul */

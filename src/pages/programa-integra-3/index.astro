@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import logoIntegra from '../../assets/integra/integra-lockup-color.png';
+import fotoEncuentro from '../../assets/hero/integra1.jpg';
+import fotoMesa from '../../../public/images/servicios/estrategia-tarjeta.jpg';
+import retrato from '../../../public/images/about/retrato-sobre-mi.png';
+import { integra3 } from '../../data/integra3';
+import { integra } from '../../data/integra';
+import { comentarios } from '../../data/testimonios';
+import { site } from '../../data/site';
+import '../../styles/integra.css';
+import '../../styles/integra3.css';
+
+const comentario = comentarios.find((item) => item.nombre === 'Marce');
+const calendario = `https://api.leadconnectorhq.com/widget/booking/${integra.cierre.calendarioId}`;
+const whatsapp = `https://wa.me/${site.whatsapp.numero}?text=${encodeURIComponent('Hola Pablo, vengo de la página del Programa INTEGRA y quiero consultar por la Consultoría Estratégica Gratuita.')}`;
+---
+
+<Base
+  title="Programa INTEGRA — Decidir dónde aplicar IA | Pablo Brunet"
+  description="En 60 días, tu equipo aprende a identificar tareas, probar IA sobre trabajo real y tomar decisiones con evidencia. Conocé cómo trabaja el Programa INTEGRA."
+  noindex
+  mostrarWhatsapp={false}
+>
+  <a class="i3-skip" href="#contenido">Saltar al contenido</a>
+  <Navbar items={integra3.nav} cta={{ label: 'Consultoría Estratégica Gratuita', href: '#agenda' }} redes={false} />
+
+  <main id="contenido" class="i3">
+    <section class="i3-hero" aria-labelledby="i3-hero-title">
+      <div class="i3-wrap i3-hero__grid">
+        <div class="i3-hero__copy">
+          <div class="i3-identity">
+            <Image src={logoIntegra} alt="INTEGRA" width={180} format="webp" loading="eager" />
+            <span>Programa para PyMEs</span>
+          </div>
+          <p class="i3-overline">Inteligencia artificial aplicada al trabajo real</p>
+          <h1 id="i3-hero-title">La próxima decisión sobre IA, <em>con evidencia de tu empresa.</em></h1>
+          <p class="i3-hero__lede">En 60 días, acompañamos a tu equipo para elegir qué vale la pena probar, hacerlo sobre tareas reales y decidir cómo seguir. Con responsables, formación y criterios compartidos.</p>
+          <div class="i3-hero__actions">
+            <a class="i3-button" href="#agenda" data-i3-event="integra_agenda_click" data-i3-location="hero">Agendar Consultoría Estratégica Gratuita <span aria-hidden="true">↗</span></a>
+            <a class="i3-text-link" href="#como-trabajamos">Ver cómo trabajamos <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="i3-hero__note">30 minutos por videollamada. <a href="#autoevaluacion">También podés comenzar con la autoevaluación.</a></p>
+        </div>
+        <figure class="i3-hero__figure">
+          <div class="i3-hero__photo">
+            <Image src={fotoEncuentro} alt="Pablo Brunet durante una charla de inteligencia artificial ante un grupo de asistentes" widths={[480, 720, 900]} sizes="(max-width: 850px) 100vw, 40vw" format="webp" quality={78} loading="eager" fetchpriority="high" />
+          </div>
+          <figcaption>En un encuentro de formación con equipos en Santa Fe.</figcaption>
+        </figure>
+      </div>
+      <div class="i3-wrap i3-hero__facts" aria-label="Datos principales del programa">
+        <span><strong>60 días</strong> de trabajo acompañado</span>
+        <span><strong>Remoto</strong> con encuentros en vivo</span>
+        <span><strong>Tu empresa</strong> como punto de partida</span>
+      </div>
+    </section>
+
+    <section class="i3-section i3-example" id="como-trabajamos" aria-labelledby="i3-example-title">
+      <div class="i3-wrap">
+        <div class="i3-section-head i3-section-head--split">
+          <div><p class="i3-overline">01 / Una decisión por dentro</p><h2 id="i3-example-title">Así se toma una decisión en INTEGRA.</h2></div>
+          <p>Una tarea concreta se convierte en una prueba. Lo observado indica cómo seguir.</p>
+        </div>
+        <div class="i3-example__intro">
+          <span class="i3-tag">Ejemplo ilustrativo</span>
+          <span>La situación y sus resultados no corresponden a un cliente.</span>
+        </div>
+        <div class="i3-case">
+          <div class="i3-case__top"><span>Ficha de decisión / Propuesta comercial</span><span>Empresa de ejemplo</span></div>
+          <p class="i3-case__summary">El equipo necesita preparar propuestas con mayor claridad. Una prueba con IA aporta un borrador útil, pero introduce una condición que nadie aprobó.</p>
+          <div class="i3-case__steps">
+            {integra3.ejemplo.map((paso, i) => (
+              <details class="i3-case__step" open={i === 0} data-i3-example={paso.numero}>
+                <summary><span class="i3-case__num">{paso.numero}</span><span>{paso.nombre}</span><span class="i3-case__marker" aria-hidden="true">+</span></summary>
+                <div class="i3-case__detail"><h3>{paso.titulo}</h3><p>{paso.texto}</p><p class="i3-case__datum">{paso.dato}</p></div>
+              </details>
+            ))}
+          </div>
+          <div class="i3-case__decision"><span>Decisión ilustrativa</span><strong>Ajustar la prueba antes de adoptar.</strong><p>Fuentes delimitadas y revisión humana de las condiciones comerciales.</p></div>
+        </div>
+        <p class="i3-section-foot">El valor está en saber por qué se continúa, se ajusta o se descarta una iniciativa.</p>
+      </div>
+    </section>
+
+    <section class="i3-section i3-program" id="programa" aria-labelledby="i3-program-title">
+      <div class="i3-wrap">
+        <div class="i3-section-head i3-section-head--split"><div><p class="i3-overline">02 / El recorrido</p><h2 id="i3-program-title">Sesenta días para instalar una forma de decidir.</h2></div><p>Cuatro momentos de trabajo. Los materiales y la formación acompañan lo que el equipo necesita hacer en cada uno.</p></div>
+        <ol class="i3-timeline">
+          {integra3.tramos.map((tramo, i) => (
+            <li><div class="i3-timeline__number">{String(i + 1).padStart(2, '0')}</div><div class="i3-timeline__body"><p class="i3-timeline__day">Días {tramo.hito}</p><h3>{tramo.titulo}</h3><p>{tramo.texto}</p></div><p class="i3-timeline__delivery"><span>Queda</span>{tramo.entrega}</p></li>
+          ))}
+        </ol>
+        <div class="i3-program__method"><strong>El Método INTEGRA</strong><p>I · Identificar / N · Negociar prioridades / T · Transformar / E · Ejecutar / R · Rentabilizar / A · Acelerar. <span>G · Gestionar acompaña todo el recorrido.</span></p></div>
+        <div class="i3-commitment"><div><p class="i3-overline">Participación</p><h3>Qué necesita aportar tu empresa.</h3><p>El trabajo se hace con el equipo. Estos tiempos son referencias iniciales que revisamos en el diagnóstico.</p></div><dl><div><dt>Participantes</dt><dd>Alrededor de 1,5 h por semana</dd></div><div><dt>Referente interno</dt><dd>Entre 3 y 4 h por semana</dd></div><div><dt>Dirección</dt><dd>1 h cada quince días</dd></div></dl></div>
+      </div>
+    </section>
+
+    <section class="i3-section i3-materials" aria-labelledby="i3-materials-title">
+      <div class="i3-wrap">
+        <div class="i3-section-head i3-section-head--split"><div><p class="i3-overline">03 / Materiales de trabajo</p><h2 id="i3-materials-title">El trabajo sigue entre encuentros.</h2></div><p>El portal reúne recursos de formación para que cada participante pueda avanzar y retomar su curso. Las decisiones se trabajan con la empresa.</p></div>
+        <figure class="i3-portal"><button type="button" class="i3-portal__open" data-i3-portal-open aria-label="Ampliar captura del Portal INTEGRA"><img src="/images/integra/portal-integra.png" width="1358" height="594" loading="lazy" alt="Portal INTEGRA: curso en progreso, catálogo de formación y acceso a archivos compartidos" /><span>Ampliar captura ↗</span></button><figcaption>Vista del portal de formación, con cursos en progreso y acceso a materiales. Captura de referencia del proyecto.</figcaption></figure>
+        <div class="i3-materials__note"><span>Un recurso al servicio de una tarea</span><p>El portal acompaña la formación del equipo. La prioridad, la prueba y la decisión se definen en el trabajo conjunto.</p></div>
+      </div>
+    </section>
+
+    <section class="i3-section i3-fit" aria-labelledby="i3-fit-title"><div class="i3-wrap i3-fit__grid"><div><p class="i3-overline">04 / Alcance</p><h2 id="i3-fit-title">Funciona cuando hay alguien de tu equipo del otro lado.</h2><p>INTEGRA ayuda a ordenar el punto de partida, elegir oportunidades, formar a las personas que participan y revisar pruebas sobre tareas reales.</p></div><div class="i3-fit__conditions"><h3>Para aprovecharlo, hace falta:</h3><ul><li>Un referente con tiempo asignado para sostener el proceso.</li><li>Participación de dirección en las decisiones importantes.</li><li>Acceso a tareas y condiciones reales de la empresa para poder probar.</li></ul><div class="i3-fit__limit"><strong>Sobre el desarrollo técnico</strong><p>Las automatizaciones e integraciones se definen y cotizan aparte si, después de probar, conviene avanzar con ellas.</p></div></div></div></section>
+
+    <section class="i3-section i3-person" aria-labelledby="i3-person-title"><div class="i3-wrap i3-person__grid"><figure><Image src={retrato} alt="Retrato de Pablo Brunet" width={600} format="webp" loading="lazy" /><figcaption>Pablo Brunet · Creador del Método INTEGRA</figcaption></figure><div><p class="i3-overline">05 / Quién acompaña</p><h2 id="i3-person-title">El criterio se construye con personas.</h2><p>Soy Pablo Brunet. Trabajo con PyMEs para llevar la inteligencia artificial a decisiones y tareas concretas. En INTEGRA acompaño al equipo a reconocer dónde puede ayudar, preparar pruebas con límites claros y revisar lo que ocurrió. La formación aporta una base común; el trabajo de cada empresa muestra qué vale la pena continuar. Mi rol es facilitar ese proceso y ayudar a que queden responsables y criterios para el siguiente ciclo.</p>{comentario && <blockquote><p>“{comentario.texto}”</p><footer>{comentario.nombre} · Comentario sobre una capacitación</footer></blockquote>}</div></div></section>
+
+    <section class="i3-section i3-faq" id="preguntas" aria-labelledby="i3-faq-title"><div class="i3-wrap i3-faq__grid"><div><p class="i3-overline">06 / Antes de conversar</p><h2 id="i3-faq-title">Preguntas para decidir.</h2><p>Si todavía querés ordenar tu punto de partida, podés hacer la autoevaluación al final de esta página.</p></div><div class="i3-faq__list">{integra3.faq.map((item) => <details><summary>{item.pregunta}<span aria-hidden="true">+</span></summary><p>{item.respuesta}</p></details>)}</div></div></section>
+
+    <section class="i3-assessment" id="autoevaluacion" aria-labelledby="i3-assessment-title"><div class="i3-wrap i3-assessment__grid"><div class="i3-assessment__lead"><p class="i3-overline">07 / Orientación opcional</p><h2 id="i3-assessment-title">¿Qué convendría ordenar primero?</h2><p>Seis preguntas, alrededor de dos minutos. La orientación sale de tus respuestas, se calcula en tu navegador y podés revisarla antes de compartirla.</p><p class="i3-assessment__aside">Esta autoevaluación pública no reemplaza RADAR Usuarios, el primer paso de trabajo dentro del programa.</p></div><div class="i3-assessment__app" data-i3-assessment><div data-i3-view="intro"><p class="i3-assessment__step">Autoevaluación / 6 preguntas</p><h3>Empezá por cómo trabaja hoy tu empresa.</h3><p>Respondé según lo que sabés ahora. “No sé” también es una respuesta válida.</p><button class="i3-button" type="button" data-i3-start>Empezar <span aria-hidden="true">→</span></button></div><div data-i3-view="question" hidden><p class="i3-assessment__step" data-i3-progress aria-live="polite"></p><form data-i3-form><fieldset><legend data-i3-legend></legend><div data-i3-options class="i3-assessment__options"></div></fieldset><p class="i3-assessment__error" data-i3-error hidden>Elegí una opción para continuar.</p><div class="i3-assessment__nav"><button type="button" class="i3-link-button" data-i3-back>← Anterior</button><button class="i3-button" type="submit" data-i3-next>Continuar →</button></div></form></div><div data-i3-view="result" hidden><p class="i3-assessment__step">Orientación según tus respuestas</p><h3 data-i3-result-heading tabindex="-1">Puntos para revisar</h3><p>Esta lectura es orientativa y no reemplaza una conversación sobre tu empresa.</p><ul data-i3-result-list></ul><div class="i3-assessment__actions"><a href="#agenda" class="i3-button" data-i3-event="integra_agenda_click" data-i3-location="assessment">Agendar Consultoría Estratégica Gratuita ↗</a><button type="button" class="i3-link-button" data-i3-edit>Editar respuestas</button><button type="button" class="i3-link-button" data-i3-reset>Empezar de nuevo</button></div><div class="i3-assessment__share"><p>Si querés compartir el resultado, revisá el texto que se abrirá en WhatsApp:</p><textarea data-i3-message readonly aria-label="Mensaje preparado para WhatsApp"></textarea><a data-i3-share href={whatsapp} target="_blank" rel="noopener noreferrer">Abrir mensaje editable en WhatsApp ↗</a></div></div></div></div></section>
+
+    <section class="i3-close" id="agenda" aria-labelledby="i3-close-title"><div class="i3-wrap"><div class="i3-close__head"><div><p class="i3-overline">08 / Próximo paso</p><h2 id="i3-close-title">Conversemos sobre tu punto de partida.</h2></div><p>En una Consultoría Estratégica Gratuita de 30 minutos por videollamada, revisamos cómo se usa IA hoy, qué tareas podrían priorizarse y si el programa encaja en tu empresa.</p></div><div class="i3-close__body"><div class="i3-close__info"><strong>Consultoría Estratégica Gratuita</strong><span>30 minutos · Por videollamada</span><p>Elegí un horario en el calendario. Si el widget no carga, abrí la agenda directamente o escribime.</p><a href={calendario} target="_blank" rel="noopener noreferrer" data-i3-event="integra_agenda_click" data-i3-location="fallback">Abrir agenda en otra pestaña ↗</a><a href={whatsapp} target="_blank" rel="noopener noreferrer" data-i3-event="integra_contact_click" data-i3-location="fallback">Escribirme por WhatsApp ↗</a></div><div class="i3-close__calendar" data-i3-calendar><p data-i3-calendar-status role="status">Cargando el calendario…</p><iframe title="Calendario de la Consultoría Estratégica Gratuita del Programa INTEGRA" data-src={calendario} loading="lazy" hidden></iframe><button type="button" class="i3-link-button" data-i3-calendar-retry hidden>Reintentar carga</button><noscript><p>Para ver el calendario necesitás JavaScript. Podés usar el enlace directo a la agenda.</p></noscript></div></div></div></section>
+  </main>
+
+  <footer class="i3-footer"><div class="i3-wrap"><p>Programa INTEGRA · Pablo Brunet</p><div><a href="/">Ir a pablobrunet.com</a><a href={whatsapp} target="_blank" rel="noopener noreferrer">Contacto por WhatsApp ↗</a></div></div></footer>
+
+  <dialog class="i3-dialog" data-i3-portal-dialog aria-label="Captura ampliada del Portal INTEGRA"><button type="button" data-i3-portal-close aria-label="Cerrar captura">Cerrar ×</button><img src="/images/integra/portal-integra.png" width="1358" height="594" alt="Portal INTEGRA ampliado: curso en progreso y catálogo de cursos" /><p>Portal de formación de INTEGRA.</p></dialog>
+</Base>
+
+<script>
+  import { initIntegra3 } from '../../scripts/integra3';
+  initIntegra3();
+  document.addEventListener('astro:page-load', initIntegra3);
+</script>

@@ -105,12 +105,12 @@
 
 /* ---- Componentes compartidos del sitio, teñidos ---- */
 .btn.btn--primary {
-  background: var(--e-grad);
+  background: var(--e-grad) border-box;
   color: #ffffff;
   box-shadow: var(--e-glow);
 }
 .btn.btn--primary:hover {
-  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%) border-box;
 }
 
 /* Trama de puntos del sistema gráfico, en azul */
@@ -274,7 +274,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  border-radius: 999px;
+  border-radius: 14px;
   border: 1px solid transparent;
   font-family: inherit;
   font-size: 1.0625rem;
@@ -289,12 +289,12 @@
   transform: scale(0.96);
 }
 .ej-btn--primary {
-  background: var(--e-grad);
+  background: var(--e-grad) border-box;
   color: #ffffff;
   box-shadow: var(--e-glow);
 }
 .ej-btn--primary:hover {
-  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%);
+  background: linear-gradient(135deg, #4c86f5 0%, #1747c2 55%, #12306b 100%) border-box;
   box-shadow: var(--e-sombra-prem);
 }
 .ej-btn--outline {

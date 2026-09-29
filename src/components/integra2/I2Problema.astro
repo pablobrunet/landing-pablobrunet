@@ -1,0 +1,130 @@
+---
+/* =====================================================================
+   EL PROBLEMA · v2
+   ---------------------------------------------------------------------
+   Reemplaza a dos secciones de la v1: el espejo de tarjetas para tocar
+   y "el costo de seguir así". Cada tarjeta junta lo que se ve en la
+   oficina (arriba, grande) con lo que eso cuesta (abajo). Sin íconos:
+   la jerarquía la hace la tipografía.
+   ===================================================================== */
+import { integra2 } from "../../data/integra2";
+const { problema, anclas } = integra2;
+---
+
+<section class="section i-oscuro pb" aria-label="El problema">
+  <div class="container">
+    <header class="i-head i-reveal">
+      <h2 class="t-h2">
+        {problema.titulo}
+        <span class="pb__resalte">{problema.tituloResalte}</span>
+      </h2>
+    </header>
+
+    <ol class="pb__lista">
+      {
+        problema.casos.map((c, i) => (
+          <li class="pb__caso i-reveal">
+            <span class="pb__n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <p class="pb__et">{problema.etiquetaPasa}</p>
+            <p class="pb__pasa">{c.pasa}</p>
+            <p class="pb__et pb__et--cuesta">{problema.etiquetaCuesta}</p>
+            <p class="pb__cuesta">{c.cuesta}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="pb__cierre i-reveal">
+      <p>{problema.cierre}</p>
+      <a href={`#${anclas.agenda}`} class="btn btn--primary">{problema.cta}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pb__resalte {
+    color: var(--i-celeste);
+  }
+  .pb__lista {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .pb__caso {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(169, 200, 245, 0.16);
+  }
+  .pb__n {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.4rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-display);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: rgba(169, 200, 245, 0.45);
+  }
+  .pb__et {
+    font-size: 0.72rem;
+    font-weight: var(--w-headline);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(169, 200, 245, 0.7);
+  }
+  .pb__pasa {
+    margin-top: 0.6rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.35rem);
+    line-height: 1.3;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .pb__et--cuesta {
+    margin-top: 1.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid rgba(169, 200, 245, 0.14);
+    color: var(--i-celeste);
+  }
+  .pb__cuesta {
+    margin-top: 0.55rem;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: rgba(220, 230, 246, 0.78);
+  }
+  .pb__cierre {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    margin-top: clamp(2rem, 4vw, 2.75rem);
+    padding-top: clamp(1.5rem, 3vw, 2rem);
+    border-top: 1px solid rgba(169, 200, 245, 0.16);
+  }
+  .pb__cierre p {
+    max-width: 36rem;
+    font-family: var(--font-title);
+    font-weight: var(--w-headline);
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
+    line-height: 1.35;
+    color: var(--i-neblina);
+  }
+  @media (min-width: 900px) {
+    .pb__lista {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    /* Mismo alto para las tres: la frase de "lo que pasa" empuja el
+       rótulo de abajo a la misma línea en todas. */
+    .pb__pasa {
+      min-height: 5.2em;
+    }
+  }
+</style>

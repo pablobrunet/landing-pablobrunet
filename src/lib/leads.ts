@@ -47,10 +47,11 @@ export const leads = {
      no tiene permiso de escritura sobre `leads`, solo de ejecutar esa
      función. La crea supabase/instalar.sql. */
   endpoint: url ? `${url}/rest/v1/rpc/registrar_lead` : "",
-  /* El chequeo del Método INTEGRA ya no escribe acá: dejó de pedir nombre
-     y correo, así que no hay lead que guardar. La tabla y la función
-     `registrar_chequeo_integra` siguen en Supabase (las crea
-     supabase/integra-chequeo.sql) con lo que se registró hasta ahora. */
+  /* La autoevaluación de /programa-integra va a la MISMA tabla que la
+     newsletter y los recursos, con origen 'chequeo'. Tiene su propia
+     función porque además guarda nombre, empresa y el informe. La crea
+     supabase/migracion-03-chequeo.sql. */
+  endpointChequeo: url ? `${url}/rest/v1/rpc/registrar_chequeo` : "",
   /** Publishable key. Viaja en el header `apikey`, nunca en Authorization. */
   clave,
   /** ¿Está listo para recibir correos? */

@@ -157,8 +157,8 @@ export const rostagno = {
 
   cierre: {
     titulo: "Alejandro es parte del Programa para Ejecutivos.",
-    subtitulo: "Si querés que trabajemos con tu empresa, arranquemos por una reunión.",
-    ctaPrimario: "Agendar reunión de descubrimiento",
+    subtitulo: "Si querés que trabajemos con tu empresa, arranquemos por una Consultoría Estratégica Gratuita.",
+    ctaPrimario: "Agendar Consultoría Estratégica Gratuita",
     ctaSecundario: "Ver el programa",
   },
 } as const;

@@ -194,7 +194,7 @@ ul {
   font-size: 0.95rem;
   line-height: 1;
   padding: 0.85rem 1.4rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-btn);
   border: 1.5px solid transparent;
   cursor: pointer;
   transition: transform var(--transition), background var(--transition),

@@ -78,7 +78,7 @@ export const ejecutivos = {
         },
       },
     ],
-    cta: { label: "Agendar reunión", href: AGENDA, externo: true },
+    cta: { label: "Consultoría Estratégica Gratuita", href: AGENDA, externo: true },
   },
 
   /* Mensaje con el que abre el botón flotante en las páginas del anexo */
@@ -109,7 +109,7 @@ export const ejecutivos = {
       tituloCierre: "",
       subtitulo:
         "Trabajamos con tus líderes, tus equipos comerciales y el resto de la empresa sobre las tareas que hacen todos los días, para que la inteligencia artificial deje de ser algo que alguien probó una vez y empiece a ahorrar tiempo y mejorar resultados.",
-      ctaPrimario: "Agendar una reunión",
+      ctaPrimario: "Agendar Consultoría Estratégica Gratuita",
       ctaSecundario: "Ver los programas",
       /* Foto de fondo a sangre: taller con profesionales en la UISF */
       imagen: "/images/capacitaciones/uisf.jpg",
@@ -390,10 +390,10 @@ export const ejecutivos = {
     agenda: {
       titulo: "Contanos en qué está tu empresa.",
       subtitulo:
-        "Reservá una charla de 30 minutos para contarnos qué está pasando en tu empresa. Sin compromiso: te vas con una idea clara de por dónde empezar.",
+        "Reservá una Consultoría Estratégica Gratuita de 30 minutos para contarnos qué está pasando en tu empresa. Sin compromiso: te vas con una idea clara de por dónde empezar.",
       garantias: [
         { icono: "escudo", texto: "Confidencialidad garantizada" },
-        { icono: "calendario", texto: "Charla de 30 minutos" },
+        { icono: "calendario", texto: "Consultoría Estratégica Gratuita · 30 minutos" },
       ],
       /* El calendario embebido de LeadConnector. El id del iframe es el que
          espera form_embed.js para ajustarle el alto. */
@@ -429,7 +429,7 @@ export const ejecutivos = {
       titulo: "Lo vemos juntos en 30 minutos.",
       subtitulo:
         "Nos contás cómo trabaja tu equipo hoy y te decimos qué programa tiene sentido, o si todavía no es el momento.",
-      ctaPrimario: "Agendar una reunión",
+      ctaPrimario: "Agendar Consultoría Estratégica Gratuita",
       ctaSecundario: "Hablá con nosotros",
     },
   },
@@ -663,7 +663,7 @@ export const ejecutivos = {
     seo: {
       title: "Agenda confirmada | Programas AI First",
       description:
-        "Página de confirmación para quienes reservaron una reunión.",
+        "Página de confirmación para quienes reservaron una Consultoría Estratégica Gratuita.",
     },
 
     hero: {
@@ -671,7 +671,7 @@ export const ejecutivos = {
       titulo: "Gracias por agendar.",
       tituloResalte: "Este es el primer paso.",
       subtitulo:
-        "La reunión está pensada para entender tu contexto, detectar oportunidades concretas y ayudarte a definir por dónde conviene empezar.",
+        "La Consultoría Estratégica Gratuita está pensada para entender tu contexto, detectar oportunidades concretas y ayudarte a definir por dónde conviene empezar.",
       ctaPrimario: "Ver video de bienvenida",
       ctaSecundario: "Adelantar contexto",
       beneficios: {
@@ -688,7 +688,7 @@ export const ejecutivos = {
 
     video: {
       eyebrow: "Mensaje de bienvenida",
-      titulo: "Un video corto para llegar mejor a la reunión.",
+      titulo: "Un video corto para llegar mejor a la consultoría.",
       subtitulo:
         "Acá podés agradecer, bajar el tono comercial y reforzar por qué esta conversación importa.",
       /* Cuando haya video grabado, poné acá el id de Wistia (o una URL de
@@ -708,7 +708,7 @@ export const ejecutivos = {
 
     proximo: {
       izquierda: {
-        eyebrow: "Por qué vale esta reunión",
+        eyebrow: "Por qué vale esta consultoría",
         titulo: "No es una reunión de venta más.",
         desc: "Es una instancia para ordenar dónde la IA puede generar valor real en tu negocio y evitar empezar por el lugar equivocado.",
       },
@@ -724,7 +724,7 @@ export const ejecutivos = {
 
     cierre: {
       eyebrow: "Nos vemos pronto",
-      titulo: "Si querés, podés enviarnos contexto antes de la reunión.",
+      titulo: "Si querés, podés enviarnos contexto antes de la consultoría.",
       subtitulo:
         "Eso nos ayuda a entrar más rápido en tu realidad y tener una conversación más útil desde el minuto uno.",
       ctaPrimario: "Escribir por WhatsApp",

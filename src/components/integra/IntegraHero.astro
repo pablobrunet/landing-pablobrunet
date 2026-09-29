@@ -80,8 +80,8 @@ const { hero, anclas } = integra;
               {c.tipo === "logo" && c.img ? (
                 <span class="ih__conf-logo">
                   {/* width/height respetan la proporción real del PNG
-                      (1125×531 ≈ 2,12:1) para que no haya salto al cargar. */}
-                  <img src={c.img} alt="" width="212" height="100" loading="eager" />
+                      (816×311) para que no haya salto al cargar. */}
+                  <img src={c.img} alt="" width="816" height="311" loading="eager" />
                 </span>
               ) : (
                 <span class="ih__conf-punto" aria-hidden="true" />
@@ -247,21 +247,20 @@ const { hero, anclas } = integra;
     font-weight: var(--w-subheadline);
     color: var(--i-neblina);
   }
-  /* La insignia oficial viene pensada para fondo claro: va sobre una
-     píldora blanca para que no se coma sobre el azul profundo.
-     Es la única credencial verificable de la franja, así que se dibuja
-     grande: a 26px de alto el logo no se llegaba a leer. */
+  /* Igual que en el home: versión del sello sólo con logo y letras en
+     blanco, sin píldora ni marco, apoyada directo sobre el azul. Una regla
+     fina la separa del texto que la acompaña. */
   .ih__conf-logo {
-    display: grid;
-    place-items: center;
-    padding: 0.6rem 0.95rem;
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 8px 24px rgba(6, 12, 30, 0.35);
+    display: flex;
+    align-items: center;
+    padding-right: 0.9rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
   }
   .ih__conf-logo img {
-    height: clamp(38px, 3.4vw, 52px);
+    height: 30px;
     width: auto;
+    object-fit: contain;
+    opacity: 0.9;
   }
   .ih__conf-punto {
     width: 6px;

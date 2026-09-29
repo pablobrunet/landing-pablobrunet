@@ -6,22 +6,35 @@
    técnicos", "¿lo hacen ustedes?", precio) justo antes del cierre.
 
    La respuesta 2 —"¿ustedes nos implementan las automatizaciones?"— es la
-   respuesta estándar del brief: se usa igual en la reunión de diagnóstico
+   respuesta estándar del brief: se usa igual en la Consultoría Estratégica Gratuita
    y en cualquier canal. No suavizarla acá.
    ===================================================================== */
 import { integra } from "../../data/integra";
 const { faq } = integra;
+/* Otras versiones de la landing pueden pasar sus propias preguntas.
+   Sin prop, las de siempre. Una respuesta puede tener varios párrafos:
+   van separados por una línea en blanco ("\n\n").
+   `respuestaVidrio`: la respuesta se abre en una ficha de vidrio esmerilado
+   en lugar de quedar suelta sobre el azul (la usa la v2).
+   `fondoClaro`: la sección va sobre el gris hielo de "Así se vive desde
+   adentro" en lugar del azul noche, con tarjetas blancas (la usa la v2). */
+interface Props {
+  items?: { q: string; a: string }[];
+  respuestaVidrio?: boolean;
+  fondoClaro?: boolean;
+}
+const { items = faq.items, respuestaVidrio = false, fondoClaro = false } = Astro.props;
 ---
 
-<section class="section i-oscuro" id="preguntas" aria-label="Preguntas frecuentes">
+<section class:list={["section", fondoClaro ? "i-hielo i-claro" : "i-oscuro"]} id="preguntas" aria-label="Preguntas frecuentes">
   <div class="container">
     <header class="i-head i-head--centro i-reveal">
       <h2 class="t-h2">{faq.titulo}</h2>
     </header>
 
-    <div class="faq i-reveal">
+    <div class:list={["faq i-reveal", { "faq--vidrio": respuestaVidrio, "faq--claro": fondoClaro }]}>
       {
-        faq.items.map((f) => (
+        items.map((f) => (
           <details class="faq__item" name="faq-integra" data-suave>
             <summary>
               <span>{f.q}</span>
@@ -31,7 +44,9 @@ const { faq } = integra;
                 </svg>
               </span>
             </summary>
-            <p>{f.a}</p>
+            <div class="faq__resp">
+              {f.a.split("\n\n").map((parrafo) => <p>{parrafo}</p>)}
+            </div>
           </details>
         ))
       }
@@ -102,11 +117,66 @@ const { faq } = integra;
     background: var(--i-grad);
     color: #fff;
   }
-  .faq__item p {
+  .faq__resp {
     padding: 0 1.25rem 1.35rem;
+  }
+  .faq__resp p {
     font-size: 0.95rem;
     line-height: 1.7;
     color: rgba(220, 230, 246, 0.82);
+  }
+  .faq__resp p + p {
+    margin-top: 0.75rem;
+  }
+
+  /* Variante vidrio: la respuesta se abre en una ficha de vidrio esmerilado
+     dentro de la tarjeta, del mismo azul de la sección. El fondo de la
+     sección es liso, así que el desenfoque solo no se nota: el efecto lo
+     hacen el velo celeste en diagonal, el borde claro y el brillo del
+     canto superior. Entra con el mismo fundido del acordeón.
+     (Antes era un panel blanco; Pablo prefirió esto, 2026-09-28.) */
+  .faq--vidrio .faq__resp {
+    margin: 0 0.7rem 0.7rem;
+    padding: 1.1rem 1.25rem 1.25rem;
+    border-radius: calc(var(--radius) - 4px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: linear-gradient(160deg, rgba(169, 200, 245, 0.16) 0%, rgba(76, 134, 245, 0.07) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      0 10px 28px rgba(5, 12, 32, 0.35);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+  }
+  .faq--vidrio .faq__resp p {
+    color: rgba(236, 242, 252, 0.92);
+  }
+
+  /* Variante de fondo claro, como las preguntas de /servicios: tarjeta
+     blanca con borde fino; al pasar el mouse aparece una sombra leve y
+     abierta queda igual de blanca, sin panel de otro color adentro. La
+     respuesta va directo sobre el blanco. */
+  .faq--claro .faq__item {
+    background: #fff;
+    border-color: var(--borde);
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .faq--claro .faq__item:hover,
+  .faq--claro .faq__item[open]:not(.is-cerrando) {
+    background: #fff;
+    border-color: var(--borde);
+    box-shadow: 0 10px 28px rgba(13, 27, 61, 0.08);
+  }
+  .faq--claro .faq__item summary,
+  .faq--claro .faq__item[open]:not(.is-cerrando) summary,
+  .faq--claro .faq__item:is(:not([open]), .is-cerrando) summary:hover {
+    color: var(--i-navy);
+  }
+  .faq--claro .faq__signo {
+    background: rgba(30, 92, 242, 0.08);
+    color: var(--i-azul-600);
+  }
+  .faq--claro .faq__resp p {
+    color: var(--texto-suave);
   }
 </style>
 
