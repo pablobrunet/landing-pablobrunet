@@ -1,7 +1,7 @@
 -- =====================================================================
 -- MIGRACIÓN 04 — el chequeo deja de pisar datos ajenos
 -- ---------------------------------------------------------------------
--- TODAVÍA NO APLICADA. Proyecto: qiucglxylkidfpwbuibb.
+-- APLICADA el 2026-10-16 en el proyecto qiucglxylkidfpwbuibb.
 -- Se puede correr ya: es compatible con la web de antes y con la nueva.
 -- Se puede volver a correr: todo es create or replace / revoke / grant.
 --

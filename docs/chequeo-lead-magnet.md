@@ -41,11 +41,11 @@ salió.
 | Pieza | Estado |
 |---|---|
 | Supabase: tabla, funciones, triggers | Aplicado el 2026-09-28 — `supabase/migracion-03-chequeo.sql` |
-| Supabase: el chequeo no pisa datos, respuesta única | **Pendiente** — `supabase/migracion-04-chequeo-sin-pisar.sql` |
-| Supabase: `anon` sin permiso | **Pendiente, después del deploy** — `supabase/migracion-05-cerrar-anon.sql` |
+| Supabase: el chequeo no pisa datos, respuesta única | Aplicado el 2026-10-16 — `supabase/migracion-04-chequeo-sin-pisar.sql` |
+| Supabase: `anon` sin permiso | Aplicado el 2026-10-16 — `supabase/migracion-05-cerrar-anon.sql`. Llamada directa con la clave pública: 401 |
 | Web y `api/` | Listas en el repositorio |
-| Variables en Vercel | **Pendiente** (abajo) |
-| Firewall de Vercel | **Pendiente** — regla de límite por IP (paso 4 de la puesta en marcha) |
+| Variables en Vercel | Cargadas. Falta borrar `PUBLIC_SUPABASE_URL` y `PUBLIC_SUPABASE_PUBLISHABLE_KEY` |
+| Firewall de Vercel | Activo: 5 envíos por minuto por IP en `/api/` (probado: el sexto da 429) |
 | n8n | Activo, sin cambios. Remitente: `comunicaciones@integra.innerflowai.com` |
 | GHL | Falta la opción `Chequeo web` en el campo y la automatización (abajo) |
 

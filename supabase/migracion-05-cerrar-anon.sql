@@ -1,7 +1,8 @@
 -- =====================================================================
 -- MIGRACIÓN 05 — las funciones sólo se llaman desde el servidor
 -- ---------------------------------------------------------------------
--- TODAVÍA NO APLICADA. Proyecto: qiucglxylkidfpwbuibb.
+-- APLICADA el 2026-10-16 en el proyecto qiucglxylkidfpwbuibb
+-- (migración `landing_cerrar_anon_formularios`).
 --
 -- ⚠️ CORRER RECIÉN CUANDO la web nueva esté publicada y probada: los
 -- formularios tienen que estar mandando a /api/lead y /api/chequeo, y en
