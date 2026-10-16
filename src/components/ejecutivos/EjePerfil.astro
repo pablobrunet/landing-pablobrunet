@@ -39,6 +39,8 @@ interface Props {
       titulo: string;
       tituloResalte: string;
       retrato: string;
+      /** Encuadre del retrato (object-position). */
+      retratoPos?: string;
       texto: string;
       roles: readonly { titulo: string; desc: string }[];
     };
@@ -118,7 +120,12 @@ const pista = [...logos.items, ...logos.items];
   <section class="ej-sec ej-sup">
     <div class="ej-wrap ar-perfil">
       <figure class="ar-perfil__retrato ej-reveal">
-        <img src={perfil.retrato} alt={`Retrato de ${hero.nombre}`} loading="lazy" />
+        <img
+          src={perfil.retrato}
+          alt={`Retrato de ${hero.nombre}`}
+          loading="lazy"
+          style={perfil.retratoPos ? `object-position: ${perfil.retratoPos}` : undefined}
+        />
       </figure>
       <div class="ar-perfil__copy ej-reveal">
         <p class="ej-eyebrow">{perfil.eyebrow}</p>

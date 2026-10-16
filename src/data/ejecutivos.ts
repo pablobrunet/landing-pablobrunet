@@ -176,6 +176,14 @@ export const ejecutivos = {
           src: "https://assets.cdn.filesafe.space/wSkZuDdnT8tbCo2X89Pu/media/68df33670ee85090b460de39.jpeg",
           alt: "Sesión de formación con equipos de negocio",
         },
+        {
+          src: "/images/pablo/espacio-demos.webp",
+          alt: "Pablo Brunet dando un taller sobre agentes de IA en Espacio DEMOS",
+        },
+        {
+          src: "/images/pablo/venado-tuerto.webp",
+          alt: "Pablo Brunet dando un taller de inteligencia artificial para negocios en Venado Tuerto",
+        },
       ],
     },
 

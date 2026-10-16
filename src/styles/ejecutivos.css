@@ -233,6 +233,10 @@
 .ej-hl {
   font-style: italic;
   font-weight: 400;
+  /* La cursiva se inclina más allá de su caja y background-clip:text la
+     recorta (se comía la "l" de "el"): se agranda la caja sin mover el texto. */
+  padding-right: 0.14em;
+  margin-right: -0.14em;
   background: linear-gradient(100deg, #1747c2, #1e5cf2 45%, #3b6cb7);
   -webkit-background-clip: text;
   background-clip: text;

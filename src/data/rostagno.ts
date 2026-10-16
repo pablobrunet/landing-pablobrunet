@@ -25,15 +25,16 @@ export const rostagno = {
     rol: "Conferencista internacional · Consultor · Capacitador",
     bajada:
       "Hace que los equipos comerciales y de atención miren al cliente con otros ojos. Experiencia de cliente, venta consultiva e IA aplicada a la gestión comercial, contadas desde el escenario y bajadas al trabajo de todos los días.",
-    imagen: `${IMG}/convergencia.webp`,
+    imagen: `${IMG}/escenario-cx-day.webp`,
     imagenAlt: "Alejandro Rostagno dando una conferencia frente al público",
-    pie: "Convergencia · La visión de los CxOs",
+    imagenPos: "68% 30%",
+    pie: "CX Day Argentina 2025",
   },
 
   /* Cifras que figuran en el dossier */
   cifras: [
     { valor: "6", label: "países donde dio conferencias", detalle: "Argentina, EE.UU., Chile, Bolivia, Paraguay y Uruguay" },
-    { valor: "+900", label: "participantes en una sola conferencia", detalle: "y varias salas de +300 y +600" },
+    { valor: "+900", label: "personas en su conferencia más grande", detalle: "y varias salas de 300 y de 600 personas" },
     { valor: "100%", label: "volvería a convocarlo", detalle: "encuesta al público asistente, 2025" },
     { valor: "#1", label: "mejor mentor votado", detalle: "Startup Weekend" },
   ],
@@ -43,7 +44,9 @@ export const rostagno = {
     eyebrow: "Quién es",
     titulo: "Seis roles, un mismo foco:",
     tituloResalte: "el cliente.",
-    retrato: `${IMG}/retrato-vertical.webp`,
+    retrato: `${IMG}/convergencia.webp`,
+    /* Encuadre vertical: en la foto él ocupa el tercio izquierdo */
+    retratoPos: "32% 20%",
     texto:
       "Alejandro combina escenario, aula y consultoría. Lleva años trabajando con empresas, cámaras, universidades y congresos de la región sobre cómo se vende, cómo se atiende y cómo se lidera cuando el cliente está en el centro. En el programa aporta la mirada de experiencia de cliente, rentabilidad y ejecución comercial.",
     roles: [
@@ -85,15 +88,15 @@ export const rostagno = {
     titulo: "Del escenario al taller.",
     fotos: [
       { src: `${IMG}/tedx.webp`, pie: "TEDxUAP" },
-      { src: `${IMG}/cx-day-argentina.webp`, pie: "CX Day Argentina 2025" },
+      { src: `${IMG}/conferencia-02.webp`, pie: "En plena conferencia" },
       { src: `${IMG}/teatro-colon.webp`, pie: "Cierre IncuBAte 2025 · Teatro Colón" },
       { src: `${IMG}/soar-usa-2026.webp`, pie: "Método SOAR aplicado a Ventas · EE.UU. 2026" },
       { src: `${IMG}/quien-mato-la-experiencia.webp`, pie: "¿Quién mató a la experiencia del cliente?" },
       { src: `${IMG}/cx-day-chile.webp`, pie: "CX Day Chile 2025" },
-      { src: `${IMG}/escenario-cx-day.webp`, pie: "CX Day Argentina 2025" },
+      { src: `${IMG}/jornadas-administracion.webp`, pie: "Jornadas Nacionales de Administración · Santa Fe 2017" },
       { src: `${IMG}/meta.webp`, pie: "Meta · Transformación digital en Salud" },
       { src: `${IMG}/sancor-taller.webp`, pie: "Grupo Sancor Seguros · IA aplicada a la gestión comercial" },
-      { src: `${IMG}/cx-day-argentina-publico.webp`, pie: "CX Day Argentina 2025" },
+      { src: `${IMG}/cx-day-argentina-publico.webp`, pie: "El auditorio lleno en CX Day Argentina 2025" },
       { src: `${IMG}/coner-tech.webp`, pie: "ConER Tech · Entre Ríos" },
       { src: `${IMG}/sancor-equipo.webp`, pie: "Masterclass: Experiencias Memorables" },
     ],
@@ -118,9 +121,9 @@ export const rostagno = {
   },
 
   testimonios: {
-    eyebrow: "Lo que dicen",
-    titulo: "Salas que se quieren",
-    tituloResalte: "comer la cancha.",
+    eyebrow: "Testimonios",
+    titulo: "Lo que dicen quienes lo escucharon",
+    tituloResalte: "en vivo.",
     items: [
       {
         texto: "Impresionados con tu conferencia. Tenés un talento muy especial. Nos atrapás…",
