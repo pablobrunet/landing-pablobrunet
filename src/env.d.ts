@@ -1,15 +1,11 @@
 /// <reference path="../.astro/types.d.ts" />
 
 interface ImportMetaEnv {
-  /** URL del proyecto de Supabase (Project Settings → Data API). */
-  readonly PUBLIC_SUPABASE_URL: string;
-  /**
-   * Publishable key (sb_publishable_…). Es pública a propósito: la tabla la
-   * protege RLS. Viaja en el header `apikey`, nunca en Authorization.
-   */
-  readonly PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
-  /** Clave anterior (eyJhbGci…). Solo como respaldo; se da de baja en 2026. */
-  readonly PUBLIC_SUPABASE_ANON_KEY?: string;
+  /** Clave del sitio de Cloudflare Turnstile. Es pública a propósito. */
+  readonly PUBLIC_TURNSTILE_SITE_KEY: string;
+  /* Las variables del servidor (SUPABASE_URL, SUPABASE_SECRET_KEY,
+     TURNSTILE_SECRET_KEY) no pasan por Astro: las lee api/ con process.env.
+     Ver .env.example. */
 }
 
 interface ImportMeta {

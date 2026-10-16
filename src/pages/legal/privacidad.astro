@@ -8,7 +8,7 @@ import { site } from "../../data/site";
    videos de YouTube embebidos.
    Es una base sólida, NO asesoramiento legal: hacela revisar. Si cambiás las
    herramientas, actualizá el punto 6. */
-const actualizado = "Julio de 2026";
+const actualizado = "Octubre de 2026";
 ---
 
 <Page title={`Política de privacidad — ${site.nombre}`} cta={false}>
@@ -90,6 +90,11 @@ const actualizado = "Julio de 2026";
         <li>
           <strong>Supabase</strong> — base de datos donde se guardan los correos que
           dejás para recibir los materiales.
+        </li>
+        <li>
+          <strong>Cloudflare Turnstile</strong> — verificación contra bots en los
+          formularios. Al enviar uno, analiza datos técnicos del navegador y la
+          dirección IP para confirmar que lo completó una persona.
         </li>
         <li>
           <strong>LeadConnector / GoHighLevel</strong> — gestión de contactos, envío de

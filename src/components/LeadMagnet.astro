@@ -20,7 +20,6 @@ import { leads } from "../lib/leads";
 
   <div class="lm__caja card">
     <form class="lm__form" data-lead data-url={leads.endpoint}
-      data-key={leads.clave}
       data-origen="guias-y-materiales">
       <div class="field">
         <label for="lm-email">Tu correo</label>
@@ -46,6 +45,8 @@ import { leads } from "../lib/leads";
         <Icon name="arrow" size={18} />
       </button>
 
+      <!-- Captcha: casi siempre invisible. Ver src/scripts/captcha.ts. -->
+      <div class="captcha" data-captcha></div>
       <p class="lm__error" data-lead-error hidden role="alert">
         No pudimos registrar tu correo. Probá de nuevo en un momento.
       </p>
@@ -139,11 +140,16 @@ import { leads } from "../lib/leads";
 
 <script>
   import { enviarLead } from "../scripts/enviarLead";
+  import { crearCaptcha } from "../scripts/captcha";
 
   function initLeadMagnet() {
     const form = document.querySelector<HTMLFormElement>("[data-lead]");
     if (!form || form.dataset.listo) return;
     form.dataset.listo = "1";
+    const pedirToken = crearCaptcha(
+      form.querySelector<HTMLElement>("[data-captcha]") ?? form,
+      "lead"
+    );
 
     const ok = document.querySelector<HTMLElement>("[data-lead-ok]");
     const error = document.querySelector<HTMLElement>("[data-lead-error]");
@@ -171,9 +177,9 @@ import { leads } from "../lib/leads";
       try {
         await enviarLead(
           form.dataset.url ?? "",
-          form.dataset.key ?? "",
           email,
-          form.dataset.origen ?? "guias-y-materiales"
+          form.dataset.origen ?? "guias-y-materiales",
+          pedirToken
         );
       } catch {
         if (boton) {

@@ -316,6 +316,14 @@ figure:hover .frame--hover img {
 .stack > * + * {
   margin-top: 1rem;
 }
+/* Lugar del captcha en los formularios (src/scripts/captcha.ts). Casi
+   siempre queda vacío; sólo aparece si Cloudflare pide tildar el recuadro. */
+.captcha {
+  flex-basis: 100%;
+}
+.captcha:empty {
+  display: none;
+}
 
 /* Foco accesible */
 :focus-visible {

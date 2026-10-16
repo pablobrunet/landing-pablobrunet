@@ -15,7 +15,7 @@
        pregunta del tamaño no puntúa, pero viaja en ese mensaje.
      · Entre la última pregunta y el resultado, un paso que pide nombre,
        empresa y correo para mandar el informe por mail. Se guarda en
-       Supabase (`registrar_chequeo`, origen 'chequeo') y desde ahí un webhook
+       Supabase (vía /api/chequeo → `registrar_chequeo`, origen 'chequeo') y desde ahí un webhook
        dispara n8n: mail con Resend + alta en GHL. Ver
        docs/chequeo-lead-magnet.md. Es obligatorio: sin correo no hay
        resultado. La única excepción es que falle Supabase: ahí se
@@ -38,7 +38,6 @@ const config = {
   intro: "Hola Pablo, hice la autoevaluación de la página del Programa INTEGRA.",
   cierre: "Me gustaría conversarlo en la Consultoría Estratégica Gratuita.",
   endpoint: leads.endpointChequeo,
-  clave: leads.clave,
 };
 ---
 
@@ -152,6 +151,9 @@ const config = {
               <label for="av-hp">Dejar vacío</label>
               <input id="av-hp" name="av_hp" type="text" tabindex="-1" autocomplete="off" data-1p-ignore data-lpignore="true" data-bwignore />
             </div>
+
+            {/* Captcha: casi siempre invisible. Ver src/scripts/captcha.ts. */}
+            <div class="captcha" data-captcha></div>
 
             <button type="submit" class="btn btn--primary av__enviar">{datos.boton}</button>
             <p class="av__aviso">
@@ -681,6 +683,7 @@ const config = {
 
 <script>
   import { enviarChequeo, type InformeChequeo } from "../../scripts/enviarChequeo";
+  import { crearCaptcha } from "../../scripts/captcha";
 
   type Nivel = { hasta: number; nombre: string; texto: string; recomendacion: string };
   type Config = {
@@ -690,7 +693,6 @@ const config = {
     intro: string;
     cierre: string;
     endpoint: string;
-    clave: string;
   };
 
   /* Las UTM de la URL con la que se llegó. Es una landing de una sola
@@ -724,6 +726,10 @@ const config = {
     const atras = raiz.querySelector<HTMLButtonElement>("[data-atras]");
     const form = raiz.querySelector<HTMLFormElement>("[data-av-form]");
     const enviar = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const pedirToken = crearCaptcha(
+      form?.querySelector<HTMLElement>("[data-captcha]") ?? raiz,
+      "chequeo"
+    );
     const textoEnviar = enviar?.textContent ?? "";
     const enviado = raiz.querySelector<HTMLElement>("[data-enviado]");
     const fallo = raiz.querySelector<HTMLElement>("[data-fallo]");
@@ -891,15 +897,19 @@ const config = {
         enviar.textContent = "Enviando…";
       }
 
-      /* enviarChequeo nunca lanza: si Supabase falla, el resultado se
+      /* enviarChequeo nunca lanza: si el captcha o Supabase fallan, el resultado se
          muestra igual con un aviso. La persona ya respondió todo. */
-      const r = await enviarChequeo(cfg.endpoint, cfg.clave, {
-        nombre: campo("nombre"),
-        empresa: campo("empresa"),
-        email,
-        utm: leerUtm(),
-        informe: inf,
-      });
+      const r = await enviarChequeo(
+        cfg.endpoint,
+        {
+          nombre: campo("nombre"),
+          empresa: campo("empresa"),
+          email,
+          utm: leerUtm(),
+          informe: inf,
+        },
+        pedirToken
+      );
 
       if (enviar) {
         enviar.disabled = false;

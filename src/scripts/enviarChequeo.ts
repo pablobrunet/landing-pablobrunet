@@ -1,11 +1,12 @@
 /* =====================================================================
-   CHEQUEO INTEGRA — envío del lead a Supabase
+   CHEQUEO INTEGRA — envío del lead
    ---------------------------------------------------------------------
-   Lo usa la autoevaluación de /programa-integra. Igual que el resto de los
-   formularios, no escribe en la tabla: llama a la función
-   `registrar_chequeo` (supabase/migracion-03-chequeo.sql), que guarda en
-   `newsletter-prospects` con origen 'chequeo' y decide si es un chequeo
-   nuevo o uno repetido.
+   Lo usa la autoevaluación de /programa-integra. No habla con Supabase:
+   pide un token al captcha y manda todo a /api/chequeo
+   (src/pages/api/chequeo.ts). Esa ruta verifica el captcha y llama a
+   `registrar_chequeo`, que guarda en `newsletter-prospects` con origen
+   'chequeo'. Si el correo ya había hecho el chequeo, sólo suma un pedido:
+   no pisa lo que estaba guardado.
 
    El mail con el informe NO sale de acá: la fila guardada dispara un
    Database Webhook hacia n8n, y n8n lo manda con Resend. Por eso viaja el
@@ -13,11 +14,10 @@
 
    DIFERENCIA IMPORTANTE con enviarLead(): acá el envío NO puede frenar la
    experiencia. La persona ya respondió seis preguntas; si la base está
-   caída o todavía no se corrió el SQL, igual tiene que ver su resultado.
-   Por eso esta función nunca lanza: devuelve `ok:false` y quien la llama
-   muestra el resultado con un aviso chico.
+   caída o el captcha falla, igual tiene que ver su resultado. Por eso esta
+   función nunca lanza: devuelve `ok:false` y quien la llama muestra el
+   resultado con un aviso chico.
    ===================================================================== */
-
 export interface DatosChequeo {
   nombre: string;
   email: string;
@@ -42,64 +42,40 @@ export interface InformeChequeo {
 
 export interface ResultadoChequeo {
   ok: boolean;
-  repetido: boolean;
 }
 
 export async function enviarChequeo(
   endpoint: string,
-  clave: string,
-  datos: DatosChequeo
+  datos: DatosChequeo,
+  pedirToken: () => Promise<string>
 ): Promise<ResultadoChequeo> {
-  if (!endpoint || !clave) {
-    console.warn(
-      "[chequeo] Falta configurar PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_PUBLISHABLE_KEY. " +
-        "El chequeo NO se guardó."
-    );
-    return { ok: false, repetido: false };
-  }
-
   try {
+    const captcha = await pedirToken();
     const r = await fetch(endpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        /* Solo el header `apikey`: las claves publishable no son JWT y en
-           `Authorization: Bearer` devuelven "Invalid JWT". */
-        apikey: clave,
-      },
-      // Los nombres coinciden con los parámetros de la función SQL.
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        p_nombre: datos.nombre,
-        p_email: datos.email,
-        p_empresa: datos.empresa,
-        p_informe: datos.informe,
-        p_utm: datos.utm ?? {},
+        nombre: datos.nombre,
+        email: datos.email,
+        empresa: datos.empresa,
+        informe: datos.informe,
+        utm: datos.utm ?? {},
+        captcha,
       }),
     });
 
     if (!r.ok) {
-      /* Causas más comunes, por código:
-           404 / PGRST202 → falta correr supabase/migracion-03-chequeo.sql
-           404 / PGRST125 → PUBLIC_SUPABASE_URL trae /rest/v1 repetido
-           401 / 403      → la clave no puede ejecutar la función
-           400 / 22023    → el correo no pasó la validación */
-      let detalle = "";
-      try {
-        detalle = await r.text();
-      } catch {
-        /* cuerpo ilegible: alcanza con el código de estado */
-      }
-      console.error(
-        `[chequeo] Supabase rechazó el registro (HTTP ${r.status}).`,
-        detalle || "(sin cuerpo)"
-      );
-      return { ok: false, repetido: false };
+      /* Los detalles quedan en los logs de Vercel. Por código:
+           400 → nombre, empresa o correo no pasaron la validación
+           403 → falló el captcha (o el pedido no vino de este sitio)
+           429 → demasiados envíos seguidos desde la misma IP (firewall)
+           502 → Supabase no respondió o rechazó la llamada */
+      console.error(`[chequeo] La API rechazó el registro (HTTP ${r.status}).`);
+      return { ok: false };
     }
-
-    const texto = await r.text();
-    return { ok: true, repetido: texto.includes("repetido") };
+    return { ok: true };
   } catch (e) {
-    console.error("[chequeo] No se pudo contactar a Supabase.", e);
-    return { ok: false, repetido: false };
+    console.error("[chequeo] No se pudo enviar.", e);
+    return { ok: false };
   }
 }

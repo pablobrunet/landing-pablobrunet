@@ -1,86 +1,47 @@
 /* =====================================================================
-   ENVÍO DE UN CORREO A SUPABASE — lógica compartida por los formularios
+   ENVÍO DE UN CORREO — lógica compartida por los formularios
    ---------------------------------------------------------------------
    Se importa desde el <script> de Newsletter.astro, LeadMagnet.astro y la
    página /newsletter, así la lógica vive en un solo lugar.
 
-   No escribe en la tabla: llama a la función `registrar_lead`, que valida,
-   normaliza el correo y decide si es un alta o un pedido repetido.
+   No habla con Supabase: pide un token al captcha y manda todo a
+   /api/lead (src/pages/api/lead.ts). Esa ruta verifica el captcha y llama
+   a la función `registrar_lead`, que valida, normaliza el correo y decide
+   si es un alta o un pedido repetido.
 
-   Por qué una función y no un INSERT directo:
-   - La clave pública NO necesita permiso de escritura sobre la tabla, solo
-     de ejecutar esta función. Menos superficie expuesta.
-   - Un pedido repetido no se pierde: suma al contador y actualiza la fecha,
-     así el webhook dispara y se puede reenviar el material.
-   - El correo se normaliza en la base, no en el navegador, así que
-     'Ana@Gmail.com' y 'ana@gmail.com' son la misma persona.
+   La respuesta es la misma sea un correo nuevo o uno que ya estaba: el
+   formulario muestra "quedaste anotado" en los dos casos.
    ===================================================================== */
 
-export interface ResultadoLead {
-  ok: boolean;
-  /** true si esta persona ya había pedido lo mismo antes. */
-  repetido: boolean;
-}
-
 /**
- * Registra el pedido en Supabase.
- * @param endpoint URL de la función (…/rest/v1/rpc/registrar_lead)
- * @param clave    publishable key del proyecto (sb_publishable_…)
- * @param email    correo a guardar
- * @param origen   'newsletter' | 'guias-y-materiales'
+ * Registra el pedido. Lanza un error si no se pudo, para que el formulario
+ * muestre el aviso y deje reintentar.
+ * @param endpoint  ruta de la API (/api/lead)
+ * @param email     correo a guardar
+ * @param origen    'newsletter' | 'guias-y-materiales'
+ * @param pedirToken la función que devuelve crearCaptcha()
  */
 export async function enviarLead(
   endpoint: string,
-  clave: string,
   email: string,
-  origen: string
-): Promise<ResultadoLead> {
-  if (!endpoint || !clave) {
-    console.warn(
-      "[leads] Falta configurar PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_PUBLISHABLE_KEY. " +
-        "El correo NO se guardó."
-    );
-    return { ok: false, repetido: false };
-  }
+  origen: string,
+  pedirToken: () => Promise<string>
+): Promise<void> {
+  const captcha = await pedirToken();
 
   const r = await fetch(endpoint, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      /* SOLO el header `apikey`. Las claves publishable (sb_publishable_…)
-         NO son JWT: si además se mandan en `Authorization: Bearer`, Supabase
-         intenta parsearlas como token y devuelve "Invalid JWT". */
-      apikey: clave,
-    },
-    // Los nombres tienen que coincidir con los parámetros de la función.
-    body: JSON.stringify({ p_email: email, p_origen: origen }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, origen, captcha }),
   });
 
   if (!r.ok) {
-    /* Supabase manda el motivo real en el cuerpo. Sin esto, el error en
-       pantalla es genérico y no hay forma de saber qué falló. Las causas
-       más comunes, por código:
-         404 / PGRST202 → la función no existe (falta correr supabase/instalar.sql)
-         404 / PGRST125 → la URL trae /rest/v1 dos veces (revisar PUBLIC_SUPABASE_URL)
-         401 / 403      → la clave no tiene permiso de ejecutarla
-         400 / 42P10    → la tabla no tiene la restricción única (email, origen)
-                          que necesita el ON CONFLICT: correr supabase/instalar.sql
-         400 / 22023    → el correo o el origen no pasaron la validación */
-    let detalle = "";
-    try {
-      detalle = await r.text();
-    } catch {
-      /* cuerpo ilegible: seguimos con el código de estado */
-    }
-    console.error(
-      `[leads] Supabase rechazó el registro (HTTP ${r.status}).`,
-      detalle || "(sin cuerpo)",
-      { endpoint, origen }
-    );
-    throw new Error(`Supabase respondió ${r.status}`);
+    /* Los detalles quedan en los logs de Vercel, no acá. Por código:
+         400 → el correo o el origen no pasaron la validación
+         403 → falló el captcha (o el pedido no vino de este sitio)
+         429 → demasiados envíos seguidos desde la misma IP (firewall)
+         502 → Supabase no respondió o rechazó la llamada */
+    console.error(`[leads] La API rechazó el registro (HTTP ${r.status}).`, { origen });
+    throw new Error(`La API respondió ${r.status}`);
   }
-
-  // La función devuelve 'nuevo' o 'repetido'.
-  const resultado = await r.text();
-  return { ok: true, repetido: resultado.includes("repetido") };
 }

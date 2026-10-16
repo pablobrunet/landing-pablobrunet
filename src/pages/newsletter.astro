@@ -23,7 +23,6 @@ const { newsletter } = site;
         class="nl__form"
         data-newsletter
         data-url={leads.endpoint}
-        data-key={leads.clave}
         data-origen="newsletter"
       >
         <label class="visually-hidden" for="nl-email">Email</label>
@@ -48,6 +47,8 @@ const { newsletter } = site;
           {newsletter.boton}
           <Icon name="mail" size={18} />
         </button>
+        <!-- Captcha: casi siempre invisible. Ver src/scripts/captcha.ts. -->
+        <div class="captcha" data-captcha></div>
         <p class="nl__error" data-nl-error hidden role="alert">
           No pudimos registrar tu correo. Probá de nuevo en un momento.
         </p>
@@ -134,11 +135,16 @@ const { newsletter } = site;
 
 <script>
   import { enviarLead } from "../scripts/enviarLead";
+  import { crearCaptcha } from "../scripts/captcha";
 
   function initNl() {
     const form = document.querySelector<HTMLFormElement>("[data-newsletter]");
     if (!form || form.dataset.listo) return;
     form.dataset.listo = "1";
+    const pedirToken = crearCaptcha(
+      form.querySelector<HTMLElement>("[data-captcha]") ?? form,
+      "lead"
+    );
 
     const ok = document.querySelector<HTMLElement>("[data-nl-ok]");
     const error = document.querySelector<HTMLElement>("[data-nl-error]");
@@ -164,9 +170,9 @@ const { newsletter } = site;
       try {
         await enviarLead(
           form.dataset.url ?? "",
-          form.dataset.key ?? "",
           String(datos.get("email") ?? "").trim(),
-          form.dataset.origen ?? "newsletter"
+          form.dataset.origen ?? "newsletter",
+          pedirToken
         );
       } catch {
         if (boton) {

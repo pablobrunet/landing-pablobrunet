@@ -63,10 +63,11 @@ la identidad, se tocan ahí y se propagan solos.
   distinto del calendario general de Pablo (`site.agenda.id`). No mezclarlos.
 - El **redirect post-booking** a `/programa-integra/gracias` se configura del
   lado de GHL, en ese calendario.
-- El **Chequeo exprés** guarda los leads en la tabla `leads_integra` de
-  Supabase. Antes de usarlo hay que correr una vez `supabase/integra-chequeo.sql`.
-  Si no se corre, el quiz funciona igual: muestra el resultado y sólo se pierde
-  el registro.
+- La **autoevaluación** guarda los leads en `newsletter-prospects` (origen
+  `chequeo`) a través de `/api/chequeo`, igual que la newsletter y los recursos
+  van por `/api/lead`. El circuito completo, el captcha y las pruebas están en
+  `docs/chequeo-lead-magnet.md`. Si el envío falla, el quiz funciona igual:
+  muestra el resultado y sólo se pierde el registro.
 - **Todavía no hay video**: el hero lleva una foto. Cuando exista el VSL, esa
   misma imagen sirve de portada y se le monta el reproductor encima.
 - La **foto del hero** vive en `src/assets/hero/` y no en `public/`: así pasa
