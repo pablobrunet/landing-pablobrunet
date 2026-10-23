@@ -87,6 +87,15 @@ export const charlasMeta = {
 
 export const charlas: Video[] = [
   {
+    /* Título tal como está publicado en el canal: "Aprendizaje de procesos
+       creativos" es la charla; "La irrupción de la IA en la enseñanza" es el
+       congreso. Falta la fecha del congreso: el video se subió el 23/10/2026,
+       pero esa es la fecha de subida, no la del evento. */
+    titulo: "Aprendizaje de procesos creativos",
+    contexto: "I Congreso «La irrupción de la IA en la enseñanza» · UCSF",
+    youtube: "https://www.youtube.com/watch?v=8r1iEwP40wU",
+  },
+  {
     // Título tal como está publicado en el canal de AgroActiva.
     titulo: "IA práctica para empresas agropecuarias",
     contexto: "AgroActiva Arena",
