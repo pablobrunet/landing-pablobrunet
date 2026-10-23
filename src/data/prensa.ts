@@ -31,6 +31,18 @@ export const prensaMeta = {
 
 export const notas: NotaPrensa[] = [
   {
+    medio: "El Ecosistema Startup",
+    logo: "",
+    logoLabel: "/images/prensa/logo-ecosistemastartup.svg",
+    titulo: "Calaianov, diputado, lanza curso de IA para PyMEs",
+    cita:
+      "La charla estará a cargo de Pablo Brunet, licenciado en Administración de Empresas con un posgrado en Inteligencia Artificial.",
+    fecha: "Octubre de 2026",
+    url: "https://ecosistemastartup.com/calaianov-diputado-lanza-curso-de-ia-para-pymes/",
+    // La portada de la nota es una ilustración generada; va una foto propia de una charla.
+    img: "/images/capacitaciones/venado-tuerto.jpg",
+  },
+  {
     medio: "AgroActiva",
     logo: "",
     logoLabel: "/images/prensa/logo-agroactiva.svg",
@@ -43,6 +55,19 @@ export const notas: NotaPrensa[] = [
     img: "/images/prensa/agroactiva1.jpg",
     // Foto vertical: el recorte sube para dejar la cara en el centro del marco.
     imgPos: "center 22%",
+  },
+  {
+    medio: "Agrositio",
+    logo: "",
+    logoLabel: "/images/prensa/logo-agrositio.svg",
+    titulo:
+      "«No se empieza por la herramienta, se empieza por una pregunta»: las claves de la IA en el agro según Pablo Brunet",
+    cita: "No se empieza por la herramienta, se empieza por una pregunta.",
+    fecha: "Julio de 2026",
+    url: "https://www.agrositio.com.ar/noticia/247206-no-se-empieza-por-la-herramienta-se-empieza-por-una-pregunta-las-claves-de-la-ia-en-el-agro-segun-pablo-brunet.html",
+    // La página de Agrositio salió con el cuerpo y la foto de otra nota (Tekron);
+    // se usa una foto propia de la charla en AgroActiva.
+    img: "/images/pablo/agroactiva-domo.webp",
   },
   {
     medio: "Todo Agro",
