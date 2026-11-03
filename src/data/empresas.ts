@@ -11,7 +11,7 @@
    2. Poné la ruta en `img`. Si queda vacío ("") se muestra el nombre en
       texto, así la tira nunca se ve rota mientras juntás los logos.
 
-   Los logos que ya estaban del perfil siguen en /images/pablo/logos/. El
+   Todos los logos viven en /images/empresas/. El
    de la Bolsa de Comercio acá es la versión compacta (sello + BCSF); el
    perfil de Alejandro sigue usando la horizontal larga.
 
@@ -32,32 +32,32 @@ export const empresasMeta = {
 };
 
 const EMP = "/images/empresas";
-const PABLO = "/images/pablo/logos";
 
 /* Empresas y organizaciones intercaladas, para que la tira no quede
    partida en dos bloques. */
 export const empresas: Empresa[] = [
   { nombre: "SpeedAgro", img: `${EMP}/speedagro.png` },
-  { nombre: "AgroActiva", img: `${PABLO}/agroactiva.png` },
+  { nombre: "AgroActiva", img: `${EMP}/agroactiva.png` },
   { nombre: "Grupo Santa María", img: `${EMP}/grupo-santa-maria.svg` },
   { nombre: "Gobierno de la Provincia de Santa Fe", img: `${EMP}/provincia-santa-fe.png` },
   { nombre: "Bolsa de Comercio de Santa Fe", img: "/images/empresas/bolsa-comercio-santa-fe.png" },
-  { nombre: "Unión Industrial de Santa Fe (UISF)", img: `${PABLO}/uisf.png` },
+  { nombre: "Unión Industrial de Santa Fe (UISF)", img: `${EMP}/uisf.png` },
   { nombre: "Advice Bookshop", img: `${EMP}/advice-bookshop.png` },
-  { nombre: "ASSAL · Agencia Santafesina de Seguridad Alimentaria", img: `${PABLO}/assal.png` },
+  { nombre: "ASSAL · Agencia Santafesina de Seguridad Alimentaria", img: `${EMP}/assal.png` },
   { nombre: "Universidad Nacional del Litoral", img: "/images/rostagno/logos/unl.svg" },
   { nombre: "Advice EdTech", img: `${EMP}/advice-edtech.png` },
-  { nombre: "Parque Industrial Sauce Viejo", img: `${PABLO}/parque-industrial-sauce-viejo.svg` },
+  { nombre: "Parque Industrial Sauce Viejo", img: `${EMP}/parque-industrial-sauce-viejo.svg` },
   { nombre: "El Emporio de la Construcción", img: `${EMP}/emporio-de-la-construccion.png` },
   { nombre: "Sociedad Rural de Rafaela", img: `${EMP}/sociedad-rural-rafaela.png` },
-  { nombre: "CECA · Cámara de Expendedores de Combustibles y Afines de Santa Fe", img: `${PABLO}/ceca.png` },
+  { nombre: "CECA · Cámara de Expendedores de Combustibles y Afines de Santa Fe", img: `${EMP}/ceca.png` },
   { nombre: "Universidad Católica de Santa Fe", img: `${EMP}/universidad-catolica-santa-fe.png` },
   { nombre: "EcoAislación", img: `${EMP}/ecoaislacion.png` },
-  { nombre: "CeFoSe Gálvez", img: `${PABLO}/cefose-galvez.png` },
+  { nombre: "CeFoSe Gálvez", img: `${EMP}/cefose-galvez.png` },
   { nombre: "APAS · Asociación de Productores Asesores de Seguros de Santa Fe", img: `${EMP}/apas.png` },
-  { nombre: "Capital Activa · Municipalidad de Santa Fe", img: `${PABLO}/municipalidad-santa-fe.png` },
+  { nombre: "Capital Activa · Municipalidad de Santa Fe", img: `${EMP}/municipalidad-santa-fe.png` },
   { nombre: "FAPASA · Federación de Asociaciones de Productores Asesores de Seguros de Argentina", img: `${EMP}/fapasa.svg` },
-  { nombre: "Club PYXO", img: `${PABLO}/club-pyxo.png` },
+  { nombre: "Club PYXO", img: `${EMP}/club-pyxo.png` },
   { nombre: "Universidad Tecnológica Nacional", img: `${EMP}/utn.png` },
-  { nombre: "DEMOS · Centro Cultural y de Estudios", img: `${PABLO}/espacio-demos.png` },
+  { nombre: "DEMOS · Centro Cultural y de Estudios", img: `${EMP}/espacio-demos.png` },
+  { nombre: "Electricidad DER", img: `${EMP}/electricidad-der.png` },
 ];
