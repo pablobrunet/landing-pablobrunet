@@ -8,12 +8,14 @@ const { hero } = site;
 <section class="hero section--dark" aria-label="Presentación">
   <!-- Foto de una charla (Foro Campo IA) como fondo, bajo un velo azul petróleo que se carga
        más del lado del texto. La foto es oscura: sobre fondo oscuro se lee
-       entera, y el texto pasa a blanco. Es decorativa: alt vacío. -->
+       entera, y el texto pasa a blanco. Es de fondo (los lectores de
+       pantalla la saltean), pero lleva alt para que los buscadores sepan
+       qué muestra. -->
   <div class="hero__fondo" aria-hidden="true">
     <img
       class="hero__foto"
       src="/images/pablo/foro-campo-ia.webp"
-      alt=""
+      alt="Pablo Brunet dando una charla sobre inteligencia artificial en el Foro Campo IA"
       width="1376"
       height="680"
       loading="eager"
@@ -69,7 +71,7 @@ const { hero } = site;
       <img
         class="hero__retrato"
         src={hero.img}
-        alt={`Retrato de ${site.nombre}`}
+        alt={`${site.nombre}, consultor de inteligencia artificial para PyMEs en Santa Fe, Argentina`}
         width="1024"
         height="1024"
         loading="eager"

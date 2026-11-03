@@ -7,7 +7,11 @@ import { leads } from "../lib/leads";
 const { newsletter } = site;
 ---
 
-<Page title={`Newsletter — ${site.nombre}`} cta={false}>
+<Page
+  title={`Newsletter de IA para PyMEs | ${site.nombre}`}
+  description="Ideas prácticas para usar inteligencia artificial en tu PyME: novedades que importan, casos y herramientas, explicados en lenguaje llano. Directo a tu correo."
+  cta={false}
+>
   <PageHero
     eyebrow={newsletter.eyebrow}
     title={newsletter.titulo}

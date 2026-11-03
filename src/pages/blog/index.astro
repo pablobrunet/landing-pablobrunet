@@ -5,6 +5,7 @@ import Frame from "../../components/Frame.astro";
 import Icon from "../../components/Icon.astro";
 import { blogMeta, blog, destacados, textoPlano } from "../../data/blog";
 import { sinMarcas } from "../../lib/texto";
+import { migas } from "../../lib/seo";
 
 /* Sin acentos y en minúscula, para que buscar "chatgpt" encuentre
    "ChatGPT" y buscar "administracion" encuentre "administración". */
@@ -29,7 +30,11 @@ const fechaCorta = (iso: string) => {
 const lecturaCorta = (s: string) => s.replace(" de lectura", "");
 ---
 
-<Page title={`Blog — ${sinMarcas(blogMeta.titulo)}`}>
+<Page
+  title="Blog de IA para PyMEs: guías prácticas | Pablo Brunet"
+  description="Guías para dueños y equipos de PyMEs: por dónde empezar con IA, qué herramienta conviene, cómo medir si sirve y cómo sostenerla en el tiempo."
+  esquema={[migas([{ nombre: "Blog", ruta: "/blog" }])]}
+>
   <PageHero
     eyebrow={blogMeta.eyebrow}
     title={blogMeta.titulo}

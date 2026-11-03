@@ -1,6 +1,8 @@
-# Sitio abierto a los buscadores. El sitemap lista sólo el contenido público:
-# las cotizaciones y las páginas de embudo se excluyen desde
-# `astro.config.mjs` (ver el filtro del sitemap) y además llevan `noindex`.
+# Sitio abierto a los buscadores y a los asistentes de IA (GPTBot, ClaudeBot,
+# PerplexityBot, Google-Extended, etc.): no hay reglas que los frenen.
+# El sitemap lista sólo el contenido público: las cotizaciones y las páginas
+# de embudo se excluyen desde `astro.config.mjs` (ver el filtro del sitemap)
+# y además llevan `noindex`.
 #
 # IMPORTANTE: no agregar acá un `Disallow: /cotizacion-*`. Este archivo es
 # público: escribir las rutas privadas sería publicar exactamente el listado
@@ -9,4 +11,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pablobrunet.com/sitemap-index.xml
+Sitemap: https://www.pablobrunet.com/sitemap-index.xml

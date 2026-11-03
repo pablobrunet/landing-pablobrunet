@@ -48,7 +48,7 @@ const videos = items.map((v) => ({ ...v, ...parseYoutube(v.youtube) }));
               <img
                 src={`https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`}
                 data-alt-thumb={`https://i.ytimg.com/vi/${v.id}/mqdefault.jpg`}
-                alt=""
+                alt={`Video de Pablo Brunet: ${v.titulo}`}
                 loading="lazy"
                 decoding="async"
               />

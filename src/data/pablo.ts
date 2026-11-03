@@ -26,7 +26,7 @@ const elegidos = ["Florencia B.", "Marce", "Seba M.", "Diego A.", "Agus", "Nico 
 
 export const pablo = {
   seo: {
-    title: "Pablo Brunet — Consultor, capacitador y speaker en IA aplicada | Programas AI First",
+    title: "Pablo Brunet: consultor y speaker en IA | Programas AI First",
     description:
       "Especialista en inteligencia artificial aplicada a pymes: consultoría, capacitaciones y charlas. Capacitador del Programa para Ejecutivos junto a Alejandro Rostagno.",
   },
@@ -66,7 +66,7 @@ export const pablo = {
       { titulo: "Capacitador", desc: "Talleres prácticos en empresas, cámaras y parques industriales, sobre el trabajo real de cada equipo." },
       { titulo: "Speaker", desc: "Charlas en AgroActiva, TEDIND-X, ASSAL y las Jornadas de Jóvenes Emprendedores de la UNL." },
       { titulo: "Creador del Método INTEGRA", desc: "El sistema con el que las pymes suman IA con orden, paso a paso." },
-      { titulo: "Formación", desc: "MBA y Lic. en Administración (UNL). Posgrado en Gestión Estratégica de IA (UCEMA)." },
+      { titulo: "Formación", desc: "MBA y Lic. en Administración (UNL). Posgrado en Gestión Estratégica de Inteligencia Artificial y Automatización Empresarial (UCEMA)." },
       { titulo: "Participación pública", desc: "Expuso ante la Convención Reformadora de Santa Fe sobre IA y formación en las pymes." },
     ],
   },

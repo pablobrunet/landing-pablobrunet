@@ -5,9 +5,13 @@ import Icon from "../../components/Icon.astro";
 import Frame from "../../components/Frame.astro";
 import { serviciosMeta, servicios, hrefServicio, ctaServicio } from "../../data/servicios";
 import { sinMarcas } from "../../lib/texto";
+import { site } from "../../data/site";
 ---
 
-<Page title={`Servicios — ${sinMarcas(serviciosMeta.titulo)}`}>
+<Page
+  title={`Servicios de IA para empresas | ${site.nombre}`}
+  description="Formas de trabajar juntos: el Programa INTEGRA para integrar IA en tu PyME, y charlas y capacitaciones en inteligencia artificial para equipos y organizaciones."
+>
   <PageHero
     eyebrow={serviciosMeta.eyebrow}
     title={serviciosMeta.titulo}

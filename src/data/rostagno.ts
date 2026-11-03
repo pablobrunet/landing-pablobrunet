@@ -14,7 +14,7 @@ const IMG = "/images/rostagno";
 
 export const rostagno = {
   seo: {
-    title: "Alejandro Rostagno — Speaker, consultor y capacitador | Programas AI First",
+    title: "Alejandro Rostagno: speaker y consultor | Programas AI First",
     description:
       "Conferencista internacional en experiencia de cliente, venta consultiva e IA aplicada a la gestión comercial. Capacitador del Programa para Ejecutivos junto a Pablo Brunet.",
   },

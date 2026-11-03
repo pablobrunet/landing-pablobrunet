@@ -38,10 +38,18 @@ export interface PreguntaAuto {
 }
 
 export const integra2 = {
+  /* Título y descripción para Google (~60 y ~160 caracteres como máximo:
+     lo que pasa de ahí, Google lo corta). La ficha del programa y las
+     preguntas frecuentes para buscadores e IA se arman solas desde esta
+     página (ver pages/programa-integra/index.astro). */
   seo: {
-    title: "Programa INTEGRA",
+    title: "Programa INTEGRA: IA en tu PyME en 60 días | Pablo Brunet",
     description:
-      "En 60 días tu PyME ordena su uso de inteligencia artificial: un equipo que sabe usar IA, una lista clara de qué mejorar, pruebas sobre trabajo real y decisiones con evidencia. Primer paso: una Consultoría Estratégica Gratuita de 30 minutos.",
+      "60 días, en remoto: vemos dónde usar IA en tu PyME, la probamos en tareas reales y decidimos con evidencia. Primer paso: una Consultoría Estratégica Gratuita.",
+    /* Definición del programa en una frase, para la ficha que leen Google
+       y los asistentes de IA. Sólo datos que ya están en la página. */
+    definicion:
+      "Programa remoto de 60 días creado por Pablo Brunet para que las PyMEs integren inteligencia artificial con método: relevamos cómo trabaja la empresa, ordenamos qué conviene mejorar, hacemos pruebas sobre tareas reales con un encuentro en vivo por semana y cerramos cada prueba con una decisión. No es un curso suelto ni incluye implementación técnica.",
   },
 
   anclas: {

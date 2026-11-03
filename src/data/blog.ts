@@ -54,9 +54,17 @@ export type Bloque =
 export interface Post {
   slug: string;
   titulo: string;
+  /* Opcional: versión corta del título para Google, que corta en ~60
+     caracteres. El título de la página sigue siendo `titulo`. */
+  tituloSeo?: string;
   categoria: string;
   fecha: string; // formato ISO
   fechaLabel: string; // cómo se muestra
+  /* Opcional, formato ISO. Si se reescribe un artículo, poné acá la fecha:
+     se muestra "Actualizado el …" y se le avisa a Google por el sitemap y
+     los datos estructurados. */
+  actualizado?: string;
+  actualizadoLabel?: string;
   lectura: string;
   resumen: string;
   img: string;
@@ -141,6 +149,7 @@ export const blog: Post[] = [
   {
     slug: "novedades-ia-pymes-agosto-septiembre-2026",
     titulo: "Novedades de IA para PyMEs: lo que pasó en agosto y septiembre de 2026",
+    tituloSeo: "Novedades de IA para PyMEs: agosto y septiembre 2026",
     categoria: "Novedades",
     fecha: "2026-09-29",
     fechaLabel: "29 de septiembre de 2026",
@@ -353,6 +362,7 @@ export const blog: Post[] = [
   {
     slug: "kit-4-0-ia-como-acceder-hasta-15-millones-pyme",
     titulo: "Kit 4.0: cómo acceder a hasta $15 millones para sumar IA en tu PyME",
+    tituloSeo: "Kit 4.0: cómo acceder a hasta $15 millones para IA",
     categoria: "Costos",
     fecha: "2026-09-26",
     fechaLabel: "26 de septiembre de 2026",
@@ -579,6 +589,7 @@ export const blog: Post[] = [
   {
     slug: "chatgpt-gemini-claude-cual-conviene-empresa-septiembre",
     titulo: "ChatGPT, Gemini o Claude: cuál conviene para tu empresa en septiembre de 2026",
+    tituloSeo: "ChatGPT, Gemini o Claude: cuál conviene para tu empresa",
     categoria: "Herramientas",
     fecha: "2026-09-23",
     fechaLabel: "23 de septiembre de 2026",
@@ -809,6 +820,7 @@ export const blog: Post[] = [
   {
     slug: "bot-whatsapp-ia-negocio-septiembre-cuanto-sale",
     titulo: "Cuánto sale un bot de WhatsApp con IA para tu negocio (septiembre de 2026)",
+    tituloSeo: "Cuánto sale un bot de WhatsApp con IA para tu negocio",
     categoria: "Costos",
     fecha: "2026-09-20",
     fechaLabel: "20 de septiembre de 2026",
@@ -1356,6 +1368,7 @@ export const blog: Post[] = [
   {
     slug: "empleados-no-quieren-usar-ia-por-que-y-que-hacer",
     titulo: "Tu equipo no quiere usar IA: por qué pasa y qué hacer desde la dirección",
+    tituloSeo: "Tu equipo no quiere usar IA: por qué pasa y qué hacer",
     categoria: "Equipos",
     fecha: "2026-09-14",
     fechaLabel: "14 de septiembre de 2026",
@@ -1862,6 +1875,7 @@ export const blog: Post[] = [
   {
     slug: "comprar-desde-chatgpt-argentina-comercio",
     titulo: "Comprar desde ChatGPT: qué hay hoy y qué tiene que preparar un comercio argentino",
+    tituloSeo: "Comprar desde ChatGPT: qué hay hoy en Argentina",
     categoria: "Herramientas",
     fecha: "2026-09-08",
     fechaLabel: "8 de septiembre de 2026",
@@ -2060,6 +2074,7 @@ export const blog: Post[] = [
   {
     slug: "ia-reemplazar-empleados-datos-2026",
     titulo: "¿La IA va a reemplazar empleados? Lo que dicen los datos en 2026",
+    tituloSeo: "¿La IA va a reemplazar empleados? Lo que dicen los datos",
     categoria: "Futuro del trabajo",
     fecha: "2026-09-05",
     fechaLabel: "5 de septiembre de 2026",
@@ -3463,6 +3478,7 @@ export const blog: Post[] = [
   {
     slug: "15-ejemplos-reales-de-ia-aplicada-a-pymes",
     titulo: "15 ejemplos reales de inteligencia artificial aplicada a PyMEs",
+    tituloSeo: "15 ejemplos reales de IA aplicada a PyMEs",
     categoria: "Casos",
     fecha: "2026-08-09",
     fechaLabel: "9 de agosto de 2026",
@@ -4533,6 +4549,7 @@ export const blog: Post[] = [
   {
     slug: "cuando-abandonar-una-prueba-de-ia",
     titulo: "La pregunta que hay que hacerse antes de empezar cualquier prueba de IA",
+    tituloSeo: "Antes de empezar una prueba de IA: la pregunta clave",
     categoria: "Decisiones",
     fecha: "2026-07-17",
     fechaLabel: "17 de julio de 2026",
@@ -4685,6 +4702,7 @@ export const blog: Post[] = [
   {
     slug: "liderazgo-en-la-era-de-la-ia",
     titulo: "El cuello de botella de la IA está en la oficina de dirección",
+    tituloSeo: "El cuello de botella de la IA está en la dirección",
     categoria: "Liderazgo",
     fecha: "2026-07-14",
     fechaLabel: "14 de julio de 2026",
@@ -5194,6 +5212,7 @@ export const blog: Post[] = [
   {
     slug: "reunion-semanal-de-adopcion-de-ia",
     titulo: "Sesenta minutos por semana es lo que sostiene una adopción de IA",
+    tituloSeo: "60 minutos por semana para sostener la adopción de IA",
     categoria: "Método",
     fecha: "2026-07-03",
     fechaLabel: "3 de julio de 2026",

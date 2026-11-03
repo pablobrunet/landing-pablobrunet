@@ -49,6 +49,17 @@ control de acceso, las nuevas se crean con un **sufijo aleatorio de 4 caracteres
 puedan adivinar probando nombres de empresa. Nunca listarlas en el `robots.txt`:
 ese archivo es público.
 
+**SEO y asistentes de IA.** Cada página tiene una sola dirección oficial:
+`https://www.pablobrunet.com/...`, **sin barra final** (`astro.config.mjs` →
+`site` y `trailingSlash`; `vercel.json` redirige `/x/` a `/x`). `Base.astro` arma
+el canonical, la vista previa al compartir (`/images/og/og.jpg`, 1200×630) y los
+datos estructurados; el contenido de esos datos vive en `src/lib/seo.ts`. El
+programa, los servicios y cada artículo suman su propia ficha (preguntas
+frecuentes, artículo con fecha y autor). `/llms.txt` es un resumen del sitio para
+asistentes de IA que se arma solo desde los datos (`src/pages/llms.txt.ts`).
+Los artículos aceptan `tituloSeo` (título corto para Google, ~60 caracteres) y
+`actualizado` (fecha de la última reescritura).
+
 ## La landing del Método INTEGRA
 
 Es un **anexo** del sitio: comparte navbar, footer, tipografías y componentes,

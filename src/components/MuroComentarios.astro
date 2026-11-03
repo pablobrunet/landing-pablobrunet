@@ -23,7 +23,7 @@
    de verdad (no una animación de `transform`), y un script mueve su
    `scrollLeft` con requestAnimationFrame: cuando llega al ancho de una
    copia, se resetea a 0 y no se ve la costura. Al ser scroll nativo, el
-   dedo la mueve solo (touch-action: pan-x) y el mouse la arrastra con los
+   dedo la mueve solo (touch-action: pan-x pan-y) y el mouse la arrastra con los
    handlers de pointer del script — sin el enganche que daba el `:hover`
    de CSS, que en celular quedaba trabado al tocar. El aire entre tarjetas
    va como `margin-right` de cada celda y NO como `gap` del flex: con
@@ -301,7 +301,7 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
         };
         fila.addEventListener("pointerup", soltar);
         fila.addEventListener("pointercancel", soltar);
-        /* El dedo ya scrollea solo (overflow-x + touch-action: pan-x).
+        /* El dedo ya scrollea solo (overflow-x + touch-action: pan-x pan-y).
            Solo se frena el auto-scroll si el gesto es de verdad horizontal:
            apoyar el dedo para bajar por la página no tiene que pararlo. */
         let toqueX = 0;
@@ -425,10 +425,12 @@ const pie = (c: Comentario) => [c.rol, c.origen].filter(Boolean).join(" · ");
     overflow-x: auto;
     overflow-y: hidden;
     padding-block: var(--muro-sombra);
-    /* El auto-scroll lo mueve JS con `scrollLeft`; esto habilita que el
-       dedo también lo mueva con scroll nativo, sin bloquear el scroll
-       vertical de la página al pasar por acá. */
-    touch-action: pan-x;
+    /* El auto-scroll lo mueve JS con `scrollLeft`. Con el dedo, el gesto
+       horizontal mueve la fila y el vertical sigue de largo a la página.
+       Tiene que ser `pan-x pan-y` y NO solo `pan-x`: con `pan-x` el
+       navegador prohíbe el desplazamiento vertical si el dedo arranca
+       sobre la fila, y el scroll de la página se clava ahí. */
+    touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
     cursor: grab;
     scrollbar-width: none;

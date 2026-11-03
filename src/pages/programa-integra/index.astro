@@ -48,11 +48,33 @@ import I2Cierre from "../../components/integra2/I2Cierre.astro";
 import { integra } from "../../data/integra";
 import { integra2 } from "../../data/integra2";
 import { comentarios, fotosMuro } from "../../data/testimonios";
+import { ID, canonica, migas, preguntas } from "../../lib/seo";
 ---
 
 <Base
   title={integra2.seo.title}
   description={integra2.seo.description}
+  esquema={[
+    {
+      "@type": "Service",
+      "@id": ID.integra,
+      name: "Programa INTEGRA — Método INTEGRA de Pablo Brunet",
+      alternateName: ["Programa INTEGRA", "Método INTEGRA"],
+      serviceType: "Programa de integración de inteligencia artificial para PyMEs",
+      description: integra2.seo.definicion,
+      url: canonica("/programa-integra"),
+      provider: { "@id": ID.pablo },
+      areaServed: { "@type": "Country", name: "Argentina" },
+      audience: { "@type": "BusinessAudience", name: "PyMEs" },
+      availableChannel: {
+        "@type": "ServiceChannel",
+        name: "Remoto, por videollamada",
+        serviceUrl: canonica("/programa-integra"),
+      },
+    },
+    preguntas(integra2.faq),
+    migas([{ nombre: "Programa INTEGRA", ruta: "/programa-integra" }]),
+  ]}
   waMensaje={integra.whatsapp.mensaje}
   waEtiqueta={integra.whatsapp.etiqueta}
 >

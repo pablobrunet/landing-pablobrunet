@@ -550,13 +550,13 @@ export const integra = {
       href: "/sobre-mi#openai",
     },
     credenciales: [
-      "Posgrado en Inteligencia Artificial y Automatizaciones (UCEMA)",
+      "Posgrado en Gestión Estratégica de Inteligencia Artificial y Automatización Empresarial (UCEMA)",
       "Certificaciones en RevOps y AI Sales",
       "Más de 16 años trabajando con PyMEs no técnicas",
       "Diseño y facilitación de programas de integración de IA, cohortes y comunidades de acompañamiento",
     ],
     cita:
-      "El objetivo no es que tu PyME use más inteligencia artificial. Es que sepa decidir dónde usarla: para trabajar con mayor productividad, gastar menos y ganar más.",
+      "El objetivo no es que tu PyME use más inteligencia artificial. Es que sepa decidir dónde usarla para obtener resultados comprobables.",
   },
 
   /* =====================================================================

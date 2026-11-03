@@ -8,6 +8,7 @@ import CarruselFotos from "../../components/CarruselFotos.astro";
 import { servicios, serviciosInternos, hrefServicio } from "../../data/servicios";
 import { charlasMeta, charlas } from "../../data/videos";
 import { enriquecer } from "../../lib/texto";
+import { ID, canonica, migas, recortar, textoPlano } from "../../lib/seo";
 
 // Los servicios con `externo` no generan página: viven en otro sitio.
 export function getStaticPaths() {
@@ -21,7 +22,29 @@ const { servicio } = Astro.props;
 const otros = servicios.filter((s) => s.slug !== servicio.slug);
 ---
 
-<Page title={`${servicio.titulo} — Servicios`} description={servicio.resumen}>
+<Page
+  title={servicio.slug === "speaker-y-capacitador"
+    ? "Speaker y capacitador en IA para empresas | Pablo Brunet"
+    : `${servicio.titulo} | Pablo Brunet`}
+  description={recortar(servicio.resumen)}
+  esquema={[
+    {
+      "@type": "Service",
+      "@id": `${canonica(`/servicios/${servicio.slug}`)}#servicio`,
+      name: servicio.slug === "speaker-y-capacitador"
+        ? "Charlas y capacitaciones en inteligencia artificial para empresas"
+        : servicio.titulo,
+      description: textoPlano(servicio.resumen),
+      url: canonica(`/servicios/${servicio.slug}`),
+      provider: { "@id": ID.pablo },
+      areaServed: { "@type": "Country", name: "Argentina" },
+    },
+    migas([
+      { nombre: "Servicios", ruta: "/servicios" },
+      { nombre: servicio.titulo, ruta: `/servicios/${servicio.slug}` },
+    ]),
+  ]}
+>
   <PageHero
     eyebrow="Servicio"
     title={servicio.titulo}

@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { blog } from './src/data/blog.ts';
 
 // Rutas que NO van al sitemap. Son las páginas marcadas con `noindex` más las
 // URLs que sólo existen para redirigir: un sitemap es una lista de "esto quiero
@@ -22,17 +23,32 @@ const EXCLUIDAS_DEL_SITEMAP = (ruta) =>
    '/servicios/estrategia-e-implementacion-de-ia',
    '/servicios/metodo-integra'].includes(ruta);
 
+// Fecha de cada artículo, para que el sitemap le diga a Google cuándo se
+// publicó (o actualizó) cada uno. Se lee del mismo archivo que arma el blog.
+const FECHAS_BLOG = Object.fromEntries(
+  blog.map((p) => [`/blog/${p.slug}`, p.actualizado ?? p.fecha]),
+);
+
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://pablobrunet.com',
+  // Una sola dirección para todo el sitio: con www y SIN barra final
+  // (/sobre-mi, no /sobre-mi/). Es la que ya usan todos los enlaces internos
+  // y la que Google tiene indexada. Vercel redirige el resto:
+  // pablobrunet.com → www (configurado en el dominio) y /x/ → /x (vercel.json).
+  // De acá salen el canonical de cada página, el sitemap y los datos
+  // estructurados, así que si algún día cambia el dominio se cambia sólo acá.
+  site: 'https://www.pablobrunet.com',
+  trailingSlash: 'never',
   integrations: [
     sitemap({
-      // `pagina` llega como URL absoluta con barra final
-      // (https://pablobrunet.com/blog/algo/). La normalizamos a ruta sin barra
-      // final para comparar cómodo.
       filter: (pagina) => {
         const ruta = new URL(pagina).pathname.replace(/\/$/, '') || '/';
         return !EXCLUIDAS_DEL_SITEMAP(ruta);
+      },
+      serialize: (item) => {
+        const ruta = new URL(item.url).pathname.replace(/\/$/, '') || '/';
+        const fecha = FECHAS_BLOG[ruta];
+        return fecha ? { ...item, lastmod: new Date(fecha).toISOString() } : item;
       },
     }),
   ],

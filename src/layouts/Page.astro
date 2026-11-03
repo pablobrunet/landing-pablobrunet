@@ -4,15 +4,16 @@ import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import CtaBanner from "../components/CtaBanner.astro";
 
-interface Props {
-  title?: string;
-  description?: string;
+/* Acepta todo lo que acepta Base (título, descripción, imagen, datos
+   estructurados…) y se lo pasa tal cual. */
+type BaseProps = import("./Base.astro").Props;
+interface Props extends BaseProps {
   cta?: boolean; // muestra el banner de CTA final antes del footer
 }
-const { title, description, cta = true } = Astro.props;
+const { cta = true, ...base } = Astro.props;
 ---
 
-<Base title={title} description={description}>
+<Base {...base}>
   <Navbar />
   <main>
     <slot />

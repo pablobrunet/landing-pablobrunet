@@ -5,9 +5,13 @@ import Icon from "../components/Icon.astro";
 import LeadMagnet from "../components/LeadMagnet.astro";
 import { recursosMeta, recursos } from "../data/recursos";
 import { sinMarcas } from "../lib/texto";
+import { site } from "../data/site";
 ---
 
-<Page title={`Recursos — ${sinMarcas(recursosMeta.titulo)}`}>
+<Page
+  title={`Recursos de IA para PyMEs | ${site.nombre}`}
+  description="Guías, artículos y newsletter para que tu PyME use inteligencia artificial con criterio. Material práctico, en español y pensado para gente no técnica."
+>
   <PageHero
     eyebrow={recursosMeta.eyebrow}
     title={recursosMeta.titulo}

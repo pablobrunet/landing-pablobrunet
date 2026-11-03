@@ -30,8 +30,12 @@ export const site = {
   ubicacion: "Santa Fe, Argentina",
   email: "pbrunet@innerflowai.com",
   web: "pablobrunet.com",
+  /* Descripción por defecto (la home y cualquier página que no traiga la
+     suya). Es el texto que muestra Google debajo del título y lo primero
+     que leen los asistentes de IA para clasificar el sitio: tiene que decir
+     quién, qué y dónde en una sola frase. Máximo ~160 caracteres. */
   seoDescription:
-    "Pablo Brunet — Speaker y capacitador en inteligencia artificial aplicada a negocios. Charlas, keynotes y programas de formación para equipos y organizaciones.",
+    "Consultor de IA para PyMEs en Santa Fe, Argentina. Creador del Método INTEGRA. Charlas y capacitaciones en inteligencia artificial para empresas de todo el país.",
 
   /* ---- LOGO DE MARCA ----
        claro  → versión para fondos claros (navbar). Es "Logo v1" con el

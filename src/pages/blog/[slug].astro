@@ -5,6 +5,7 @@ import Frame from "../../components/Frame.astro";
 import Icon from "../../components/Icon.astro";
 import Prose from "../../components/Prose.astro";
 import { blog } from "../../data/blog";
+import { ID, canonica, migas, recortar, absoluta } from "../../lib/seo";
 
 export function getStaticPaths() {
   return blog.map((post) => ({
@@ -15,9 +16,49 @@ export function getStaticPaths() {
 
 const { post } = Astro.props;
 const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
+
+/* Título para Google: el del artículo y, si entra en 60 caracteres, la
+   firma. El " — Blog" de antes no le decía nada a nadie y cortaba títulos. */
+const firma = " | Pablo Brunet";
+const base = post.tituloSeo ?? post.titulo;
+const titulo = base.length + firma.length <= 60 ? base + firma : base;
+const ruta = `/blog/${post.slug}`;
+const publicado = new Date(post.fecha).toISOString();
+const actualizado = new Date(post.actualizado ?? post.fecha).toISOString();
+const imagen = post.img || undefined;
+
+const articulo = {
+  "@type": "BlogPosting",
+  "@id": `${canonica(ruta)}#articulo`,
+  headline: post.titulo,
+  description: recortar(post.resumen, 300),
+  articleSection: post.categoria,
+  inLanguage: "es-AR",
+  datePublished: publicado,
+  dateModified: actualizado,
+  author: { "@id": ID.pablo },
+  publisher: { "@id": ID.pablo },
+  mainEntityOfPage: canonica(ruta),
+  isPartOf: { "@id": ID.sitio },
+  ...(imagen ? { image: absoluta(imagen) } : {}),
+};
 ---
 
-<Page title={`${post.titulo} — Blog`} description={post.resumen}>
+<Page
+  title={titulo}
+  description={recortar(post.resumen)}
+  tipo="article"
+  imagen={imagen}
+  publicado={publicado}
+  actualizado={post.actualizado ? actualizado : undefined}
+  esquema={[
+    articulo,
+    migas([
+      { nombre: "Blog", ruta: "/blog" },
+      { nombre: post.titulo, ruta },
+    ]),
+  ]}
+>
   <PageHero
     eyebrow={post.categoria}
     title={post.titulo}
@@ -25,7 +66,15 @@ const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
     crumbs={[{ label: "Blog", href: "/blog" }, { label: post.titulo }]}
   >
     <p class="meta t-caption text-muted">
+      <span>Por <a href="/sobre-mi" rel="author" class="meta__autor">Pablo Brunet</a></span>
+      <span aria-hidden="true">·</span>
       <time datetime={post.fecha}>{post.fechaLabel}</time>
+      {post.actualizado && (
+        <>
+          <span aria-hidden="true">·</span>
+          <span>Actualizado el <time datetime={post.actualizado}>{post.actualizadoLabel ?? post.actualizado}</time></span>
+        </>
+      )}
       <span aria-hidden="true">·</span>
       <span>{post.lectura}</span>
     </p>
@@ -36,6 +85,13 @@ const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
       <Frame src={post.img} label={post.imgLabel} alt={post.titulo} ratio="16/9" />
       <div class="article__body">
         <Prose blocks={post.cuerpo} />
+        {/* Quién escribe: para el lector y para los buscadores, que le dan
+            más peso a un texto firmado por alguien con trayectoria visible. */}
+        <p class="autor">
+          Escribe <a href="/sobre-mi">Pablo Brunet</a>, consultor de inteligencia
+          artificial para PyMEs en Santa Fe. Hace más de 16 años que trabaja con
+          PyMEs y creó el <a href="/programa-integra">Método INTEGRA</a>.
+        </p>
       </div>
     </div>
   </section>
@@ -75,6 +131,26 @@ const otros = blog.filter((p) => p.slug !== post.slug).slice(0, 2);
   }
   .article__body {
     margin-top: 2.5rem;
+  }
+  .meta__autor {
+    color: inherit;
+    font-weight: var(--w-subheadline);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .autor {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    max-width: 68ch;
+    border-top: 1px solid var(--borde);
+    font-size: var(--fs-caption);
+    color: var(--texto-suave);
+  }
+  .autor a {
+    color: inherit;
+    font-weight: var(--w-subheadline);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
   .more {
     display: grid;

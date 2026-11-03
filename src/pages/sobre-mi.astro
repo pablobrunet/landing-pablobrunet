@@ -11,10 +11,15 @@ import { site } from "../data/site";
 import { sobreMi } from "../data/sobreMi";
 import { televisionMeta, television, reformaVideos } from "../data/videos";
 import { enriquecer, sinMarcas } from "../lib/texto";
+import { migas } from "../lib/seo";
 const p = sobreMi.pagina;
 ---
 
-<Page title={`Sobre mí — ${site.nombre}`}>
+<Page
+  title={`Sobre ${site.nombre}: consultor y speaker de IA para PyMEs`}
+  description="Consultor de IA para PyMEs en Santa Fe, Argentina. Más de 16 años trabajando con PyMEs, más de 3.000 personas capacitadas y charlas en TEDIND-X y AgroActiva."
+  esquema={[migas([{ nombre: "Sobre mí", ruta: "/sobre-mi" }])]}
+>
   <PageHero
     eyebrow="Sobre mí"
     title={site.nombre}

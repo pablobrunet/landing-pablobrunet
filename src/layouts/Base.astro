@@ -3,6 +3,7 @@ import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 import WhatsApp from "../components/WhatsApp.astro";
 import { site } from "../data/site";
+import { absoluta, canonica, grafoSitio } from "../lib/seo";
 
 interface Props {
   title?: string;
@@ -19,21 +20,47 @@ interface Props {
   /* Favicon propio de una vertical con otra marca (el anexo Programas AI
      First). Sin esto, va el del sitio. */
   icono?: string;
+  /* Imagen al compartir el enlace (WhatsApp, LinkedIn) y en las tarjetas
+     de buscadores. Ruta del sitio; sin esto va la foto general de TEDIND-X. */
+  imagen?: string;
+  /* "article" en los artículos del blog: suma fecha y autor. */
+  tipo?: "website" | "article";
+  publicado?: string; // ISO
+  actualizado?: string; // ISO
+  /* Bloques extra de datos estructurados para esta página (el programa,
+     un artículo, sus migas de pan). Se suman al grafo base del sitio. */
+  esquema?: Record<string, unknown>[];
 }
 
 const {
-  title = `${site.nombre} — ${site.tagline}`,
+  title = `${site.nombre} | Consultor de IA para PyMEs en Argentina`,
   description = site.seoDescription,
   waMensaje,
   waEtiqueta,
   mostrarWhatsapp = true,
   noindex = false,
   icono = "/images/logos/logo%20v3%20-%20transparente.png?v=4",
+  imagen = "/images/og/og.jpg",
+  tipo = "website",
+  publicado,
+  actualizado,
+  esquema = [],
 } = Astro.props;
+
+/* Una sola dirección por página (www, sin barra final). Las páginas con
+   `noindex` no la llevan: no tiene sentido declarar la versión oficial de
+   algo que no se quiere en Google. */
+const urlCanonica = canonica(Astro.url.pathname);
+const imagenAbsoluta = absoluta(imagen);
+const datosEstructurados = noindex
+  ? null
+  : JSON.stringify({ "@context": "https://schema.org", "@graph": [...grafoSitio(), ...esquema] })
+      // Un "</script>" dentro de un texto cerraría el bloque antes de tiempo.
+      .replace(/</g, "\\u003c");
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es-AR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,13 +69,27 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <link rel="canonical" href={urlCanonica} />}
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <!-- Vista previa al compartir (WhatsApp, LinkedIn, X). La imagen va con
+         URL absoluta: con una relativa, varias redes no la encuentran. -->
+    <meta property="og:type" content={tipo} />
+    <meta property="og:site_name" content={site.nombre} />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content={urlCanonica} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <!-- Subí una imagen a /public/images/og/og.jpg para las previsualizaciones -->
-    <meta property="og:image" content="/images/og/og.jpg" />
+    <meta property="og:image" content={imagenAbsoluta} />
+    {imagen === "/images/og/og.jpg" && <meta property="og:image:width" content="1200" />}
+    {imagen === "/images/og/og.jpg" && <meta property="og:image:height" content="630" />}
+    <meta name="twitter:card" content="summary_large_image" />
+    {publicado && <meta property="article:published_time" content={publicado} />}
+    {actualizado && <meta property="article:modified_time" content={actualizado} />}
+    {tipo === "article" && <meta property="article:author" content={absoluta("/sobre-mi")} />}
+
+    <!-- Datos estructurados: quién es Pablo, qué ofrece y dónde, en el
+         formato que leen Google y los asistentes de IA. Ver lib/seo.ts. -->
+    {datosEstructurados && <script type="application/ld+json" set:html={datosEstructurados} />}
 
     <!-- Identidad del sitio en pestañas, favoritos y accesos directos.
          El nombre del archivo tiene espacios, así que va codificado (%20).
