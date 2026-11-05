@@ -39,8 +39,8 @@ import SectionHeading from "./SectionHeading.astro";
                   class="service__logo"
                   src={s.logo}
                   alt={s.logoAlt ?? s.titulo}
-                  widths={[170, 340]}
-                  sizes="170px"
+                  widths={[140, 280]}
+                  sizes="140px"
                   formats={["webp"]}
                 />
               ) : (
@@ -97,9 +97,9 @@ import SectionHeading from "./SectionHeading.astro";
   /* Mismo alto total que el cuadrado del ícono (48px + margen), para que
      los títulos de las tres tarjetas queden alineados. */
   .service__logo {
-    height: 44px;
+    height: 35px;
     width: auto;
-    margin: 2px 0 calc(1.1rem + 2px);
+    margin: 6px 0 calc(1.1rem + 7px);
   }
   .service__text {
     margin: 0.5rem 0 1.5rem;
