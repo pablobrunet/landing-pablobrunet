@@ -16,11 +16,16 @@
 
    Los títulos admiten *un fragmento entre asteriscos* para resaltarlo.
    ===================================================================== */
+import logoIntegra from "../assets/integra/integra-lockup-color.png";
 
 export interface Servicio {
   slug: string;
   titulo: string;
   icon: string;
+  /* Logo propio para la tarjeta del listado (home y /servicios). Si está,
+     reemplaza al ícono. El navbar sigue usando `icon`. */
+  logo?: ImageMetadata;
+  logoAlt?: string;
   resumen: string; // aparece en tarjetas / índice
   /* De acá para abajo, todo lo que arma la subpágina. Es opcional porque
      los servicios con `ruta` o `externo` no la generan. */
@@ -210,6 +215,8 @@ export const servicios: Servicio[] = [
     slug: "metodo-integra",
     titulo: "Programa INTEGRA",
     icon: "chip",
+    logo: logoIntegra,
+    logoAlt: "Logo de INTEGRA, el programa de Pablo Brunet para integrar IA en PyMEs",
     resumen:
       "En 60 días instalo en tu PyME la capacidad de identificar oportunidades de IA, priorizarlas, probarlas sobre trabajo real y decidir con evidencia. Operado por gente de la casa.",
     ruta: "/programa-integra",
