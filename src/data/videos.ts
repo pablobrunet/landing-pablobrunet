@@ -85,15 +85,26 @@ export const charlasMeta = {
   subtitulo: "Charlas completas registradas en distintos eventos.",
 };
 
+/* El orden de esta lista es el orden en pantalla (lo eligió Pablo, no va
+   por fecha). */
 export const charlas: Video[] = [
   {
-    /* Título tal como está publicado en el canal: "Aprendizaje de procesos
-       creativos" es la charla; "La irrupción de la IA en la enseñanza" es el
-       congreso. Falta la fecha del congreso: el video se subió el 23/10/2026,
-       pero esa es la fecha de subida, no la del evento. */
-    titulo: "Aprendizaje de procesos creativos",
-    contexto: "I Congreso «La irrupción de la IA en la enseñanza» · UCSF",
-    youtube: "https://www.youtube.com/watch?v=8r1iEwP40wU",
+    // Título tal como está publicado en el canal de AgroActiva.
+    titulo: "60 días para dominar la IA",
+    contexto: "FARO · AgroActiva",
+    fecha: "Noviembre de 2025",
+    youtube: "https://www.youtube.com/watch?v=9CNLDkD04Rs",
+  },
+  {
+    /* Título descriptivo armado con lo que citó El Litoral de tu charla
+       (tecnología, IA y nuevas generaciones). Si tenía un título propio,
+       reemplazalo. */
+    titulo: "Tecnología e IA para emprender",
+    contexto: "3er. TEDIND-X · Unión Industrial de Santa Fe",
+    fecha: "Abril de 2025",
+    // Transmisión completa del evento: el `t=4035` arranca en tu charla
+    // (1 h 07 min). No lo borres al editar la URL.
+    youtube: "https://www.youtube.com/live/RIEMhpVYOOA?si=k3XIOvDEM9rm0AGh&t=4035",
   },
   {
     // Título tal como está publicado en el canal de AgroActiva.
@@ -111,22 +122,13 @@ export const charlas: Video[] = [
     youtube: "https://www.youtube.com/live/v8FND3kfdSY?si=pB_CUlWC65ElKL1J&t=12007",
   },
   {
-    /* Título descriptivo armado con lo que citó El Litoral de tu charla
-       (tecnología, IA y nuevas generaciones). Si tenía un título propio,
-       reemplazalo. */
-    titulo: "Tecnología e IA para emprender",
-    contexto: "3er. TEDIND-X · Unión Industrial de Santa Fe",
-    fecha: "Abril de 2025",
-    // Transmisión completa del evento: el `t=4035` arranca en tu charla
-    // (1 h 07 min). No lo borres al editar la URL.
-    youtube: "https://www.youtube.com/live/RIEMhpVYOOA?si=k3XIOvDEM9rm0AGh&t=4035",
-  },
-  {
-    // Título tal como está publicado en el canal de AgroActiva.
-    titulo: "60 días para dominar la IA",
-    contexto: "FARO · AgroActiva",
-    fecha: "Noviembre de 2025",
-    youtube: "https://www.youtube.com/watch?v=9CNLDkD04Rs",
+    /* Título tal como está publicado en el canal: "Aprendizaje de procesos
+       creativos" es la charla; "La irrupción de la IA en la enseñanza" es el
+       congreso. Falta la fecha del congreso: el video se subió el 23/10/2026,
+       pero esa es la fecha de subida, no la del evento. */
+    titulo: "Aprendizaje de procesos creativos",
+    contexto: "I Congreso «La irrupción de la IA en la enseñanza» · UCSF",
+    youtube: "https://www.youtube.com/watch?v=8r1iEwP40wU",
   },
 ];
 
